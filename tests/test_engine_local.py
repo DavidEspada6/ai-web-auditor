@@ -43,6 +43,69 @@ class ExternalRedirectHandler(BaseHTTPRequestHandler):
         return
 
 
+class ExcludedRedirectHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == "/":
+            self.send_response(302)
+            self.send_header("Location", "/admin/panel")
+            self.end_headers()
+            return
+
+        self.send_response(200)
+        self.send_header("Content-Type", "text/html")
+        self.end_headers()
+        self.wfile.write(b"admin")
+
+    def do_OPTIONS(self):
+        self.send_response(204)
+        self.send_header("Allow", "GET, OPTIONS")
+        self.end_headers()
+
+    def log_message(self, *args):
+        return
+
+
+class CrawlHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        if self.path == "/":
+            body = b"""
+            <html>
+              <body>
+                <a href="/about">About</a>
+                <a href="/admin/panel">Admin</a>
+                <a href="/assets/logo.png">Logo</a>
+                <a href="https://outside.example/path">External</a>
+              </body>
+            </html>
+            """
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(body)
+            return
+
+        if self.path == "/about":
+            body = b'<html><body><a href="/deep">Deep</a></body></html>'
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(body)
+            return
+
+        self.send_response(404)
+        self.send_header("Content-Type", "text/plain")
+        self.end_headers()
+        self.wfile.write(b"not found")
+
+    def do_OPTIONS(self):
+        self.send_response(204)
+        self.send_header("Allow", "GET, OPTIONS")
+        self.end_headers()
+
+    def log_message(self, *args):
+        return
+
+
 class LocalEngineTests(unittest.TestCase):
     def test_local_http_scan_generates_expected_findings(self):
         server = HTTPServer(("127.0.0.1", 0), DemoHandler)
@@ -83,6 +146,53 @@ class LocalEngineTests(unittest.TestCase):
         request_hosts = {urlsplit(record.url).hostname for record in result.requests}
 
         self.assertIn("HTTP-REDIRECT-OUT-OF-SCOPE", finding_ids)
+        self.assertEqual(request_hosts, {"127.0.0.1"})
+
+    def test_redirect_to_excluded_path_is_not_followed(self):
+        server = HTTPServer(("127.0.0.1", 0), ExcludedRedirectHandler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        self.addCleanup(server.server_close)
+        self.addCleanup(server.shutdown)
+
+        config = AuditConfig()
+        config.scope.allow_private_networks = True
+        config.scope.resolve_dns = False
+        config.scope.exclude_paths = ["/admin"]
+
+        result = run_scan(f"http://127.0.0.1:{server.server_port}", config)
+        requested_paths = {urlsplit(record.url).path for record in result.requests}
+
+        self.assertIn("/", requested_paths)
+        self.assertNotIn("/admin/panel", requested_paths)
+
+    def test_crawler_discovers_internal_urls_without_leaving_scope(self):
+        server = HTTPServer(("127.0.0.1", 0), CrawlHandler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        self.addCleanup(server.server_close)
+        self.addCleanup(server.shutdown)
+
+        config = AuditConfig()
+        config.scope.allow_private_networks = True
+        config.scope.resolve_dns = False
+        config.scope.exclude_paths = ["/admin"]
+        config.crawler.max_depth = 1
+        config.crawler.max_pages = 10
+
+        base_url = f"http://127.0.0.1:{server.server_port}"
+        result = run_scan(base_url, config)
+        crawler = next(module for module in result.modules if module.name == "crawler")
+        artifacts = crawler.artifacts
+        request_hosts = {urlsplit(record.url).hostname for record in result.requests}
+
+        self.assertIn(f"{base_url}/", artifacts["fetched_urls"])
+        self.assertIn(f"{base_url}/about", artifacts["fetched_urls"])
+        self.assertIn(f"{base_url}/deep", artifacts["discovered_urls"])
+        self.assertNotIn(f"{base_url}/admin/panel", artifacts["fetched_urls"])
+        self.assertIn(f"{base_url}/admin/panel", artifacts["excluded_urls"])
+        self.assertIn("https://outside.example/path", artifacts["out_of_scope_urls"])
+        self.assertEqual(artifacts["ignored_urls_count"], 1)
         self.assertEqual(request_hosts, {"127.0.0.1"})
 
 

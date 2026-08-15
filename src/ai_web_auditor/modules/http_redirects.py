@@ -6,7 +6,7 @@ from ai_web_auditor.context import ScanContext
 from ai_web_auditor.errors import ProbeError
 from ai_web_auditor.http_probe import SimpleResponse
 from ai_web_auditor.models import Evidence, Finding, ModuleResult
-from ai_web_auditor.scope import is_host_allowed
+from ai_web_auditor.scope import is_host_allowed, is_path_allowed
 
 
 REDIRECT_STATUSES = {301, 302, 303, 307, 308}
@@ -193,6 +193,9 @@ def _request_following_scope(
             response.history = history
             return response, next_url
         if parsed.hostname and not is_host_allowed(parsed.hostname, context.config.scope, default_host=context.target.host):
+            response.history = history
+            return response, next_url
+        if not is_path_allowed(parsed.path or "/", context.config.scope):
             response.history = history
             return response, next_url
 

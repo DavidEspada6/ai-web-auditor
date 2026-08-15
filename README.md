@@ -1,11 +1,12 @@
 # AI Web Auditor
 
-Primera version de una herramienta modular de auditoria web asistida por IA.
+Herramienta modular de auditoria web asistida por IA.
 
 Esta version esta pensada como base segura para practicas y auditorias con
 autorizacion. Solo ejecuta comprobaciones no intrusivas: validacion de URL y
 scope, HTTP/HTTPS y redirecciones, cabeceras de seguridad, cookies, HTTP Basic
-Auth, metodos anunciados por OPTIONS y TLS basico.
+Auth, metodos anunciados por OPTIONS, TLS basico y crawling seguro limitado por
+scope.
 
 No implementa explotacion, fuerza bruta, fuzzing agresivo, crawling masivo,
 escaneo de puertos ni pruebas intrusivas.
@@ -24,12 +25,24 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.1 no necesita librerias externas en tiempo de ejecucion.
+La v0.2 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
 ```powershell
 ai-web-auditor scan https://example.com
+```
+
+Crear una configuracion de auditoria con preguntas guiadas:
+
+```powershell
+ai-web-auditor init-scope https://example.com --output audit.json
+```
+
+Ejecutar usando la configuracion creada:
+
+```powershell
+ai-web-auditor scan --config audit.json
 ```
 
 Guardar JSON:
@@ -74,18 +87,30 @@ Ejemplo en `examples/audit.json`:
 
 ```json
 {
+  "target": {
+    "url": "https://example.com/"
+  },
   "scope": {
     "allowed_hosts": ["example.com"],
     "allow_subdomains": true,
     "allow_private_networks": false,
-    "resolve_dns": true
+    "resolve_dns": true,
+    "include_paths": ["/"],
+    "exclude_paths": []
   },
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.1",
+    "user_agent": "AI-Web-Auditor/0.2",
     "verify_tls": true,
     "check_http_counterpart": true
+  },
+  "crawler": {
+    "max_depth": 1,
+    "max_pages": 25,
+    "delay_seconds": 0.0,
+    "max_body_bytes": 262144,
+    "include_query_strings": false
   },
   "modules": {
     "scope": true,
@@ -94,7 +119,8 @@ Ejemplo en `examples/audit.json`:
     "cookies": true,
     "basic_auth": true,
     "http_methods": true,
-    "tls": true
+    "tls": true,
+    "crawler": true
   }
 }
 ```
@@ -113,6 +139,31 @@ Ejemplo en `examples/audit.json`:
 - `http_methods`: usa `OPTIONS` para leer metodos anunciados por el servidor.
 - `tls`: obtiene informacion basica del certificado y de la version TLS
   negociada.
+- `crawler`: recorre enlaces internos sin enviar formularios, sin salir del
+  scope, con profundidad y numero de paginas limitados.
+
+## Scope de auditoria
+
+La v0.2 permite preparar una auditoria con preguntas:
+
+```powershell
+ai-web-auditor init-scope https://example.com --output audit.json
+```
+
+Ese archivo deja fijados los limites principales:
+
+- hosts autorizados;
+- si se permiten subdominios;
+- rutas incluidas;
+- rutas excluidas;
+- si se permiten redes privadas o locales;
+- limites del crawler.
+
+Despues se puede repetir la auditoria de forma consistente:
+
+```powershell
+ai-web-auditor scan --config audit.json --json-output outputs/result.json
+```
 
 ## Estructura para ampliar
 
@@ -126,7 +177,7 @@ anadir uno nuevo:
 
 Los siguientes pasos naturales son:
 
-- crawler limitado por scope y profundidad;
+- fingerprinting de tecnologias web;
 - descubrimiento de subdominios;
 - escaneo de puertos con limites claros;
 - integracion con OpenAI para priorizacion y explicacion de hallazgos;
@@ -141,7 +192,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.1.1
+git tag v0.2.1
 git push
 git push --tags
 ```
@@ -154,7 +205,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",

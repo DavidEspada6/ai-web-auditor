@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import ipaddress
+import posixpath
 import socket
 from urllib.parse import urlsplit, urlunsplit
 
@@ -15,6 +16,7 @@ SUPPORTED_SCHEMES = {"http", "https"}
 def validate_target(raw_url: str, config: ScopeConfig) -> Target:
     target = normalize_target(raw_url)
     _validate_allowed_host(target.host, config)
+    _validate_allowed_path(urlsplit(target.normalized_url).path or "/", config)
 
     ip_addresses = _resolve_ips(target.host, config.resolve_dns)
     if not config.allow_private_networks:
@@ -45,7 +47,7 @@ def normalize_target(raw_url: str) -> Target:
 
     host = _normalize_host(parsed.hostname)
     port = parsed.port or (443 if scheme == "https" else 80)
-    path = parsed.path or "/"
+    path = _normalize_path(parsed.path or "/")
     netloc = _format_netloc(host, parsed.port, scheme)
     normalized_url = urlunsplit((scheme, netloc, path, parsed.query, ""))
     base_url = urlunsplit((scheme, netloc, "/", "", ""))
@@ -89,9 +91,49 @@ def is_host_allowed(host: str, config: ScopeConfig, default_host: str | None = N
     return False
 
 
+def is_path_allowed(path: str, config: ScopeConfig) -> bool:
+    normalized_path = _normalize_path(path)
+    include_paths = [_normalize_path(item) for item in config.include_paths] or ["/"]
+    exclude_paths = [_normalize_path(item) for item in config.exclude_paths]
+
+    included = any(_path_matches(normalized_path, item) for item in include_paths)
+    excluded = any(_path_matches(normalized_path, item) for item in exclude_paths)
+    return included and not excluded
+
+
+def is_url_allowed(url: str, config: ScopeConfig, default_host: str | None = None) -> bool:
+    parsed = urlsplit(url)
+    if parsed.scheme not in SUPPORTED_SCHEMES or not parsed.hostname:
+        return False
+    return is_host_allowed(parsed.hostname, config, default_host=default_host) and is_path_allowed(parsed.path or "/", config)
+
+
 def _validate_allowed_host(host: str, config: ScopeConfig) -> None:
     if not is_host_allowed(host, config, default_host=host):
         raise ScopeError(f"Host {host} is outside the configured scope")
+
+
+def _validate_allowed_path(path: str, config: ScopeConfig) -> None:
+    if not is_path_allowed(path, config):
+        raise ScopeError(f"Path {path} is outside the configured scope")
+
+
+def _normalize_path(path: str) -> str:
+    raw_path = path if path.startswith("/") else f"/{path}"
+    normalized_path = posixpath.normpath(raw_path)
+    if normalized_path == ".":
+        normalized_path = "/"
+    if not normalized_path.startswith("/"):
+        normalized_path = f"/{normalized_path}"
+    if raw_path.endswith("/") and not normalized_path.endswith("/"):
+        normalized_path = f"{normalized_path}/"
+    return normalized_path
+
+
+def _path_matches(path: str, prefix: str) -> bool:
+    if prefix == "/":
+        return True
+    return path == prefix or path.startswith(prefix.rstrip("/") + "/")
 
 
 def _resolve_ips(host: str, enabled: bool) -> list[str]:

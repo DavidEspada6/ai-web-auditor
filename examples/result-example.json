@@ -1,6 +1,6 @@
 {
   "tool": "ai-web-auditor",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "generated_at": "2026-08-15T00:00:00Z",
   "status": "completed",
   "target": {
@@ -12,7 +12,30 @@
     "base_url": "https://example.com/",
     "ip_addresses": []
   },
-  "modules": [],
+  "modules": [
+    {
+      "name": "crawler",
+      "status": "passed",
+      "summary": "Crawled 1 page(s), discovered 1 in-scope URL(s).",
+      "findings": [],
+      "artifacts": {
+        "seed_url": "https://example.com/",
+        "max_depth": 1,
+        "max_pages": 25,
+        "fetched_urls": [
+          "https://example.com/"
+        ],
+        "discovered_urls": [
+          "https://example.com/"
+        ],
+        "out_of_scope_urls": [],
+        "excluded_urls": [],
+        "ignored_urls_count": 0,
+        "limit_reached": false,
+        "pages": []
+      }
+    }
+  ],
   "findings": [],
   "requests": []
 }

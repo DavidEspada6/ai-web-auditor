@@ -1,18 +1,54 @@
 {
+  "target": {
+    "url": "https://example.com/"
+  },
   "scope": {
     "allowed_hosts": [
       "example.com"
     ],
     "allow_subdomains": true,
     "allow_private_networks": false,
-    "resolve_dns": true
+    "resolve_dns": true,
+    "include_paths": [
+      "/"
+    ],
+    "exclude_paths": []
   },
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.1",
+    "user_agent": "AI-Web-Auditor/0.2",
     "verify_tls": true,
     "check_http_counterpart": true
+  },
+  "crawler": {
+    "max_depth": 1,
+    "max_pages": 25,
+    "delay_seconds": 0.0,
+    "max_body_bytes": 262144,
+    "include_query_strings": false,
+    "ignored_extensions": [
+      ".7z",
+      ".avi",
+      ".css",
+      ".gif",
+      ".gz",
+      ".ico",
+      ".jpeg",
+      ".jpg",
+      ".js",
+      ".mov",
+      ".mp3",
+      ".mp4",
+      ".pdf",
+      ".png",
+      ".rar",
+      ".svg",
+      ".tar",
+      ".webm",
+      ".webp",
+      ".zip"
+    ]
   },
   "modules": {
     "scope": true,
@@ -21,6 +57,7 @@
     "cookies": true,
     "basic_auth": true,
     "http_methods": true,
-    "tls": true
+    "tls": true,
+    "crawler": true
   }
 }

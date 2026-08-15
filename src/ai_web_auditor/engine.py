@@ -7,6 +7,7 @@ from .models import Evidence, Finding, HTTPRequestRecord, ModuleResult, ScanResu
 from .modules import (
     BasicAuthModule,
     CookiesModule,
+    CrawlerModule,
     HTTPMethodsModule,
     HTTPRedirectsModule,
     ScopeModule,
@@ -19,6 +20,8 @@ from .scope import validate_target
 
 def run_scan(raw_target: str, config: AuditConfig) -> ScanResult:
     target = validate_target(raw_target, config.scope)
+    if not config.scope.allowed_hosts:
+        config.scope.allowed_hosts = [target.host]
     requests: list[HTTPRequestRecord] = []
 
     modules = _enabled_modules(config)
@@ -70,5 +73,6 @@ def _enabled_modules(config: AuditConfig) -> list[AuditModule]:
         (config.modules.basic_auth, BasicAuthModule()),
         (config.modules.http_methods, HTTPMethodsModule()),
         (config.modules.tls, TLSBasicModule()),
+        (config.modules.crawler, CrawlerModule()),
     ]
     return [module for enabled, module in candidates if enabled]

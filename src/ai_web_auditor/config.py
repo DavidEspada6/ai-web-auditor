@@ -12,20 +12,60 @@ except ModuleNotFoundError:  # pragma: no cover - Python < 3.11 fallback path.
 
 
 @dataclass
+class TargetConfig:
+    url: str = ""
+
+
+@dataclass
 class ScopeConfig:
     allowed_hosts: list[str] = field(default_factory=list)
     allow_subdomains: bool = True
     allow_private_networks: bool = False
     resolve_dns: bool = True
+    include_paths: list[str] = field(default_factory=lambda: ["/"])
+    exclude_paths: list[str] = field(default_factory=list)
 
 
 @dataclass
 class HTTPConfig:
     timeout_seconds: float = 10.0
     max_redirects: int = 10
-    user_agent: str = "AI-Web-Auditor/0.1"
+    user_agent: str = "AI-Web-Auditor/0.2"
     verify_tls: bool = True
     check_http_counterpart: bool = True
+
+
+@dataclass
+class CrawlerConfig:
+    max_depth: int = 1
+    max_pages: int = 25
+    delay_seconds: float = 0.0
+    max_body_bytes: int = 262144
+    include_query_strings: bool = False
+    ignored_extensions: list[str] = field(
+        default_factory=lambda: [
+            ".7z",
+            ".avi",
+            ".css",
+            ".gif",
+            ".gz",
+            ".ico",
+            ".jpeg",
+            ".jpg",
+            ".js",
+            ".mov",
+            ".mp3",
+            ".mp4",
+            ".pdf",
+            ".png",
+            ".rar",
+            ".svg",
+            ".tar",
+            ".webm",
+            ".webp",
+            ".zip",
+        ]
+    )
 
 
 @dataclass
@@ -37,12 +77,15 @@ class ModuleConfig:
     basic_auth: bool = True
     http_methods: bool = True
     tls: bool = True
+    crawler: bool = True
 
 
 @dataclass
 class AuditConfig:
+    target: TargetConfig = field(default_factory=TargetConfig)
     scope: ScopeConfig = field(default_factory=ScopeConfig)
     http: HTTPConfig = field(default_factory=HTTPConfig)
+    crawler: CrawlerConfig = field(default_factory=CrawlerConfig)
     modules: ModuleConfig = field(default_factory=ModuleConfig)
 
     @classmethod
@@ -57,6 +100,10 @@ class AuditConfig:
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
+
+    def write_json(self, path: Path) -> None:
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_text(json.dumps(self.to_dict(), indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
 
 
 def _load_mapping(path: Path) -> dict[str, Any]:

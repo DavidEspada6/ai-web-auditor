@@ -19,6 +19,8 @@ class SimpleResponse:
     status_code: int
     reason: str
     headers: list[tuple[str, str]]
+    body: bytes = b""
+    body_truncated: bool = False
     history: list["SimpleResponse"] = field(default_factory=list)
 
     @property
@@ -59,6 +61,7 @@ class HttpProbe:
         *,
         follow_redirects: bool = False,
         headers: Mapping[str, str] | None = None,
+        max_body_bytes: int = 0,
     ) -> SimpleResponse:
         current_url = url
         current_method = method.upper()
@@ -66,7 +69,7 @@ class HttpProbe:
         extra_headers = dict(headers or {})
 
         for redirect_count in range(self._config.max_redirects + 1):
-            response = self._single_request(current_method, current_url, extra_headers)
+            response = self._single_request(current_method, current_url, extra_headers, max_body_bytes=max_body_bytes)
             if not follow_redirects or response.status_code not in {301, 302, 303, 307, 308}:
                 response.history = history
                 return response
@@ -83,7 +86,14 @@ class HttpProbe:
 
         raise ProbeError(f"Too many redirects after {self._config.max_redirects} hops")
 
-    def _single_request(self, method: str, url: str, headers: Mapping[str, str]) -> SimpleResponse:
+    def _single_request(
+        self,
+        method: str,
+        url: str,
+        headers: Mapping[str, str],
+        *,
+        max_body_bytes: int,
+    ) -> SimpleResponse:
         parsed = urlsplit(url)
         if parsed.scheme not in {"http", "https"}:
             raise ProbeError(f"Unsupported URL scheme: {parsed.scheme}")
@@ -104,12 +114,21 @@ class HttpProbe:
             connection.request(method, request_path, headers=request_headers)
             raw_response = connection.getresponse()
             header_items = raw_response.getheaders()
+            body = b""
+            body_truncated = False
+            if max_body_bytes > 0:
+                body = raw_response.read(max_body_bytes + 1)
+                if len(body) > max_body_bytes:
+                    body = body[:max_body_bytes]
+                    body_truncated = True
             response = SimpleResponse(
                 method=method,
                 url=url,
                 status_code=raw_response.status,
                 reason=raw_response.reason,
                 headers=header_items,
+                body=body,
+                body_truncated=body_truncated,
             )
             record.status_code = raw_response.status
             record.final_url = url
