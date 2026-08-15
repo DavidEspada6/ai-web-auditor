@@ -11,6 +11,7 @@ Todas las versiones relevantes del proyecto se documentaran aqui.
 - Reglas de scope por rutas incluidas y excluidas.
 - Modulo `crawler` seguro con profundidad maxima, limite de paginas, retraso opcional y limite de cuerpo HTML.
 - Descubrimiento de URLs internas y registro de enlaces externos sin visitarlos.
+- Lanzador Windows `ai-web-auditor.cmd` para ejecutar la herramienta sin instalar el comando global.
 - Tests de crawler local y redirecciones fuera de scope.
 
 ### Seguridad

@@ -33,6 +33,15 @@ La v0.2 no necesita librerias externas en tiempo de ejecucion.
 ai-web-auditor scan https://example.com
 ```
 
+Si Windows no reconoce `ai-web-auditor`, `py` o `python`, puedes usar el
+lanzador incluido:
+
+```powershell
+.\ai-web-auditor.cmd --help
+.\ai-web-auditor.cmd init-scope https://example.com --output audit.json
+.\ai-web-auditor.cmd scan --config audit.json
+```
+
 Crear una configuracion de auditoria con preguntas guiadas:
 
 ```powershell
