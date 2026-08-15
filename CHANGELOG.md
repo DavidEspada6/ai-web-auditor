@@ -2,6 +2,25 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.11.0] - 2026-08-16
+
+### Anade
+
+- Laboratorio vulnerable local para demos y pruebas sin auditar dominios reales.
+- Comando `lab` para arrancar el laboratorio en `127.0.0.1`.
+- Rutas de laboratorio con HTTP sin TLS, Basic Auth, cookies inseguras, cabeceras ausentes, metadatos expuestos, `robots.txt` y `sitemap.xml`.
+- Endpoints GUI `/api/lab/status`, `/api/lab/start` y `/api/lab/stop`.
+- Panel de laboratorio en la interfaz con estado `Conectado` / `Desconectado`.
+- Botones para iniciar, detener y rellenar el formulario con la demo local.
+- Defaults seguros para escanear `http://127.0.0.1:8080/members/` con scope local, DNS desactivado y TLS desactivado.
+- Tests del laboratorio y de deteccion de hallazgos controlados.
+
+### Seguridad
+
+- El laboratorio solo permite bind en localhost o direcciones loopback.
+- No se anaden ataques contra terceros ni explotacion destructiva.
+- La demo genera evidencias controladas dentro de la maquina local.
+
 ## [0.10.0] - 2026-08-16
 
 ### Anade

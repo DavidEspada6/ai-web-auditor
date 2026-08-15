@@ -53,6 +53,19 @@
             <button id="create-project" class="ghost full-width" type="button">Crear proyecto</button>
           </section>
 
+          <section class="module-section lab-section">
+            <div class="section-heading-row">
+              <h2>Laboratorio</h2>
+              <span id="lab-status" class="status-chip disconnected">Desconectado</span>
+            </div>
+            <div id="lab-url" class="lab-url">http://127.0.0.1:8080/members/</div>
+            <div class="lab-actions">
+              <button id="start-lab" class="ghost" type="button">Iniciar</button>
+              <button id="stop-lab" class="ghost" type="button" disabled>Detener</button>
+              <button id="use-lab" class="secondary" type="button">Usar demo</button>
+            </div>
+          </section>
+
           <label class="field">
             <span>Objetivo</span>
             <input id="target" name="target" type="url" placeholder="https://example.com" required>

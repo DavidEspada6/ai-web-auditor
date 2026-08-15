@@ -6,6 +6,7 @@ const state = {
   aiAnalysis: null,
   projects: [],
   projectId: "",
+  lab: null,
   history: [],
   comparison: null,
 };
@@ -38,6 +39,11 @@ const projectClientInput = document.querySelector("#project-client");
 const projectAuditorInput = document.querySelector("#project-auditor");
 const projectEngagementInput = document.querySelector("#project-engagement");
 const createProjectButton = document.querySelector("#create-project");
+const labStatus = document.querySelector("#lab-status");
+const labUrl = document.querySelector("#lab-url");
+const startLabButton = document.querySelector("#start-lab");
+const stopLabButton = document.querySelector("#stop-lab");
+const useLabButton = document.querySelector("#use-lab");
 const historyTable = document.querySelector("#history-table");
 const historyCount = document.querySelector("#history-count");
 const refreshHistoryButton = document.querySelector("#refresh-history");
@@ -53,9 +59,12 @@ document.querySelectorAll(".tab").forEach((button) => {
 initialize();
 
 async function initialize() {
+  await loadLabStatus();
   await loadProjects();
   await loadHistory();
 }
+
+window.setInterval(loadLabStatus, 5000);
 
 projectSelect.addEventListener("change", async () => {
   state.projectId = projectSelect.value;
@@ -88,6 +97,39 @@ createProjectButton.addEventListener("click", async () => {
     showMessage(error.message);
   } finally {
     createProjectButton.disabled = false;
+  }
+});
+
+startLabButton.addEventListener("click", async () => {
+  clearMessage();
+  startLabButton.disabled = true;
+  try {
+    const response = await postJson("/api/lab/start", {});
+    state.lab = response.lab;
+    renderLabStatus(state.lab);
+    applyLabDefaults(state.lab);
+  } catch (error) {
+    showMessage(error.message);
+  } finally {
+    startLabButton.disabled = Boolean(state.lab?.connected);
+  }
+});
+
+stopLabButton.addEventListener("click", async () => {
+  clearMessage();
+  stopLabButton.disabled = true;
+  try {
+    const response = await postJson("/api/lab/stop", {});
+    state.lab = response.lab;
+    renderLabStatus(state.lab);
+  } catch (error) {
+    showMessage(error.message);
+  }
+});
+
+useLabButton.addEventListener("click", () => {
+  if (state.lab) {
+    applyLabDefaults(state.lab);
   }
 });
 
@@ -381,6 +423,75 @@ async function loadProjects(selectedId = "") {
   } catch (error) {
     showMessage(error.message);
   }
+}
+
+async function loadLabStatus() {
+  try {
+    const response = await getJson("/api/lab/status");
+    state.lab = response.lab;
+    renderLabStatus(state.lab);
+  } catch (error) {
+    showMessage(error.message);
+  }
+}
+
+function renderLabStatus(lab) {
+  const connected = Boolean(lab?.connected);
+  labStatus.textContent = connected ? "Conectado" : "Desconectado";
+  labStatus.classList.toggle("connected", connected);
+  labStatus.classList.toggle("disconnected", !connected);
+  labUrl.textContent = lab?.target_url || "http://127.0.0.1:8080/members/";
+  startLabButton.disabled = connected;
+  stopLabButton.disabled = !connected;
+}
+
+function applyLabDefaults(lab) {
+  const defaults = lab?.scan_defaults || {};
+  if (!defaults.target) {
+    return;
+  }
+
+  if (!projectNameInput.value.trim()) {
+    projectNameInput.value = "Laboratorio local demo";
+  }
+  if (!projectClientInput.value.trim()) {
+    projectClientInput.value = "Practica Evolve";
+  }
+  if (!projectAuditorInput.value.trim()) {
+    projectAuditorInput.value = "David";
+  }
+  if (!projectEngagementInput.value.trim()) {
+    projectEngagementInput.value = "Simulacion v0.11.0";
+  }
+
+  document.querySelector("#target").value = defaults.target;
+  document.querySelector("#allowed-hosts").value = defaults.allowed_hosts || "127.0.0.1";
+  document.querySelector("#include-paths").value = defaults.include_paths || "/";
+  document.querySelector("#exclude-paths").value = defaults.exclude_paths || "";
+  document.querySelector("#history-label").value = defaults.history_label || "lab-demo-inicial";
+  setChecked("#allow-subdomains", defaults.allow_subdomains);
+  setChecked("#resolve-dns", defaults.resolve_dns);
+  setChecked("#check-http", defaults.check_http_counterpart);
+  setChecked("#allow-private", defaults.allow_private_networks);
+  setChecked("#save-history", defaults.save_history);
+
+  if (defaults.crawler) {
+    document.querySelector("#max-depth").value = defaults.crawler.max_depth ?? 1;
+    document.querySelector("#max-pages").value = defaults.crawler.max_pages ?? 20;
+    document.querySelector("#delay").value = defaults.crawler.delay_seconds ?? 0;
+  }
+  if (defaults.modules) {
+    document.querySelectorAll("[data-module]").forEach((input) => {
+      if (Object.prototype.hasOwnProperty.call(defaults.modules, input.dataset.module)) {
+        input.checked = Boolean(defaults.modules[input.dataset.module]);
+      }
+    });
+  }
+
+  document.querySelector("#report-client").value = projectClientInput.value;
+  document.querySelector("#report-auditor").value = projectAuditorInput.value;
+  document.querySelector("#report-engagement").value = projectEngagementInput.value;
+  document.querySelector("#report-scope").value = defaults.target;
 }
 
 function renderProjects(projects, selectedId) {

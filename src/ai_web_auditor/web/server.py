@@ -15,16 +15,18 @@ from ..config import AuditConfig
 from ..engine import run_scan
 from ..errors import AuditError
 from ..history import DEFAULT_HISTORY_DIR, list_history, load_scan_reference, save_analysis_for_history, save_scan_history
+from ..lab import DEFAULT_LAB_HOST, DEFAULT_LAB_PORT, LabManager
 from ..projects import create_project, list_projects, load_project, load_project_config, project_report_metadata
 from ..reporting import generate_html_report, generate_markdown_report, generate_pdf_report
 
 
 WEB_ROOT = Path(__file__).resolve().parent
 MAX_REQUEST_BYTES = 2_000_000
+LAB_MANAGER = LabManager()
 
 
 class LocalAuditHandler(BaseHTTPRequestHandler):
-    server_version = "AIWebAuditorGUI/0.10"
+    server_version = "AIWebAuditorGUI/0.11"
 
     def do_GET(self) -> None:  # noqa: N802 - http.server uses this naming.
         parsed = urlparse(self.path)
@@ -37,6 +39,9 @@ class LocalAuditHandler(BaseHTTPRequestHandler):
             return
         if path == "/api/projects":
             self._send_json({"ok": True, "items": [_project_to_gui_dict(project) for project in list_projects()]})
+            return
+        if path == "/api/lab/status":
+            self._send_json({"ok": True, "lab": LAB_MANAGER.status().to_dict()})
             return
         if path == "/api/history":
             history_dir = _history_dir_from_project_id(_query_value(parsed.query, "project"))
@@ -63,6 +68,12 @@ class LocalAuditHandler(BaseHTTPRequestHandler):
                 return
             if path == "/api/projects/create":
                 self._handle_project_create(payload)
+                return
+            if path == "/api/lab/start":
+                self._handle_lab_start(payload)
+                return
+            if path == "/api/lab/stop":
+                self._handle_lab_stop()
                 return
             if path == "/api/history/load":
                 self._handle_history_load(payload)
@@ -197,6 +208,14 @@ class LocalAuditHandler(BaseHTTPRequestHandler):
             force=_bool_value(payload.get("force"), False),
         )
         self._send_json({"ok": True, "project": _project_to_gui_dict(project)})
+
+    def _handle_lab_start(self, payload: dict[str, Any]) -> None:
+        host = _clean_text(payload.get("host")) or DEFAULT_LAB_HOST
+        port = _int_value(payload.get("port"), DEFAULT_LAB_PORT, minimum=1, maximum=65535)
+        self._send_json({"ok": True, "lab": LAB_MANAGER.start(host=host, port=port).to_dict()})
+
+    def _handle_lab_stop(self) -> None:
+        self._send_json({"ok": True, "lab": LAB_MANAGER.stop().to_dict()})
 
     def _handle_history_load(self, payload: dict[str, Any]) -> None:
         identifier = _clean_text(payload.get("id"))

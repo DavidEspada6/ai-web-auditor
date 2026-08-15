@@ -12,6 +12,7 @@ from .config import AuditConfig
 from .engine import run_scan
 from .errors import AuditError
 from .history import DEFAULT_HISTORY_DIR, history_entry_from_data, list_history, load_scan_reference, save_scan_history
+from .lab import DEFAULT_LAB_HOST, DEFAULT_LAB_PORT, serve_lab
 from .output import render_console, write_json
 from .projects import (
     DEFAULT_PROJECTS_DIR,
@@ -182,6 +183,11 @@ def gui_command(args: argparse.Namespace) -> int:
     return 0
 
 
+def lab_command(args: argparse.Namespace) -> int:
+    serve_lab(host=args.host, port=args.port, open_browser=not args.no_open)
+    return 0
+
+
 def history_command(args: argparse.Namespace) -> int:
     project = load_project(args.project, projects_dir=args.projects_dir) if args.project else None
     history_dir = project.audit_history_dir if project else args.history_dir
@@ -325,6 +331,12 @@ def _build_parser() -> argparse.ArgumentParser:
     gui_parser.add_argument("--port", type=int, default=8765, help="Port for the local GUI server.")
     gui_parser.add_argument("--no-open", action="store_true", help="Do not open the browser automatically.")
     gui_parser.set_defaults(handler=gui_command)
+
+    lab_parser = subparsers.add_parser("lab", help="Start the local vulnerable demo lab.")
+    lab_parser.add_argument("--host", default=DEFAULT_LAB_HOST, help="Loopback host for the lab server.")
+    lab_parser.add_argument("--port", type=int, default=DEFAULT_LAB_PORT, help="Port for the lab server.")
+    lab_parser.add_argument("--no-open", action="store_true", help="Do not open the browser automatically.")
+    lab_parser.set_defaults(handler=lab_command)
 
     history_parser = subparsers.add_parser("history", help="List or show local audit history.")
     history_parser.add_argument("--history-dir", type=Path, default=DEFAULT_HISTORY_DIR, help="Local audit history directory.")

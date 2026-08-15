@@ -9,7 +9,7 @@ Auth, metodos anunciados por OPTIONS, TLS basico y crawling seguro limitado por
 scope. Tambien incluye fingerprinting web no intrusivo a partir de cabeceras,
 cookies, HTML inicial y ficheros publicos habituales, analisis IA opcional desde
 CLI y GUI, informes Markdown/HTML/PDF, proyectos locales, historial separado por
-proyecto y comparacion de auditorias.
+proyecto, laboratorio vulnerable local y comparacion de auditorias.
 
 No implementa explotacion, fuerza bruta, fuzzing agresivo, crawling masivo,
 escaneo de puertos ni pruebas intrusivas.
@@ -28,7 +28,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.10 no necesita librerias externas en tiempo de ejecucion.
+La v0.11 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -51,6 +51,7 @@ lanzador incluido:
 .\ai-web-auditor.cmd compare baseline.json current.json
 .\ai-web-auditor.cmd project init "Cliente Demo" --target https://example.com
 .\ai-web-auditor.cmd scan --project cliente-demo
+.\ai-web-auditor.cmd lab
 .\ai-web-auditor.cmd gui
 ```
 
@@ -70,6 +71,18 @@ Por defecto se sirve en:
 
 ```text
 http://127.0.0.1:8765/
+```
+
+Arrancar solo el laboratorio vulnerable local:
+
+```powershell
+ai-web-auditor lab
+```
+
+El objetivo de auditoria recomendado para la demo es:
+
+```text
+http://127.0.0.1:8080/members/
 ```
 
 Crear una configuracion de auditoria con preguntas guiadas:
@@ -193,7 +206,7 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.10",
+    "user_agent": "AI-Web-Auditor/0.11",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -323,9 +336,45 @@ El informe incluye:
 
 Hay ejemplos en `examples/report-example.md` y `examples/report-example.html`.
 
+## Laboratorio local
+
+La v0.11 incluye un laboratorio vulnerable solo para pruebas locales. Sirve una
+web de demo en `127.0.0.1` con problemas controlados:
+
+- HTTP sin TLS;
+- Basic Auth sobre HTTP en `/members/`;
+- cookies sin `HttpOnly`, `Secure` o `SameSite` adecuado;
+- cabeceras de seguridad ausentes;
+- metadatos de tecnologia expuestos;
+- metodos HTTP de riesgo anunciados por `OPTIONS`;
+- `robots.txt` y `sitemap.xml` de ejemplo.
+
+Arrancarlo desde consola:
+
+```powershell
+ai-web-auditor lab
+```
+
+Escanearlo desde otra terminal:
+
+```powershell
+ai-web-auditor scan http://127.0.0.1:8080/members/ --allow-private --save-history --history-label "lab-demo-inicial"
+```
+
+Desde la interfaz grafica puedes usar el panel `Laboratorio`:
+
+1. Pulsa `Iniciar`.
+2. Comprueba que el estado cambie a `Conectado`.
+3. Pulsa `Usar demo`.
+4. Ejecuta la auditoria.
+5. Revisa hallazgos, JSON, IA en dry-run e informe.
+
+El laboratorio esta pensado para la demo de la practica y no debe publicarse en
+red. Por seguridad, solo permite arrancar en localhost o direcciones loopback.
+
 ## Historial y comparacion
 
-La v0.10 permite guardar resultados en un historial local:
+La v0.11 permite guardar resultados en un historial local:
 
 ```powershell
 ai-web-auditor scan --config audit.json --save-history --history-label "pre-fix"
@@ -407,6 +456,7 @@ ai-web-auditor gui --no-open
 Desde la interfaz se puede:
 
 - crear y seleccionar proyectos;
+- iniciar, detener y usar el laboratorio local de demo;
 - configurar objetivo, hosts, rutas y limites principales;
 - activar o desactivar modulos;
 - ejecutar una auditoria no intrusiva;
@@ -484,7 +534,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.10.0
+git tag v0.11.0
 git push
 git push --tags
 ```
@@ -497,7 +547,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.10.0",
+  "version": "0.11.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",
