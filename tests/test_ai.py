@@ -8,7 +8,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
-from ai_web_auditor.ai.analyzer import analyze_scan_file
+from ai_web_auditor.ai.analyzer import analyze_scan_data, analyze_scan_file
 from ai_web_auditor.ai.redaction import redact_scan_data, redact_text
 from ai_web_auditor.cli import main
 from ai_web_auditor.config import AuditConfig
@@ -78,6 +78,21 @@ class AITests(unittest.TestCase):
         self.assertEqual(result.analysis["risk_level"], "medium")
         self.assertIn("token=[REDACTED]", provider.prompt)
         self.assertNotIn("token=abc", provider.prompt)
+
+    def test_analyze_scan_data_dry_run(self):
+        config = AuditConfig()
+
+        result = analyze_scan_data(
+            {"findings": [], "url": "https://example.test/?token=abc"},
+            config,
+            source="gui",
+            dry_run=True,
+        )
+
+        self.assertEqual(result.status, "dry_run")
+        self.assertEqual(result.source_file, "gui")
+        self.assertIn("token=[REDACTED]", result.raw_text)
+        self.assertNotIn("token=abc", result.raw_text)
 
     def test_cli_analyze_dry_run(self):
         with tempfile.TemporaryDirectory() as tmpdir:

@@ -3,6 +3,7 @@ const state = {
   markdown: "",
   html: "",
   pdfBase64: "",
+  aiAnalysis: null,
   history: [],
   comparison: null,
 };
@@ -22,9 +23,13 @@ const reportOutput = document.querySelector("#report-output");
 const htmlPreview = document.querySelector("#html-preview");
 const generateReportButton = document.querySelector("#generate-report");
 const downloadJsonButton = document.querySelector("#download-json");
+const downloadAiButton = document.querySelector("#download-ai");
 const downloadMdButton = document.querySelector("#download-md");
 const downloadHtmlButton = document.querySelector("#download-html");
 const downloadPdfButton = document.querySelector("#download-pdf");
+const runAiButton = document.querySelector("#run-ai");
+const aiSummary = document.querySelector("#ai-summary");
+const aiOutput = document.querySelector("#ai-output");
 const historyTable = document.querySelector("#history-table");
 const historyCount = document.querySelector("#history-count");
 const refreshHistoryButton = document.querySelector("#refresh-history");
@@ -49,11 +54,16 @@ form.addEventListener("submit", async (event) => {
     state.markdown = "";
     state.html = "";
     state.pdfBase64 = "";
+    state.aiAnalysis = response.result.ai_analysis || null;
     renderScan(state.scan);
     reportOutput.value = "";
+    renderAiAnalysis(state.aiAnalysis);
+    document.querySelector("#ai-analysis").value = state.aiAnalysis ? JSON.stringify(state.aiAnalysis, null, 2) : "";
     htmlPreview.removeAttribute("srcdoc");
     generateReportButton.disabled = false;
+    runAiButton.disabled = false;
     downloadJsonButton.disabled = false;
+    downloadAiButton.disabled = !state.aiAnalysis;
     downloadMdButton.disabled = true;
     downloadHtmlButton.disabled = true;
     downloadPdfButton.disabled = true;
@@ -72,11 +82,10 @@ generateReportButton.addEventListener("click", async () => {
   clearMessage();
   generateReportButton.disabled = true;
   try {
-    const aiAnalysis = parseOptionalJson(document.querySelector("#ai-analysis").value);
     const title = document.querySelector("#report-title").value.trim();
     const response = await postJson("/api/report", {
       scan: state.scan,
-      ai_analysis: aiAnalysis,
+      ai_analysis: currentAiAnalysisForReport(),
       title,
       format: "all",
       metadata: collectReportMetadata(),
@@ -118,11 +127,16 @@ historyTable.addEventListener("click", async (event) => {
     state.markdown = "";
     state.html = "";
     state.pdfBase64 = "";
+    state.aiAnalysis = response.scan.ai_analysis || null;
     renderScan(state.scan);
     reportOutput.value = "";
+    renderAiAnalysis(state.aiAnalysis);
+    document.querySelector("#ai-analysis").value = state.aiAnalysis ? JSON.stringify(state.aiAnalysis, null, 2) : "";
     htmlPreview.removeAttribute("srcdoc");
     generateReportButton.disabled = false;
+    runAiButton.disabled = false;
     downloadJsonButton.disabled = false;
+    downloadAiButton.disabled = !state.aiAnalysis;
     downloadMdButton.disabled = true;
     downloadHtmlButton.disabled = true;
     downloadPdfButton.disabled = true;
@@ -146,9 +160,52 @@ runCompareButton.addEventListener("click", async () => {
   }
 });
 
+runAiButton.addEventListener("click", async () => {
+  if (!state.scan) {
+    return;
+  }
+  clearMessage();
+  runAiButton.disabled = true;
+  runAiButton.textContent = "Analizando...";
+  try {
+    const response = await postJson("/api/analyze", {
+      scan: state.scan,
+      dry_run: document.querySelector("#ai-dry-run").checked,
+      save_to_history: document.querySelector("#ai-save-history").checked,
+      ai: {
+        provider: document.querySelector("#ai-provider").value.trim(),
+        model: document.querySelector("#ai-model").value.trim(),
+        language: document.querySelector("#ai-language").value.trim(),
+        max_input_chars: document.querySelector("#ai-max-input").value,
+      },
+    });
+    state.aiAnalysis = response.analysis;
+    if (response.scan) {
+      state.scan = response.scan;
+      jsonOutput.textContent = JSON.stringify(state.scan, null, 2);
+      loadHistory();
+    }
+    renderAiAnalysis(state.aiAnalysis);
+    document.querySelector("#ai-analysis").value = JSON.stringify(state.aiAnalysis, null, 2);
+    downloadAiButton.disabled = false;
+    activateTab("ai");
+  } catch (error) {
+    showMessage(error.message);
+  } finally {
+    runAiButton.disabled = false;
+    runAiButton.textContent = "Analizar con IA";
+  }
+});
+
 downloadJsonButton.addEventListener("click", () => {
   if (state.scan) {
     downloadText("audit-result.json", JSON.stringify(state.scan, null, 2) + "\n", "application/json");
+  }
+});
+
+downloadAiButton.addEventListener("click", () => {
+  if (state.aiAnalysis) {
+    downloadText("ai-analysis.json", JSON.stringify(state.aiAnalysis, null, 2) + "\n", "application/json");
   }
 });
 
@@ -206,6 +263,11 @@ function collectReportMetadata() {
     scope_summary: document.querySelector("#report-scope").value.trim(),
     notes: document.querySelector("#report-notes").value.trim(),
   };
+}
+
+function currentAiAnalysisForReport() {
+  const manual = parseOptionalJson(document.querySelector("#ai-analysis").value);
+  return manual || state.aiAnalysis;
 }
 
 async function postJson(url, payload) {
@@ -343,12 +405,51 @@ function renderModules(modules) {
   });
 }
 
+function renderAiAnalysis(analysisResult) {
+  aiOutput.textContent = analysisResult ? JSON.stringify(analysisResult, null, 2) : "{}";
+  aiSummary.innerHTML = "";
+  if (!analysisResult) {
+    aiSummary.innerHTML = '<div class="empty-inline">Sin analisis IA.</div>';
+    return;
+  }
+
+  const analysis = analysisResult.analysis || {};
+  if (analysisResult.status === "dry_run") {
+    aiSummary.innerHTML = `
+      <div class="metric"><span>Estado</span><strong>dry-run</strong></div>
+      <div class="metric"><span>Caracteres prompt</span><strong>${escapeHtml(String(analysis.prompt_chars || 0))}</strong></div>
+    `;
+    return;
+  }
+
+  const priorityFindings = Array.isArray(analysis.priority_findings) ? analysis.priority_findings : [];
+  aiSummary.innerHTML = `
+    <div class="metric"><span>Riesgo</span><strong>${escapeHtml(analysis.risk_level || "unknown")}</strong></div>
+    <div class="metric"><span>Prioridades</span><strong>${escapeHtml(String(priorityFindings.length))}</strong></div>
+    <div class="metric wide"><span>Resumen</span><strong>${escapeHtml(analysis.executive_summary || analysis.text || "Sin resumen.")}</strong></div>
+    ${renderAiPriorityList(priorityFindings)}
+  `;
+}
+
+function renderAiPriorityList(items) {
+  if (!items.length) {
+    return "";
+  }
+  const cards = items
+    .map((item) => {
+      const severity = normalizeSeverity(item.severity);
+      return `<article class="finding-item"><span class="badge ${severity}">${escapeHtml(severity)}</span><h3>${escapeHtml(item.rank || "?")}. ${escapeHtml(item.title || "Untitled")}</h3><p>${escapeHtml(item.why_it_matters || "")}</p><p><strong>Accion:</strong> ${escapeHtml(item.recommended_action || "")}</p></article>`;
+    })
+    .join("");
+  return `<div class="list wide">${cards}</div>`;
+}
+
 function renderHistory(items) {
   historyTable.innerHTML = "";
   historyCount.textContent = `${items.length} auditoria${items.length === 1 ? "" : "s"}`;
   if (!items.length) {
     const row = document.createElement("tr");
-    row.innerHTML = '<td colspan="6">Sin auditorias guardadas.</td>';
+    row.innerHTML = '<td colspan="7">Sin auditorias guardadas.</td>';
     historyTable.appendChild(row);
     return;
   }
@@ -359,6 +460,7 @@ function renderHistory(items) {
       <td>${escapeHtml(item.generated_at || "unknown")}</td>
       <td>${escapeHtml(item.host || "unknown")}</td>
       <td>${escapeHtml(String(item.finding_count || 0))}</td>
+      <td>${item.has_ai_analysis ? "Si" : "No"}</td>
       <td>${escapeHtml(item.status || "unknown")}</td>
       <td><button class="ghost compact" type="button" data-load-history="${escapeHtml(item.id)}">Abrir</button></td>
     `;

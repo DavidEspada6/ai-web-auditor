@@ -14,6 +14,7 @@
       </div>
       <div class="topbar-actions">
         <button id="download-json" class="ghost" type="button" disabled>JSON</button>
+        <button id="download-ai" class="ghost" type="button" disabled>AI JSON</button>
         <button id="download-md" class="ghost" type="button" disabled>Markdown</button>
         <button id="download-html" class="ghost" type="button" disabled>HTML</button>
         <button id="download-pdf" class="ghost" type="button" disabled>PDF</button>
@@ -124,6 +125,7 @@
           <button class="tab" type="button" data-tab="findings">Hallazgos</button>
           <button class="tab" type="button" data-tab="modules">Modulos</button>
           <button class="tab" type="button" data-tab="json">JSON</button>
+          <button class="tab" type="button" data-tab="ai">IA</button>
           <button class="tab" type="button" data-tab="report">Informe</button>
           <button class="tab" type="button" data-tab="history">Historial</button>
           <button class="tab" type="button" data-tab="compare">Comparar</button>
@@ -157,6 +159,34 @@
 
         <section id="json-view" class="panel view">
           <pre id="json-output" class="code-output">{}</pre>
+        </section>
+
+        <section id="ai-view" class="panel view">
+          <div class="ai-controls">
+            <label class="field">
+              <span>Proveedor</span>
+              <input id="ai-provider" type="text" value="openai">
+            </label>
+            <label class="field">
+              <span>Modelo</span>
+              <input id="ai-model" type="text" value="gpt-5.6">
+            </label>
+            <label class="field">
+              <span>Idioma</span>
+              <input id="ai-language" type="text" value="es">
+            </label>
+            <label class="field">
+              <span>Limite prompt</span>
+              <input id="ai-max-input" type="number" min="1000" max="250000" step="1000" value="60000">
+            </label>
+          </div>
+          <div class="toggles ai-toggles">
+            <label><input id="ai-dry-run" type="checkbox" checked> Dry-run</label>
+            <label><input id="ai-save-history" type="checkbox" checked> Guardar en historial</label>
+          </div>
+          <button id="run-ai" class="secondary" type="button" disabled>Analizar con IA</button>
+          <div id="ai-summary" class="ai-summary"></div>
+          <pre id="ai-output" class="code-output">{}</pre>
         </section>
 
         <section id="report-view" class="panel view">
@@ -213,6 +243,7 @@
                   <th>Fecha</th>
                   <th>Host</th>
                   <th>Hallazgos</th>
+                  <th>IA</th>
                   <th>Estado</th>
                   <th></th>
                 </tr>

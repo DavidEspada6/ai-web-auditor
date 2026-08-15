@@ -31,6 +31,27 @@ def analyze_scan_file(
     dry_run: bool = False,
 ) -> AIAnalysisResult:
     scan_data = json.loads(scan_path.read_text(encoding="utf-8"))
+    return analyze_scan_data(
+        scan_data,
+        config,
+        source=str(scan_path),
+        provider_name=provider_name,
+        model=model,
+        provider=provider,
+        dry_run=dry_run,
+    )
+
+
+def analyze_scan_data(
+    scan_data: dict[str, Any],
+    config: AuditConfig,
+    *,
+    source: str = "memory",
+    provider_name: str | None = None,
+    model: str | None = None,
+    provider: AIProvider | None = None,
+    dry_run: bool = False,
+) -> AIAnalysisResult:
     sanitized = redact_scan_data(scan_data)
     ai_config = config.ai
     selected_provider = provider_name or ai_config.provider
@@ -48,7 +69,7 @@ def analyze_scan_file(
             generated_at=utc_now(),
             provider=selected_provider,
             model=selected_model,
-            source_file=str(scan_path),
+            source_file=source,
             status="dry_run",
             analysis={"prompt": prompt, "prompt_chars": len(prompt)},
             raw_text=prompt,
@@ -65,7 +86,7 @@ def analyze_scan_file(
         generated_at=utc_now(),
         provider=selected_provider,
         model=selected_model,
-        source_file=str(scan_path),
+        source_file=source,
         status=status,
         analysis=parsed or {"text": raw_text},
         raw_text=raw_text,

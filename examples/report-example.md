@@ -1,8 +1,8 @@
 # Web Audit Report - example.com
 
-- Generated: 2026-08-15T23:02:53Z
-- Report generator: ai-web-auditor 0.8.0
-- Scan version: 0.8.0
+- Generated: 2026-08-15T23:19:06Z
+- Report generator: ai-web-auditor 0.9.0
+- Scan version: 0.9.0
 - Scan status: completed
 
 ## Target

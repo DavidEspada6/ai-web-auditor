@@ -14,7 +14,7 @@ from ai_web_auditor.reporting import generate_html_report, generate_markdown_rep
 
 SCAN_DATA = {
     "tool": "ai-web-auditor",
-    "version": "0.8.0",
+    "version": "0.9.0",
     "generated_at": "2026-08-16T00:00:00Z",
     "status": "completed",
     "target": {
@@ -146,6 +146,15 @@ class ReportingTests(unittest.TestCase):
 
         self.assertTrue(pdf.startswith(b"%PDF-1.4"))
         self.assertIn(b"%%EOF", pdf)
+
+    def test_embedded_ai_analysis_is_used_by_report(self):
+        data = json.loads(json.dumps(SCAN_DATA))
+        data["ai_analysis"] = AI_DATA
+
+        markdown = generate_markdown_report(data)
+
+        self.assertIn("AI summary.", markdown)
+        self.assertIn("## AI Prioritization", markdown)
 
     def test_cli_report_writes_markdown_file(self):
         with tempfile.TemporaryDirectory() as tmpdir:

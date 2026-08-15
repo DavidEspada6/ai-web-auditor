@@ -2,6 +2,26 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.9.0] - 2026-08-16
+
+### Anade
+
+- Analisis IA directamente desde la interfaz grafica local.
+- Endpoint local `/api/analyze` para analizar resultados ya generados sin ejecutar nuevos escaneos.
+- Panel `IA` en la GUI con proveedor, modelo, idioma, limite de prompt, dry-run y guardado en historial.
+- Descarga independiente del resultado `AI JSON`.
+- Guardado opcional de `ai_analysis` dentro de auditorias del historial.
+- Deteccion de auditorias con analisis IA en el panel de historial.
+- Incorporacion automatica del analisis IA embebido en informes Markdown, HTML y PDF.
+- Tests para analisis desde datos en memoria, guardado de analisis IA en historial y reporting con IA embebida.
+
+### Seguridad
+
+- El modo dry-run queda activado por defecto en la GUI.
+- La API key se sigue leyendo solo desde variable de entorno y no se guarda en historial ni configuracion generada.
+- Se mantiene la redaccion previa de tokens, cookies, passwords, secrets y parametros sensibles antes de enviar datos a IA.
+- La IA no ejecuta pruebas, no cambia el scope y no realiza acciones contra el objetivo.
+
 ## [0.8.0] - 2026-08-16
 
 ### Anade

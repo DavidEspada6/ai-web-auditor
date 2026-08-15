@@ -49,6 +49,7 @@ def generate_markdown_report(
     target = scan_data.get("target") if isinstance(scan_data.get("target"), dict) else {}
     findings = _findings(scan_data)
     modules = _modules(scan_data)
+    ai_analysis = ai_analysis or _embedded_ai_analysis(scan_data)
     ai_body = _analysis_body(ai_analysis)
     report_metadata = normalize_report_metadata(metadata)
     generated_at = report_metadata.generated_at or utc_now()
@@ -127,6 +128,7 @@ def generate_html_report(
     target = scan_data.get("target") if isinstance(scan_data.get("target"), dict) else {}
     findings = _findings(scan_data)
     modules = _modules(scan_data)
+    ai_analysis = ai_analysis or _embedded_ai_analysis(scan_data)
     ai_body = _analysis_body(ai_analysis)
     report_metadata = normalize_report_metadata(metadata)
     generated_at = report_metadata.generated_at or utc_now()
@@ -741,6 +743,11 @@ def _analysis_body(ai_analysis: dict[str, Any] | None) -> dict[str, Any] | None:
         return None
     body = ai_analysis.get("analysis")
     return body if isinstance(body, dict) else ai_analysis
+
+
+def _embedded_ai_analysis(scan_data: dict[str, Any]) -> dict[str, Any] | None:
+    ai_analysis = scan_data.get("ai_analysis")
+    return ai_analysis if isinstance(ai_analysis, dict) else None
 
 
 def _findings(scan_data: dict[str, Any]) -> list[dict[str, Any]]:

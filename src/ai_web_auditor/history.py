@@ -26,6 +26,7 @@ class HistoryEntry:
     finding_count: int
     severity_counts: dict[str, int]
     label: str = ""
+    has_ai_analysis: bool = False
 
     def to_dict(self) -> dict[str, Any]:
         return asdict(self)
@@ -85,6 +86,22 @@ def load_scan_reference(reference: str | Path, *, history_dir: Path = DEFAULT_HI
     return data
 
 
+def save_analysis_for_history(
+    reference: str | Path,
+    analysis_data: dict[str, Any],
+    *,
+    history_dir: Path = DEFAULT_HISTORY_DIR,
+) -> dict[str, Any]:
+    path = resolve_history_reference(reference, history_dir=history_dir)
+    data = load_scan_reference(path, history_dir=history_dir)
+    data["ai_analysis"] = analysis_data
+    history = data.get("_history") if isinstance(data.get("_history"), dict) else {}
+    history["ai_analysis_saved_at"] = utc_now()
+    data["_history"] = history
+    path.write_text(json.dumps(data, indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
+    return data
+
+
 def resolve_history_reference(reference: str | Path, *, history_dir: Path = DEFAULT_HISTORY_DIR) -> Path:
     raw = Path(reference)
     if raw.exists():
@@ -116,6 +133,7 @@ def history_entry_from_data(path: Path, scan_data: dict[str, Any]) -> HistoryEnt
         finding_count=len([item for item in findings if isinstance(item, dict)]),
         severity_counts=severity_counts,
         label=_text(history.get("label"), ""),
+        has_ai_analysis=isinstance(scan_data.get("ai_analysis"), dict),
     )
 
 

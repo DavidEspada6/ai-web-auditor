@@ -10,12 +10,12 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 
 from ai_web_auditor.cli import main
 from ai_web_auditor.compare import compare_scans
-from ai_web_auditor.history import list_history, load_scan_reference, save_scan_history
+from ai_web_auditor.history import list_history, load_scan_reference, save_analysis_for_history, save_scan_history
 
 
 BASELINE_SCAN = {
     "tool": "ai-web-auditor",
-    "version": "0.8.0",
+    "version": "0.9.0",
     "generated_at": "2026-08-16T00:00:00Z",
     "status": "completed",
     "target": {"normalized_url": "https://example.com/", "host": "example.com"},
@@ -40,7 +40,7 @@ BASELINE_SCAN = {
 
 CURRENT_SCAN = {
     "tool": "ai-web-auditor",
-    "version": "0.8.0",
+    "version": "0.9.0",
     "generated_at": "2026-08-16T01:00:00Z",
     "status": "completed",
     "target": {"normalized_url": "https://example.com/", "host": "example.com"},
@@ -77,6 +77,20 @@ class HistoryCompareTests(unittest.TestCase):
         self.assertEqual(entries[0].finding_count, 2)
         self.assertEqual(loaded["target"]["host"], "example.com")
         self.assertEqual(loaded["_history"]["label"], "demo")
+
+    def test_save_analysis_for_history(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            history_dir = Path(tmpdir)
+            entry = save_scan_history(BASELINE_SCAN, history_dir=history_dir, label="demo")
+            updated = save_analysis_for_history(
+                entry.id,
+                {"status": "completed", "analysis": {"risk_level": "medium"}},
+                history_dir=history_dir,
+            )
+            entries = list_history(history_dir)
+
+        self.assertEqual(updated["ai_analysis"]["analysis"]["risk_level"], "medium")
+        self.assertTrue(entries[0].has_ai_analysis)
 
     def test_compare_scans_detects_changes(self):
         comparison = compare_scans(BASELINE_SCAN, CURRENT_SCAN)

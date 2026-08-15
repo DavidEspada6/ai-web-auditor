@@ -352,6 +352,27 @@ button:focus-visible {
   margin-top: 14px;
 }
 
+.ai-controls {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.ai-toggles {
+  margin-bottom: 14px;
+}
+
+.ai-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin: 14px 0;
+}
+
+.wide {
+  grid-column: 1 / -1;
+}
+
 .history-label {
   margin-top: 12px;
 }
@@ -547,6 +568,8 @@ th {
 
   .summary-grid,
   .metadata-grid,
+  .ai-controls,
+  .ai-summary,
   .compare-grid,
   .severity-strip {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -576,6 +599,8 @@ th {
   .module-grid,
   .summary-grid,
   .metadata-grid,
+  .ai-controls,
+  .ai-summary,
   .compare-grid,
   .severity-strip {
     grid-template-columns: 1fr;

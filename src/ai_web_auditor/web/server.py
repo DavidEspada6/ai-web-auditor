@@ -9,11 +9,12 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
+from ..ai.analyzer import analyze_scan_data
 from ..compare import compare_scans
 from ..config import AuditConfig
 from ..engine import run_scan
 from ..errors import AuditError
-from ..history import DEFAULT_HISTORY_DIR, list_history, load_scan_reference, save_scan_history
+from ..history import DEFAULT_HISTORY_DIR, list_history, load_scan_reference, save_analysis_for_history, save_scan_history
 from ..reporting import generate_html_report, generate_markdown_report, generate_pdf_report
 
 
@@ -22,7 +23,7 @@ MAX_REQUEST_BYTES = 2_000_000
 
 
 class LocalAuditHandler(BaseHTTPRequestHandler):
-    server_version = "AIWebAuditorGUI/0.8"
+    server_version = "AIWebAuditorGUI/0.9"
 
     def do_GET(self) -> None:  # noqa: N802 - http.server uses this naming.
         path = urlparse(self.path).path
@@ -51,6 +52,9 @@ class LocalAuditHandler(BaseHTTPRequestHandler):
             if path == "/api/report":
                 self._handle_report(payload)
                 return
+            if path == "/api/analyze":
+                self._handle_analyze(payload)
+                return
             if path == "/api/history/load":
                 self._handle_history_load(payload)
                 return
@@ -77,7 +81,42 @@ class LocalAuditHandler(BaseHTTPRequestHandler):
         response: dict[str, Any] = {"ok": True, "result": result_data}
         if _bool_value(payload.get("save_history"), False):
             entry = save_scan_history(result_data, history_dir=DEFAULT_HISTORY_DIR, label=_clean_text(payload.get("history_label")))
+            result_data = load_scan_reference(entry.id, history_dir=DEFAULT_HISTORY_DIR)
             response["history_entry"] = entry.to_dict()
+            response["result"] = result_data
+        self._send_json(response)
+
+    def _handle_analyze(self, payload: dict[str, Any]) -> None:
+        scan_data = payload.get("scan")
+        if not isinstance(scan_data, dict):
+            raise ValueError("scan must be a JSON object")
+
+        config = AuditConfig()
+        ai_payload = payload.get("ai") if isinstance(payload.get("ai"), dict) else {}
+        if ai_payload.get("provider"):
+            config.ai.provider = _clean_text(ai_payload.get("provider"))
+        if ai_payload.get("model"):
+            config.ai.model = _clean_text(ai_payload.get("model"))
+        if ai_payload.get("language"):
+            config.ai.language = _clean_text(ai_payload.get("language"))
+        config.ai.max_input_chars = _int_value(ai_payload.get("max_input_chars"), config.ai.max_input_chars, minimum=1000, maximum=250000)
+
+        history = scan_data.get("_history") if isinstance(scan_data.get("_history"), dict) else {}
+        source = f"history:{history.get('id')}" if history.get("id") else "gui"
+        result = analyze_scan_data(
+            scan_data,
+            config,
+            source=source,
+            dry_run=_bool_value(payload.get("dry_run"), False),
+        )
+        analysis_data = result.to_dict()
+        response: dict[str, Any] = {"ok": True, "analysis": analysis_data}
+
+        if not _bool_value(payload.get("dry_run"), False) and _bool_value(payload.get("save_to_history"), True):
+            history_id = _clean_text(history.get("id"))
+            if history_id:
+                response["scan"] = save_analysis_for_history(history_id, analysis_data, history_dir=DEFAULT_HISTORY_DIR)
+
         self._send_json(response)
 
     def _handle_report(self, payload: dict[str, Any]) -> None:
