@@ -2,6 +2,25 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.7.0] - 2026-08-16
+
+### Anade
+
+- Generacion de informes HTML autocontenidos con estilo profesional.
+- Generacion de informes PDF locales sin dependencias externas.
+- Metadatos de informe: cliente, auditor, proyecto, resumen de scope y notas.
+- Inferencia de formato por extension de `--output` en el comando `report`.
+- Opcion `--format markdown|html|pdf` para seleccionar formato explicitamente.
+- Descarga de informes Markdown, HTML y PDF desde la interfaz local.
+- Vista previa HTML del informe dentro de la GUI.
+- Tests para HTML, PDF y metadatos del reporting.
+
+### Seguridad
+
+- HTML y PDF se generan desde resultados ya existentes; no se hacen nuevas peticiones al objetivo.
+- El PDF se genera localmente con libreria estandar.
+- No se anaden explotacion, fuerza bruta, fuzzing agresivo ni pruebas intrusivas.
+
 ## [0.6.0] - 2026-08-16
 
 ### Anade

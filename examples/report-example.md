@@ -1,8 +1,8 @@
 # Web Audit Report - example.com
 
-- Generated: 2026-08-16T00:00:00Z
-- Report generator: ai-web-auditor 0.6.0
-- Scan version: 0.6.0
+- Generated: 2026-08-15T22:50:44Z
+- Report generator: ai-web-auditor 0.7.0
+- Scan version: 0.7.0
 - Scan status: completed
 
 ## Target
@@ -14,6 +14,16 @@
 | Host | example.com |
 | Scheme | https |
 | Port | 443 |
+
+## Engagement
+
+| Field | Value |
+| --- | --- |
+| Client | Cliente Demo |
+| Auditor | David Espada |
+| Engagement | Practica 1 |
+| Scope summary | https://example.com |
+| Notes | Ejemplo generado con datos de muestra. |
 
 ## Executive Summary
 
@@ -71,12 +81,30 @@ No technology signals were identified.
 
 - `https://example.com/`
 
+## AI Prioritization
+
+### 1. Cabeceras de seguridad incompletas
+
+- Severity: low
+- Why it matters: Las cabeceras defensivas reducen la exposicion ante ataques comunes del navegador.
+- Recommended action: Definir una politica CSP adaptada a la aplicacion.
+
+Evidence:
+
+- HEADER-CONTENT_SECURITY_POLICY-MISSING
+
 ## Safe Next Steps
 
-- Revisa manualmente los controles relevantes antes de aplicar cambios en produccion.
+- Revisar manualmente las cabeceras recomendadas antes de aplicarlas en produccion.
+- Ejecutar de nuevo el escaneo tras corregir la configuracion.
+
+## Report Notes
+
+- El analisis esta basado solo en evidencias del JSON generado por la herramienta.
 
 ## Limitations
 
 - This report is based on non-intrusive checks only.
 - No exploitation, brute force, aggressive fuzzing or destructive testing was performed.
 - Findings should be validated against the authorized scope and business context.
+- No se han realizado pruebas autenticadas ni intrusivas.

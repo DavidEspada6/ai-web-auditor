@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import webbrowser
+from base64 import b64encode
 from dataclasses import fields
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -11,7 +12,7 @@ from urllib.parse import urlparse
 from ..config import AuditConfig
 from ..engine import run_scan
 from ..errors import AuditError
-from ..reporting import generate_markdown_report
+from ..reporting import generate_html_report, generate_markdown_report, generate_pdf_report
 
 
 WEB_ROOT = Path(__file__).resolve().parent
@@ -19,7 +20,7 @@ MAX_REQUEST_BYTES = 2_000_000
 
 
 class LocalAuditHandler(BaseHTTPRequestHandler):
-    server_version = "AIWebAuditorGUI/0.6"
+    server_version = "AIWebAuditorGUI/0.7"
 
     def do_GET(self) -> None:  # noqa: N802 - http.server uses this naming.
         path = urlparse(self.path).path
@@ -73,12 +74,39 @@ class LocalAuditHandler(BaseHTTPRequestHandler):
             raise ValueError("ai_analysis must be a JSON object")
 
         title = payload.get("title")
+        metadata = _report_metadata_from_payload(payload)
+        report_format = str(payload.get("format", "all")).strip().lower() or "all"
+
         markdown = generate_markdown_report(
             scan_data,
             ai_analysis=ai_analysis,
             title=str(title).strip() if title else None,
+            metadata=metadata,
         )
-        self._send_json({"ok": True, "markdown": markdown})
+        response: dict[str, Any] = {"ok": True}
+
+        if report_format in {"all", "markdown"}:
+            response["markdown"] = markdown
+        if report_format in {"all", "html"}:
+            response["html"] = generate_html_report(
+                scan_data,
+                ai_analysis=ai_analysis,
+                title=str(title).strip() if title else None,
+                metadata=metadata,
+            )
+        if report_format in {"all", "pdf"}:
+            response["pdf_base64"] = b64encode(
+                generate_pdf_report(
+                    scan_data,
+                    ai_analysis=ai_analysis,
+                    title=str(title).strip() if title else None,
+                    metadata=metadata,
+                )
+            ).decode("ascii")
+        if report_format not in {"all", "markdown", "html", "pdf"}:
+            raise ValueError(f"Unsupported report format: {report_format}")
+
+        self._send_json(response)
 
     def _send_static(self, relative: str) -> None:
         if not relative or ".." in relative.replace("\\", "/").split("/"):
@@ -157,6 +185,19 @@ def build_config_from_gui_payload(payload: dict[str, Any]) -> AuditConfig:
     return config
 
 
+def _report_metadata_from_payload(payload: dict[str, Any]) -> dict[str, str]:
+    metadata = payload.get("metadata")
+    if not isinstance(metadata, dict):
+        metadata = {}
+    return {
+        "client": _clean_text(metadata.get("client")),
+        "auditor": _clean_text(metadata.get("auditor")),
+        "engagement": _clean_text(metadata.get("engagement")),
+        "scope_summary": _clean_text(metadata.get("scope_summary")),
+        "notes": _clean_text(metadata.get("notes")),
+    }
+
+
 def serve_gui(host: str = "127.0.0.1", port: int = 8765, open_browser: bool = True) -> None:
     server = _bind_server(host, port)
     actual_host, actual_port = server.server_address[:2]
@@ -196,6 +237,12 @@ def _split_items(value: Any) -> list[str]:
     if value is None:
         return []
     return [item.strip() for item in str(value).split(",") if item.strip()]
+
+
+def _clean_text(value: Any) -> str:
+    if value is None:
+        return ""
+    return str(value).strip()
 
 
 def _paths(value: Any, *, default: list[str]) -> list[str]:

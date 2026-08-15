@@ -8,7 +8,7 @@ scope, HTTP/HTTPS y redirecciones, cabeceras de seguridad, cookies, HTTP Basic
 Auth, metodos anunciados por OPTIONS, TLS basico y crawling seguro limitado por
 scope. Tambien incluye fingerprinting web no intrusivo a partir de cabeceras,
 cookies, HTML inicial y ficheros publicos habituales, analisis IA opcional,
-informes Markdown a partir del JSON de escaneo e interfaz web local.
+informes Markdown/HTML/PDF a partir del JSON de escaneo e interfaz web local.
 
 No implementa explotacion, fuerza bruta, fuzzing agresivo, crawling masivo,
 escaneo de puertos ni pruebas intrusivas.
@@ -27,7 +27,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.6 no necesita librerias externas en tiempo de ejecucion.
+La v0.7 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -44,6 +44,8 @@ lanzador incluido:
 .\ai-web-auditor.cmd scan --config audit.json
 .\ai-web-auditor.cmd analyze outputs/result.json --dry-run
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.md
+.\ai-web-auditor.cmd report outputs/result.json --output outputs/report.html
+.\ai-web-auditor.cmd report outputs/result.json --output outputs/report.pdf
 .\ai-web-auditor.cmd gui
 ```
 
@@ -94,6 +96,19 @@ Generar un informe Markdown:
 
 ```powershell
 ai-web-auditor report outputs/example.json --output outputs/report.md
+```
+
+Generar informes HTML o PDF:
+
+```powershell
+ai-web-auditor report outputs/example.json --format html --output outputs/report.html
+ai-web-auditor report outputs/example.json --format pdf --output outputs/report.pdf
+```
+
+Anadir metadatos al informe:
+
+```powershell
+ai-web-auditor report outputs/example.json --output outputs/report.html --client "Cliente Demo" --auditor "David" --engagement "Practica 1" --scope-summary "https://example.com"
 ```
 
 Generar un informe Markdown incorporando el analisis IA:
@@ -153,7 +168,7 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.6",
+    "user_agent": "AI-Web-Auditor/0.7",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -245,11 +260,13 @@ ai-web-auditor analyze outputs/result.json --dry-run --json
 
 ## Reporting
 
-La herramienta genera informes Markdown desde el JSON de escaneo. Este paso no
-contacta con el objetivo ni ejecuta nuevas comprobaciones:
+La herramienta genera informes Markdown, HTML y PDF desde el JSON de escaneo.
+Este paso no contacta con el objetivo ni ejecuta nuevas comprobaciones:
 
 ```powershell
 ai-web-auditor report outputs/result.json --output outputs/report.md
+ai-web-auditor report outputs/result.json --output outputs/report.html
+ai-web-auditor report outputs/result.json --output outputs/report.pdf
 ```
 
 Si ya existe un analisis IA guardado en JSON, se puede incorporar al informe:
@@ -260,6 +277,7 @@ ai-web-auditor report outputs/result.json --ai-analysis outputs/analysis.json --
 
 El informe incluye:
 
+- metadatos de cliente, auditor, proyecto, scope y notas;
 - objetivo y estado del escaneo;
 - resumen ejecutivo;
 - resumen por severidad;
@@ -269,9 +287,11 @@ El informe incluye:
 - priorizacion IA si se aporta;
 - limitaciones de la auditoria.
 
+Hay ejemplos en `examples/report-example.md` y `examples/report-example.html`.
+
 ## Interfaz grafica local
 
-La v0.6 anade una interfaz web local servida desde Python:
+La interfaz web local se sirve desde Python:
 
 ```powershell
 ai-web-auditor gui
@@ -289,9 +309,9 @@ Desde la interfaz se puede:
 - activar o desactivar modulos;
 - ejecutar una auditoria no intrusiva;
 - revisar hallazgos, modulos, resumen y JSON;
-- generar informe Markdown;
-- descargar JSON y Markdown;
-- abrir la impresion del navegador para guardar el informe como PDF.
+- generar informes Markdown, HTML y PDF;
+- descargar JSON, Markdown, HTML y PDF;
+- anadir metadatos de auditoria al informe.
 
 ## Scope de auditoria
 
@@ -331,7 +351,7 @@ Los siguientes pasos naturales son:
 - descubrimiento de subdominios;
 - escaneo de puertos con limites claros;
 - mejoras en la integracion con IA para comparar hallazgos entre auditorias;
-- informes HTML/PDF nativos con plantillas;
+- historial de auditorias desde la interfaz;
 - base de datos local para comparar auditorias.
 
 ## Versionado
@@ -342,7 +362,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.6.1
+git tag v0.7.1
 git push
 git push --tags
 ```
@@ -355,7 +375,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",

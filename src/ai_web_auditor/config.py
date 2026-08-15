@@ -30,7 +30,7 @@ class ScopeConfig:
 class HTTPConfig:
     timeout_seconds: float = 10.0
     max_redirects: int = 10
-    user_agent: str = "AI-Web-Auditor/0.6"
+    user_agent: str = "AI-Web-Auditor/0.7"
     verify_tls: bool = True
     check_http_counterpart: bool = True
 

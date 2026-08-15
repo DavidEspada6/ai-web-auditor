@@ -15,7 +15,8 @@
       <div class="topbar-actions">
         <button id="download-json" class="ghost" type="button" disabled>JSON</button>
         <button id="download-md" class="ghost" type="button" disabled>Markdown</button>
-        <button id="print-report" class="ghost" type="button" disabled>PDF</button>
+        <button id="download-html" class="ghost" type="button" disabled>HTML</button>
+        <button id="download-pdf" class="ghost" type="button" disabled>PDF</button>
       </div>
     </header>
 
@@ -156,12 +157,35 @@
               <span>Titulo informe</span>
               <input id="report-title" type="text" placeholder="Web Audit Report">
             </label>
-            <button id="generate-report" class="secondary" type="button" disabled>Generar informe</button>
+            <button id="generate-report" class="secondary" type="button" disabled>Generar informes</button>
           </div>
+          <div class="metadata-grid">
+            <label class="field">
+              <span>Cliente</span>
+              <input id="report-client" type="text" placeholder="Organizacion">
+            </label>
+            <label class="field">
+              <span>Auditor</span>
+              <input id="report-auditor" type="text" placeholder="Nombre del auditor">
+            </label>
+            <label class="field">
+              <span>Proyecto</span>
+              <input id="report-engagement" type="text" placeholder="Auditoria externa, laboratorio, practica">
+            </label>
+            <label class="field">
+              <span>Alcance</span>
+              <input id="report-scope" type="text" placeholder="Dominio, rutas y limites autorizados">
+            </label>
+          </div>
+          <label class="field">
+            <span>Notas del informe</span>
+            <textarea id="report-notes" rows="3" placeholder="Contexto, restricciones o aclaraciones"></textarea>
+          </label>
           <label class="field">
             <span>Analisis IA JSON</span>
             <textarea id="ai-analysis" rows="5" placeholder="{ }"></textarea>
           </label>
+          <iframe id="html-preview" class="html-preview" title="Vista previa HTML"></iframe>
           <textarea id="report-output" class="report-output" rows="18" readonly></textarea>
         </section>
       </section>

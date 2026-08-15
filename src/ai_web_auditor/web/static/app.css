@@ -336,6 +336,13 @@ button:focus-visible {
   gap: 12px;
 }
 
+.metadata-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 14px;
+}
+
 .metric,
 .finding-item {
   border: 1px solid var(--line);
@@ -454,9 +461,19 @@ th {
 
 .report-output {
   width: 100%;
-  margin-top: 4px;
+  min-height: 280px;
+  margin-top: 12px;
   background: #ffffff;
   color: var(--text);
+}
+
+.html-preview {
+  width: 100%;
+  min-height: 360px;
+  margin-top: 6px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
 }
 
 .title-field {
@@ -476,6 +493,7 @@ th {
   }
 
   .summary-grid,
+  .metadata-grid,
   .severity-strip {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
@@ -497,6 +515,7 @@ th {
   .toggles,
   .module-grid,
   .summary-grid,
+  .metadata-grid,
   .severity-strip {
     grid-template-columns: 1fr;
   }

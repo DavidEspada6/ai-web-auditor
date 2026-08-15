@@ -1,6 +1,8 @@
 const state = {
   scan: null,
-  report: "",
+  markdown: "",
+  html: "",
+  pdfBase64: "",
 };
 
 const severityOrder = ["critical", "high", "medium", "low", "info"];
@@ -15,10 +17,12 @@ const findingsList = document.querySelector("#findings-list");
 const modulesTable = document.querySelector("#modules-table");
 const jsonOutput = document.querySelector("#json-output");
 const reportOutput = document.querySelector("#report-output");
+const htmlPreview = document.querySelector("#html-preview");
 const generateReportButton = document.querySelector("#generate-report");
 const downloadJsonButton = document.querySelector("#download-json");
 const downloadMdButton = document.querySelector("#download-md");
-const printReportButton = document.querySelector("#print-report");
+const downloadHtmlButton = document.querySelector("#download-html");
+const downloadPdfButton = document.querySelector("#download-pdf");
 
 document.querySelectorAll(".tab").forEach((button) => {
   button.addEventListener("click", () => activateTab(button.dataset.tab));
@@ -31,13 +35,17 @@ form.addEventListener("submit", async (event) => {
   try {
     const response = await postJson("/api/scan", collectPayload());
     state.scan = response.result;
-    state.report = "";
+    state.markdown = "";
+    state.html = "";
+    state.pdfBase64 = "";
     renderScan(state.scan);
     reportOutput.value = "";
+    htmlPreview.removeAttribute("srcdoc");
     generateReportButton.disabled = false;
     downloadJsonButton.disabled = false;
     downloadMdButton.disabled = true;
-    printReportButton.disabled = true;
+    downloadHtmlButton.disabled = true;
+    downloadPdfButton.disabled = true;
     activateTab("summary");
   } catch (error) {
     showMessage(error.message);
@@ -59,11 +67,19 @@ generateReportButton.addEventListener("click", async () => {
       scan: state.scan,
       ai_analysis: aiAnalysis,
       title,
+      format: "all",
+      metadata: collectReportMetadata(),
     });
-    state.report = response.markdown;
-    reportOutput.value = state.report;
+    state.markdown = response.markdown || "";
+    state.html = response.html || "";
+    state.pdfBase64 = response.pdf_base64 || "";
+    reportOutput.value = state.markdown;
+    if (state.html) {
+      htmlPreview.srcdoc = state.html;
+    }
     downloadMdButton.disabled = false;
-    printReportButton.disabled = false;
+    downloadHtmlButton.disabled = !state.html;
+    downloadPdfButton.disabled = !state.pdfBase64;
     activateTab("report");
   } catch (error) {
     showMessage(error.message);
@@ -79,35 +95,21 @@ downloadJsonButton.addEventListener("click", () => {
 });
 
 downloadMdButton.addEventListener("click", () => {
-  if (state.report) {
-    downloadText("audit-report.md", state.report, "text/markdown");
+  if (state.markdown) {
+    downloadText("audit-report.md", state.markdown, "text/markdown");
   }
 });
 
-printReportButton.addEventListener("click", () => {
-  if (!state.report) {
-    return;
+downloadHtmlButton.addEventListener("click", () => {
+  if (state.html) {
+    downloadText("audit-report.html", state.html, "text/html");
   }
-  const win = window.open("", "_blank");
-  if (!win) {
-    showMessage("No se pudo abrir la ventana de impresion.");
-    return;
+});
+
+downloadPdfButton.addEventListener("click", () => {
+  if (state.pdfBase64) {
+    downloadBase64("audit-report.pdf", state.pdfBase64, "application/pdf");
   }
-  win.document.write(`<!doctype html>
-<html lang="es">
-<head>
-<meta charset="utf-8">
-<title>AI Web Auditor Report</title>
-<style>
-body { font-family: Arial, sans-serif; color: #17202a; margin: 32px; }
-pre { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 12px; line-height: 1.45; }
-</style>
-</head>
-<body><pre>${escapeHtml(state.report)}</pre></body>
-</html>`);
-  win.document.close();
-  win.focus();
-  win.print();
 });
 
 function collectPayload() {
@@ -133,6 +135,16 @@ function collectPayload() {
       max_pages: document.querySelector("#max-pages").value,
       delay_seconds: document.querySelector("#delay").value,
     },
+  };
+}
+
+function collectReportMetadata() {
+  return {
+    client: document.querySelector("#report-client").value.trim(),
+    auditor: document.querySelector("#report-auditor").value.trim(),
+    engagement: document.querySelector("#report-engagement").value.trim(),
+    scope_summary: document.querySelector("#report-scope").value.trim(),
+    notes: document.querySelector("#report-notes").value.trim(),
   };
 }
 
@@ -297,6 +309,23 @@ function normalizeSeverity(value) {
 
 function downloadText(filename, content, type) {
   const blob = new Blob([content], { type });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
+}
+
+function downloadBase64(filename, base64, type) {
+  const binary = atob(base64);
+  const bytes = new Uint8Array(binary.length);
+  for (let index = 0; index < binary.length; index += 1) {
+    bytes[index] = binary.charCodeAt(index);
+  }
+  const blob = new Blob([bytes], { type });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;

@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Web Audit Report - example.com</title>
+<style>
+:root {
+  color-scheme: light;
+  --bg: #f4f7f8;
+  --panel: #ffffff;
+  --line: #d9e1e7;
+  --text: #17202a;
+  --muted: #667386;
+  --brand: #0f766e;
+  --ink: #1f2937;
+  --critical: #b42318;
+  --high: #c2410c;
+  --medium: #b7791f;
+  --low: #2563eb;
+  --info: #4b5563;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: Inter, Arial, sans-serif;
+  line-height: 1.55;
+}
+.report {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 32px;
+}
+.cover,
+.section {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-bottom: 18px;
+  padding: 26px;
+}
+.cover {
+  border-top: 6px solid var(--brand);
+}
+.label {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+h1,
+h2,
+h3,
+h4 {
+  color: var(--ink);
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+h1 { margin: 0 0 14px; font-size: 34px; }
+h2 { margin: 0 0 16px; font-size: 22px; }
+h3 { margin: 18px 0 10px; font-size: 17px; }
+h4 { margin: 14px 0 8px; font-size: 14px; }
+.cover-grid,
+.severity-grid,
+.finding-meta {
+  display: grid;
+  gap: 10px;
+}
+.cover-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 22px;
+}
+.cover-grid div,
+.severity-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 12px;
+  background: #fafbfc;
+}
+.cover-grid span,
+.severity-card span,
+dt {
+  display: block;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.cover-grid strong,
+.severity-card strong {
+  display: block;
+  margin-top: 6px;
+  overflow-wrap: anywhere;
+}
+.severity-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+.severity-card strong {
+  font-size: 28px;
+}
+.severity-card.critical strong { color: var(--critical); }
+.severity-card.high strong { color: var(--high); }
+.severity-card.medium strong { color: var(--medium); }
+.severity-card.low strong { color: var(--low); }
+.severity-card.info strong { color: var(--info); }
+table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+th,
+td {
+  border-bottom: 1px solid var(--line);
+  padding: 10px;
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: anywhere;
+}
+th {
+  color: var(--muted);
+  font-size: 11px;
+  text-transform: uppercase;
+}
+.finding-stack {
+  display: grid;
+  gap: 14px;
+}
+.finding-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 16px;
+  background: #fafbfc;
+  break-inside: avoid;
+}
+.finding-card h3 {
+  margin-top: 10px;
+}
+.finding-meta {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 12px 0;
+}
+.finding-meta div {
+  min-width: 0;
+}
+dd {
+  margin: 2px 0 0;
+  overflow-wrap: anywhere;
+}
+.badge {
+  display: inline-flex;
+  min-height: 24px;
+  align-items: center;
+  border-radius: 999px;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 9px;
+}
+.badge.critical { background: var(--critical); }
+.badge.high { background: var(--high); }
+.badge.medium { background: var(--medium); }
+.badge.low { background: var(--low); }
+.badge.info { background: var(--info); }
+.risk strong {
+  color: var(--brand);
+}
+.empty {
+  color: var(--muted);
+  font-weight: 700;
+}
+@media print {
+  body { background: #ffffff; }
+  .report { max-width: none; padding: 0; }
+  .cover,
+  .section {
+    border: 0;
+    border-radius: 0;
+    page-break-inside: avoid;
+  }
+}
+</style>
+</head>
+<body>
+<main class="report">
+<section class="cover">
+<p class="label">AI Web Auditor</p>
+<h1>Web Audit Report - example.com</h1>
+<p>La auditoria no intrusiva no muestra hallazgos criticos en la muestra, pero conviene revisar las cabeceras y metadatos expuestos.</p>
+<div class="cover-grid">
+<div><span>Generated</span><strong>2026-08-15T22:50:44Z</strong></div>
+<div><span>Report generator</span><strong>ai-web-auditor 0.7.0</strong></div>
+<div><span>Scan version</span><strong>0.7.0</strong></div>
+<div><span>Scan status</span><strong>completed</strong></div>
+<div><span>Overall risk</span><strong>low</strong></div>
+<div><span>Target</span><strong>https://example.com/</strong></div>
+</div>
+</section>
+<section class="section">
+<h2>Engagement</h2>
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Client</td><td>Cliente Demo</td></tr><tr><td>Auditor</td><td>David Espada</td></tr><tr><td>Engagement</td><td>Practica 1</td></tr><tr><td>Scope summary</td><td>https://example.com</td></tr><tr><td>Notes</td><td>Ejemplo generado con datos de muestra.</td></tr></tbody></table>
+</section>
+<section class="section">
+<h2>Target</h2>
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Original URL</td><td>https://example.com</td></tr><tr><td>Normalized URL</td><td>https://example.com/</td></tr><tr><td>Host</td><td>example.com</td></tr><tr><td>Scheme</td><td>https</td></tr><tr><td>Port</td><td>443</td></tr></tbody></table>
+</section>
+<section class="section">
+<h2>Executive Summary</h2>
+<p>La auditoria no intrusiva no muestra hallazgos criticos en la muestra, pero conviene revisar las cabeceras y metadatos expuestos.</p>
+<p class="risk">Overall risk: <strong>low</strong></p>
+<p>Los hallazgos son principalmente informativos o de endurecimiento defensivo.</p>
+</section>
+<section class="section">
+<h2>Severity Summary</h2>
+<div class="severity-grid">
+<div class="severity-card critical"><span>CRITICAL</span><strong>0</strong></div>
+<div class="severity-card high"><span>HIGH</span><strong>0</strong></div>
+<div class="severity-card medium"><span>MEDIUM</span><strong>0</strong></div>
+<div class="severity-card low"><span>LOW</span><strong>0</strong></div>
+<div class="severity-card info"><span>INFO</span><strong>0</strong></div>
+</div>
+</section>
+<section class="section">
+<h2>Module Summary</h2>
+<table><thead><tr><th>Module</th><th>Status</th><th>Summary</th></tr></thead><tbody><tr><td>fingerprinting</td><td>passed</td><td>Identified 0 technology signal(s) and checked 4 public metadata path(s).</td></tr><tr><td>crawler</td><td>passed</td><td>Crawled 1 page(s), discovered 1 in-scope URL(s).</td></tr></tbody></table>
+</section>
+<section class="section">
+<h2>Findings</h2>
+<p class="empty">No findings were reported.</p>
+</section>
+<section class="section">
+<h2>Technology Fingerprinting</h2>
+<p class="empty">No technology signals were identified.</p>
+<h3>Public Metadata Files</h3>
+<table><thead><tr><th>Path</th><th>Status</th><th>Present</th></tr></thead><tbody><tr><td>/robots.txt</td><td>404</td><td>False</td></tr><tr><td>/.well-known/security.txt</td><td>404</td><td>False</td></tr><tr><td>/security.txt</td><td>404</td><td>False</td></tr><tr><td>/sitemap.xml</td><td>404</td><td>False</td></tr></tbody></table>
+</section>
+<section class="section">
+<h2>Crawler</h2>
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Seed URL</td><td>https://example.com/</td></tr><tr><td>Max depth</td><td>1</td></tr><tr><td>Max pages</td><td>25</td></tr><tr><td>Fetched URLs</td><td>1</td></tr><tr><td>Discovered in-scope URLs</td><td>1</td></tr><tr><td>Out-of-scope URLs recorded but not visited</td><td>0</td></tr><tr><td>Excluded URLs recorded but not visited</td><td>0</td></tr></tbody></table>
+<h3>Discovered URLs</h3>
+<ul><li>https://example.com/</li></ul>
+</section>
+<section class="section">
+<h2>AI Prioritization</h2>
+<div class="finding-stack">
+<article class="finding-card">
+<h3>1. Cabeceras de seguridad incompletas</h3>
+<p><strong>Severity:</strong> low</p>
+<p><strong>Why it matters:</strong> Las cabeceras defensivas reducen la exposicion ante ataques comunes del navegador.</p>
+<p><strong>Recommended action:</strong> Definir una politica CSP adaptada a la aplicacion.</p>
+<ul><li>HEADER-CONTENT_SECURITY_POLICY-MISSING</li></ul>
+</article>
+</div>
+</section>
+<section class="section">
+<h2>Safe Next Steps</h2>
+<ul><li>Revisar manualmente las cabeceras recomendadas antes de aplicarlas en produccion.</li><li>Ejecutar de nuevo el escaneo tras corregir la configuracion.</li></ul>
+</section>
+<section class="section">
+<h2>Report Notes</h2>
+<ul><li>El analisis esta basado solo en evidencias del JSON generado por la herramienta.</li></ul>
+</section>
+<section class="section">
+<h2>Limitations</h2>
+<ul><li>This report is based on non-intrusive checks only.</li><li>No exploitation, brute force, aggressive fuzzing or destructive testing was performed.</li><li>Findings should be validated against the authorized scope and business context.</li><li>No se han realizado pruebas autenticadas ni intrusivas.</li></ul>
+</section>
+</main>
+</body>
+</html>
