@@ -7,7 +7,8 @@ autorizacion. Solo ejecuta comprobaciones no intrusivas: validacion de URL y
 scope, HTTP/HTTPS y redirecciones, cabeceras de seguridad, cookies, HTTP Basic
 Auth, metodos anunciados por OPTIONS, TLS basico y crawling seguro limitado por
 scope. Tambien incluye fingerprinting web no intrusivo a partir de cabeceras,
-cookies, HTML inicial y ficheros publicos habituales.
+cookies, HTML inicial y ficheros publicos habituales. La v0.4 anade analisis
+IA opcional sobre el JSON generado por la herramienta.
 
 No implementa explotacion, fuerza bruta, fuzzing agresivo, crawling masivo,
 escaneo de puertos ni pruebas intrusivas.
@@ -26,7 +27,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.3 no necesita librerias externas en tiempo de ejecucion.
+La v0.4 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -41,6 +42,7 @@ lanzador incluido:
 .\ai-web-auditor.cmd --help
 .\ai-web-auditor.cmd init-scope https://example.com --output audit.json
 .\ai-web-auditor.cmd scan --config audit.json
+.\ai-web-auditor.cmd analyze outputs/result.json --dry-run
 ```
 
 Crear una configuracion de auditoria con preguntas guiadas:
@@ -59,6 +61,19 @@ Guardar JSON:
 
 ```powershell
 ai-web-auditor scan https://example.com --json-output outputs/example.json
+```
+
+Analizar un resultado con IA:
+
+```powershell
+$env:OPENAI_API_KEY = "tu_api_key"
+ai-web-auditor analyze outputs/example.json --markdown-output outputs/analysis.md
+```
+
+Probar el prompt sin llamar a la API:
+
+```powershell
+ai-web-auditor analyze outputs/example.json --dry-run --json
 ```
 
 Mostrar solo JSON en consola:
@@ -111,9 +126,19 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.3",
+    "user_agent": "AI-Web-Auditor/0.4",
     "verify_tls": true,
     "check_http_counterpart": true
+  },
+  "ai": {
+    "provider": "openai",
+    "model": "gpt-5.6",
+    "api_key_env": "OPENAI_API_KEY",
+    "endpoint": "https://api.openai.com/v1/responses",
+    "timeout_seconds": 45.0,
+    "max_input_chars": 60000,
+    "store": false,
+    "language": "es"
   },
   "fingerprinting": {
     "max_body_bytes": 262144,
@@ -165,9 +190,35 @@ Ejemplo en `examples/audit.json`:
 - `crawler`: recorre enlaces internos sin enviar formularios, sin salir del
   scope, con profundidad y numero de paginas limitados.
 
+## Analisis IA
+
+La IA no escanea objetivos ni ejecuta pruebas. Solo analiza un JSON ya generado:
+
+```powershell
+ai-web-auditor scan --config audit.json --json-output outputs/result.json
+ai-web-auditor analyze outputs/result.json --markdown-output outputs/analysis.md
+```
+
+La API key se lee desde una variable de entorno:
+
+```powershell
+$env:OPENAI_API_KEY = "tu_api_key"
+```
+
+La configuracion permite cambiar proveedor, modelo, endpoint y limite de texto.
+Antes de enviar datos a la API se aplica una redaccion basica de claves como
+`Authorization`, `Cookie`, `token`, `password`, `secret` y parametros sensibles
+en URLs.
+
+Para revisar lo que se enviaria al proveedor sin hacer la llamada:
+
+```powershell
+ai-web-auditor analyze outputs/result.json --dry-run --json
+```
+
 ## Scope de auditoria
 
-La v0.3 permite preparar una auditoria con preguntas:
+La v0.4 permite preparar una auditoria con preguntas:
 
 ```powershell
 ai-web-auditor init-scope https://example.com --output audit.json
@@ -214,7 +265,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.3.1
+git tag v0.4.1
 git push
 git push --tags
 ```
@@ -227,7 +278,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",

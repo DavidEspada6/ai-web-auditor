@@ -17,9 +17,19 @@
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.3",
+    "user_agent": "AI-Web-Auditor/0.4",
     "verify_tls": true,
     "check_http_counterpart": true
+  },
+  "ai": {
+    "provider": "openai",
+    "model": "gpt-5.6",
+    "api_key_env": "OPENAI_API_KEY",
+    "endpoint": "https://api.openai.com/v1/responses",
+    "timeout_seconds": 45.0,
+    "max_input_chars": 60000,
+    "store": false,
+    "language": "es"
   },
   "fingerprinting": {
     "max_body_bytes": 262144,

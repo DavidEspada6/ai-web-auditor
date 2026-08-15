@@ -1,0 +1,38 @@
+{
+  "tool": "ai-web-auditor",
+  "version": "0.4.0",
+  "generated_at": "2026-08-16T00:00:00Z",
+  "provider": "openai",
+  "model": "gpt-5.6",
+  "source_file": "outputs/result.json",
+  "status": "completed",
+  "analysis": {
+    "executive_summary": "La auditoria no intrusiva no muestra hallazgos criticos en la muestra, pero conviene revisar las cabeceras y metadatos expuestos.",
+    "risk_level": "low",
+    "risk_rationale": "Los hallazgos son principalmente informativos o de endurecimiento defensivo.",
+    "priority_findings": [
+      {
+        "rank": 1,
+        "severity": "low",
+        "title": "Cabeceras de seguridad incompletas",
+        "why_it_matters": "Las cabeceras defensivas reducen la exposicion ante ataques comunes del navegador.",
+        "evidence": [
+          "HEADER-CONTENT_SECURITY_POLICY-MISSING"
+        ],
+        "recommended_action": "Definir una politica CSP adaptada a la aplicacion."
+      }
+    ],
+    "safe_next_steps": [
+      "Revisar manualmente las cabeceras recomendadas antes de aplicarlas en produccion.",
+      "Ejecutar de nuevo el escaneo tras corregir la configuracion."
+    ],
+    "report_notes": [
+      "El analisis esta basado solo en evidencias del JSON generado por la herramienta."
+    ],
+    "limitations": [
+      "No se han realizado pruebas autenticadas ni intrusivas."
+    ]
+  },
+  "raw_text": "",
+  "redacted": true
+}

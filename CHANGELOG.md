@@ -2,6 +2,24 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.4.0] - 2026-08-16
+
+### Anade
+
+- Comando `analyze` para analizar resultados JSON con IA.
+- Proveedor `openai` usando la Responses API mediante HTTP estandar, sin dependencias externas.
+- Configuracion `ai` para proveedor, modelo, endpoint, variable de API key, timeout, idioma y limite de entrada.
+- Modo `--dry-run` para construir y revisar el prompt sin llamar a la API.
+- Salida de analisis en consola, JSON y Markdown.
+- Redaccion basica de claves, cookies, tokens, passwords, secrets y parametros sensibles en URLs antes de enviar el JSON a IA.
+- Tests para redaccion, analisis con proveedor falso y CLI dry-run.
+
+### Seguridad
+
+- La IA no ejecuta acciones ni decide nuevos escaneos.
+- El prompt obliga a no proponer explotacion, fuerza bruta, bypasses ni pruebas intrusivas.
+- El parametro `store` se configura como `false` por defecto en la llamada a OpenAI.
+
 ## [0.3.0] - 2026-08-16
 
 ### Anade

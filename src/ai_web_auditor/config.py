@@ -30,9 +30,21 @@ class ScopeConfig:
 class HTTPConfig:
     timeout_seconds: float = 10.0
     max_redirects: int = 10
-    user_agent: str = "AI-Web-Auditor/0.3"
+    user_agent: str = "AI-Web-Auditor/0.4"
     verify_tls: bool = True
     check_http_counterpart: bool = True
+
+
+@dataclass
+class AIConfig:
+    provider: str = "openai"
+    model: str = "gpt-5.6"
+    api_key_env: str = "OPENAI_API_KEY"
+    endpoint: str = "https://api.openai.com/v1/responses"
+    timeout_seconds: float = 45.0
+    max_input_chars: int = 60000
+    store: bool = False
+    language: str = "es"
 
 
 @dataclass
@@ -100,6 +112,7 @@ class AuditConfig:
     target: TargetConfig = field(default_factory=TargetConfig)
     scope: ScopeConfig = field(default_factory=ScopeConfig)
     http: HTTPConfig = field(default_factory=HTTPConfig)
+    ai: AIConfig = field(default_factory=AIConfig)
     fingerprinting: FingerprintConfig = field(default_factory=FingerprintConfig)
     crawler: CrawlerConfig = field(default_factory=CrawlerConfig)
     modules: ModuleConfig = field(default_factory=ModuleConfig)

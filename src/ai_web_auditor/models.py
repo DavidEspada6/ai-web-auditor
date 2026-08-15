@@ -88,3 +88,23 @@ class ScanResult:
 
     def to_json(self, indent: int = 2) -> str:
         return json.dumps(self.to_dict(), indent=indent, ensure_ascii=True)
+
+
+@dataclass
+class AIAnalysisResult:
+    tool: str
+    version: str
+    generated_at: str
+    provider: str
+    model: str
+    source_file: str
+    status: Status
+    analysis: dict[str, Any]
+    raw_text: str = ""
+    redacted: bool = True
+
+    def to_dict(self) -> dict[str, Any]:
+        return asdict(self)
+
+    def to_json(self, indent: int = 2) -> str:
+        return json.dumps(self.to_dict(), indent=indent, ensure_ascii=True)

@@ -8,3 +8,7 @@ class ScopeError(AuditError):
 
 class ProbeError(AuditError):
     """Raised when an HTTP or TLS probe cannot complete."""
+
+
+class AIError(AuditError):
+    """Raised when AI analysis cannot complete."""
