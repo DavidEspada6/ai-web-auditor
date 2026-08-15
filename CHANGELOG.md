@@ -2,6 +2,26 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.6.0] - 2026-08-16
+
+### Anade
+
+- Comando `gui` para lanzar una interfaz web local.
+- Servidor local basado en libreria estandar de Python, sin dependencias externas.
+- Formulario visual para objetivo, scope, rutas, limites y modulos.
+- Ejecucion de auditorias no intrusivas desde navegador.
+- Vista de resumen, severidades, hallazgos, modulos y JSON.
+- Generacion de informe Markdown desde la interfaz.
+- Descarga de resultados JSON e informe Markdown.
+- Boton PDF basado en la impresion del navegador.
+- Tests de configuracion generada desde la interfaz.
+
+### Seguridad
+
+- La interfaz se sirve por defecto en `127.0.0.1`.
+- El backend de la GUI reutiliza el mismo motor seguro de escaneo.
+- No se anaden explotacion, fuerza bruta, fuzzing agresivo ni pruebas intrusivas.
+
 ## [0.5.0] - 2026-08-16
 
 ### Anade

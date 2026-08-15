@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>AI Web Auditor</title>
+    <link rel="stylesheet" href="/static/app.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">AI Web Auditor</p>
+        <h1>Auditoria web local</h1>
+      </div>
+      <div class="topbar-actions">
+        <button id="download-json" class="ghost" type="button" disabled>JSON</button>
+        <button id="download-md" class="ghost" type="button" disabled>Markdown</button>
+        <button id="print-report" class="ghost" type="button" disabled>PDF</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <aside class="panel controls">
+        <form id="scan-form">
+          <label class="field">
+            <span>Objetivo</span>
+            <input id="target" name="target" type="url" placeholder="https://example.com" required>
+          </label>
+
+          <div class="grid-two">
+            <label class="field">
+              <span>Hosts autorizados</span>
+              <input id="allowed-hosts" name="allowed_hosts" type="text" placeholder="example.com">
+            </label>
+            <label class="field">
+              <span>Rutas incluidas</span>
+              <input id="include-paths" name="include_paths" type="text" value="/">
+            </label>
+          </div>
+
+          <label class="field">
+            <span>Rutas excluidas</span>
+            <input id="exclude-paths" name="exclude_paths" type="text" placeholder="/admin, /private">
+          </label>
+
+          <div class="toggles">
+            <label><input id="allow-subdomains" type="checkbox" checked> Subdominios</label>
+            <label><input id="resolve-dns" type="checkbox" checked> DNS</label>
+            <label><input id="check-http" type="checkbox" checked> HTTP paralelo</label>
+            <label><input id="allow-private" type="checkbox"> Laboratorio local</label>
+          </div>
+
+          <section class="module-section">
+            <h2>Modulos</h2>
+            <div class="module-grid">
+              <label><input data-module="scope" type="checkbox" checked> Scope</label>
+              <label><input data-module="http" type="checkbox" checked> HTTP</label>
+              <label><input data-module="security_headers" type="checkbox" checked> Headers</label>
+              <label><input data-module="cookies" type="checkbox" checked> Cookies</label>
+              <label><input data-module="basic_auth" type="checkbox" checked> Basic Auth</label>
+              <label><input data-module="http_methods" type="checkbox" checked> Metodos</label>
+              <label><input data-module="tls" type="checkbox" checked> TLS</label>
+              <label><input data-module="fingerprinting" type="checkbox" checked> Fingerprinting</label>
+              <label><input data-module="crawler" type="checkbox" checked> Crawler</label>
+            </div>
+          </section>
+
+          <section class="module-section">
+            <h2>Limites</h2>
+            <div class="grid-two">
+              <label class="field">
+                <span>Timeout</span>
+                <input id="timeout" type="number" min="1" max="60" step="1" value="10">
+              </label>
+              <label class="field">
+                <span>Redirecciones</span>
+                <input id="max-redirects" type="number" min="0" max="20" step="1" value="10">
+              </label>
+              <label class="field">
+                <span>Profundidad</span>
+                <input id="max-depth" type="number" min="0" max="3" step="1" value="1">
+              </label>
+              <label class="field">
+                <span>Paginas</span>
+                <input id="max-pages" type="number" min="1" max="100" step="1" value="25">
+              </label>
+            </div>
+            <label class="field">
+              <span>Pausa crawler</span>
+              <input id="delay" type="number" min="0" max="10" step="0.1" value="0">
+            </label>
+          </section>
+
+          <button id="run-scan" class="primary" type="submit">Ejecutar auditoria</button>
+        </form>
+      </aside>
+
+      <section class="workspace">
+        <div class="statusbar">
+          <div>
+            <p class="eyebrow">Estado</p>
+            <strong id="status-text">Sin auditoria</strong>
+          </div>
+          <div id="target-pill" class="pill">Sin objetivo</div>
+        </div>
+
+        <section class="severity-strip" aria-label="Resumen por severidad">
+          <div class="severity critical"><span>Critical</span><strong id="count-critical">0</strong></div>
+          <div class="severity high"><span>High</span><strong id="count-high">0</strong></div>
+          <div class="severity medium"><span>Medium</span><strong id="count-medium">0</strong></div>
+          <div class="severity low"><span>Low</span><strong id="count-low">0</strong></div>
+          <div class="severity info"><span>Info</span><strong id="count-info">0</strong></div>
+        </section>
+
+        <nav class="tabs" aria-label="Vistas">
+          <button class="tab active" type="button" data-tab="summary">Resumen</button>
+          <button class="tab" type="button" data-tab="findings">Hallazgos</button>
+          <button class="tab" type="button" data-tab="modules">Modulos</button>
+          <button class="tab" type="button" data-tab="json">JSON</button>
+          <button class="tab" type="button" data-tab="report">Informe</button>
+        </nav>
+
+        <section id="message" class="message" hidden></section>
+
+        <section id="summary-view" class="panel view active">
+          <div id="summary-empty" class="empty">Ejecuta una auditoria para ver resultados.</div>
+          <div id="summary-content" class="summary-grid" hidden></div>
+        </section>
+
+        <section id="findings-view" class="panel view">
+          <div id="findings-list" class="list"></div>
+        </section>
+
+        <section id="modules-view" class="panel view">
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Modulo</th>
+                  <th>Estado</th>
+                  <th>Resumen</th>
+                </tr>
+              </thead>
+              <tbody id="modules-table"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="json-view" class="panel view">
+          <pre id="json-output" class="code-output">{}</pre>
+        </section>
+
+        <section id="report-view" class="panel view">
+          <div class="report-actions">
+            <label class="field title-field">
+              <span>Titulo informe</span>
+              <input id="report-title" type="text" placeholder="Web Audit Report">
+            </label>
+            <button id="generate-report" class="secondary" type="button" disabled>Generar informe</button>
+          </div>
+          <label class="field">
+            <span>Analisis IA JSON</span>
+            <textarea id="ai-analysis" rows="5" placeholder="{ }"></textarea>
+          </label>
+          <textarea id="report-output" class="report-output" rows="18" readonly></textarea>
+        </section>
+      </section>
+    </main>
+
+    <footer class="footer">Solo sistemas propios, laboratorios u objetivos con autorizacion explicita.</footer>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>

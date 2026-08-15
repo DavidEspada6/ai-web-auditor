@@ -17,7 +17,7 @@
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.5",
+    "user_agent": "AI-Web-Auditor/0.6",
     "verify_tls": true,
     "check_http_counterpart": true
   },

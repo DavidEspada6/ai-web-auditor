@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ai-web-auditor"
-version = "0.5.0"
+version = "0.6.0"
 description = "Modular, safe-first web audit assistant foundation for later AI-assisted workflows."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -19,3 +19,6 @@ ai-web-auditor = "ai_web_auditor.cli:app"
 
 [tool.setuptools.packages.find]
 where = ["src"]
+
+[tool.setuptools.package-data]
+"ai_web_auditor.web" = ["templates/*.html", "static/*.css", "static/*.js"]

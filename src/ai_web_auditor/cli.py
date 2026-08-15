@@ -12,6 +12,7 @@ from .errors import AuditError
 from .output import render_console, write_json
 from .reporting import generate_markdown_report, load_json_file, write_markdown_report
 from .scope import normalize_target
+from .web.server import serve_gui
 
 
 def app() -> None:
@@ -129,6 +130,11 @@ def report_command(args: argparse.Namespace) -> int:
     return 0
 
 
+def gui_command(args: argparse.Namespace) -> int:
+    serve_gui(host=args.host, port=args.port, open_browser=not args.no_open)
+    return 0
+
+
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="ai-web-auditor",
@@ -171,6 +177,12 @@ def _build_parser() -> argparse.ArgumentParser:
     report_parser.add_argument("--output", "-o", type=Path, help="Write Markdown report to this file.")
     report_parser.add_argument("--title", help="Custom report title.")
     report_parser.set_defaults(handler=report_command)
+
+    gui_parser = subparsers.add_parser("gui", help="Start the local web interface.")
+    gui_parser.add_argument("--host", default="127.0.0.1", help="Host for the local GUI server.")
+    gui_parser.add_argument("--port", type=int, default=8765, help="Port for the local GUI server.")
+    gui_parser.add_argument("--no-open", action="store_true", help="Do not open the browser automatically.")
+    gui_parser.set_defaults(handler=gui_command)
     return parser
 
 
