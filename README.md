@@ -8,7 +8,7 @@ scope, HTTP/HTTPS y redirecciones, cabeceras de seguridad, cookies, HTTP Basic
 Auth, metodos anunciados por OPTIONS, TLS basico y crawling seguro limitado por
 scope. Tambien incluye fingerprinting web no intrusivo a partir de cabeceras,
 cookies, HTML inicial y ficheros publicos habituales, analisis IA opcional,
-informes Markdown/HTML/PDF a partir del JSON de escaneo e interfaz web local.
+informes Markdown/HTML/PDF, historial local y comparacion de auditorias.
 
 No implementa explotacion, fuerza bruta, fuzzing agresivo, crawling masivo,
 escaneo de puertos ni pruebas intrusivas.
@@ -27,7 +27,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.7 no necesita librerias externas en tiempo de ejecucion.
+La v0.8 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -46,6 +46,8 @@ lanzador incluido:
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.md
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.html
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.pdf
+.\ai-web-auditor.cmd history
+.\ai-web-auditor.cmd compare baseline.json current.json
 .\ai-web-auditor.cmd gui
 ```
 
@@ -77,6 +79,20 @@ Guardar JSON:
 
 ```powershell
 ai-web-auditor scan https://example.com --json-output outputs/example.json
+```
+
+Guardar una auditoria en el historial local:
+
+```powershell
+ai-web-auditor scan https://example.com --save-history --history-label "revision inicial"
+ai-web-auditor history
+```
+
+Comparar dos auditorias:
+
+```powershell
+ai-web-auditor compare baseline.json current.json
+ai-web-auditor compare id-auditoria-antigua id-auditoria-nueva
 ```
 
 Analizar un resultado con IA:
@@ -168,7 +184,7 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.7",
+    "user_agent": "AI-Web-Auditor/0.8",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -289,6 +305,34 @@ El informe incluye:
 
 Hay ejemplos en `examples/report-example.md` y `examples/report-example.html`.
 
+## Historial y comparacion
+
+La v0.8 permite guardar resultados en un historial local:
+
+```powershell
+ai-web-auditor scan --config audit.json --save-history --history-label "pre-fix"
+ai-web-auditor history
+```
+
+El historial se guarda en `audits/`, que esta ignorado por Git para evitar
+subir resultados de auditorias por accidente.
+
+Tambien puedes comparar dos ficheros JSON o dos IDs del historial:
+
+```powershell
+ai-web-auditor compare outputs/baseline.json outputs/current.json
+ai-web-auditor compare 2026-08-16-010000-example.com-pre-fix 2026-08-16-020000-example.com-post-fix
+```
+
+La comparacion muestra:
+
+- hallazgos nuevos;
+- hallazgos resueltos;
+- hallazgos persistentes;
+- hallazgos cuya severidad ha cambiado.
+
+Hay un ejemplo de salida en `examples/comparison-example.json`.
+
 ## Interfaz grafica local
 
 La interfaz web local se sirve desde Python:
@@ -309,6 +353,8 @@ Desde la interfaz se puede:
 - activar o desactivar modulos;
 - ejecutar una auditoria no intrusiva;
 - revisar hallazgos, modulos, resumen y JSON;
+- guardar y abrir auditorias del historial local;
+- comparar dos auditorias guardadas;
 - generar informes Markdown, HTML y PDF;
 - descargar JSON, Markdown, HTML y PDF;
 - anadir metadatos de auditoria al informe.
@@ -351,8 +397,8 @@ Los siguientes pasos naturales son:
 - descubrimiento de subdominios;
 - escaneo de puertos con limites claros;
 - mejoras en la integracion con IA para comparar hallazgos entre auditorias;
-- historial de auditorias desde la interfaz;
-- base de datos local para comparar auditorias.
+- base de datos local opcional para proyectos grandes;
+- analisis IA directamente desde la interfaz.
 
 ## Versionado
 
@@ -362,7 +408,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.7.1
+git tag v0.8.1
 git push
 git push --tags
 ```
@@ -375,7 +421,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",

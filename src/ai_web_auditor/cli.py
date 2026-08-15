@@ -1,14 +1,17 @@
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from pathlib import Path
 
 from .ai.analyzer import analyze_scan_file
 from .ai.output import render_analysis_console, write_analysis_json, write_analysis_markdown
+from .compare import compare_scans, render_compare_console
 from .config import AuditConfig
 from .engine import run_scan
 from .errors import AuditError
+from .history import DEFAULT_HISTORY_DIR, history_entry_from_data, list_history, load_scan_reference, save_scan_history
 from .output import render_console, write_json
 from .reporting import (
     generate_html_report,
@@ -51,8 +54,15 @@ def scan_command(args: argparse.Namespace) -> int:
         raise ValueError("Target URL is required unless it is set in the config file")
 
     result = run_scan(target, audit_config)
+    history_entry = None
     if args.json_output:
         write_json(result, args.json_output)
+    if args.save_history:
+        history_entry = save_scan_history(
+            result.to_dict(),
+            history_dir=args.history_dir,
+            label=args.history_label or "",
+        )
 
     if args.json_console:
         print(result.to_json(indent=2))
@@ -60,6 +70,8 @@ def scan_command(args: argparse.Namespace) -> int:
         render_console(result)
         if args.json_output:
             print(f"\nJSON written to {args.json_output}")
+        if history_entry:
+            print(f"History item saved to {history_entry.path}")
     return 0
 
 
@@ -157,6 +169,40 @@ def gui_command(args: argparse.Namespace) -> int:
     return 0
 
 
+def history_command(args: argparse.Namespace) -> int:
+    if args.show:
+        data = load_scan_reference(args.show, history_dir=args.history_dir)
+        if args.json_console:
+            print(json.dumps(data, indent=2, ensure_ascii=True))
+        else:
+            entry = _history_entry_for_display(args.show, data)
+            _print_history_entries([entry])
+        return 0
+
+    entries = list_history(args.history_dir)
+    if args.json_console:
+        print(json.dumps([entry.to_dict() for entry in entries], indent=2, ensure_ascii=True))
+    else:
+        _print_history_entries(entries)
+    return 0
+
+
+def compare_command(args: argparse.Namespace) -> int:
+    baseline = load_scan_reference(args.baseline, history_dir=args.history_dir)
+    current = load_scan_reference(args.current, history_dir=args.history_dir)
+    comparison = compare_scans(baseline, current)
+    if args.json_output:
+        args.json_output.parent.mkdir(parents=True, exist_ok=True)
+        args.json_output.write_text(json.dumps(comparison, indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
+    if args.json_console:
+        print(json.dumps(comparison, indent=2, ensure_ascii=True))
+    else:
+        render_compare_console(comparison)
+        if args.json_output:
+            print(f"\nComparison JSON written to {args.json_output}")
+    return 0
+
+
 def _build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="ai-web-auditor",
@@ -169,6 +215,9 @@ def _build_parser() -> argparse.ArgumentParser:
     scan_parser.add_argument("--config", "-c", type=Path, help="JSON or TOML config file.")
     scan_parser.add_argument("--json-output", "-o", type=Path, help="Write full scan result to this JSON file.")
     scan_parser.add_argument("--json", dest="json_console", action="store_true", help="Print JSON to console.")
+    scan_parser.add_argument("--save-history", action="store_true", help="Save scan JSON to the local audit history.")
+    scan_parser.add_argument("--history-dir", type=Path, default=DEFAULT_HISTORY_DIR, help="Local audit history directory.")
+    scan_parser.add_argument("--history-label", help="Optional label for the saved history item.")
     scan_parser.add_argument(
         "--allow-private",
         action="store_true",
@@ -211,6 +260,20 @@ def _build_parser() -> argparse.ArgumentParser:
     gui_parser.add_argument("--port", type=int, default=8765, help="Port for the local GUI server.")
     gui_parser.add_argument("--no-open", action="store_true", help="Do not open the browser automatically.")
     gui_parser.set_defaults(handler=gui_command)
+
+    history_parser = subparsers.add_parser("history", help="List or show local audit history.")
+    history_parser.add_argument("--history-dir", type=Path, default=DEFAULT_HISTORY_DIR, help="Local audit history directory.")
+    history_parser.add_argument("--show", help="History item id or JSON path to show.")
+    history_parser.add_argument("--json", dest="json_console", action="store_true", help="Print JSON to console.")
+    history_parser.set_defaults(handler=history_command)
+
+    compare_parser = subparsers.add_parser("compare", help="Compare two scan JSON files or history ids.")
+    compare_parser.add_argument("baseline", help="Baseline scan JSON path or history id.")
+    compare_parser.add_argument("current", help="Current scan JSON path or history id.")
+    compare_parser.add_argument("--history-dir", type=Path, default=DEFAULT_HISTORY_DIR, help="Local audit history directory.")
+    compare_parser.add_argument("--json-output", type=Path, help="Write comparison result to this JSON file.")
+    compare_parser.add_argument("--json", dest="json_console", action="store_true", help="Print JSON to console.")
+    compare_parser.set_defaults(handler=compare_command)
     return parser
 
 
@@ -282,3 +345,20 @@ def _report_metadata_from_args(args: argparse.Namespace) -> dict[str, str]:
         "scope_summary": args.scope_summary or "",
         "notes": args.notes or "",
     }
+
+
+def _history_entry_for_display(reference: str, data: dict[str, object]):
+    return history_entry_from_data(Path(reference), data)
+
+
+def _print_history_entries(entries: list[object]) -> None:
+    if not entries:
+        print("No audit history items found.")
+        return
+    print("Audit History")
+    print("-------------")
+    for entry in entries:
+        print(
+            f"- {entry.id} | {entry.generated_at} | {entry.host} | "
+            f"{entry.finding_count} finding(s) | {entry.status}"
+        )

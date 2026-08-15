@@ -49,7 +49,13 @@
             <label><input id="resolve-dns" type="checkbox" checked> DNS</label>
             <label><input id="check-http" type="checkbox" checked> HTTP paralelo</label>
             <label><input id="allow-private" type="checkbox"> Laboratorio local</label>
+            <label><input id="save-history" type="checkbox" checked> Guardar historial</label>
           </div>
+
+          <label class="field history-label">
+            <span>Etiqueta historial</span>
+            <input id="history-label" type="text" placeholder="Cliente, entorno o version">
+          </label>
 
           <section class="module-section">
             <h2>Modulos</h2>
@@ -119,6 +125,8 @@
           <button class="tab" type="button" data-tab="modules">Modulos</button>
           <button class="tab" type="button" data-tab="json">JSON</button>
           <button class="tab" type="button" data-tab="report">Informe</button>
+          <button class="tab" type="button" data-tab="history">Historial</button>
+          <button class="tab" type="button" data-tab="compare">Comparar</button>
         </nav>
 
         <section id="message" class="message" hidden></section>
@@ -187,6 +195,46 @@
           </label>
           <iframe id="html-preview" class="html-preview" title="Vista previa HTML"></iframe>
           <textarea id="report-output" class="report-output" rows="18" readonly></textarea>
+        </section>
+
+        <section id="history-view" class="panel view">
+          <div class="section-toolbar">
+            <div>
+              <p class="eyebrow">Historial local</p>
+              <strong id="history-count">0 auditorias</strong>
+            </div>
+            <button id="refresh-history" class="ghost" type="button">Actualizar</button>
+          </div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Fecha</th>
+                  <th>Host</th>
+                  <th>Hallazgos</th>
+                  <th>Estado</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="history-table"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="compare-view" class="panel view">
+          <div class="compare-controls">
+            <label class="field">
+              <span>Auditoria base</span>
+              <select id="compare-baseline"></select>
+            </label>
+            <label class="field">
+              <span>Auditoria actual</span>
+              <select id="compare-current"></select>
+            </label>
+            <button id="run-compare" class="secondary" type="button">Comparar</button>
+          </div>
+          <div id="compare-output" class="compare-output"></div>
         </section>
       </section>
     </main>

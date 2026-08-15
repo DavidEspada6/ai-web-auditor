@@ -3,6 +3,8 @@ const state = {
   markdown: "",
   html: "",
   pdfBase64: "",
+  history: [],
+  comparison: null,
 };
 
 const severityOrder = ["critical", "high", "medium", "low", "info"];
@@ -23,10 +25,19 @@ const downloadJsonButton = document.querySelector("#download-json");
 const downloadMdButton = document.querySelector("#download-md");
 const downloadHtmlButton = document.querySelector("#download-html");
 const downloadPdfButton = document.querySelector("#download-pdf");
+const historyTable = document.querySelector("#history-table");
+const historyCount = document.querySelector("#history-count");
+const refreshHistoryButton = document.querySelector("#refresh-history");
+const compareBaseline = document.querySelector("#compare-baseline");
+const compareCurrent = document.querySelector("#compare-current");
+const runCompareButton = document.querySelector("#run-compare");
+const compareOutput = document.querySelector("#compare-output");
 
 document.querySelectorAll(".tab").forEach((button) => {
   button.addEventListener("click", () => activateTab(button.dataset.tab));
 });
+
+loadHistory();
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -88,6 +99,53 @@ generateReportButton.addEventListener("click", async () => {
   }
 });
 
+refreshHistoryButton.addEventListener("click", async () => {
+  await loadHistory();
+});
+
+historyTable.addEventListener("click", async (event) => {
+  if (!(event.target instanceof Element)) {
+    return;
+  }
+  const button = event.target.closest("[data-load-history]");
+  if (!button) {
+    return;
+  }
+  clearMessage();
+  try {
+    const response = await postJson("/api/history/load", { id: button.dataset.loadHistory });
+    state.scan = response.scan;
+    state.markdown = "";
+    state.html = "";
+    state.pdfBase64 = "";
+    renderScan(state.scan);
+    reportOutput.value = "";
+    htmlPreview.removeAttribute("srcdoc");
+    generateReportButton.disabled = false;
+    downloadJsonButton.disabled = false;
+    downloadMdButton.disabled = true;
+    downloadHtmlButton.disabled = true;
+    downloadPdfButton.disabled = true;
+    activateTab("summary");
+  } catch (error) {
+    showMessage(error.message);
+  }
+});
+
+runCompareButton.addEventListener("click", async () => {
+  clearMessage();
+  try {
+    const response = await postJson("/api/compare", {
+      baseline_id: compareBaseline.value,
+      current_id: compareCurrent.value,
+    });
+    state.comparison = response.comparison;
+    renderComparison(state.comparison);
+  } catch (error) {
+    showMessage(error.message);
+  }
+});
+
 downloadJsonButton.addEventListener("click", () => {
   if (state.scan) {
     downloadText("audit-result.json", JSON.stringify(state.scan, null, 2) + "\n", "application/json");
@@ -127,6 +185,8 @@ function collectPayload() {
     resolve_dns: document.querySelector("#resolve-dns").checked,
     check_http_counterpart: document.querySelector("#check-http").checked,
     allow_private_networks: document.querySelector("#allow-private").checked,
+    save_history: document.querySelector("#save-history").checked,
+    history_label: document.querySelector("#history-label").value.trim(),
     timeout_seconds: document.querySelector("#timeout").value,
     max_redirects: document.querySelector("#max-redirects").value,
     modules,
@@ -161,6 +221,15 @@ async function postJson(url, payload) {
   return data;
 }
 
+async function getJson(url) {
+  const response = await fetch(url, { method: "GET", headers: { "Accept": "application/json" } });
+  const data = await response.json();
+  if (!response.ok || !data.ok) {
+    throw new Error(data.error || "Operacion fallida.");
+  }
+  return data;
+}
+
 function renderScan(scan) {
   const findings = Array.isArray(scan.findings) ? scan.findings : [];
   const modules = Array.isArray(scan.modules) ? scan.modules : [];
@@ -173,6 +242,18 @@ function renderScan(scan) {
   renderFindings(findings);
   renderModules(modules);
   jsonOutput.textContent = JSON.stringify(scan, null, 2);
+  loadHistory();
+}
+
+async function loadHistory() {
+  try {
+    const response = await getJson("/api/history");
+    state.history = Array.isArray(response.items) ? response.items : [];
+    renderHistory(state.history);
+    populateCompareSelectors(state.history);
+  } catch (error) {
+    showMessage(error.message);
+  }
 }
 
 function renderSeverityCounts(findings) {
@@ -260,6 +341,72 @@ function renderModules(modules) {
     `;
     modulesTable.appendChild(row);
   });
+}
+
+function renderHistory(items) {
+  historyTable.innerHTML = "";
+  historyCount.textContent = `${items.length} auditoria${items.length === 1 ? "" : "s"}`;
+  if (!items.length) {
+    const row = document.createElement("tr");
+    row.innerHTML = '<td colspan="6">Sin auditorias guardadas.</td>';
+    historyTable.appendChild(row);
+    return;
+  }
+  items.forEach((item) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td><code>${escapeHtml(item.id)}</code></td>
+      <td>${escapeHtml(item.generated_at || "unknown")}</td>
+      <td>${escapeHtml(item.host || "unknown")}</td>
+      <td>${escapeHtml(String(item.finding_count || 0))}</td>
+      <td>${escapeHtml(item.status || "unknown")}</td>
+      <td><button class="ghost compact" type="button" data-load-history="${escapeHtml(item.id)}">Abrir</button></td>
+    `;
+    historyTable.appendChild(row);
+  });
+}
+
+function populateCompareSelectors(items) {
+  const options = items
+    .map((item) => `<option value="${escapeHtml(item.id)}">${escapeHtml(item.generated_at || "unknown")} | ${escapeHtml(item.host || "unknown")} | ${escapeHtml(item.id)}</option>`)
+    .join("");
+  compareBaseline.innerHTML = options;
+  compareCurrent.innerHTML = options;
+  if (items.length > 1) {
+    compareBaseline.selectedIndex = 1;
+    compareCurrent.selectedIndex = 0;
+  }
+  runCompareButton.disabled = items.length < 2;
+}
+
+function renderComparison(comparison) {
+  const summary = comparison.summary || {};
+  compareOutput.innerHTML = `
+    <div class="compare-grid">
+      <div class="metric"><span>Nuevos</span><strong>${escapeHtml(String(summary.new || 0))}</strong></div>
+      <div class="metric"><span>Resueltos</span><strong>${escapeHtml(String(summary.resolved || 0))}</strong></div>
+      <div class="metric"><span>Persistentes</span><strong>${escapeHtml(String(summary.persistent || 0))}</strong></div>
+      <div class="metric"><span>Cambio severidad</span><strong>${escapeHtml(String(summary.severity_changed || 0))}</strong></div>
+    </div>
+    ${renderCompareFindingGroup("Hallazgos nuevos", comparison.new_findings)}
+    ${renderCompareFindingGroup("Hallazgos resueltos", comparison.resolved_findings)}
+    ${renderCompareFindingGroup("Hallazgos persistentes", comparison.persistent_findings)}
+  `;
+}
+
+function renderCompareFindingGroup(title, findings) {
+  const list = Array.isArray(findings) ? findings : [];
+  if (!list.length) {
+    return `<section class="compare-group"><h3>${escapeHtml(title)}</h3><p class="empty-inline">Sin elementos.</p></section>`;
+  }
+  const items = list
+    .slice(0, 20)
+    .map((finding) => {
+      const severity = normalizeSeverity(finding.severity);
+      return `<article class="finding-item"><span class="badge ${severity}">${escapeHtml(severity)}</span><h3>${escapeHtml(finding.title || "Untitled")}</h3><p><code>${escapeHtml(finding.id || "unknown")}</code></p></article>`;
+    })
+    .join("");
+  return `<section class="compare-group"><h3>${escapeHtml(title)}</h3><div class="list">${items}</div></section>`;
 }
 
 function activateTab(name) {

@@ -9,9 +9,11 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import urlparse
 
+from ..compare import compare_scans
 from ..config import AuditConfig
 from ..engine import run_scan
 from ..errors import AuditError
+from ..history import DEFAULT_HISTORY_DIR, list_history, load_scan_reference, save_scan_history
 from ..reporting import generate_html_report, generate_markdown_report, generate_pdf_report
 
 
@@ -20,7 +22,7 @@ MAX_REQUEST_BYTES = 2_000_000
 
 
 class LocalAuditHandler(BaseHTTPRequestHandler):
-    server_version = "AIWebAuditorGUI/0.7"
+    server_version = "AIWebAuditorGUI/0.8"
 
     def do_GET(self) -> None:  # noqa: N802 - http.server uses this naming.
         path = urlparse(self.path).path
@@ -29,6 +31,9 @@ class LocalAuditHandler(BaseHTTPRequestHandler):
             return
         if path == "/api/health":
             self._send_json({"ok": True})
+            return
+        if path == "/api/history":
+            self._send_json({"ok": True, "items": [entry.to_dict() for entry in list_history(DEFAULT_HISTORY_DIR)]})
             return
         if path.startswith("/static/"):
             relative = path.removeprefix("/static/")
@@ -46,6 +51,12 @@ class LocalAuditHandler(BaseHTTPRequestHandler):
             if path == "/api/report":
                 self._handle_report(payload)
                 return
+            if path == "/api/history/load":
+                self._handle_history_load(payload)
+                return
+            if path == "/api/compare":
+                self._handle_compare(payload)
+                return
             self._send_json({"ok": False, "error": "Not found"}, status=404)
         except (AuditError, OSError, ValueError) as exc:
             self._send_json({"ok": False, "error": str(exc)}, status=400)
@@ -62,7 +73,12 @@ class LocalAuditHandler(BaseHTTPRequestHandler):
 
         config = build_config_from_gui_payload(payload)
         result = run_scan(target, config)
-        self._send_json({"ok": True, "result": result.to_dict()})
+        result_data = result.to_dict()
+        response: dict[str, Any] = {"ok": True, "result": result_data}
+        if _bool_value(payload.get("save_history"), False):
+            entry = save_scan_history(result_data, history_dir=DEFAULT_HISTORY_DIR, label=_clean_text(payload.get("history_label")))
+            response["history_entry"] = entry.to_dict()
+        self._send_json(response)
 
     def _handle_report(self, payload: dict[str, Any]) -> None:
         scan_data = payload.get("scan")
@@ -107,6 +123,22 @@ class LocalAuditHandler(BaseHTTPRequestHandler):
             raise ValueError(f"Unsupported report format: {report_format}")
 
         self._send_json(response)
+
+    def _handle_history_load(self, payload: dict[str, Any]) -> None:
+        identifier = _clean_text(payload.get("id"))
+        if not identifier:
+            raise ValueError("History id is required")
+        scan = load_scan_reference(identifier, history_dir=DEFAULT_HISTORY_DIR)
+        self._send_json({"ok": True, "scan": scan})
+
+    def _handle_compare(self, payload: dict[str, Any]) -> None:
+        baseline_id = _clean_text(payload.get("baseline_id"))
+        current_id = _clean_text(payload.get("current_id"))
+        if not baseline_id or not current_id:
+            raise ValueError("Both baseline_id and current_id are required")
+        baseline = load_scan_reference(baseline_id, history_dir=DEFAULT_HISTORY_DIR)
+        current = load_scan_reference(current_id, history_dir=DEFAULT_HISTORY_DIR)
+        self._send_json({"ok": True, "comparison": compare_scans(baseline, current)})
 
     def _send_static(self, relative: str) -> None:
         if not relative or ".." in relative.replace("\\", "/").split("/"):

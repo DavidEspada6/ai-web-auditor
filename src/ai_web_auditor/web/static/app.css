@@ -30,6 +30,7 @@ body {
 
 button,
 input,
+select,
 textarea {
   font: inherit;
 }
@@ -120,6 +121,7 @@ button:disabled {
 }
 
 input,
+select,
 textarea {
   width: 100%;
   border: 1px solid #cbd5df;
@@ -134,6 +136,7 @@ textarea {
 }
 
 input:focus,
+select:focus,
 textarea:focus,
 button:focus-visible {
   outline: 3px solid rgba(15, 118, 110, 0.18);
@@ -202,6 +205,12 @@ button:focus-visible {
 .ghost:hover {
   border-color: var(--brand);
   color: var(--brand-dark);
+}
+
+.compact {
+  min-height: 32px;
+  padding: 0 10px;
+  font-size: 13px;
 }
 
 .statusbar {
@@ -343,6 +352,10 @@ button:focus-visible {
   margin-top: 14px;
 }
 
+.history-label {
+  margin-top: 12px;
+}
+
 .metric,
 .finding-item {
   border: 1px solid var(--line);
@@ -476,6 +489,46 @@ th {
   background: #ffffff;
 }
 
+.section-toolbar,
+.compare-controls {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.section-toolbar strong {
+  display: block;
+  margin-top: 2px;
+}
+
+.compare-controls .field {
+  flex: 1 1 260px;
+  margin-bottom: 0;
+}
+
+.compare-output {
+  display: grid;
+  gap: 16px;
+}
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.compare-group h3 {
+  margin: 0 0 10px;
+}
+
+.empty-inline {
+  margin: 0;
+  color: var(--muted);
+  font-weight: 700;
+}
+
 .title-field {
   flex: 1 1 320px;
   margin-bottom: 0;
@@ -494,8 +547,15 @@ th {
 
   .summary-grid,
   .metadata-grid,
+  .compare-grid,
   .severity-strip {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .section-toolbar,
+  .compare-controls {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .pill {
@@ -516,6 +576,7 @@ th {
   .module-grid,
   .summary-grid,
   .metadata-grid,
+  .compare-grid,
   .severity-strip {
     grid-template-columns: 1fr;
   }

@@ -1,0 +1,75 @@
+{
+  "tool": "ai-web-auditor",
+  "version": "0.8.0",
+  "generated_at": "2026-08-16T00:00:00Z",
+  "baseline": {
+    "generated_at": "2026-08-16T00:00:00Z",
+    "status": "completed",
+    "version": "0.8.0",
+    "target": "https://example.com/",
+    "host": "example.com",
+    "finding_count": 2
+  },
+  "current": {
+    "generated_at": "2026-08-16T01:00:00Z",
+    "status": "completed",
+    "version": "0.8.0",
+    "target": "https://example.com/",
+    "host": "example.com",
+    "finding_count": 2
+  },
+  "summary": {
+    "new": 1,
+    "resolved": 1,
+    "persistent": 1,
+    "severity_changed": 1
+  },
+  "new_findings": [
+    {
+      "id": "HEADER-HSTS-MISSING",
+      "title": "HSTS missing",
+      "severity": "medium",
+      "module": "security_headers",
+      "target": "https://example.com/"
+    }
+  ],
+  "resolved_findings": [
+    {
+      "id": "COOKIE-HTTPONLY-MISSING",
+      "title": "HttpOnly missing",
+      "severity": "low",
+      "module": "cookies",
+      "target": "https://example.com/"
+    }
+  ],
+  "persistent_findings": [
+    {
+      "id": "HEADER-CSP-MISSING",
+      "title": "CSP missing",
+      "severity": "high",
+      "module": "security_headers",
+      "target": "https://example.com/"
+    }
+  ],
+  "severity_changed": [
+    {
+      "key": "header-csp-missing|security_headers|https://example.com/",
+      "baseline": {
+        "id": "HEADER-CSP-MISSING",
+        "title": "CSP missing",
+        "severity": "medium",
+        "module": "security_headers",
+        "target": "https://example.com/"
+      },
+      "current": {
+        "id": "HEADER-CSP-MISSING",
+        "title": "CSP missing",
+        "severity": "high",
+        "module": "security_headers",
+        "target": "https://example.com/"
+      },
+      "baseline_severity": "medium",
+      "current_severity": "high"
+    }
+  ]
+}

@@ -2,6 +2,25 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.8.0] - 2026-08-16
+
+### Anade
+
+- Historial local de auditorias en `audits/`.
+- Opcion `scan --save-history` y etiqueta opcional `--history-label`.
+- Comando `history` para listar o mostrar auditorias guardadas.
+- Comando `compare` para comparar dos JSON o dos IDs del historial.
+- Deteccion de hallazgos nuevos, resueltos, persistentes y cambios de severidad.
+- Panel de historial en la interfaz local.
+- Panel de comparacion en la interfaz local.
+- Tests de historial, carga de auditorias y comparacion.
+
+### Seguridad
+
+- `audits/` queda ignorado por Git para evitar subir resultados sensibles.
+- La comparacion solo procesa JSON existentes y no hace peticiones al objetivo.
+- No se anaden explotacion, fuerza bruta, fuzzing agresivo ni pruebas intrusivas.
+
 ## [0.7.0] - 2026-08-16
 
 ### Anade

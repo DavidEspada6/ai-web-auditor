@@ -14,7 +14,7 @@ from ai_web_auditor.reporting import generate_html_report, generate_markdown_rep
 
 SCAN_DATA = {
     "tool": "ai-web-auditor",
-    "version": "0.7.0",
+    "version": "0.8.0",
     "generated_at": "2026-08-16T00:00:00Z",
     "status": "completed",
     "target": {
