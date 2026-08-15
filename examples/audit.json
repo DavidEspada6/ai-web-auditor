@@ -1,0 +1,26 @@
+{
+  "scope": {
+    "allowed_hosts": [
+      "example.com"
+    ],
+    "allow_subdomains": true,
+    "allow_private_networks": false,
+    "resolve_dns": true
+  },
+  "http": {
+    "timeout_seconds": 10,
+    "max_redirects": 10,
+    "user_agent": "AI-Web-Auditor/0.1",
+    "verify_tls": true,
+    "check_http_counterpart": true
+  },
+  "modules": {
+    "scope": true,
+    "http": true,
+    "security_headers": true,
+    "cookies": true,
+    "basic_auth": true,
+    "http_methods": true,
+    "tls": true
+  }
+}

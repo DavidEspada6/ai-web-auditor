@@ -1,0 +1,18 @@
+{
+  "tool": "ai-web-auditor",
+  "version": "0.1.0",
+  "generated_at": "2026-08-15T00:00:00Z",
+  "status": "completed",
+  "target": {
+    "original_url": "https://example.com",
+    "normalized_url": "https://example.com/",
+    "scheme": "https",
+    "host": "example.com",
+    "port": 443,
+    "base_url": "https://example.com/",
+    "ip_addresses": []
+  },
+  "modules": [],
+  "findings": [],
+  "requests": []
+}
