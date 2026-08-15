@@ -1,11 +1,11 @@
 {
   "tool": "ai-web-auditor",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "generated_at": "2026-08-16T00:00:00Z",
   "baseline": {
     "generated_at": "2026-08-16T00:00:00Z",
     "status": "completed",
-    "version": "0.9.0",
+    "version": "0.10.0",
     "target": "https://example.com/",
     "host": "example.com",
     "finding_count": 2
@@ -13,7 +13,7 @@
   "current": {
     "generated_at": "2026-08-16T01:00:00Z",
     "status": "completed",
-    "version": "0.9.0",
+    "version": "0.10.0",
     "target": "https://example.com/",
     "host": "example.com",
     "finding_count": 2

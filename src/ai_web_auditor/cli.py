@@ -13,6 +13,14 @@ from .engine import run_scan
 from .errors import AuditError
 from .history import DEFAULT_HISTORY_DIR, history_entry_from_data, list_history, load_scan_reference, save_scan_history
 from .output import render_console, write_json
+from .projects import (
+    DEFAULT_PROJECTS_DIR,
+    create_project,
+    list_projects,
+    load_project,
+    load_project_config,
+    project_report_metadata,
+)
 from .reporting import (
     generate_html_report,
     generate_markdown_report,
@@ -45,7 +53,8 @@ def main(argv: list[str] | None = None) -> int:
 
 
 def scan_command(args: argparse.Namespace) -> int:
-    audit_config = AuditConfig.load(args.config)
+    project = load_project(args.project, projects_dir=args.projects_dir) if args.project else None
+    audit_config = load_project_config(project) if project and args.config is None else AuditConfig.load(args.config)
     if args.allow_private:
         audit_config.scope.allow_private_networks = True
 
@@ -55,12 +64,13 @@ def scan_command(args: argparse.Namespace) -> int:
 
     result = run_scan(target, audit_config)
     history_entry = None
+    history_dir = project.audit_history_dir if project else args.history_dir
     if args.json_output:
         write_json(result, args.json_output)
-    if args.save_history:
+    if args.save_history or project:
         history_entry = save_scan_history(
             result.to_dict(),
-            history_dir=args.history_dir,
+            history_dir=history_dir,
             label=args.history_label or "",
         )
 
@@ -68,6 +78,8 @@ def scan_command(args: argparse.Namespace) -> int:
         print(result.to_json(indent=2))
     else:
         render_console(result)
+        if project:
+            print(f"\nProject: {project.name} ({project.id})")
         if args.json_output:
             print(f"\nJSON written to {args.json_output}")
         if history_entry:
@@ -136,7 +148,8 @@ def analyze_command(args: argparse.Namespace) -> int:
 def report_command(args: argparse.Namespace) -> int:
     scan_data = load_json_file(args.scan_json)
     ai_analysis = load_json_file(args.ai_analysis) if args.ai_analysis else None
-    metadata = _report_metadata_from_args(args)
+    project = load_project(args.project, projects_dir=args.projects_dir) if args.project else None
+    metadata = _report_metadata_from_args(args, project=project)
     report_format = _resolve_report_format(args.format, args.output)
 
     if report_format == "markdown":
@@ -170,8 +183,10 @@ def gui_command(args: argparse.Namespace) -> int:
 
 
 def history_command(args: argparse.Namespace) -> int:
+    project = load_project(args.project, projects_dir=args.projects_dir) if args.project else None
+    history_dir = project.audit_history_dir if project else args.history_dir
     if args.show:
-        data = load_scan_reference(args.show, history_dir=args.history_dir)
+        data = load_scan_reference(args.show, history_dir=history_dir)
         if args.json_console:
             print(json.dumps(data, indent=2, ensure_ascii=True))
         else:
@@ -179,17 +194,21 @@ def history_command(args: argparse.Namespace) -> int:
             _print_history_entries([entry])
         return 0
 
-    entries = list_history(args.history_dir)
+    entries = list_history(history_dir)
     if args.json_console:
         print(json.dumps([entry.to_dict() for entry in entries], indent=2, ensure_ascii=True))
     else:
+        if project:
+            print(f"Project: {project.name} ({project.id})")
         _print_history_entries(entries)
     return 0
 
 
 def compare_command(args: argparse.Namespace) -> int:
-    baseline = load_scan_reference(args.baseline, history_dir=args.history_dir)
-    current = load_scan_reference(args.current, history_dir=args.history_dir)
+    project = load_project(args.project, projects_dir=args.projects_dir) if args.project else None
+    history_dir = project.audit_history_dir if project else args.history_dir
+    baseline = load_scan_reference(args.baseline, history_dir=history_dir)
+    current = load_scan_reference(args.current, history_dir=history_dir)
     comparison = compare_scans(baseline, current)
     if args.json_output:
         args.json_output.parent.mkdir(parents=True, exist_ok=True)
@@ -200,6 +219,48 @@ def compare_command(args: argparse.Namespace) -> int:
         render_compare_console(comparison)
         if args.json_output:
             print(f"\nComparison JSON written to {args.json_output}")
+    return 0
+
+
+def project_init_command(args: argparse.Namespace) -> int:
+    project = create_project(
+        args.name,
+        target=args.target or "",
+        client=args.client or "",
+        auditor=args.auditor or "",
+        engagement=args.engagement or "",
+        scope_summary=args.scope_summary or "",
+        projects_dir=args.projects_dir,
+        force=args.force,
+    )
+    if args.json_console:
+        print(json.dumps(project.to_dict(), indent=2, ensure_ascii=True))
+    else:
+        print(f"Project created: {project.name} ({project.id})")
+        print(f"Path: {project.path}")
+        print(f"Config: {project.config_path}")
+        print(f"History: {project.audit_history_dir}")
+    return 0
+
+
+def project_list_command(args: argparse.Namespace) -> int:
+    projects = list_projects(args.projects_dir)
+    if args.json_console:
+        print(json.dumps([project.to_dict() for project in projects], indent=2, ensure_ascii=True))
+    else:
+        _print_projects(projects)
+    return 0
+
+
+def project_show_command(args: argparse.Namespace) -> int:
+    project = load_project(args.name, projects_dir=args.projects_dir)
+    if args.json_console:
+        print(json.dumps(project.to_dict(), indent=2, ensure_ascii=True))
+    else:
+        _print_projects([project])
+        print(f"Config: {project.config_path}")
+        print(f"History: {project.audit_history_dir}")
+        print(f"Reports: {project.report_output_dir}")
     return 0
 
 
@@ -218,6 +279,8 @@ def _build_parser() -> argparse.ArgumentParser:
     scan_parser.add_argument("--save-history", action="store_true", help="Save scan JSON to the local audit history.")
     scan_parser.add_argument("--history-dir", type=Path, default=DEFAULT_HISTORY_DIR, help="Local audit history directory.")
     scan_parser.add_argument("--history-label", help="Optional label for the saved history item.")
+    scan_parser.add_argument("--project", help="Project id/name. Uses the project scope config and audit history.")
+    scan_parser.add_argument("--projects-dir", type=Path, default=DEFAULT_PROJECTS_DIR, help="Local projects directory.")
     scan_parser.add_argument(
         "--allow-private",
         action="store_true",
@@ -253,6 +316,8 @@ def _build_parser() -> argparse.ArgumentParser:
     report_parser.add_argument("--engagement", help="Engagement or project name.")
     report_parser.add_argument("--scope-summary", help="Human-readable scope summary.")
     report_parser.add_argument("--notes", help="Additional report notes.")
+    report_parser.add_argument("--project", help="Project id/name. Uses project report metadata as defaults.")
+    report_parser.add_argument("--projects-dir", type=Path, default=DEFAULT_PROJECTS_DIR, help="Local projects directory.")
     report_parser.set_defaults(handler=report_command)
 
     gui_parser = subparsers.add_parser("gui", help="Start the local web interface.")
@@ -263,6 +328,8 @@ def _build_parser() -> argparse.ArgumentParser:
 
     history_parser = subparsers.add_parser("history", help="List or show local audit history.")
     history_parser.add_argument("--history-dir", type=Path, default=DEFAULT_HISTORY_DIR, help="Local audit history directory.")
+    history_parser.add_argument("--project", help="Project id/name. Lists that project's audit history.")
+    history_parser.add_argument("--projects-dir", type=Path, default=DEFAULT_PROJECTS_DIR, help="Local projects directory.")
     history_parser.add_argument("--show", help="History item id or JSON path to show.")
     history_parser.add_argument("--json", dest="json_console", action="store_true", help="Print JSON to console.")
     history_parser.set_defaults(handler=history_command)
@@ -271,9 +338,37 @@ def _build_parser() -> argparse.ArgumentParser:
     compare_parser.add_argument("baseline", help="Baseline scan JSON path or history id.")
     compare_parser.add_argument("current", help="Current scan JSON path or history id.")
     compare_parser.add_argument("--history-dir", type=Path, default=DEFAULT_HISTORY_DIR, help="Local audit history directory.")
+    compare_parser.add_argument("--project", help="Project id/name. Resolves history ids inside that project.")
+    compare_parser.add_argument("--projects-dir", type=Path, default=DEFAULT_PROJECTS_DIR, help="Local projects directory.")
     compare_parser.add_argument("--json-output", type=Path, help="Write comparison result to this JSON file.")
     compare_parser.add_argument("--json", dest="json_console", action="store_true", help="Print JSON to console.")
     compare_parser.set_defaults(handler=compare_command)
+
+    project_parser = subparsers.add_parser("project", help="Create and inspect local audit projects.")
+    project_subparsers = project_parser.add_subparsers(dest="project_command")
+
+    project_init = project_subparsers.add_parser("init", help="Create a project folder with scope config and history.")
+    project_init.add_argument("name", help="Project display name.")
+    project_init.add_argument("--target", help="Initial target URL.")
+    project_init.add_argument("--client", help="Client or organization name.")
+    project_init.add_argument("--auditor", help="Auditor name.")
+    project_init.add_argument("--engagement", help="Engagement or project name.")
+    project_init.add_argument("--scope-summary", help="Human-readable scope summary.")
+    project_init.add_argument("--projects-dir", type=Path, default=DEFAULT_PROJECTS_DIR, help="Local projects directory.")
+    project_init.add_argument("--force", action="store_true", help="Overwrite project metadata and scope config.")
+    project_init.add_argument("--json", dest="json_console", action="store_true", help="Print JSON to console.")
+    project_init.set_defaults(handler=project_init_command)
+
+    project_list = project_subparsers.add_parser("list", help="List local audit projects.")
+    project_list.add_argument("--projects-dir", type=Path, default=DEFAULT_PROJECTS_DIR, help="Local projects directory.")
+    project_list.add_argument("--json", dest="json_console", action="store_true", help="Print JSON to console.")
+    project_list.set_defaults(handler=project_list_command)
+
+    project_show = project_subparsers.add_parser("show", help="Show one local audit project.")
+    project_show.add_argument("name", help="Project id/name.")
+    project_show.add_argument("--projects-dir", type=Path, default=DEFAULT_PROJECTS_DIR, help="Local projects directory.")
+    project_show.add_argument("--json", dest="json_console", action="store_true", help="Print JSON to console.")
+    project_show.set_defaults(handler=project_show_command)
     return parser
 
 
@@ -337,14 +432,18 @@ def _resolve_report_format(requested: str | None, output: Path | None) -> str:
     return "markdown"
 
 
-def _report_metadata_from_args(args: argparse.Namespace) -> dict[str, str]:
-    return {
-        "client": args.client or "",
-        "auditor": args.auditor or "",
-        "engagement": args.engagement or "",
-        "scope_summary": args.scope_summary or "",
-        "notes": args.notes or "",
-    }
+def _report_metadata_from_args(args: argparse.Namespace, *, project: object | None = None) -> dict[str, str]:
+    metadata = project_report_metadata(project) if project else {}
+    metadata.update(
+        {
+            "client": args.client or metadata.get("client", ""),
+            "auditor": args.auditor or metadata.get("auditor", ""),
+            "engagement": args.engagement or metadata.get("engagement", ""),
+            "scope_summary": args.scope_summary or metadata.get("scope_summary", ""),
+            "notes": args.notes or metadata.get("notes", ""),
+        }
+    )
+    return metadata
 
 
 def _history_entry_for_display(reference: str, data: dict[str, object]):
@@ -362,3 +461,15 @@ def _print_history_entries(entries: list[object]) -> None:
             f"- {entry.id} | {entry.generated_at} | {entry.host} | "
             f"{entry.finding_count} finding(s) | {entry.status}"
         )
+
+
+def _print_projects(projects: list[object]) -> None:
+    if not projects:
+        print("No audit projects found.")
+        return
+    print("Audit Projects")
+    print("--------------")
+    for project in projects:
+        target = project.target_url or "no target"
+        client = f" | {project.client}" if project.client else ""
+        print(f"- {project.id} | {project.name}{client} | {target}")

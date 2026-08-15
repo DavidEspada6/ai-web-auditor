@@ -2,6 +2,28 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.10.0] - 2026-08-16
+
+### Anade
+
+- Gestion local de proyectos en `projects/`.
+- Archivo `project.json` con cliente, auditor, trabajo, scope resumido y rutas del proyecto.
+- Archivo `scope.json` por proyecto para mantener una configuracion de auditoria reutilizable.
+- Carpetas separadas por proyecto para `audits/`, `reports/` y `ai/`.
+- Comandos `project init`, `project list` y `project show`.
+- Opcion `--project` en `scan`, `history`, `compare` y `report`.
+- Selector y creacion rapida de proyectos desde la interfaz grafica.
+- Historial filtrado por proyecto en la GUI.
+- Metadatos de informe rellenados desde el proyecto cuando estan disponibles.
+- Lanzador `start-ai-web-auditor.cmd` para abrir la interfaz con doble clic en Windows.
+- Tests de creacion, listado, carga y CLI de proyectos.
+
+### Seguridad
+
+- `projects/` queda ignorado por Git para evitar subir informacion de clientes o auditorias.
+- Los proyectos solo organizan configuracion, historial e informes; no anaden acciones intrusivas.
+- El lanzador grafico reutiliza el mismo servidor local en `127.0.0.1` por defecto.
+
 ## [0.9.0] - 2026-08-16
 
 ### Anade

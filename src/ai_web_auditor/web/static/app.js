@@ -4,6 +4,8 @@ const state = {
   html: "",
   pdfBase64: "",
   aiAnalysis: null,
+  projects: [],
+  projectId: "",
   history: [],
   comparison: null,
 };
@@ -30,6 +32,12 @@ const downloadPdfButton = document.querySelector("#download-pdf");
 const runAiButton = document.querySelector("#run-ai");
 const aiSummary = document.querySelector("#ai-summary");
 const aiOutput = document.querySelector("#ai-output");
+const projectSelect = document.querySelector("#project-select");
+const projectNameInput = document.querySelector("#project-name");
+const projectClientInput = document.querySelector("#project-client");
+const projectAuditorInput = document.querySelector("#project-auditor");
+const projectEngagementInput = document.querySelector("#project-engagement");
+const createProjectButton = document.querySelector("#create-project");
 const historyTable = document.querySelector("#history-table");
 const historyCount = document.querySelector("#history-count");
 const refreshHistoryButton = document.querySelector("#refresh-history");
@@ -42,7 +50,46 @@ document.querySelectorAll(".tab").forEach((button) => {
   button.addEventListener("click", () => activateTab(button.dataset.tab));
 });
 
-loadHistory();
+initialize();
+
+async function initialize() {
+  await loadProjects();
+  await loadHistory();
+}
+
+projectSelect.addEventListener("change", async () => {
+  state.projectId = projectSelect.value;
+  applyProject(currentProject());
+  await loadHistory();
+});
+
+createProjectButton.addEventListener("click", async () => {
+  clearMessage();
+  const name = projectNameInput.value.trim();
+  if (!name) {
+    showMessage("El nombre del proyecto es obligatorio.");
+    return;
+  }
+  createProjectButton.disabled = true;
+  try {
+    const response = await postJson("/api/projects/create", {
+      name,
+      target: document.querySelector("#target").value.trim(),
+      client: projectClientInput.value.trim(),
+      auditor: projectAuditorInput.value.trim(),
+      engagement: projectEngagementInput.value.trim(),
+      scope_summary: document.querySelector("#report-scope").value.trim(),
+    });
+    await loadProjects(response.project.id);
+    state.projectId = response.project.id;
+    applyProject(response.project);
+    await loadHistory();
+  } catch (error) {
+    showMessage(error.message);
+  } finally {
+    createProjectButton.disabled = false;
+  }
+});
 
 form.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -84,6 +131,7 @@ generateReportButton.addEventListener("click", async () => {
   try {
     const title = document.querySelector("#report-title").value.trim();
     const response = await postJson("/api/report", {
+      project_id: currentProjectId(),
       scan: state.scan,
       ai_analysis: currentAiAnalysisForReport(),
       title,
@@ -122,7 +170,10 @@ historyTable.addEventListener("click", async (event) => {
   }
   clearMessage();
   try {
-    const response = await postJson("/api/history/load", { id: button.dataset.loadHistory });
+    const response = await postJson("/api/history/load", {
+      project_id: currentProjectId(),
+      id: button.dataset.loadHistory,
+    });
     state.scan = response.scan;
     state.markdown = "";
     state.html = "";
@@ -150,6 +201,7 @@ runCompareButton.addEventListener("click", async () => {
   clearMessage();
   try {
     const response = await postJson("/api/compare", {
+      project_id: currentProjectId(),
       baseline_id: compareBaseline.value,
       current_id: compareCurrent.value,
     });
@@ -169,6 +221,7 @@ runAiButton.addEventListener("click", async () => {
   runAiButton.textContent = "Analizando...";
   try {
     const response = await postJson("/api/analyze", {
+      project_id: currentProjectId(),
       scan: state.scan,
       dry_run: document.querySelector("#ai-dry-run").checked,
       save_to_history: document.querySelector("#ai-save-history").checked,
@@ -234,6 +287,7 @@ function collectPayload() {
   });
 
   return {
+    project_id: currentProjectId(),
     target: document.querySelector("#target").value.trim(),
     allowed_hosts: document.querySelector("#allowed-hosts").value.trim(),
     include_paths: document.querySelector("#include-paths").value.trim(),
@@ -309,12 +363,101 @@ function renderScan(scan) {
 
 async function loadHistory() {
   try {
-    const response = await getJson("/api/history");
+    const suffix = currentProjectId() ? `?project=${encodeURIComponent(currentProjectId())}` : "";
+    const response = await getJson(`/api/history${suffix}`);
     state.history = Array.isArray(response.items) ? response.items : [];
     renderHistory(state.history);
     populateCompareSelectors(state.history);
   } catch (error) {
     showMessage(error.message);
+  }
+}
+
+async function loadProjects(selectedId = "") {
+  try {
+    const response = await getJson("/api/projects");
+    state.projects = Array.isArray(response.items) ? response.items : [];
+    renderProjects(state.projects, selectedId || currentProjectId());
+  } catch (error) {
+    showMessage(error.message);
+  }
+}
+
+function renderProjects(projects, selectedId) {
+  const options = ['<option value="">Sin proyecto</option>']
+    .concat(
+      projects.map((project) => {
+        const selected = project.id === selectedId ? " selected" : "";
+        return `<option value="${escapeHtml(project.id)}"${selected}>${escapeHtml(project.name || project.id)}</option>`;
+      })
+    )
+    .join("");
+  projectSelect.innerHTML = options;
+  state.projectId = projectSelect.value;
+}
+
+function currentProjectId() {
+  return projectSelect.value || "";
+}
+
+function currentProject() {
+  const projectId = currentProjectId();
+  return state.projects.find((project) => project.id === projectId) || null;
+}
+
+function applyProject(project) {
+  if (!project) {
+    return;
+  }
+
+  projectNameInput.value = project.name || "";
+  projectClientInput.value = project.client || "";
+  projectAuditorInput.value = project.auditor || "";
+  projectEngagementInput.value = project.engagement || "";
+
+  document.querySelector("#report-client").value = project.client || "";
+  document.querySelector("#report-auditor").value = project.auditor || "";
+  document.querySelector("#report-engagement").value = project.engagement || "";
+  document.querySelector("#report-scope").value = project.scope_summary || project.target_url || "";
+
+  const config = project.config || {};
+  if (config.target?.url) {
+    document.querySelector("#target").value = config.target.url;
+  }
+  if (config.scope) {
+    document.querySelector("#allowed-hosts").value = joinList(config.scope.allowed_hosts);
+    document.querySelector("#include-paths").value = joinList(config.scope.include_paths) || "/";
+    document.querySelector("#exclude-paths").value = joinList(config.scope.exclude_paths);
+    setChecked("#allow-subdomains", config.scope.allow_subdomains);
+    setChecked("#resolve-dns", config.scope.resolve_dns);
+    setChecked("#allow-private", config.scope.allow_private_networks);
+  }
+  if (config.http) {
+    document.querySelector("#timeout").value = config.http.timeout_seconds ?? 10;
+    document.querySelector("#max-redirects").value = config.http.max_redirects ?? 10;
+    setChecked("#check-http", config.http.check_http_counterpart);
+  }
+  if (config.crawler) {
+    document.querySelector("#max-depth").value = config.crawler.max_depth ?? 1;
+    document.querySelector("#max-pages").value = config.crawler.max_pages ?? 25;
+    document.querySelector("#delay").value = config.crawler.delay_seconds ?? 0;
+  }
+  if (config.modules) {
+    document.querySelectorAll("[data-module]").forEach((input) => {
+      if (Object.prototype.hasOwnProperty.call(config.modules, input.dataset.module)) {
+        input.checked = Boolean(config.modules[input.dataset.module]);
+      }
+    });
+  }
+}
+
+function joinList(value) {
+  return Array.isArray(value) ? value.join(", ") : "";
+}
+
+function setChecked(selector, value) {
+  if (typeof value === "boolean") {
+    document.querySelector(selector).checked = value;
   }
 }
 

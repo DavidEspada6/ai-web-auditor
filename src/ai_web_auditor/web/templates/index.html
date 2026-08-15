@@ -24,6 +24,35 @@
     <main class="layout">
       <aside class="panel controls">
         <form id="scan-form">
+          <section class="module-section project-section">
+            <h2>Proyecto</h2>
+            <label class="field">
+              <span>Proyecto activo</span>
+              <select id="project-select">
+                <option value="">Sin proyecto</option>
+              </select>
+            </label>
+            <div class="grid-two">
+              <label class="field">
+                <span>Nuevo proyecto</span>
+                <input id="project-name" type="text" placeholder="Cliente demo">
+              </label>
+              <label class="field">
+                <span>Cliente</span>
+                <input id="project-client" type="text" placeholder="Organizacion">
+              </label>
+              <label class="field">
+                <span>Auditor</span>
+                <input id="project-auditor" type="text" placeholder="David">
+              </label>
+              <label class="field">
+                <span>Trabajo</span>
+                <input id="project-engagement" type="text" placeholder="Practica 1">
+              </label>
+            </div>
+            <button id="create-project" class="ghost full-width" type="button">Crear proyecto</button>
+          </section>
+
           <label class="field">
             <span>Objetivo</span>
             <input id="target" name="target" type="url" placeholder="https://example.com" required>

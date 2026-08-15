@@ -21,6 +21,7 @@ dist/
 outputs/
 work/
 audits/
+projects/
 
 .env
 .env.*

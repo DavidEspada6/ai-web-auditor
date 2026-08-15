@@ -8,8 +8,8 @@ scope, HTTP/HTTPS y redirecciones, cabeceras de seguridad, cookies, HTTP Basic
 Auth, metodos anunciados por OPTIONS, TLS basico y crawling seguro limitado por
 scope. Tambien incluye fingerprinting web no intrusivo a partir de cabeceras,
 cookies, HTML inicial y ficheros publicos habituales, analisis IA opcional desde
-CLI y GUI, informes Markdown/HTML/PDF, historial local y comparacion de
-auditorias.
+CLI y GUI, informes Markdown/HTML/PDF, proyectos locales, historial separado por
+proyecto y comparacion de auditorias.
 
 No implementa explotacion, fuerza bruta, fuzzing agresivo, crawling masivo,
 escaneo de puertos ni pruebas intrusivas.
@@ -28,7 +28,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.9 no necesita librerias externas en tiempo de ejecucion.
+La v0.10 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -49,6 +49,8 @@ lanzador incluido:
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.pdf
 .\ai-web-auditor.cmd history
 .\ai-web-auditor.cmd compare baseline.json current.json
+.\ai-web-auditor.cmd project init "Cliente Demo" --target https://example.com
+.\ai-web-auditor.cmd scan --project cliente-demo
 .\ai-web-auditor.cmd gui
 ```
 
@@ -56,6 +58,12 @@ Abrir la interfaz grafica local:
 
 ```powershell
 ai-web-auditor gui
+```
+
+En Windows tambien puedes abrir la interfaz con doble clic en:
+
+```powershell
+.\start-ai-web-auditor.cmd
 ```
 
 Por defecto se sirve en:
@@ -185,7 +193,7 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.9",
+    "user_agent": "AI-Web-Auditor/0.10",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -317,7 +325,7 @@ Hay ejemplos en `examples/report-example.md` y `examples/report-example.html`.
 
 ## Historial y comparacion
 
-La v0.9 permite guardar resultados en un historial local:
+La v0.10 permite guardar resultados en un historial local:
 
 ```powershell
 ai-web-auditor scan --config audit.json --save-history --history-label "pre-fix"
@@ -347,6 +355,41 @@ La comparacion muestra:
 
 Hay un ejemplo de salida en `examples/comparison-example.json`.
 
+## Proyectos
+
+Los proyectos separan configuracion, historial e informes por cliente, dominio o
+laboratorio:
+
+```powershell
+ai-web-auditor project init "Cliente Demo" --target https://example.com --client "Cliente Demo SL" --auditor "David"
+ai-web-auditor project list
+ai-web-auditor project show cliente-demo
+```
+
+Cada proyecto crea esta estructura local:
+
+```text
+projects/
+  cliente-demo/
+    project.json
+    scope.json
+    audits/
+    reports/
+    ai/
+```
+
+Ejecutar una auditoria dentro de un proyecto:
+
+```powershell
+ai-web-auditor scan --project cliente-demo
+ai-web-auditor history --project cliente-demo
+ai-web-auditor compare id-auditoria-antigua id-auditoria-nueva --project cliente-demo
+```
+
+Al usar `--project`, el comando `scan` carga `scope.json` del proyecto y guarda
+la auditoria en `projects/<id>/audits/`. La carpeta `projects/` esta ignorada
+por Git porque puede contener informacion sensible de clientes o laboratorios.
+
 ## Interfaz grafica local
 
 La interfaz web local se sirve desde Python:
@@ -363,13 +406,14 @@ ai-web-auditor gui --no-open
 
 Desde la interfaz se puede:
 
+- crear y seleccionar proyectos;
 - configurar objetivo, hosts, rutas y limites principales;
 - activar o desactivar modulos;
 - ejecutar una auditoria no intrusiva;
 - revisar hallazgos, modulos, resumen y JSON;
 - analizar la auditoria con IA en modo dry-run o con API;
 - guardar el analisis IA en el historial local;
-- guardar y abrir auditorias del historial local;
+- guardar y abrir auditorias del historial local o del proyecto activo;
 - comparar dos auditorias guardadas;
 - generar informes Markdown, HTML y PDF;
 - descargar JSON, AI JSON, Markdown, HTML y PDF;
@@ -415,7 +459,7 @@ Los siguientes pasos naturales son:
 - mejoras en la integracion con IA para comparar hallazgos entre auditorias;
 - modulos de verificacion controlada para confirmar hallazgos sin explotacion destructiva;
 - base de datos local opcional para proyectos grandes;
-- perfiles de auditoria reutilizables por cliente o laboratorio.
+- empaquetado como aplicacion de escritorio cuando la GUI este mas estable.
 
 ## Futuras pruebas controladas
 
@@ -440,7 +484,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.9.0
+git tag v0.10.0
 git push
 git push --tags
 ```
@@ -453,7 +497,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",

@@ -178,6 +178,17 @@ button:focus-visible {
   margin: 0 0 10px;
 }
 
+.project-section {
+  margin-top: 0;
+  margin-bottom: 18px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+
+.full-width {
+  width: 100%;
+}
+
 .primary,
 .secondary {
   background: var(--brand);
