@@ -6,7 +6,8 @@ Esta version esta pensada como base segura para practicas y auditorias con
 autorizacion. Solo ejecuta comprobaciones no intrusivas: validacion de URL y
 scope, HTTP/HTTPS y redirecciones, cabeceras de seguridad, cookies, HTTP Basic
 Auth, metodos anunciados por OPTIONS, TLS basico y crawling seguro limitado por
-scope.
+scope. Tambien incluye fingerprinting web no intrusivo a partir de cabeceras,
+cookies, HTML inicial y ficheros publicos habituales.
 
 No implementa explotacion, fuerza bruta, fuzzing agresivo, crawling masivo,
 escaneo de puertos ni pruebas intrusivas.
@@ -25,7 +26,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.2 no necesita librerias externas en tiempo de ejecucion.
+La v0.3 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -110,9 +111,19 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.2",
+    "user_agent": "AI-Web-Auditor/0.3",
     "verify_tls": true,
     "check_http_counterpart": true
+  },
+  "fingerprinting": {
+    "max_body_bytes": 262144,
+    "detect_versions": true,
+    "public_paths": [
+      "/robots.txt",
+      "/.well-known/security.txt",
+      "/security.txt",
+      "/sitemap.xml"
+    ]
   },
   "crawler": {
     "max_depth": 1,
@@ -129,6 +140,7 @@ Ejemplo en `examples/audit.json`:
     "basic_auth": true,
     "http_methods": true,
     "tls": true,
+    "fingerprinting": true,
     "crawler": true
   }
 }
@@ -148,12 +160,14 @@ Ejemplo en `examples/audit.json`:
 - `http_methods`: usa `OPTIONS` para leer metodos anunciados por el servidor.
 - `tls`: obtiene informacion basica del certificado y de la version TLS
   negociada.
+- `fingerprinting`: identifica senales de servidor, CDN, framework, lenguaje,
+  CMS y ficheros publicos como `robots.txt`, `security.txt` y `sitemap.xml`.
 - `crawler`: recorre enlaces internos sin enviar formularios, sin salir del
   scope, con profundidad y numero de paginas limitados.
 
 ## Scope de auditoria
 
-La v0.2 permite preparar una auditoria con preguntas:
+La v0.3 permite preparar una auditoria con preguntas:
 
 ```powershell
 ai-web-auditor init-scope https://example.com --output audit.json
@@ -186,7 +200,6 @@ anadir uno nuevo:
 
 Los siguientes pasos naturales son:
 
-- fingerprinting de tecnologias web;
 - descubrimiento de subdominios;
 - escaneo de puertos con limites claros;
 - integracion con OpenAI para priorizacion y explicacion de hallazgos;
@@ -201,7 +214,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.2.1
+git tag v0.3.1
 git push
 git push --tags
 ```
@@ -214,7 +227,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",

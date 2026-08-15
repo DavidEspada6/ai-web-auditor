@@ -1,7 +1,7 @@
 {
   "tool": "ai-web-auditor",
-  "version": "0.2.0",
-  "generated_at": "2026-08-15T00:00:00Z",
+  "version": "0.3.0",
+  "generated_at": "2026-08-16T00:00:00Z",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",
@@ -13,6 +13,51 @@
     "ip_addresses": []
   },
   "modules": [
+    {
+      "name": "fingerprinting",
+      "status": "passed",
+      "summary": "Identified 0 technology signal(s) and checked 4 public metadata path(s).",
+      "findings": [],
+      "artifacts": {
+        "url": "https://example.com/",
+        "technologies": [],
+        "public_files": [
+          {
+            "path": "/robots.txt",
+            "url": "https://example.com/robots.txt",
+            "status_code": 404,
+            "content_type": "text/html",
+            "present": false,
+            "body_truncated": false
+          },
+          {
+            "path": "/.well-known/security.txt",
+            "url": "https://example.com/.well-known/security.txt",
+            "status_code": 404,
+            "content_type": "text/html",
+            "present": false,
+            "body_truncated": false
+          },
+          {
+            "path": "/security.txt",
+            "url": "https://example.com/security.txt",
+            "status_code": 404,
+            "content_type": "text/html",
+            "present": false,
+            "body_truncated": false
+          },
+          {
+            "path": "/sitemap.xml",
+            "url": "https://example.com/sitemap.xml",
+            "status_code": 404,
+            "content_type": "text/html",
+            "present": false,
+            "body_truncated": false
+          }
+        ],
+        "headers": {}
+      }
+    },
     {
       "name": "crawler",
       "status": "passed",

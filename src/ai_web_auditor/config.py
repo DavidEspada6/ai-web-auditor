@@ -30,9 +30,23 @@ class ScopeConfig:
 class HTTPConfig:
     timeout_seconds: float = 10.0
     max_redirects: int = 10
-    user_agent: str = "AI-Web-Auditor/0.2"
+    user_agent: str = "AI-Web-Auditor/0.3"
     verify_tls: bool = True
     check_http_counterpart: bool = True
+
+
+@dataclass
+class FingerprintConfig:
+    max_body_bytes: int = 262144
+    detect_versions: bool = True
+    public_paths: list[str] = field(
+        default_factory=lambda: [
+            "/robots.txt",
+            "/.well-known/security.txt",
+            "/security.txt",
+            "/sitemap.xml",
+        ]
+    )
 
 
 @dataclass
@@ -77,6 +91,7 @@ class ModuleConfig:
     basic_auth: bool = True
     http_methods: bool = True
     tls: bool = True
+    fingerprinting: bool = True
     crawler: bool = True
 
 
@@ -85,6 +100,7 @@ class AuditConfig:
     target: TargetConfig = field(default_factory=TargetConfig)
     scope: ScopeConfig = field(default_factory=ScopeConfig)
     http: HTTPConfig = field(default_factory=HTTPConfig)
+    fingerprinting: FingerprintConfig = field(default_factory=FingerprintConfig)
     crawler: CrawlerConfig = field(default_factory=CrawlerConfig)
     modules: ModuleConfig = field(default_factory=ModuleConfig)
 

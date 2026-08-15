@@ -17,9 +17,19 @@
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.2",
+    "user_agent": "AI-Web-Auditor/0.3",
     "verify_tls": true,
     "check_http_counterpart": true
+  },
+  "fingerprinting": {
+    "max_body_bytes": 262144,
+    "detect_versions": true,
+    "public_paths": [
+      "/robots.txt",
+      "/.well-known/security.txt",
+      "/security.txt",
+      "/sitemap.xml"
+    ]
   },
   "crawler": {
     "max_depth": 1,
@@ -58,6 +68,7 @@
     "basic_auth": true,
     "http_methods": true,
     "tls": true,
+    "fingerprinting": true,
     "crawler": true
   }
 }

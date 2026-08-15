@@ -106,6 +106,67 @@ class CrawlHandler(BaseHTTPRequestHandler):
         return
 
 
+class FingerprintHandler(BaseHTTPRequestHandler):
+    server_version = "nginx/1.24.0"
+    sys_version = ""
+
+    def do_GET(self):
+        if self.path == "/":
+            body = b"""
+            <html>
+              <head>
+                <meta name="generator" content="WordPress 6.4">
+              </head>
+              <body>
+                <script id="__NEXT_DATA__" type="application/json">{}</script>
+                <img src="/wp-content/uploads/logo.png">
+              </body>
+            </html>
+            """
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("X-Powered-By", "PHP/8.2.1")
+            self.send_header("Set-Cookie", "laravel_session=abc; Path=/; HttpOnly")
+            self.send_header("Set-Cookie", "PHPSESSID=def; Path=/; HttpOnly")
+            self.end_headers()
+            self.wfile.write(body)
+            return
+
+        if self.path == "/robots.txt":
+            self.send_response(200)
+            self.send_header("Content-Type", "text/plain")
+            self.end_headers()
+            self.wfile.write(b"User-agent: *\nDisallow: /wp-admin/\nSitemap: /sitemap.xml\n")
+            return
+
+        if self.path == "/.well-known/security.txt":
+            self.send_response(200)
+            self.send_header("Content-Type", "text/plain")
+            self.end_headers()
+            self.wfile.write(b"Contact: mailto:security@example.test\nExpires: 2030-01-01T00:00:00Z\n")
+            return
+
+        if self.path == "/sitemap.xml":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/xml")
+            self.end_headers()
+            self.wfile.write(b"<urlset><url><loc>https://example.test/</loc></url></urlset>")
+            return
+
+        self.send_response(404)
+        self.send_header("Content-Type", "text/plain")
+        self.end_headers()
+        self.wfile.write(b"not found")
+
+    def do_OPTIONS(self):
+        self.send_response(204)
+        self.send_header("Allow", "GET, OPTIONS")
+        self.end_headers()
+
+    def log_message(self, *args):
+        return
+
+
 class LocalEngineTests(unittest.TestCase):
     def test_local_http_scan_generates_expected_findings(self):
         server = HTTPServer(("127.0.0.1", 0), DemoHandler)
@@ -194,6 +255,36 @@ class LocalEngineTests(unittest.TestCase):
         self.assertIn("https://outside.example/path", artifacts["out_of_scope_urls"])
         self.assertEqual(artifacts["ignored_urls_count"], 1)
         self.assertEqual(request_hosts, {"127.0.0.1"})
+
+    def test_fingerprinting_detects_technologies_and_public_files(self):
+        server = HTTPServer(("127.0.0.1", 0), FingerprintHandler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        self.addCleanup(server.server_close)
+        self.addCleanup(server.shutdown)
+
+        config = AuditConfig()
+        config.scope.allow_private_networks = True
+        config.scope.resolve_dns = False
+        config.modules.crawler = False
+
+        result = run_scan(f"http://127.0.0.1:{server.server_port}", config)
+        fingerprinting = next(module for module in result.modules if module.name == "fingerprinting")
+        tech_names = {item["name"] for item in fingerprinting.artifacts["technologies"]}
+        public_files = {item["path"]: item for item in fingerprinting.artifacts["public_files"]}
+        finding_ids = {finding.id for finding in fingerprinting.findings}
+
+        self.assertIn("nginx", tech_names)
+        self.assertIn("PHP", tech_names)
+        self.assertIn("Laravel", tech_names)
+        self.assertIn("WordPress", tech_names)
+        self.assertIn("Next.js", tech_names)
+        self.assertTrue(public_files["/robots.txt"]["present"])
+        self.assertTrue(public_files["/.well-known/security.txt"]["present"])
+        self.assertEqual(public_files["/sitemap.xml"]["url_count"], 1)
+        self.assertIn("FINGERPRINT-SERVER-VERSION-DISCLOSED", finding_ids)
+        self.assertIn("FINGERPRINT-POWERED-BY-DISCLOSED", finding_ids)
+        self.assertIn("FINGERPRINT-GENERATOR-DISCLOSED", finding_ids)
 
 
 if __name__ == "__main__":

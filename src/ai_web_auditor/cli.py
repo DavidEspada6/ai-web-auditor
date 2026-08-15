@@ -70,6 +70,7 @@ def init_scope_command(args: argparse.Namespace) -> int:
     config.http.timeout_seconds = _prompt_float("HTTP timeout seconds", config.http.timeout_seconds, minimum=1.0)
     config.http.max_redirects = _prompt_int("Maximum redirects", config.http.max_redirects, minimum=0)
     config.http.check_http_counterpart = _prompt_bool("Check HTTP counterpart for HTTPS targets", True)
+    config.modules.fingerprinting = _prompt_bool("Enable web fingerprinting", True)
     config.modules.crawler = _prompt_bool("Enable safe crawler", True)
     config.crawler.max_depth = _prompt_int("Crawler max depth", config.crawler.max_depth, minimum=0)
     config.crawler.max_pages = _prompt_int("Crawler max pages", config.crawler.max_pages, minimum=1)

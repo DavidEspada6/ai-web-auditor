@@ -2,6 +2,22 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.3.0] - 2026-08-16
+
+### Anade
+
+- Modulo `fingerprinting` no intrusivo.
+- Deteccion de tecnologias por cabeceras HTTP, cookies y HTML inicial.
+- Deteccion basica de servidor, CDN, hosting, lenguaje, framework y CMS.
+- Revision segura de `robots.txt`, `/.well-known/security.txt`, `/security.txt` y `sitemap.xml` si estan dentro del scope.
+- Hallazgos informativos para cabeceras o metadata que revelan versiones o tecnologias.
+- Tests locales para fingerprinting sin depender de Internet.
+
+### Seguridad
+
+- El fingerprinting solo realiza peticiones GET a rutas publicas configuradas.
+- Las rutas publicas se omiten si quedan fuera del scope o estan excluidas.
+
 ## [0.2.0] - 2026-08-15
 
 ### Anade
