@@ -2,6 +2,22 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.5.0] - 2026-08-16
+
+### Anade
+
+- Comando `report` para generar informes Markdown desde resultados JSON.
+- Soporte opcional de `--ai-analysis` para incorporar el analisis IA al informe.
+- Secciones de objetivo, resumen ejecutivo, severidades, modulos, hallazgos, tecnologias, crawler, notas IA y limitaciones.
+- Escritura de informe con `--output` o salida directa por consola.
+- Ejemplo `examples/report-example.md`.
+- Tests del generador Markdown y del comando `report`.
+
+### Seguridad
+
+- El reporting no ejecuta peticiones de red ni acciones sobre objetivos.
+- El informe refleja solo evidencias existentes en el JSON de escaneo y, si se aporta, el analisis IA ya generado.
+
 ## [0.4.0] - 2026-08-16
 
 ### Anade

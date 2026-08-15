@@ -7,8 +7,8 @@ autorizacion. Solo ejecuta comprobaciones no intrusivas: validacion de URL y
 scope, HTTP/HTTPS y redirecciones, cabeceras de seguridad, cookies, HTTP Basic
 Auth, metodos anunciados por OPTIONS, TLS basico y crawling seguro limitado por
 scope. Tambien incluye fingerprinting web no intrusivo a partir de cabeceras,
-cookies, HTML inicial y ficheros publicos habituales. La v0.4 anade analisis
-IA opcional sobre el JSON generado por la herramienta.
+cookies, HTML inicial y ficheros publicos habituales, analisis IA opcional e
+informes Markdown a partir del JSON de escaneo.
 
 No implementa explotacion, fuerza bruta, fuzzing agresivo, crawling masivo,
 escaneo de puertos ni pruebas intrusivas.
@@ -27,7 +27,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.4 no necesita librerias externas en tiempo de ejecucion.
+La v0.5 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -43,6 +43,7 @@ lanzador incluido:
 .\ai-web-auditor.cmd init-scope https://example.com --output audit.json
 .\ai-web-auditor.cmd scan --config audit.json
 .\ai-web-auditor.cmd analyze outputs/result.json --dry-run
+.\ai-web-auditor.cmd report outputs/result.json --output outputs/report.md
 ```
 
 Crear una configuracion de auditoria con preguntas guiadas:
@@ -74,6 +75,19 @@ Probar el prompt sin llamar a la API:
 
 ```powershell
 ai-web-auditor analyze outputs/example.json --dry-run --json
+```
+
+Generar un informe Markdown:
+
+```powershell
+ai-web-auditor report outputs/example.json --output outputs/report.md
+```
+
+Generar un informe Markdown incorporando el analisis IA:
+
+```powershell
+ai-web-auditor analyze outputs/example.json --json-output outputs/analysis.json
+ai-web-auditor report outputs/example.json --ai-analysis outputs/analysis.json --output outputs/report.md
 ```
 
 Mostrar solo JSON en consola:
@@ -126,7 +140,7 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.4",
+    "user_agent": "AI-Web-Auditor/0.5",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -216,9 +230,35 @@ Para revisar lo que se enviaria al proveedor sin hacer la llamada:
 ai-web-auditor analyze outputs/result.json --dry-run --json
 ```
 
+## Reporting
+
+La v0.5 genera informes Markdown desde el JSON de escaneo. Este paso no
+contacta con el objetivo ni ejecuta nuevas comprobaciones:
+
+```powershell
+ai-web-auditor report outputs/result.json --output outputs/report.md
+```
+
+Si ya existe un analisis IA guardado en JSON, se puede incorporar al informe:
+
+```powershell
+ai-web-auditor report outputs/result.json --ai-analysis outputs/analysis.json --output outputs/report.md
+```
+
+El informe incluye:
+
+- objetivo y estado del escaneo;
+- resumen ejecutivo;
+- resumen por severidad;
+- resumen por modulo;
+- hallazgos y evidencias;
+- fingerprinting y crawler si estan presentes;
+- priorizacion IA si se aporta;
+- limitaciones de la auditoria.
+
 ## Scope de auditoria
 
-La v0.4 permite preparar una auditoria con preguntas:
+La herramienta permite preparar una auditoria con preguntas:
 
 ```powershell
 ai-web-auditor init-scope https://example.com --output audit.json
@@ -253,8 +293,8 @@ Los siguientes pasos naturales son:
 
 - descubrimiento de subdominios;
 - escaneo de puertos con limites claros;
-- integracion con OpenAI para priorizacion y explicacion de hallazgos;
-- generacion de informes en Markdown, HTML o PDF;
+- mejoras en la integracion con IA para comparar hallazgos entre auditorias;
+- generacion de informes en HTML o PDF;
 - base de datos local para comparar auditorias.
 
 ## Versionado
@@ -265,7 +305,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.4.1
+git tag v0.5.1
 git push
 git push --tags
 ```
@@ -278,7 +318,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",
