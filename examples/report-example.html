@@ -191,18 +191,15 @@ dd {
 <h1>Web Audit Report - example.com</h1>
 <p>La auditoria no intrusiva no muestra hallazgos criticos en la muestra, pero conviene revisar las cabeceras y metadatos expuestos.</p>
 <div class="cover-grid">
-<div><span>Generated</span><strong>2026-08-15T23:53:27Z</strong></div>
-<div><span>Report generator</span><strong>ai-web-auditor 0.11.0</strong></div>
-<div><span>Scan version</span><strong>0.11.0</strong></div>
+<div><span>Generated</span><strong>2026-08-16T00:12:50Z</strong></div>
+<div><span>Report generator</span><strong>ai-web-auditor 0.12.0</strong></div>
+<div><span>Scan version</span><strong>0.12.0</strong></div>
 <div><span>Scan status</span><strong>completed</strong></div>
 <div><span>Overall risk</span><strong>low</strong></div>
 <div><span>Target</span><strong>https://example.com/</strong></div>
 </div>
 </section>
-<section class="section">
-<h2>Engagement</h2>
-<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Client</td><td>Cliente Demo</td></tr><tr><td>Auditor</td><td>David Espada</td></tr><tr><td>Engagement</td><td>Practica 1</td></tr><tr><td>Scope summary</td><td>https://example.com</td></tr><tr><td>Notes</td><td>Ejemplo generado con datos de muestra.</td></tr></tbody></table>
-</section>
+
 <section class="section">
 <h2>Target</h2>
 <table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Original URL</td><td>https://example.com</td></tr><tr><td>Normalized URL</td><td>https://example.com/</td></tr><tr><td>Host</td><td>example.com</td></tr><tr><td>Scheme</td><td>https</td></tr><tr><td>Port</td><td>443</td></tr></tbody></table>
@@ -225,7 +222,7 @@ dd {
 </section>
 <section class="section">
 <h2>Module Summary</h2>
-<table><thead><tr><th>Module</th><th>Status</th><th>Summary</th></tr></thead><tbody><tr><td>fingerprinting</td><td>passed</td><td>Identified 0 technology signal(s) and checked 4 public metadata path(s).</td></tr><tr><td>crawler</td><td>passed</td><td>Crawled 1 page(s), discovered 1 in-scope URL(s).</td></tr></tbody></table>
+<table><thead><tr><th>Module</th><th>Status</th><th>Summary</th></tr></thead><tbody><tr><td>fingerprinting</td><td>passed</td><td>Identified 0 technology signal(s) and checked 4 public metadata path(s).</td></tr><tr><td>crawler</td><td>passed</td><td>Crawled 1 page(s), discovered 2 in-scope URL(s).</td></tr></tbody></table>
 </section>
 <section class="section">
 <h2>Findings</h2>
@@ -239,9 +236,15 @@ dd {
 </section>
 <section class="section">
 <h2>Crawler</h2>
-<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Seed URL</td><td>https://example.com/</td></tr><tr><td>Max depth</td><td>1</td></tr><tr><td>Max pages</td><td>25</td></tr><tr><td>Fetched URLs</td><td>1</td></tr><tr><td>Discovered in-scope URLs</td><td>1</td></tr><tr><td>Out-of-scope URLs recorded but not visited</td><td>0</td></tr><tr><td>Excluded URLs recorded but not visited</td><td>0</td></tr></tbody></table>
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Seed URL</td><td>https://example.com/</td></tr><tr><td>Max depth</td><td>1</td></tr><tr><td>Max pages</td><td>25</td></tr><tr><td>Fetched URLs</td><td>1</td></tr><tr><td>Discovered in-scope URLs</td><td>2</td></tr><tr><td>Out-of-scope URLs recorded but not visited</td><td>0</td></tr><tr><td>Excluded URLs recorded but not visited</td><td>0</td></tr></tbody></table>
 <h3>Discovered URLs</h3>
-<ul><li>https://example.com/</li></ul>
+<ul><li>https://example.com/</li><li>https://example.com/login</li></ul>
+</section>
+<section class="section">
+<h2>Web Inventory</h2>
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Total URLs</td><td>2</td></tr><tr><td>Fetched URLs</td><td>1</td></tr><tr><td>Interesting URLs</td><td>1</td></tr><tr><td>Forms detected</td><td>0</td></tr><tr><td>Out-of-scope URLs recorded but not visited</td><td>0</td></tr><tr><td>Excluded URLs recorded but not visited</td><td>0</td></tr></tbody></table>
+<h3>URL Inventory</h3>
+<table><thead><tr><th>URL</th><th>Status</th><th>Type</th><th>Forms</th><th>Interest</th></tr></thead><tbody><tr><td>https://example.com/login</td><td>unknown</td><td>unknown</td><td>0</td><td>login_path</td></tr><tr><td>https://example.com/</td><td>200</td><td>text/html</td><td>0</td><td>unknown</td></tr></tbody></table>
 </section>
 <section class="section">
 <h2>AI Prioritization</h2>

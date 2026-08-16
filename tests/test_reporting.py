@@ -14,7 +14,7 @@ from ai_web_auditor.reporting import generate_html_report, generate_markdown_rep
 
 SCAN_DATA = {
     "tool": "ai-web-auditor",
-    "version": "0.11.0",
+    "version": "0.12.0",
     "generated_at": "2026-08-16T00:00:00Z",
     "status": "completed",
     "target": {
@@ -121,6 +121,8 @@ class ReportingTests(unittest.TestCase):
         self.assertIn("nginx 1.24.0", markdown)
         self.assertIn("## Crawler", markdown)
         self.assertIn("https://example.com/about", markdown)
+        self.assertIn("## Web Inventory", markdown)
+        self.assertIn("https://example.com/admin", markdown)
         self.assertIn("## AI Prioritization", markdown)
 
     def test_generate_html_report_escapes_content_and_includes_metadata(self):
@@ -138,6 +140,7 @@ class ReportingTests(unittest.TestCase):
         self.assertIn("HTML Report", html)
         self.assertIn("Client A", html)
         self.assertIn("Public web", html)
+        self.assertIn("Web Inventory", html)
         self.assertIn("&lt;script&gt;alert(1)&lt;/script&gt;", html)
         self.assertNotIn("<script>alert(1)</script>", html)
 

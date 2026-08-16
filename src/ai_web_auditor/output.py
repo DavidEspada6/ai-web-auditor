@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from .inventory import build_inventory_from_scan
 from .models import Finding, ScanResult
 
 
@@ -16,6 +17,18 @@ def render_console(result: ScanResult) -> None:
     print("-------")
     for module in result.modules:
         print(f"- {module.name}: {module.status} - {module.summary}")
+
+    inventory = build_inventory_from_scan(result.to_dict())
+    summary = inventory.get("summary", {})
+    print()
+    print("Web Inventory")
+    print("-------------")
+    print(
+        f"URLs: {summary.get('total_urls', 0)} | "
+        f"Fetched: {summary.get('fetched_urls', 0)} | "
+        f"Forms: {summary.get('forms', 0)} | "
+        f"Interesting: {summary.get('interesting_urls', 0)}"
+    )
 
     findings = sorted(result.findings, key=lambda item: SEVERITY_RANK.get(item.severity, 99))
     if not findings:

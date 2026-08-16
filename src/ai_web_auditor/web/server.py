@@ -15,6 +15,7 @@ from ..config import AuditConfig
 from ..engine import run_scan
 from ..errors import AuditError
 from ..history import DEFAULT_HISTORY_DIR, list_history, load_scan_reference, save_analysis_for_history, save_scan_history
+from ..inventory import build_inventory_from_scan
 from ..lab import DEFAULT_LAB_HOST, DEFAULT_LAB_PORT, LabManager
 from ..projects import create_project, list_projects, load_project, load_project_config, project_report_metadata
 from ..reporting import generate_html_report, generate_markdown_report, generate_pdf_report
@@ -26,7 +27,7 @@ LAB_MANAGER = LabManager()
 
 
 class LocalAuditHandler(BaseHTTPRequestHandler):
-    server_version = "AIWebAuditorGUI/0.11"
+    server_version = "AIWebAuditorGUI/0.12"
 
     def do_GET(self) -> None:  # noqa: N802 - http.server uses this naming.
         parsed = urlparse(self.path)
@@ -223,6 +224,7 @@ class LocalAuditHandler(BaseHTTPRequestHandler):
             raise ValueError("History id is required")
         history_dir = _history_dir_from_payload(payload)
         scan = load_scan_reference(identifier, history_dir=history_dir)
+        scan["inventory"] = build_inventory_from_scan(scan)
         self._send_json({"ok": True, "scan": scan})
 
     def _handle_compare(self, payload: dict[str, Any]) -> None:

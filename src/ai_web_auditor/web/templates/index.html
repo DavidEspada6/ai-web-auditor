@@ -14,6 +14,7 @@
       </div>
       <div class="topbar-actions">
         <button id="download-json" class="ghost" type="button" disabled>JSON</button>
+        <button id="download-inventory" class="ghost" type="button" disabled>Inventario CSV</button>
         <button id="download-ai" class="ghost" type="button" disabled>AI JSON</button>
         <button id="download-md" class="ghost" type="button" disabled>Markdown</button>
         <button id="download-html" class="ghost" type="button" disabled>HTML</button>
@@ -166,6 +167,7 @@
           <button class="tab active" type="button" data-tab="summary">Resumen</button>
           <button class="tab" type="button" data-tab="findings">Hallazgos</button>
           <button class="tab" type="button" data-tab="modules">Modulos</button>
+          <button class="tab" type="button" data-tab="inventory">Inventario</button>
           <button class="tab" type="button" data-tab="json">JSON</button>
           <button class="tab" type="button" data-tab="ai">IA</button>
           <button class="tab" type="button" data-tab="report">Informe</button>
@@ -195,6 +197,35 @@
                 </tr>
               </thead>
               <tbody id="modules-table"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="inventory-view" class="panel view">
+          <div class="section-toolbar">
+            <div>
+              <p class="eyebrow">Inventario web</p>
+              <strong id="inventory-count">0 URLs</strong>
+            </div>
+            <label class="field inventory-filter">
+              <span>Filtrar</span>
+              <input id="inventory-search" type="search" placeholder="login, admin, 404, text/html">
+            </label>
+          </div>
+          <div id="inventory-summary" class="summary-grid compact-summary"></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>URL</th>
+                  <th>Estado</th>
+                  <th>Tipo</th>
+                  <th>Forms</th>
+                  <th>Interes</th>
+                  <th>Fuente</th>
+                </tr>
+              </thead>
+              <tbody id="inventory-table"></tbody>
             </table>
           </div>
         </section>

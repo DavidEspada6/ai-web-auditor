@@ -1,8 +1,8 @@
 # Web Audit Report - example.com
 
-- Generated: 2026-08-15T23:53:27Z
-- Report generator: ai-web-auditor 0.11.0
-- Scan version: 0.11.0
+- Generated: 2026-08-16T00:12:50Z
+- Report generator: ai-web-auditor 0.12.0
+- Scan version: 0.12.0
 - Scan status: completed
 
 ## Target
@@ -14,16 +14,6 @@
 | Host | example.com |
 | Scheme | https |
 | Port | 443 |
-
-## Engagement
-
-| Field | Value |
-| --- | --- |
-| Client | Cliente Demo |
-| Auditor | David Espada |
-| Engagement | Practica 1 |
-| Scope summary | https://example.com |
-| Notes | Ejemplo generado con datos de muestra. |
 
 ## Executive Summary
 
@@ -48,7 +38,7 @@ Los hallazgos son principalmente informativos o de endurecimiento defensivo.
 | Module | Status | Summary |
 | --- | --- | --- |
 | fingerprinting | passed | Identified 0 technology signal(s) and checked 4 public metadata path(s). |
-| crawler | passed | Crawled 1 page(s), discovered 1 in-scope URL(s). |
+| crawler | passed | Crawled 1 page(s), discovered 2 in-scope URL(s). |
 
 ## Findings
 
@@ -73,13 +63,30 @@ No technology signals were identified.
 - Max depth: 1
 - Max pages: 25
 - Fetched URLs: 1
-- Discovered in-scope URLs: 1
+- Discovered in-scope URLs: 2
 - Out-of-scope URLs recorded but not visited: 0
 - Excluded URLs recorded but not visited: 0
 
 ### Discovered URLs
 
 - `https://example.com/`
+- `https://example.com/login`
+
+## Web Inventory
+
+- Total URLs: 2
+- Fetched URLs: 1
+- Interesting URLs: 1
+- Forms detected: 0
+- Out-of-scope URLs recorded but not visited: 0
+- Excluded URLs recorded but not visited: 0
+
+### URL Inventory
+
+| URL | Status | Type | Forms | Interest |
+| --- | ---: | --- | ---: | --- |
+| https://example.com/login | unknown | unknown | 0 | login_path |
+| https://example.com/ | 200 | text/html | 0 | unknown |
 
 ## AI Prioritization
 

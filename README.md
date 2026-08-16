@@ -9,7 +9,8 @@ Auth, metodos anunciados por OPTIONS, TLS basico y crawling seguro limitado por
 scope. Tambien incluye fingerprinting web no intrusivo a partir de cabeceras,
 cookies, HTML inicial y ficheros publicos habituales, analisis IA opcional desde
 CLI y GUI, informes Markdown/HTML/PDF, proyectos locales, historial separado por
-proyecto, laboratorio vulnerable local y comparacion de auditorias.
+proyecto, inventario web exportable, laboratorio vulnerable local y comparacion
+de auditorias.
 
 No implementa explotacion, fuerza bruta, fuzzing agresivo, crawling masivo,
 escaneo de puertos ni pruebas intrusivas.
@@ -28,7 +29,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.11 no necesita librerias externas en tiempo de ejecucion.
+La v0.12 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -44,6 +45,7 @@ lanzador incluido:
 .\ai-web-auditor.cmd init-scope https://example.com --output audit.json
 .\ai-web-auditor.cmd scan --config audit.json
 .\ai-web-auditor.cmd analyze outputs/result.json --dry-run
+.\ai-web-auditor.cmd inventory outputs/result.json --output outputs/inventory.csv
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.md
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.html
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.pdf
@@ -101,6 +103,12 @@ Guardar JSON:
 
 ```powershell
 ai-web-auditor scan https://example.com --json-output outputs/example.json
+```
+
+Exportar inventario de URLs a CSV:
+
+```powershell
+ai-web-auditor inventory outputs/example.json --output outputs/inventory.csv
 ```
 
 Guardar una auditoria en el historial local:
@@ -206,7 +214,7 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.11",
+    "user_agent": "AI-Web-Auditor/0.12",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -331,6 +339,7 @@ El informe incluye:
 - resumen por modulo;
 - hallazgos y evidencias;
 - fingerprinting y crawler si estan presentes;
+- inventario web con URLs, estados, tipos de contenido y formularios detectados;
 - priorizacion IA si se aporta;
 - limitaciones de la auditoria.
 
@@ -338,7 +347,7 @@ Hay ejemplos en `examples/report-example.md` y `examples/report-example.html`.
 
 ## Laboratorio local
 
-La v0.11 incluye un laboratorio vulnerable solo para pruebas locales. Sirve una
+La v0.12 incluye un laboratorio vulnerable solo para pruebas locales. Sirve una
 web de demo en `127.0.0.1` con problemas controlados:
 
 - HTTP sin TLS;
@@ -348,6 +357,7 @@ web de demo en `127.0.0.1` con problemas controlados:
 - metadatos de tecnologia expuestos;
 - metodos HTTP de riesgo anunciados por `OPTIONS`;
 - `robots.txt` y `sitemap.xml` de ejemplo.
+- formulario HTML de login detectado de forma pasiva, sin envio de datos.
 
 Arrancarlo desde consola:
 
@@ -372,9 +382,35 @@ Desde la interfaz grafica puedes usar el panel `Laboratorio`:
 El laboratorio esta pensado para la demo de la practica y no debe publicarse en
 red. Por seguridad, solo permite arrancar en localhost o direcciones loopback.
 
+## Inventario web
+
+Cada escaneo nuevo incluye un bloque `inventory` dentro del JSON. Este bloque
+resume:
+
+- URLs visitadas por el crawler;
+- URLs descubiertas pero no visitadas;
+- URLs excluidas por scope;
+- URLs externas registradas sin solicitarlas;
+- codigos HTTP y tipos de contenido disponibles;
+- formularios HTML encontrados sin enviarlos;
+- rutas interesantes como `/login`, `/admin`, `/members`, `/api` o `/private`.
+
+Exportar solo el inventario:
+
+```powershell
+ai-web-auditor inventory outputs/result.json --format json
+ai-web-auditor inventory outputs/result.json --output outputs/inventory.csv
+```
+
+En la interfaz grafica, la pestana `Inventario` permite filtrar por ruta,
+estado HTTP, tipo de contenido, fuente o motivo de interes. El boton
+`Inventario CSV` descarga la tabla para revisarla en Excel u otra herramienta.
+
+Hay un ejemplo en `examples/inventory-example.csv`.
+
 ## Historial y comparacion
 
-La v0.11 permite guardar resultados en un historial local:
+La herramienta permite guardar resultados en un historial local:
 
 ```powershell
 ai-web-auditor scan --config audit.json --save-history --history-label "pre-fix"
@@ -460,13 +496,13 @@ Desde la interfaz se puede:
 - configurar objetivo, hosts, rutas y limites principales;
 - activar o desactivar modulos;
 - ejecutar una auditoria no intrusiva;
-- revisar hallazgos, modulos, resumen y JSON;
+- revisar resumen, hallazgos, modulos, inventario y JSON;
 - analizar la auditoria con IA en modo dry-run o con API;
 - guardar el analisis IA en el historial local;
 - guardar y abrir auditorias del historial local o del proyecto activo;
 - comparar dos auditorias guardadas;
 - generar informes Markdown, HTML y PDF;
-- descargar JSON, AI JSON, Markdown, HTML y PDF;
+- descargar JSON, Inventario CSV, AI JSON, Markdown, HTML y PDF;
 - anadir metadatos de auditoria al informe.
 
 ## Scope de auditoria
@@ -534,7 +570,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.11.0
+git tag v0.12.0
 git push
 git push --tags
 ```
@@ -547,7 +583,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",
@@ -558,7 +594,26 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
     "base_url": "https://example.com/",
     "ip_addresses": []
   },
-  "findings": []
+  "findings": [],
+  "inventory": {
+    "summary": {
+      "total_urls": 1,
+      "fetched_urls": 1,
+      "interesting_urls": 0,
+      "forms": 0
+    },
+    "urls": [
+      {
+        "url": "https://example.com/",
+        "status_code": 200,
+        "content_type": "text/html",
+        "fetched": true,
+        "forms_found": 0,
+        "interesting": false
+      }
+    ],
+    "forms": []
+  }
 }
 ```
 

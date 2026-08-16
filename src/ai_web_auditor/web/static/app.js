@@ -21,11 +21,16 @@ const summaryEmpty = document.querySelector("#summary-empty");
 const summaryContent = document.querySelector("#summary-content");
 const findingsList = document.querySelector("#findings-list");
 const modulesTable = document.querySelector("#modules-table");
+const inventoryCount = document.querySelector("#inventory-count");
+const inventorySearch = document.querySelector("#inventory-search");
+const inventorySummary = document.querySelector("#inventory-summary");
+const inventoryTable = document.querySelector("#inventory-table");
 const jsonOutput = document.querySelector("#json-output");
 const reportOutput = document.querySelector("#report-output");
 const htmlPreview = document.querySelector("#html-preview");
 const generateReportButton = document.querySelector("#generate-report");
 const downloadJsonButton = document.querySelector("#download-json");
+const downloadInventoryButton = document.querySelector("#download-inventory");
 const downloadAiButton = document.querySelector("#download-ai");
 const downloadMdButton = document.querySelector("#download-md");
 const downloadHtmlButton = document.querySelector("#download-html");
@@ -54,6 +59,10 @@ const compareOutput = document.querySelector("#compare-output");
 
 document.querySelectorAll(".tab").forEach((button) => {
   button.addEventListener("click", () => activateTab(button.dataset.tab));
+});
+
+inventorySearch.addEventListener("input", () => {
+  renderInventory(state.scan?.inventory || {});
 });
 
 initialize();
@@ -152,6 +161,7 @@ form.addEventListener("submit", async (event) => {
     generateReportButton.disabled = false;
     runAiButton.disabled = false;
     downloadJsonButton.disabled = false;
+    downloadInventoryButton.disabled = !hasInventory(state.scan);
     downloadAiButton.disabled = !state.aiAnalysis;
     downloadMdButton.disabled = true;
     downloadHtmlButton.disabled = true;
@@ -229,6 +239,7 @@ historyTable.addEventListener("click", async (event) => {
     generateReportButton.disabled = false;
     runAiButton.disabled = false;
     downloadJsonButton.disabled = false;
+    downloadInventoryButton.disabled = !hasInventory(state.scan);
     downloadAiButton.disabled = !state.aiAnalysis;
     downloadMdButton.disabled = true;
     downloadHtmlButton.disabled = true;
@@ -277,8 +288,7 @@ runAiButton.addEventListener("click", async () => {
     state.aiAnalysis = response.analysis;
     if (response.scan) {
       state.scan = response.scan;
-      jsonOutput.textContent = JSON.stringify(state.scan, null, 2);
-      loadHistory();
+      renderScan(state.scan);
     }
     renderAiAnalysis(state.aiAnalysis);
     document.querySelector("#ai-analysis").value = JSON.stringify(state.aiAnalysis, null, 2);
@@ -295,6 +305,12 @@ runAiButton.addEventListener("click", async () => {
 downloadJsonButton.addEventListener("click", () => {
   if (state.scan) {
     downloadText("audit-result.json", JSON.stringify(state.scan, null, 2) + "\n", "application/json");
+  }
+});
+
+downloadInventoryButton.addEventListener("click", () => {
+  if (state.scan?.inventory) {
+    downloadText("web-inventory.csv", inventoryToCsv(state.scan.inventory), "text/csv");
   }
 });
 
@@ -399,7 +415,9 @@ function renderScan(scan) {
   renderSummary(scan, findings, modules, requests);
   renderFindings(findings);
   renderModules(modules);
+  renderInventory(scan.inventory || {});
   jsonOutput.textContent = JSON.stringify(scan, null, 2);
+  downloadInventoryButton.disabled = !hasInventory(scan);
   loadHistory();
 }
 
@@ -461,7 +479,7 @@ function applyLabDefaults(lab) {
     projectAuditorInput.value = "David";
   }
   if (!projectEngagementInput.value.trim()) {
-    projectEngagementInput.value = "Simulacion v0.11.0";
+    projectEngagementInput.value = "Simulacion v0.12.0";
   }
 
   document.querySelector("#target").value = defaults.target;
@@ -587,6 +605,7 @@ function renderSummary(scan, findings, modules, requests) {
   summaryEmpty.hidden = true;
   summaryContent.hidden = false;
   summaryContent.innerHTML = "";
+  const inventorySummaryData = scan.inventory?.summary || {};
 
   const values = [
     ["Objetivo", scan.target?.normalized_url || "unknown"],
@@ -595,6 +614,8 @@ function renderSummary(scan, findings, modules, requests) {
     ["Modulos", modules.length],
     ["Hallazgos", findings.length],
     ["Peticiones", requests.length],
+    ["URLs", inventorySummaryData.total_urls || 0],
+    ["Forms", inventorySummaryData.forms || 0],
   ];
 
   values.forEach(([label, value]) => {
@@ -657,6 +678,74 @@ function renderModules(modules) {
     `;
     modulesTable.appendChild(row);
   });
+}
+
+function renderInventory(inventory) {
+  const summary = inventory?.summary || {};
+  const urls = Array.isArray(inventory?.urls) ? inventory.urls : [];
+  const query = inventorySearch.value.trim().toLowerCase();
+  const filtered = query
+    ? urls.filter((item) => inventorySearchText(item).includes(query))
+    : urls;
+
+  inventoryCount.textContent = query ? `${filtered.length} de ${urls.length} URLs` : `${urls.length} URLs`;
+  inventorySummary.innerHTML = "";
+  [
+    ["Total", summary.total_urls ?? urls.length],
+    ["Visitadas", summary.fetched_urls ?? 0],
+    ["Interesantes", summary.interesting_urls ?? 0],
+    ["Forms", summary.forms ?? 0],
+    ["Externas", summary.external_urls ?? 0],
+    ["Excluidas", summary.excluded_urls ?? 0],
+  ].forEach(([label, value]) => {
+    const item = document.createElement("div");
+    item.className = "metric";
+    item.innerHTML = `<span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong>`;
+    inventorySummary.appendChild(item);
+  });
+
+  inventoryTable.innerHTML = "";
+  if (!urls.length) {
+    const row = document.createElement("tr");
+    row.innerHTML = '<td colspan="6">Sin inventario disponible.</td>';
+    inventoryTable.appendChild(row);
+    return;
+  }
+  if (!filtered.length) {
+    const row = document.createElement("tr");
+    row.innerHTML = '<td colspan="6">Sin coincidencias.</td>';
+    inventoryTable.appendChild(row);
+    return;
+  }
+
+  filtered.forEach((item) => {
+    const reasons = Array.isArray(item.reasons) ? item.reasons.join(", ") : "";
+    const sources = Array.isArray(item.sources) ? item.sources.join(", ") : item.source || "";
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td><code>${escapeHtml(item.url || "")}</code></td>
+      <td>${escapeHtml(item.status_code ?? "")}</td>
+      <td>${escapeHtml(item.content_type || "")}</td>
+      <td>${escapeHtml(item.forms_found ?? 0)}</td>
+      <td>${reasons ? `<span class="interest-chip">${escapeHtml(reasons)}</span>` : ""}</td>
+      <td>${escapeHtml(sources)}</td>
+    `;
+    inventoryTable.appendChild(row);
+  });
+}
+
+function inventorySearchText(item) {
+  return [
+    item.url,
+    item.status_code,
+    item.content_type,
+    item.forms_found,
+    item.source,
+    ...(Array.isArray(item.sources) ? item.sources : []),
+    ...(Array.isArray(item.reasons) ? item.reasons : []),
+  ]
+    .join(" ")
+    .toLowerCase();
 }
 
 function renderAiAnalysis(analysisResult) {
@@ -808,6 +897,52 @@ function normalizeSeverity(value) {
     return "info";
   }
   return severityOrder.includes(severity) ? severity : "info";
+}
+
+function hasInventory(scan) {
+  return Array.isArray(scan?.inventory?.urls) && scan.inventory.urls.length > 0;
+}
+
+function inventoryToCsv(inventory) {
+  const fields = [
+    "url",
+    "status_code",
+    "content_type",
+    "fetched",
+    "depth",
+    "methods",
+    "links_found",
+    "forms_found",
+    "interesting",
+    "reasons",
+    "sources",
+    "title",
+    "error",
+  ];
+  const urls = Array.isArray(inventory?.urls) ? inventory.urls : [];
+  const rows = [fields.map(csvCell).join(",")];
+  urls.forEach((item) => {
+    rows.push(fields.map((field) => csvCell(csvValue(item[field]))).join(","));
+  });
+  return `${rows.join("\n")}\n`;
+}
+
+function csvValue(value) {
+  if (Array.isArray(value)) {
+    return value.join("; ");
+  }
+  if (typeof value === "boolean") {
+    return value ? "true" : "false";
+  }
+  return value ?? "";
+}
+
+function csvCell(value) {
+  const text = String(value);
+  if (/[",\n]/.test(text)) {
+    return `"${text.replaceAll('"', '""')}"`;
+  }
+  return text;
 }
 
 function downloadText(filename, content, type) {

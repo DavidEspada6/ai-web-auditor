@@ -94,7 +94,7 @@ class LabManager:
 
 
 class VulnerableLabHandler(BaseHTTPRequestHandler):
-    server_version = "AIWebAuditorLab/0.11"
+    server_version = "AIWebAuditorLab/0.12"
     sys_version = ""
 
     def do_GET(self) -> None:  # noqa: N802 - http.server uses this naming.
@@ -144,10 +144,7 @@ class VulnerableLabHandler(BaseHTTPRequestHandler):
         return
 
     def _send_members_challenge(self) -> None:
-        body = _page(
-            "Miembros",
-            "Esta ruta de laboratorio fuerza HTTP Basic Auth sobre HTTP para generar evidencia controlada.",
-        )
+        body = _members_page()
         raw = body.encode("utf-8")
         self.send_response(401)
         self.send_header("Content-Type", "text/html; charset=utf-8")
@@ -313,6 +310,29 @@ def _page(title: str, text: str) -> str:
   <body>
     <h1>{title}</h1>
     <p>{text}</p>
+    <a href="/">Inicio</a>
+  </body>
+</html>
+"""
+
+
+def _members_page() -> str:
+    return """<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="generator" content="WordPress 4.7.0">
+    <title>Miembros</title>
+  </head>
+  <body>
+    <h1>Miembros</h1>
+    <p>Esta ruta de laboratorio fuerza HTTP Basic Auth sobre HTTP para generar evidencia controlada.</p>
+    <form action="/login/" method="post">
+      <input type="hidden" name="csrf_token">
+      <input type="text" name="username">
+      <input type="password" name="password">
+      <button type="submit">Entrar</button>
+    </form>
     <a href="/">Inicio</a>
   </body>
 </html>

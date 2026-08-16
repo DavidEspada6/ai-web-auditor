@@ -50,6 +50,7 @@ class LabTests(unittest.TestCase):
 
             result = run_scan(lab.target_url, config)
             finding_ids = {finding.id for finding in result.findings}
+            inventory = result.to_dict()["inventory"]
 
         finally:
             lab.stop()
@@ -59,6 +60,8 @@ class LabTests(unittest.TestCase):
         self.assertIn("HEADER-CONTENT_SECURITY_POLICY-MISSING", finding_ids)
         self.assertIn("COOKIE-HTTPONLY-MISSING", finding_ids)
         self.assertIn("METHOD-TRACE-ADVERTISED", finding_ids)
+        self.assertGreaterEqual(inventory["summary"]["forms"], 1)
+        self.assertTrue(any("login_path" in item["reasons"] for item in inventory["interesting_paths"]))
 
 
 if __name__ == "__main__":

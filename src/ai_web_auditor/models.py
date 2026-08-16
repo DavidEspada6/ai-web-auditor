@@ -82,8 +82,11 @@ class ScanResult:
         return output
 
     def to_dict(self) -> dict[str, Any]:
+        from .inventory import build_inventory_from_scan
+
         data = asdict(self)
         data["findings"] = [asdict(finding) for finding in self.findings]
+        data["inventory"] = build_inventory_from_scan(data)
         return data
 
     def to_json(self, indent: int = 2) -> str:

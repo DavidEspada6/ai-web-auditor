@@ -445,6 +445,29 @@ button:focus-visible {
   margin-top: 12px;
 }
 
+.inventory-filter {
+  flex: 1 1 320px;
+  max-width: 460px;
+  margin-bottom: 0;
+}
+
+.compact-summary {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  margin-bottom: 16px;
+}
+
+.interest-chip {
+  display: inline-block;
+  max-width: 260px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #e6f4f1;
+  color: var(--brand-dark);
+  font-size: 12px;
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
 .metric,
 .finding-item {
   border: 1px solid var(--line);
@@ -635,6 +658,7 @@ th {
   }
 
   .summary-grid,
+  .compact-summary,
   .metadata-grid,
   .ai-controls,
   .ai-summary,
@@ -667,6 +691,7 @@ th {
   .toggles,
   .module-grid,
   .summary-grid,
+  .compact-summary,
   .metadata-grid,
   .ai-controls,
   .ai-summary,

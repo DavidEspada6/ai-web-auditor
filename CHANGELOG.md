@@ -2,6 +2,28 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.12.0] - 2026-08-16
+
+### Anade
+
+- Inventario web normalizado dentro del JSON de auditoria.
+- Listado de URLs descubiertas, visitadas, excluidas y fuera de scope.
+- Estado HTTP, tipo de contenido, profundidad, metodos observados, titulo y origen de cada URL.
+- Deteccion pasiva de formularios HTML sin enviar datos.
+- Marcado de rutas interesantes como `/login`, `/admin`, `/members`, `/api`, `/private` y ficheros sensibles habituales.
+- Comando `inventory` para exportar el inventario a JSON o CSV.
+- Pestana `Inventario` en la interfaz grafica con filtro por URL, estado, tipo, fuente o interes.
+- Boton `Inventario CSV` en la interfaz.
+- Seccion `Web Inventory` en informes Markdown, HTML y PDF.
+- Formulario de login controlado en el laboratorio local para probar la deteccion.
+- Tests del generador de inventario, CLI y laboratorio.
+
+### Seguridad
+
+- La deteccion de formularios es solo pasiva: no rellena, envia ni prueba credenciales.
+- Las URLs fuera de scope o excluidas se registran como evidencia, pero no se visitan.
+- No se anaden explotacion, fuerza bruta, fuzzing ni ataques intrusivos.
+
 ## [0.11.0] - 2026-08-16
 
 ### Anade

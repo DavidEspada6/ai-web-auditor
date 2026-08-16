@@ -9,6 +9,7 @@ from textwrap import wrap
 from typing import Any
 
 from . import __version__
+from .inventory import build_inventory_from_scan
 from .models import utc_now
 
 
@@ -49,6 +50,7 @@ def generate_markdown_report(
     target = scan_data.get("target") if isinstance(scan_data.get("target"), dict) else {}
     findings = _findings(scan_data)
     modules = _modules(scan_data)
+    inventory = build_inventory_from_scan(scan_data)
     ai_analysis = ai_analysis or _embedded_ai_analysis(scan_data)
     ai_body = _analysis_body(ai_analysis)
     report_metadata = normalize_report_metadata(metadata)
@@ -82,6 +84,7 @@ def generate_markdown_report(
     lines.extend(_findings_section(findings))
     lines.extend(_technology_section(modules))
     lines.extend(_crawler_section(modules))
+    lines.extend(_inventory_section(inventory))
     lines.extend(_ai_section(ai_body))
     lines.extend(_limitations_section(ai_body))
 
@@ -128,6 +131,7 @@ def generate_html_report(
     target = scan_data.get("target") if isinstance(scan_data.get("target"), dict) else {}
     findings = _findings(scan_data)
     modules = _modules(scan_data)
+    inventory = build_inventory_from_scan(scan_data)
     ai_analysis = ai_analysis or _embedded_ai_analysis(scan_data)
     ai_body = _analysis_body(ai_analysis)
     report_metadata = normalize_report_metadata(metadata)
@@ -188,6 +192,7 @@ def generate_html_report(
             _findings_html_section(findings),
             _technology_html_section(modules),
             _crawler_html_section(modules),
+            _inventory_html_section(inventory),
             _ai_html_section(ai_body),
             _limitations_html_section(ai_body),
             "</main>",
@@ -421,6 +426,53 @@ def _crawler_section(modules: list[dict[str, Any]]) -> list[str]:
     return lines
 
 
+def _inventory_section(inventory: dict[str, Any]) -> list[str]:
+    summary = inventory.get("summary") if isinstance(inventory.get("summary"), dict) else {}
+    urls = _dict_list(inventory.get("urls"))
+    forms = _dict_list(inventory.get("forms"))
+
+    lines = [
+        "## Web Inventory",
+        "",
+        f"- Total URLs: {_text(summary.get('total_urls', len(urls)))}",
+        f"- Fetched URLs: {_text(summary.get('fetched_urls', 0))}",
+        f"- Interesting URLs: {_text(summary.get('interesting_urls', 0))}",
+        f"- Forms detected: {_text(summary.get('forms', len(forms)))}",
+        f"- Out-of-scope URLs recorded but not visited: {_text(summary.get('external_urls', 0))}",
+        f"- Excluded URLs recorded but not visited: {_text(summary.get('excluded_urls', 0))}",
+        "",
+    ]
+
+    if urls:
+        lines.extend(["### URL Inventory", "", "| URL | Status | Type | Forms | Interest |", "| --- | ---: | --- | ---: | --- |"])
+        for item in urls[:50]:
+            reasons = item.get("reasons") if isinstance(item.get("reasons"), list) else []
+            lines.append(
+                f"| {_cell(item.get('url'))} | {_cell(item.get('status_code'))} | "
+                f"{_cell(item.get('content_type'))} | {_cell(item.get('forms_found'))} | "
+                f"{_cell(', '.join(map(str, reasons)))} |"
+            )
+        if len(urls) > 50:
+            lines.append(f"| ... {len(urls) - 50} more |  |  |  |  |")
+        lines.append("")
+
+    if forms:
+        lines.extend(["### Forms", "", "| Page | Action | Method | Inputs | Password Fields |", "| --- | --- | --- | ---: | ---: |"])
+        for form in forms[:25]:
+            lines.append(
+                f"| {_cell(form.get('page_url'))} | {_cell(form.get('action'))} | "
+                f"{_cell(form.get('method'))} | {_cell(form.get('input_count'))} | "
+                f"{_cell(form.get('password_fields'))} |"
+            )
+        if len(forms) > 25:
+            lines.append(f"| ... {len(forms) - 25} more |  |  |  |  |")
+        lines.append("")
+
+    if not urls:
+        lines.extend(["No inventory data was available.", ""])
+    return lines
+
+
 def _ai_section(ai_body: dict[str, Any] | None) -> list[str]:
     if not ai_body:
         return []
@@ -642,6 +694,47 @@ def _crawler_html_section(modules: list[dict[str, Any]]) -> str:
     return "\n".join(lines)
 
 
+def _inventory_html_section(inventory: dict[str, Any]) -> str:
+    summary = inventory.get("summary") if isinstance(inventory.get("summary"), dict) else {}
+    urls = _dict_list(inventory.get("urls"))
+    forms = _dict_list(inventory.get("forms"))
+    rows = [
+        ["Total URLs", summary.get("total_urls", len(urls))],
+        ["Fetched URLs", summary.get("fetched_urls", 0)],
+        ["Interesting URLs", summary.get("interesting_urls", 0)],
+        ["Forms detected", summary.get("forms", len(forms))],
+        ["Out-of-scope URLs recorded but not visited", summary.get("external_urls", 0)],
+        ["Excluded URLs recorded but not visited", summary.get("excluded_urls", 0)],
+    ]
+    lines = ['<section class="section">', "<h2>Web Inventory</h2>", _html_table(["Field", "Value"], rows)]
+
+    if urls:
+        url_rows = []
+        for item in urls[:50]:
+            reasons = item.get("reasons") if isinstance(item.get("reasons"), list) else []
+            url_rows.append(
+                [
+                    item.get("url"),
+                    item.get("status_code"),
+                    item.get("content_type"),
+                    item.get("forms_found"),
+                    ", ".join(map(str, reasons)),
+                ]
+            )
+        lines.extend(["<h3>URL Inventory</h3>", _html_table(["URL", "Status", "Type", "Forms", "Interest"], url_rows)])
+    else:
+        lines.append('<p class="empty">No inventory data was available.</p>')
+
+    if forms:
+        form_rows = [
+            [form.get("page_url"), form.get("action"), form.get("method"), form.get("input_count"), form.get("password_fields")]
+            for form in forms[:25]
+        ]
+        lines.extend(["<h3>Forms</h3>", _html_table(["Page", "Action", "Method", "Inputs", "Password Fields"], form_rows)])
+    lines.append("</section>")
+    return "\n".join(lines)
+
+
 def _ai_html_section(ai_body: dict[str, Any] | None) -> str:
     if not ai_body:
         return ""
@@ -776,6 +869,12 @@ def _string_list(value: Any) -> list[str]:
     if not isinstance(value, list):
         return []
     return [str(item) for item in value]
+
+
+def _dict_list(value: Any) -> list[dict[str, Any]]:
+    if not isinstance(value, list):
+        return []
+    return [item for item in value if isinstance(item, dict)]
 
 
 def _cell(value: Any) -> str:

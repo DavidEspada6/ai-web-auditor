@@ -1,6 +1,6 @@
 {
   "tool": "ai-web-auditor",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "generated_at": "2026-08-16T00:00:00Z",
   "status": "completed",
   "target": {
@@ -61,7 +61,7 @@
     {
       "name": "crawler",
       "status": "passed",
-      "summary": "Crawled 1 page(s), discovered 1 in-scope URL(s).",
+      "summary": "Crawled 1 page(s), discovered 2 in-scope URL(s).",
       "findings": [],
       "artifacts": {
         "seed_url": "https://example.com/",
@@ -71,16 +71,125 @@
           "https://example.com/"
         ],
         "discovered_urls": [
-          "https://example.com/"
+          "https://example.com/",
+          "https://example.com/login"
         ],
         "out_of_scope_urls": [],
         "excluded_urls": [],
         "ignored_urls_count": 0,
         "limit_reached": false,
-        "pages": []
+        "pages": [
+          {
+            "url": "https://example.com/",
+            "depth": 0,
+            "status_code": 200,
+            "content_type": "text/html",
+            "body_truncated": false,
+            "location": null,
+            "absolute_location": null,
+            "links_found": 1,
+            "forms_found": 0,
+            "title": "Example Domain"
+          }
+        ]
       }
     }
   ],
   "findings": [],
-  "requests": []
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://example.com/",
+      "status_code": 200,
+      "elapsed_ms": 42,
+      "final_url": "https://example.com/",
+      "error": null
+    }
+  ],
+  "inventory": {
+    "summary": {
+      "total_urls": 2,
+      "fetched_urls": 1,
+      "interesting_urls": 1,
+      "forms": 0,
+      "pages_with_forms": 0,
+      "external_urls": 0,
+      "excluded_urls": 0,
+      "status_codes": {
+        "200": 1
+      },
+      "content_types": {
+        "text/html": 1
+      }
+    },
+    "urls": [
+      {
+        "url": "https://example.com/login",
+        "status_code": null,
+        "content_type": "",
+        "fetched": false,
+        "depth": null,
+        "methods": [],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "login_path"
+        ],
+        "sources": [
+          "crawler_discovered"
+        ],
+        "source": "crawler_discovered",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "https://example.com/",
+        "status_code": 200,
+        "content_type": "text/html",
+        "fetched": true,
+        "depth": 0,
+        "methods": [
+          "GET"
+        ],
+        "links_found": 1,
+        "forms_found": 0,
+        "interesting": false,
+        "reasons": [],
+        "sources": [
+          "crawler_discovered",
+          "crawler_fetched",
+          "crawler_page",
+          "request",
+          "target"
+        ],
+        "source": "crawler_discovered, crawler_fetched, crawler_page, request, target",
+        "title": "Example Domain",
+        "error": ""
+      }
+    ],
+    "forms": [],
+    "interesting_paths": [
+      {
+        "url": "https://example.com/login",
+        "status_code": null,
+        "content_type": "",
+        "fetched": false,
+        "depth": null,
+        "methods": [],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "login_path"
+        ],
+        "sources": [
+          "crawler_discovered"
+        ],
+        "source": "crawler_discovered",
+        "title": "",
+        "error": ""
+      }
+    ]
+  }
 }

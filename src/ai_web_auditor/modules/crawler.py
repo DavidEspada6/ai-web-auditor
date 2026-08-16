@@ -80,8 +80,14 @@ class CrawlerModule:
             if not _is_html(str(page.get("content_type") or "")):
                 continue
 
-            links = _LinkExtractor.extract(body, url)
+            document = _HTMLDocumentExtractor.extract(body, url)
+            links = document["links"]
             page["links_found"] = len(links)
+            page["forms_found"] = len(document["forms"])
+            if document["forms"]:
+                page["forms"] = document["forms"]
+            if document["title"]:
+                page["title"] = document["title"]
 
             for href in links:
                 candidate, reason = _normalize_candidate(url, href, context)
@@ -186,28 +192,89 @@ class CrawlerModule:
             "location": location,
             "absolute_location": absolute_location,
             "links_found": 0,
+            "forms_found": 0,
             "_body": _decode_body(response.body, response.get_header("content-type", "") or ""),
         }
 
 
-class _LinkExtractor(HTMLParser):
+class _HTMLDocumentExtractor(HTMLParser):
     def __init__(self, base_url: str) -> None:
         super().__init__(convert_charrefs=True)
         self.base_url = base_url
         self.links: list[str] = []
+        self.forms: list[dict[str, object]] = []
+        self.title_parts: list[str] = []
+        self._current_form: dict[str, object] | None = None
+        self._in_title = False
 
     @classmethod
-    def extract(cls, html: str, base_url: str) -> list[str]:
+    def extract(cls, html: str, base_url: str) -> dict[str, object]:
         parser = cls(base_url)
         parser.feed(html)
-        return parser.links
+        if parser._current_form is not None:
+            parser.forms.append(parser._current_form)
+            parser._current_form = None
+        return {
+            "links": parser.links,
+            "forms": parser.forms,
+            "title": " ".join(" ".join(parser.title_parts).split())[:200],
+        }
 
     def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
-        if tag.lower() != "a":
+        lowered_tag = tag.lower()
+        attr_map = {key.lower(): (value or "") for key, value in attrs}
+
+        if lowered_tag == "title":
+            self._in_title = True
             return
-        for key, value in attrs:
-            if key.lower() == "href" and value:
-                self.links.append(value.strip())
+
+        if lowered_tag == "a":
+            href = attr_map.get("href", "").strip()
+            if href:
+                self.links.append(href)
+            return
+
+        if lowered_tag == "form":
+            action = attr_map.get("action", "").strip()
+            self._current_form = {
+                "action": urljoin(self.base_url, action) if action else self.base_url,
+                "method": (attr_map.get("method") or "get").upper(),
+                "input_count": 0,
+                "password_fields": 0,
+                "hidden_fields": 0,
+                "csrf_candidates": [],
+                "fields": [],
+            }
+            return
+
+        if self._current_form is not None and lowered_tag in {"input", "textarea", "select"}:
+            field_type = (attr_map.get("type") if lowered_tag == "input" else lowered_tag) or "text"
+            field_name = attr_map.get("name") or attr_map.get("id") or ""
+            fields = self._current_form["fields"]
+            if isinstance(fields, list):
+                fields.append({"name": field_name, "type": field_type.lower()})
+            self._current_form["input_count"] = int(self._current_form["input_count"]) + 1
+            if field_type.lower() == "password":
+                self._current_form["password_fields"] = int(self._current_form["password_fields"]) + 1
+            if field_type.lower() == "hidden":
+                self._current_form["hidden_fields"] = int(self._current_form["hidden_fields"]) + 1
+            if _is_csrf_candidate(field_name):
+                candidates = self._current_form["csrf_candidates"]
+                if isinstance(candidates, list):
+                    candidates.append(field_name)
+
+    def handle_endtag(self, tag: str) -> None:
+        lowered_tag = tag.lower()
+        if lowered_tag == "title":
+            self._in_title = False
+            return
+        if lowered_tag == "form" and self._current_form is not None:
+            self.forms.append(self._current_form)
+            self._current_form = None
+
+    def handle_data(self, data: str) -> None:
+        if self._in_title and data.strip():
+            self.title_parts.append(data.strip())
 
 
 def _normalize_candidate(current_url: str, href: str, context: ScanContext) -> tuple[str | None, str | None]:
@@ -278,3 +345,8 @@ def _decode_body(body: bytes, content_type: str) -> str:
 def _has_ignored_extension(path: str, ignored_extensions: list[str]) -> bool:
     lowered = path.lower()
     return any(lowered.endswith(extension.lower()) for extension in ignored_extensions)
+
+
+def _is_csrf_candidate(name: str) -> bool:
+    lowered = name.strip().lower()
+    return "csrf" in lowered or lowered in {"token", "_token", "authenticity_token"}
