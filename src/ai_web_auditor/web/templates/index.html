@@ -187,6 +187,7 @@
 
         <nav class="tabs" aria-label="Vistas">
           <button class="tab active" type="button" data-tab="summary">Resumen</button>
+          <button class="tab" type="button" data-tab="assessment">Riesgo</button>
           <button class="tab" type="button" data-tab="findings">Hallazgos</button>
           <button class="tab" type="button" data-tab="modules">Modulos</button>
           <button class="tab" type="button" data-tab="inventory">Inventario</button>
@@ -204,6 +205,34 @@
         <section id="summary-view" class="panel view active">
           <div id="summary-empty" class="empty">Ejecuta una auditoria para ver resultados.</div>
           <div id="summary-content" class="summary-grid" hidden></div>
+        </section>
+
+        <section id="assessment-view" class="panel view">
+          <div class="section-toolbar">
+            <div>
+              <p class="eyebrow">Valoracion determinista</p>
+              <strong id="assessment-risk">Sin datos</strong>
+            </div>
+          </div>
+          <div id="assessment-summary" class="summary-grid compact-summary"></div>
+          <div class="assessment-columns">
+            <section>
+              <h2>Prioridades</h2>
+              <div id="assessment-priorities" class="list"></div>
+            </section>
+            <section>
+              <h2>Quick wins</h2>
+              <div id="assessment-quick-wins" class="list"></div>
+            </section>
+          </div>
+          <section class="assessment-block">
+            <h2>Plan de remediacion</h2>
+            <div id="assessment-plan" class="list"></div>
+          </section>
+          <section class="assessment-block">
+            <h2>Notas</h2>
+            <div id="assessment-notes" class="list"></div>
+          </section>
         </section>
 
         <section id="findings-view" class="panel view">

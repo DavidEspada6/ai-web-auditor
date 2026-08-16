@@ -456,6 +456,24 @@ button:focus-visible {
   margin-bottom: 16px;
 }
 
+.assessment-columns {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.assessment-columns h2,
+.assessment-block h2 {
+  margin: 0 0 10px;
+  font-size: 17px;
+  letter-spacing: 0;
+}
+
+.assessment-block {
+  margin-top: 18px;
+}
+
 .interest-chip {
   display: inline-block;
   max-width: 260px;
@@ -671,6 +689,10 @@ th {
   .compare-controls {
     align-items: stretch;
     flex-direction: column;
+  }
+
+  .assessment-columns {
+    grid-template-columns: 1fr;
   }
 
   .pill {

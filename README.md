@@ -10,8 +10,8 @@ scope. Tambien incluye fingerprinting web no intrusivo a partir de cabeceras,
 cookies, HTML inicial y ficheros publicos habituales, analisis IA opcional desde
 CLI y GUI, informes Markdown/HTML/PDF, proyectos locales, historial separado por
 proyecto, inventario web exportable, descubrimiento DNS seguro de subdominios,
-chequeo TCP limitado de puertos, laboratorio vulnerable local y comparacion de
-auditorias.
+chequeo TCP limitado de puertos, valoracion determinista de riesgo, plan de
+remediacion, laboratorio vulnerable local y comparacion de auditorias.
 
 No implementa explotacion, fuerza bruta, fuzzing agresivo, crawling masivo,
 escaneo de puertos amplio, fuerza bruta DNS agresiva ni pruebas intrusivas.
@@ -30,7 +30,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.14 no necesita librerias externas en tiempo de ejecucion.
+La v0.15 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -47,6 +47,7 @@ lanzador incluido:
 .\ai-web-auditor.cmd scan --config audit.json
 .\ai-web-auditor.cmd analyze outputs/result.json --dry-run
 .\ai-web-auditor.cmd inventory outputs/result.json --output outputs/inventory.csv
+.\ai-web-auditor.cmd assess outputs/result.json --output outputs/assessment.json
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.md
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.html
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.pdf
@@ -110,6 +111,13 @@ Exportar inventario de URLs a CSV:
 
 ```powershell
 ai-web-auditor inventory outputs/example.json --output outputs/inventory.csv
+```
+
+Calcular valoracion de riesgo y plan de remediacion desde un JSON existente:
+
+```powershell
+ai-web-auditor assess outputs/example.json
+ai-web-auditor assess outputs/example.json --output outputs/assessment.json
 ```
 
 Guardar una auditoria en el historial local:
@@ -215,7 +223,7 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.14",
+    "user_agent": "AI-Web-Auditor/0.15",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -329,6 +337,29 @@ sin consumir API. Si desactivas `Dry-run`, usara la API configurada mediante
 `OPENAI_API_KEY`. Si la auditoria esta guardada en historial, el analisis se
 puede guardar dentro del propio JSON como `ai_analysis`.
 
+## Valoracion de riesgo
+
+Cada escaneo nuevo incluye un bloque `assessment` dentro del JSON. Esta
+valoracion no ejecuta nuevas peticiones: interpreta hallazgos, inventario,
+subdominios y puertos ya observados.
+
+Incluye:
+
+- puntuacion de riesgo de 0 a 100;
+- nivel `informational`, `low`, `medium`, `high` o `critical`;
+- prioridades ordenadas por severidad, exposicion y tipo de hallazgo;
+- acciones rapidas de bajo esfuerzo;
+- plan de remediacion por fases;
+- notas de cobertura y seguridad.
+
+Tambien se puede recalcular sobre un JSON anterior:
+
+```powershell
+ai-web-auditor assess outputs/result.json --output outputs/assessment.json
+```
+
+La interfaz grafica muestra esta informacion en la pestana `Riesgo`.
+
 ## Reporting
 
 La herramienta genera informes Markdown, HTML y PDF desde el JSON de escaneo.
@@ -355,6 +386,7 @@ El informe incluye:
 - objetivo y estado del escaneo;
 - resumen ejecutivo;
 - resumen por severidad;
+- valoracion determinista de riesgo, prioridades y plan de remediacion;
 - resumen por modulo;
 - hallazgos y evidencias;
 - fingerprinting y crawler si estan presentes;
@@ -368,7 +400,7 @@ Hay ejemplos en `examples/report-example.md` y `examples/report-example.html`.
 
 ## Laboratorio local
 
-La v0.14 incluye un laboratorio vulnerable solo para pruebas locales. Sirve una
+La v0.15 incluye un laboratorio vulnerable solo para pruebas locales. Sirve una
 web de demo en `127.0.0.1` con problemas controlados:
 
 - HTTP sin TLS;
@@ -431,7 +463,7 @@ Hay un ejemplo en `examples/inventory-example.csv`.
 
 ## Descubrimiento de subdominios
 
-La v0.14 mantiene un modulo DNS seguro para descubrir subdominios candidatos. Esta
+La v0.15 mantiene un modulo DNS seguro para descubrir subdominios candidatos. Esta
 desactivado por defecto porque amplia la fase de reconocimiento y conviene
 usarlo solo cuando el scope lo permita.
 
@@ -468,7 +500,7 @@ en la pestana `Subdominios`.
 
 ## Chequeo limitado de puertos
 
-La v0.14 anade un modulo `ports` para comprobar conectividad TCP contra el host
+La v0.15 mantiene un modulo `ports` para comprobar conectividad TCP contra el host
 objetivo. Esta desactivado por defecto porque, aunque es limitado, forma parte
 de la fase de reconocimiento y debe usarse solo con autorizacion.
 
@@ -586,7 +618,7 @@ Desde la interfaz se puede:
 - configurar objetivo, hosts, rutas y limites principales;
 - activar o desactivar modulos;
 - ejecutar una auditoria no intrusiva;
-- revisar resumen, hallazgos, modulos, inventario, subdominios, puertos y JSON;
+- revisar resumen, riesgo, hallazgos, modulos, inventario, subdominios, puertos y JSON;
 - analizar la auditoria con IA en modo dry-run o con API;
 - guardar el analisis IA en el historial local;
 - guardar y abrir auditorias del historial local o del proyecto activo;
@@ -632,10 +664,10 @@ anadir uno nuevo:
 
 Los siguientes pasos naturales son:
 
-- descubrimiento de subdominios;
-- mejoras en la integracion con IA para comparar hallazgos entre auditorias;
-- modulos de verificacion controlada para confirmar hallazgos sin explotacion destructiva;
-- base de datos local opcional para proyectos grandes;
+- v0.16: paquete de evidencias descargable por auditoria;
+- v0.17: perfiles de autenticacion seguros para auditorias autorizadas;
+- v0.18: verificaciones controladas con consentimiento explicito;
+- mejoras progresivas de reporting y comparacion entre auditorias;
 - empaquetado como aplicacion de escritorio cuando la GUI este mas estable.
 
 ## Futuras pruebas controladas
@@ -661,7 +693,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.14.0
+git tag v0.15.0
 git push
 git push --tags
 ```
@@ -674,7 +706,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",
@@ -704,6 +736,18 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
       }
     ],
     "forms": []
+  },
+  "assessment": {
+    "summary": {
+      "risk_score": 0,
+      "risk_level": "informational",
+      "finding_count": 0,
+      "priority_count": 0,
+      "quick_win_count": 0
+    },
+    "priorities": [],
+    "quick_wins": [],
+    "remediation_plan": []
   }
 }
 ```

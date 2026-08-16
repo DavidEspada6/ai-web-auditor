@@ -1,8 +1,8 @@
 # Web Audit Report - example.com
 
-- Generated: 2026-08-16T00:39:44Z
-- Report generator: ai-web-auditor 0.14.0
-- Scan version: 0.14.0
+- Generated: 2026-08-16T00:51:47Z
+- Report generator: ai-web-auditor 0.15.0
+- Scan version: 0.15.0
 - Scan status: completed
 
 ## Target
@@ -17,11 +17,7 @@
 
 ## Executive Summary
 
-La auditoria no intrusiva no muestra hallazgos criticos en la muestra, pero conviene revisar las cabeceras y metadatos expuestos.
-
-Overall risk: **low**
-
-Los hallazgos son principalmente informativos o de endurecimiento defensivo.
+The scan generated 2 finding(s): 0 critical, 0 high, 0 medium, 0 low and 2 informational.
 
 ## Severity Summary
 
@@ -32,6 +28,66 @@ Los hallazgos son principalmente informativos o de endurecimiento defensivo.
 | MEDIUM | 0 |
 | LOW | 0 |
 | INFO | 2 |
+
+## Risk Assessment
+
+- Risk level: **INFORMATIONAL**
+- Risk score: **13/100**
+- Priorities: 2
+- Quick wins: 0
+
+### Coverage
+
+| Metric | Value |
+| --- | ---: |
+| Modules run | 4 |
+| Module warnings | 2 |
+| Module errors | 0 |
+| URLs | 2 |
+| Forms | 0 |
+| Resolved subdomains | 1 |
+| Open TCP ports | 1 |
+
+### Priorities
+
+| Rank | Severity | Finding | Reason | Recommended action |
+| ---: | --- | --- | --- | --- |
+| 1 | INFO | PORTS-OPEN-TCP-PORTS: Open TCP ports detected | additional exposed services increase the review surface | Review whether each exposed service is expected, patched and covered by the authorized audit scope. |
+| 2 | INFO | SUBDOMAIN-DISCOVERY-RESOLVED: In-scope subdomains resolved by DNS | info finding reported by the subdomains module | Review these hosts and add them explicitly to the authorized scope before running deeper checks against them. |
+
+### Remediation Plan
+
+#### Immediate
+
+Reduce the highest observable risk first.
+
+- Open TCP ports detected: Review whether each exposed service is expected, patched and covered by the authorized audit scope.
+- Review every open TCP port and confirm it is required for the approved scope.
+
+#### Short term
+
+Apply low-effort hardening and validation.
+
+- Review medium and low hardening items if more evidence is added later.
+
+#### Planned
+
+Improve evidence quality and follow-up coverage.
+
+- In-scope subdomains resolved by DNS: Review these hosts and add them explicitly to the authorized scope before running deeper checks against them.
+
+### Coverage Notes
+
+- subdomains: warning - Checked 3 candidate subdomain(s), resolved 1 in-scope host(s).
+- ports: warning - Checked 3 TCP port(s), found 1 open port(s).
+- Resolved subdomains were recorded as evidence but not scanned automatically.
+- Open TCP ports were detected using TCP connect checks only; no payloads or banners were requested.
+
+### Safety Notes
+
+- This assessment is generated from existing non-intrusive scan evidence only.
+- No exploitation, brute force, fuzzing or destructive validation was performed.
+- Risk should be reviewed against the authorized scope and business context.
 
 ## Module Summary
 
@@ -155,30 +211,8 @@ No technology signals were identified.
 | 443 | https | open | 5 ms |
 | 8080 | http-alt | filtered | 1000 ms |
 
-## AI Prioritization
-
-### 1. Cabeceras de seguridad incompletas
-
-- Severity: low
-- Why it matters: Las cabeceras defensivas reducen la exposicion ante ataques comunes del navegador.
-- Recommended action: Definir una politica CSP adaptada a la aplicacion.
-
-Evidence:
-
-- HEADER-CONTENT_SECURITY_POLICY-MISSING
-
-## Safe Next Steps
-
-- Revisar manualmente las cabeceras recomendadas antes de aplicarlas en produccion.
-- Ejecutar de nuevo el escaneo tras corregir la configuracion.
-
-## Report Notes
-
-- El analisis esta basado solo en evidencias del JSON generado por la herramienta.
-
 ## Limitations
 
 - This report is based on non-intrusive checks only.
 - No exploitation, brute force, aggressive fuzzing or destructive testing was performed.
 - Findings should be validated against the authorized scope and business context.
-- No se han realizado pruebas autenticadas ni intrusivas.

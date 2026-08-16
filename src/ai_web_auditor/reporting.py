@@ -9,6 +9,7 @@ from textwrap import wrap
 from typing import Any
 
 from . import __version__
+from .assessment import build_assessment
 from .inventory import build_inventory_from_scan
 from .models import utc_now
 
@@ -51,6 +52,7 @@ def generate_markdown_report(
     findings = _findings(scan_data)
     modules = _modules(scan_data)
     inventory = build_inventory_from_scan(scan_data)
+    assessment = build_assessment(scan_data)
     ai_analysis = ai_analysis or _embedded_ai_analysis(scan_data)
     ai_body = _analysis_body(ai_analysis)
     report_metadata = normalize_report_metadata(metadata)
@@ -80,6 +82,7 @@ def generate_markdown_report(
     lines.extend(_metadata_markdown_section(report_metadata))
     lines.extend(_executive_summary_section(findings, ai_body))
     lines.extend(_severity_summary_section(findings))
+    lines.extend(_assessment_section(assessment))
     lines.extend(_module_summary_section(modules))
     lines.extend(_findings_section(findings))
     lines.extend(_technology_section(modules))
@@ -134,6 +137,7 @@ def generate_html_report(
     findings = _findings(scan_data)
     modules = _modules(scan_data)
     inventory = build_inventory_from_scan(scan_data)
+    assessment = build_assessment(scan_data)
     ai_analysis = ai_analysis or _embedded_ai_analysis(scan_data)
     ai_body = _analysis_body(ai_analysis)
     report_metadata = normalize_report_metadata(metadata)
@@ -165,7 +169,8 @@ def generate_html_report(
             _meta_tile("Report generator", f"ai-web-auditor {__version__}"),
             _meta_tile("Scan version", _value(scan_data.get("version"), "unknown")),
             _meta_tile("Scan status", _value(scan_data.get("status"), "unknown")),
-            _meta_tile("Overall risk", risk_level or "not assessed"),
+            _meta_tile("Overall risk", _assessment_risk_label(assessment, fallback=risk_level or "not assessed")),
+            _meta_tile("Risk score", _assessment_score_label(assessment)),
             _meta_tile("Target", target.get("normalized_url") or target.get("host") or "unknown"),
             "</div>",
             "</section>",
@@ -190,6 +195,7 @@ def generate_html_report(
             f"<p>{_html(rationale)}</p>",
             "</section>",
             _severity_html_section(severity_counts),
+            _assessment_html_section(assessment),
             _module_html_section(modules),
             _findings_html_section(findings),
             _technology_html_section(modules),
@@ -290,6 +296,78 @@ def _severity_summary_section(findings: list[dict[str, Any]]) -> list[str]:
             count += counts.get("informational", 0)
         lines.append(f"| {severity.upper()} | {count} |")
     lines.append("")
+    return lines
+
+
+def _assessment_section(assessment: dict[str, Any]) -> list[str]:
+    summary = assessment.get("summary") if isinstance(assessment.get("summary"), dict) else {}
+    coverage = summary.get("coverage") if isinstance(summary.get("coverage"), dict) else {}
+    priorities = _dict_list(assessment.get("priorities"))
+    quick_wins = _dict_list(assessment.get("quick_wins"))
+    remediation_plan = _dict_list(assessment.get("remediation_plan"))
+    coverage_notes = _string_list(assessment.get("coverage_notes"))
+    safety_notes = _string_list(assessment.get("safety_notes"))
+
+    lines = [
+        "## Risk Assessment",
+        "",
+        f"- Risk level: **{_text(summary.get('risk_level', 'informational')).upper()}**",
+        f"- Risk score: **{_text(summary.get('risk_score', 0))}/100**",
+        f"- Priorities: {_text(summary.get('priority_count', len(priorities)))}",
+        f"- Quick wins: {_text(summary.get('quick_win_count', len(quick_wins)))}",
+        "",
+        "### Coverage",
+        "",
+        "| Metric | Value |",
+        "| --- | ---: |",
+        f"| Modules run | {_cell(coverage.get('modules_run', 0))} |",
+        f"| Module warnings | {_cell(coverage.get('modules_warning', 0))} |",
+        f"| Module errors | {_cell(coverage.get('modules_error', 0))} |",
+        f"| URLs | {_cell(coverage.get('urls', 0))} |",
+        f"| Forms | {_cell(coverage.get('forms', 0))} |",
+        f"| Resolved subdomains | {_cell(coverage.get('subdomains', 0))} |",
+        f"| Open TCP ports | {_cell(coverage.get('open_ports', 0))} |",
+        "",
+    ]
+
+    if priorities:
+        lines.extend(["### Priorities", "", "| Rank | Severity | Finding | Reason | Recommended action |", "| ---: | --- | --- | --- | --- |"])
+        for item in priorities:
+            lines.append(
+                f"| {_cell(item.get('rank'))} | {_cell(str(item.get('severity', 'info')).upper())} | "
+                f"{_cell(item.get('finding_id'))}: {_cell(item.get('title'))} | "
+                f"{_cell(item.get('reason'))} | {_cell(item.get('recommended_action'))} |"
+            )
+        lines.append("")
+    else:
+        lines.extend(["### Priorities", "", "No priorities were derived from the current evidence.", ""])
+
+    if quick_wins:
+        lines.extend(["### Quick Wins", ""])
+        for item in quick_wins:
+            lines.append(f"- **{_text(item.get('title', 'Untitled'))}**: {_text(item.get('recommended_action', 'Review.'))}")
+        lines.append("")
+
+    lines.extend(["### Remediation Plan", ""])
+    for phase in remediation_plan:
+        lines.extend([f"#### {_text(phase.get('phase', 'Phase'))}", ""])
+        objective = phase.get("objective")
+        if objective:
+            lines.extend([_text(objective), ""])
+        items = _string_list(phase.get("items"))
+        lines.extend(f"- {_text(item)}" for item in items)
+        lines.append("")
+
+    if coverage_notes:
+        lines.extend(["### Coverage Notes", ""])
+        lines.extend(f"- {_text(note)}" for note in coverage_notes)
+        lines.append("")
+
+    if safety_notes:
+        lines.extend(["### Safety Notes", ""])
+        lines.extend(f"- {_text(note)}" for note in safety_notes)
+        lines.append("")
+
     return lines
 
 
@@ -652,6 +730,85 @@ def _severity_html_section(counts: dict[str, int]) -> str:
     )
 
 
+def _assessment_html_section(assessment: dict[str, Any]) -> str:
+    summary = assessment.get("summary") if isinstance(assessment.get("summary"), dict) else {}
+    coverage = summary.get("coverage") if isinstance(summary.get("coverage"), dict) else {}
+    priorities = _dict_list(assessment.get("priorities"))
+    quick_wins = _dict_list(assessment.get("quick_wins"))
+    remediation_plan = _dict_list(assessment.get("remediation_plan"))
+    coverage_notes = _string_list(assessment.get("coverage_notes"))
+    safety_notes = _string_list(assessment.get("safety_notes"))
+    lines = [
+        '<section class="section">',
+        "<h2>Risk Assessment</h2>",
+        '<div class="severity-grid">',
+        f'<div class="severity-card"><span>Risk level</span><strong>{_html(str(summary.get("risk_level", "informational")).upper())}</strong></div>',
+        f'<div class="severity-card"><span>Risk score</span><strong>{_html(summary.get("risk_score", 0))}/100</strong></div>',
+        f'<div class="severity-card"><span>Priorities</span><strong>{_html(summary.get("priority_count", len(priorities)))}</strong></div>',
+        f'<div class="severity-card"><span>Quick wins</span><strong>{_html(summary.get("quick_win_count", len(quick_wins)))}</strong></div>',
+        f'<div class="severity-card"><span>Open ports</span><strong>{_html(coverage.get("open_ports", 0))}</strong></div>',
+        "</div>",
+        "<h3>Coverage</h3>",
+        _html_table(
+            ["Metric", "Value"],
+            [
+                ["Modules run", coverage.get("modules_run", 0)],
+                ["Module warnings", coverage.get("modules_warning", 0)],
+                ["Module errors", coverage.get("modules_error", 0)],
+                ["URLs", coverage.get("urls", 0)],
+                ["Forms", coverage.get("forms", 0)],
+                ["Resolved subdomains", coverage.get("subdomains", 0)],
+                ["Open TCP ports", coverage.get("open_ports", 0)],
+            ],
+        ),
+    ]
+
+    if priorities:
+        rows = [
+            [
+                item.get("rank"),
+                str(item.get("severity", "info")).upper(),
+                f"{item.get('finding_id')}: {item.get('title')}",
+                item.get("reason"),
+                item.get("recommended_action"),
+            ]
+            for item in priorities
+        ]
+        lines.extend(["<h3>Priorities</h3>", _html_table(["Rank", "Severity", "Finding", "Reason", "Recommended action"], rows)])
+    else:
+        lines.extend(["<h3>Priorities</h3>", '<p class="empty">No priorities were derived from the current evidence.</p>'])
+
+    if quick_wins:
+        lines.extend(
+            [
+                "<h3>Quick Wins</h3>",
+                _html_list([f"{item.get('title')}: {item.get('recommended_action')}" for item in quick_wins]),
+            ]
+        )
+
+    if remediation_plan:
+        lines.append("<h3>Remediation Plan</h3>")
+        for phase in remediation_plan:
+            items = _string_list(phase.get("items"))
+            lines.extend(
+                [
+                    '<article class="finding-card">',
+                    f"<h4>{_html(phase.get('phase', 'Phase'))}</h4>",
+                    f"<p>{_html(phase.get('objective', ''))}</p>",
+                    _html_list(items),
+                    "</article>",
+                ]
+            )
+
+    if coverage_notes:
+        lines.extend(["<h3>Coverage Notes</h3>", _html_list(coverage_notes)])
+    if safety_notes:
+        lines.extend(["<h3>Safety Notes</h3>", _html_list(safety_notes)])
+
+    lines.append("</section>")
+    return "\n".join(lines)
+
+
 def _module_html_section(modules: list[dict[str, Any]]) -> str:
     rows = [[module.get("name"), module.get("status"), module.get("summary")] for module in modules]
     return "\n".join(
@@ -950,6 +1107,16 @@ def _html_list(items: list[Any]) -> str:
 
 def _meta_tile(label: str, value: Any) -> str:
     return f'<div><span>{_html(label)}</span><strong>{_html(value)}</strong></div>'
+
+
+def _assessment_risk_label(assessment: dict[str, Any], *, fallback: str) -> str:
+    summary = assessment.get("summary") if isinstance(assessment.get("summary"), dict) else {}
+    return _text(summary.get("risk_level", fallback))
+
+
+def _assessment_score_label(assessment: dict[str, Any]) -> str:
+    summary = assessment.get("summary") if isinstance(assessment.get("summary"), dict) else {}
+    return f"{_text(summary.get('risk_score', 0))}/100"
 
 
 def _metadata_rows(metadata: ReportMetadata) -> list[tuple[str, str]]:

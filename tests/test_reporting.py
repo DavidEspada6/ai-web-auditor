@@ -14,7 +14,7 @@ from ai_web_auditor.reporting import generate_html_report, generate_markdown_rep
 
 SCAN_DATA = {
     "tool": "ai-web-auditor",
-    "version": "0.14.0",
+    "version": "0.15.0",
     "generated_at": "2026-08-16T00:00:00Z",
     "status": "completed",
     "target": {
@@ -154,6 +154,8 @@ class ReportingTests(unittest.TestCase):
         self.assertIn("Client A", markdown)
         self.assertIn("## Executive Summary", markdown)
         self.assertIn("AI summary.", markdown)
+        self.assertIn("## Risk Assessment", markdown)
+        self.assertIn("### Remediation Plan", markdown)
         self.assertIn("## Findings", markdown)
         self.assertIn("HEADER-CSP-MISSING", markdown)
         self.assertIn("## Technology Fingerprinting", markdown)
@@ -183,6 +185,8 @@ class ReportingTests(unittest.TestCase):
         self.assertIn("HTML Report", html)
         self.assertIn("Client A", html)
         self.assertIn("Public web", html)
+        self.assertIn("Risk Assessment", html)
+        self.assertIn("Remediation Plan", html)
         self.assertIn("Web Inventory", html)
         self.assertIn("Subdomain Discovery", html)
         self.assertIn("TCP Port Check", html)

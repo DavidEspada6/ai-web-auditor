@@ -50,7 +50,9 @@ class LabTests(unittest.TestCase):
 
             result = run_scan(lab.target_url, config)
             finding_ids = {finding.id for finding in result.findings}
-            inventory = result.to_dict()["inventory"]
+            result_data = result.to_dict()
+            inventory = result_data["inventory"]
+            assessment = result_data["assessment"]
 
         finally:
             lab.stop()
@@ -62,6 +64,8 @@ class LabTests(unittest.TestCase):
         self.assertIn("METHOD-TRACE-ADVERTISED", finding_ids)
         self.assertGreaterEqual(inventory["summary"]["forms"], 1)
         self.assertTrue(any("login_path" in item["reasons"] for item in inventory["interesting_paths"]))
+        self.assertEqual(assessment["summary"]["risk_level"], "high")
+        self.assertGreaterEqual(assessment["summary"]["priority_count"], 1)
 
 
 if __name__ == "__main__":

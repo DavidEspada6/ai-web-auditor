@@ -2,12 +2,14 @@ from __future__ import annotations
 
 from pathlib import Path
 
+from .assessment import render_assessment_console
 from .inventory import build_inventory_from_scan
 from .models import Finding, ScanResult
 
 
 SEVERITY_RANK = {"critical": 0, "high": 1, "medium": 2, "low": 3, "info": 4}
 def render_console(result: ScanResult) -> None:
+    result_data = result.to_dict()
     print(f"AI Web Auditor {result.version}")
     print(f"Target: {result.target.normalized_url}")
     print(f"Status: {result.status} | Generated: {result.generated_at}")
@@ -18,7 +20,7 @@ def render_console(result: ScanResult) -> None:
     for module in result.modules:
         print(f"- {module.name}: {module.status} - {module.summary}")
 
-    inventory = build_inventory_from_scan(result.to_dict())
+    inventory = build_inventory_from_scan(result_data)
     summary = inventory.get("summary", {})
     print()
     print("Web Inventory")
@@ -42,6 +44,12 @@ def render_console(result: ScanResult) -> None:
             f"Ports: {ports_module.artifacts.get('open_count', 0)} open | "
             f"{len(ports_module.artifacts.get('results', []))} checked"
         )
+
+    assessment = result_data.get("assessment") if isinstance(result_data.get("assessment"), dict) else {}
+    print()
+    print("Risk Assessment")
+    print("---------------")
+    print(render_assessment_console(assessment))
 
     findings = sorted(result.findings, key=lambda item: SEVERITY_RANK.get(item.severity, 99))
     if not findings:

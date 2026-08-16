@@ -1,6 +1,6 @@
 {
   "tool": "ai-web-auditor",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "generated_at": "2026-08-16T00:00:00Z",
   "status": "completed",
   "target": {
@@ -332,6 +332,93 @@
         "title": "",
         "error": ""
       }
+    ]
+  },
+  "assessment": {
+    "summary": {
+      "risk_score": 13,
+      "risk_level": "informational",
+      "finding_count": 2,
+      "critical": 0,
+      "high": 0,
+      "medium": 0,
+      "low": 0,
+      "info": 2,
+      "priority_count": 2,
+      "quick_win_count": 0,
+      "coverage": {
+        "modules_run": 4,
+        "modules_passed": 2,
+        "modules_warning": 2,
+        "modules_skipped": 0,
+        "modules_error": 0,
+        "urls": 2,
+        "fetched_urls": 1,
+        "forms": 0,
+        "interesting_urls": 1,
+        "subdomains": 1,
+        "open_ports": 1
+      }
+    },
+    "priorities": [
+      {
+        "rank": 1,
+        "finding_id": "PORTS-OPEN-TCP-PORTS",
+        "title": "Open TCP ports detected",
+        "severity": "info",
+        "module": "ports",
+        "target": "example.com",
+        "score": 17,
+        "reason": "additional exposed services increase the review surface",
+        "recommended_action": "Review whether each exposed service is expected, patched and covered by the authorized audit scope."
+      },
+      {
+        "rank": 2,
+        "finding_id": "SUBDOMAIN-DISCOVERY-RESOLVED",
+        "title": "In-scope subdomains resolved by DNS",
+        "severity": "info",
+        "module": "subdomains",
+        "target": "example.com",
+        "score": 11,
+        "reason": "info finding reported by the subdomains module",
+        "recommended_action": "Review these hosts and add them explicitly to the authorized scope before running deeper checks against them."
+      }
+    ],
+    "quick_wins": [],
+    "remediation_plan": [
+      {
+        "phase": "Immediate",
+        "objective": "Reduce the highest observable risk first.",
+        "items": [
+          "Open TCP ports detected: Review whether each exposed service is expected, patched and covered by the authorized audit scope.",
+          "Review every open TCP port and confirm it is required for the approved scope."
+        ]
+      },
+      {
+        "phase": "Short term",
+        "objective": "Apply low-effort hardening and validation.",
+        "items": [
+          "Review medium and low hardening items if more evidence is added later."
+        ]
+      },
+      {
+        "phase": "Planned",
+        "objective": "Improve evidence quality and follow-up coverage.",
+        "items": [
+          "In-scope subdomains resolved by DNS: Review these hosts and add them explicitly to the authorized scope before running deeper checks against them."
+        ]
+      }
+    ],
+    "coverage_notes": [
+      "subdomains: warning - Checked 3 candidate subdomain(s), resolved 1 in-scope host(s).",
+      "ports: warning - Checked 3 TCP port(s), found 1 open port(s).",
+      "Resolved subdomains were recorded as evidence but not scanned automatically.",
+      "Open TCP ports were detected using TCP connect checks only; no payloads or banners were requested."
+    ],
+    "safety_notes": [
+      "This assessment is generated from existing non-intrusive scan evidence only.",
+      "No exploitation, brute force, fuzzing or destructive validation was performed.",
+      "Risk should be reviewed against the authorized scope and business context."
     ]
   }
 }

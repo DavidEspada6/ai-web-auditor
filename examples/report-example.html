@@ -189,13 +189,14 @@ dd {
 <section class="cover">
 <p class="label">AI Web Auditor</p>
 <h1>Web Audit Report - example.com</h1>
-<p>La auditoria no intrusiva no muestra hallazgos criticos en la muestra, pero conviene revisar las cabeceras y metadatos expuestos.</p>
+<p>The scan generated 2 finding(s): 0 critical, 0 high, 0 medium, 0 low and 2 informational.</p>
 <div class="cover-grid">
-<div><span>Generated</span><strong>2026-08-16T00:39:44Z</strong></div>
-<div><span>Report generator</span><strong>ai-web-auditor 0.14.0</strong></div>
-<div><span>Scan version</span><strong>0.14.0</strong></div>
+<div><span>Generated</span><strong>2026-08-16T00:51:46Z</strong></div>
+<div><span>Report generator</span><strong>ai-web-auditor 0.15.0</strong></div>
+<div><span>Scan version</span><strong>0.15.0</strong></div>
 <div><span>Scan status</span><strong>completed</strong></div>
-<div><span>Overall risk</span><strong>low</strong></div>
+<div><span>Overall risk</span><strong>informational</strong></div>
+<div><span>Risk score</span><strong>13/100</strong></div>
 <div><span>Target</span><strong>https://example.com/</strong></div>
 </div>
 </section>
@@ -206,9 +207,9 @@ dd {
 </section>
 <section class="section">
 <h2>Executive Summary</h2>
-<p>La auditoria no intrusiva no muestra hallazgos criticos en la muestra, pero conviene revisar las cabeceras y metadatos expuestos.</p>
-<p class="risk">Overall risk: <strong>low</strong></p>
-<p>Los hallazgos son principalmente informativos o de endurecimiento defensivo.</p>
+<p>The scan generated 2 finding(s): 0 critical, 0 high, 0 medium, 0 low and 2 informational.</p>
+<p class="risk">Overall risk: <strong>unknown</strong></p>
+<p>Review each finding against the authorized scope and business context.</p>
 </section>
 <section class="section">
 <h2>Severity Summary</h2>
@@ -219,6 +220,40 @@ dd {
 <div class="severity-card low"><span>LOW</span><strong>0</strong></div>
 <div class="severity-card info"><span>INFO</span><strong>2</strong></div>
 </div>
+</section>
+<section class="section">
+<h2>Risk Assessment</h2>
+<div class="severity-grid">
+<div class="severity-card"><span>Risk level</span><strong>INFORMATIONAL</strong></div>
+<div class="severity-card"><span>Risk score</span><strong>13/100</strong></div>
+<div class="severity-card"><span>Priorities</span><strong>2</strong></div>
+<div class="severity-card"><span>Quick wins</span><strong>0</strong></div>
+<div class="severity-card"><span>Open ports</span><strong>1</strong></div>
+</div>
+<h3>Coverage</h3>
+<table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody><tr><td>Modules run</td><td>4</td></tr><tr><td>Module warnings</td><td>2</td></tr><tr><td>Module errors</td><td>0</td></tr><tr><td>URLs</td><td>2</td></tr><tr><td>Forms</td><td>0</td></tr><tr><td>Resolved subdomains</td><td>1</td></tr><tr><td>Open TCP ports</td><td>1</td></tr></tbody></table>
+<h3>Priorities</h3>
+<table><thead><tr><th>Rank</th><th>Severity</th><th>Finding</th><th>Reason</th><th>Recommended action</th></tr></thead><tbody><tr><td>1</td><td>INFO</td><td>PORTS-OPEN-TCP-PORTS: Open TCP ports detected</td><td>additional exposed services increase the review surface</td><td>Review whether each exposed service is expected, patched and covered by the authorized audit scope.</td></tr><tr><td>2</td><td>INFO</td><td>SUBDOMAIN-DISCOVERY-RESOLVED: In-scope subdomains resolved by DNS</td><td>info finding reported by the subdomains module</td><td>Review these hosts and add them explicitly to the authorized scope before running deeper checks against them.</td></tr></tbody></table>
+<h3>Remediation Plan</h3>
+<article class="finding-card">
+<h4>Immediate</h4>
+<p>Reduce the highest observable risk first.</p>
+<ul><li>Open TCP ports detected: Review whether each exposed service is expected, patched and covered by the authorized audit scope.</li><li>Review every open TCP port and confirm it is required for the approved scope.</li></ul>
+</article>
+<article class="finding-card">
+<h4>Short term</h4>
+<p>Apply low-effort hardening and validation.</p>
+<ul><li>Review medium and low hardening items if more evidence is added later.</li></ul>
+</article>
+<article class="finding-card">
+<h4>Planned</h4>
+<p>Improve evidence quality and follow-up coverage.</p>
+<ul><li>In-scope subdomains resolved by DNS: Review these hosts and add them explicitly to the authorized scope before running deeper checks against them.</li></ul>
+</article>
+<h3>Coverage Notes</h3>
+<ul><li>subdomains: warning - Checked 3 candidate subdomain(s), resolved 1 in-scope host(s).</li><li>ports: warning - Checked 3 TCP port(s), found 1 open port(s).</li><li>Resolved subdomains were recorded as evidence but not scanned automatically.</li><li>Open TCP ports were detected using TCP connect checks only; no payloads or banners were requested.</li></ul>
+<h3>Safety Notes</h3>
+<ul><li>This assessment is generated from existing non-intrusive scan evidence only.</li><li>No exploitation, brute force, fuzzing or destructive validation was performed.</li><li>Risk should be reviewed against the authorized scope and business context.</li></ul>
 </section>
 <section class="section">
 <h2>Module Summary</h2>
@@ -288,29 +323,10 @@ dd {
 <p>Only TCP connect checks were performed; no payloads or banners were requested.</p>
 <table><thead><tr><th>Port</th><th>Service</th><th>Status</th><th>Elapsed</th></tr></thead><tbody><tr><td>80</td><td>http</td><td>closed</td><td>8 ms</td></tr><tr><td>443</td><td>https</td><td>open</td><td>5 ms</td></tr><tr><td>8080</td><td>http-alt</td><td>filtered</td><td>1000 ms</td></tr></tbody></table>
 </section>
-<section class="section">
-<h2>AI Prioritization</h2>
-<div class="finding-stack">
-<article class="finding-card">
-<h3>1. Cabeceras de seguridad incompletas</h3>
-<p><strong>Severity:</strong> low</p>
-<p><strong>Why it matters:</strong> Las cabeceras defensivas reducen la exposicion ante ataques comunes del navegador.</p>
-<p><strong>Recommended action:</strong> Definir una politica CSP adaptada a la aplicacion.</p>
-<ul><li>HEADER-CONTENT_SECURITY_POLICY-MISSING</li></ul>
-</article>
-</div>
-</section>
-<section class="section">
-<h2>Safe Next Steps</h2>
-<ul><li>Revisar manualmente las cabeceras recomendadas antes de aplicarlas en produccion.</li><li>Ejecutar de nuevo el escaneo tras corregir la configuracion.</li></ul>
-</section>
-<section class="section">
-<h2>Report Notes</h2>
-<ul><li>El analisis esta basado solo en evidencias del JSON generado por la herramienta.</li></ul>
-</section>
+
 <section class="section">
 <h2>Limitations</h2>
-<ul><li>This report is based on non-intrusive checks only.</li><li>No exploitation, brute force, aggressive fuzzing or destructive testing was performed.</li><li>Findings should be validated against the authorized scope and business context.</li><li>No se han realizado pruebas autenticadas ni intrusivas.</li></ul>
+<ul><li>This report is based on non-intrusive checks only.</li><li>No exploitation, brute force, aggressive fuzzing or destructive testing was performed.</li><li>Findings should be validated against the authorized scope and business context.</li></ul>
 </section>
 </main>
 </body>

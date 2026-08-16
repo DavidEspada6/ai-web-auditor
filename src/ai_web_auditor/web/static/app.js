@@ -31,6 +31,12 @@ const subdomainTable = document.querySelector("#subdomain-table");
 const portCount = document.querySelector("#port-count");
 const portSummary = document.querySelector("#port-summary");
 const portTable = document.querySelector("#port-table");
+const assessmentRisk = document.querySelector("#assessment-risk");
+const assessmentSummary = document.querySelector("#assessment-summary");
+const assessmentPriorities = document.querySelector("#assessment-priorities");
+const assessmentQuickWins = document.querySelector("#assessment-quick-wins");
+const assessmentPlan = document.querySelector("#assessment-plan");
+const assessmentNotes = document.querySelector("#assessment-notes");
 const jsonOutput = document.querySelector("#json-output");
 const reportOutput = document.querySelector("#report-output");
 const htmlPreview = document.querySelector("#html-preview");
@@ -425,11 +431,13 @@ function renderScan(scan) {
   const requests = Array.isArray(scan.requests) ? scan.requests : [];
   const subdomains = subdomainArtifacts(modules);
   const ports = portArtifacts(modules);
+  const assessment = scan.assessment || {};
 
   statusText.textContent = scan.status || "completed";
   targetPill.textContent = scan.target?.normalized_url || scan.target?.host || "Sin objetivo";
   renderSeverityCounts(findings);
-  renderSummary(scan, findings, modules, requests, subdomains, ports);
+  renderSummary(scan, findings, modules, requests, subdomains, ports, assessment);
+  renderAssessment(assessment);
   renderFindings(findings);
   renderModules(modules);
   renderInventory(scan.inventory || {});
@@ -498,7 +506,7 @@ function applyLabDefaults(lab) {
     projectAuditorInput.value = "David";
   }
   if (!projectEngagementInput.value.trim()) {
-    projectEngagementInput.value = "Simulacion v0.14.0";
+    projectEngagementInput.value = "Simulacion v0.15.0";
   }
 
   document.querySelector("#target").value = defaults.target;
@@ -638,18 +646,21 @@ function renderSeverityCounts(findings) {
   });
 }
 
-function renderSummary(scan, findings, modules, requests, subdomains, ports) {
+function renderSummary(scan, findings, modules, requests, subdomains, ports, assessment) {
   summaryEmpty.hidden = true;
   summaryContent.hidden = false;
   summaryContent.innerHTML = "";
   const inventorySummaryData = scan.inventory?.summary || {};
   const resolvedSubdomains = Array.isArray(subdomains.resolved) ? subdomains.resolved.length : 0;
   const openPorts = ports.open_count ?? 0;
+  const assessmentSummaryData = assessment?.summary || {};
 
   const values = [
     ["Objetivo", scan.target?.normalized_url || "unknown"],
     ["Host", scan.target?.host || "unknown"],
     ["Estado", scan.status || "unknown"],
+    ["Riesgo", assessmentSummaryData.risk_level || "informational"],
+    ["Puntuacion", `${assessmentSummaryData.risk_score ?? 0}/100`],
     ["Modulos", modules.length],
     ["Hallazgos", findings.length],
     ["Peticiones", requests.length],
@@ -664,6 +675,115 @@ function renderSummary(scan, findings, modules, requests, subdomains, ports) {
     item.className = "metric";
     item.innerHTML = `<span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong>`;
     summaryContent.appendChild(item);
+  });
+}
+
+function renderAssessment(assessment) {
+  const summary = assessment?.summary || {};
+  const coverage = summary.coverage || {};
+  const priorities = Array.isArray(assessment?.priorities) ? assessment.priorities : [];
+  const quickWins = Array.isArray(assessment?.quick_wins) ? assessment.quick_wins : [];
+  const plan = Array.isArray(assessment?.remediation_plan) ? assessment.remediation_plan : [];
+  const notes = []
+    .concat(Array.isArray(assessment?.coverage_notes) ? assessment.coverage_notes : [])
+    .concat(Array.isArray(assessment?.safety_notes) ? assessment.safety_notes : []);
+
+  assessmentRisk.textContent = `${summary.risk_level || "informational"} (${summary.risk_score ?? 0}/100)`;
+  assessmentSummary.innerHTML = "";
+  [
+    ["Riesgo", summary.risk_level || "informational"],
+    ["Puntuacion", `${summary.risk_score ?? 0}/100`],
+    ["Prioridades", summary.priority_count ?? priorities.length],
+    ["Quick wins", summary.quick_win_count ?? quickWins.length],
+    ["URLs", coverage.urls ?? 0],
+    ["Forms", coverage.forms ?? 0],
+    ["Subdominios", coverage.subdomains ?? 0],
+    ["Puertos abiertos", coverage.open_ports ?? 0],
+  ].forEach(([label, value]) => {
+    const item = document.createElement("div");
+    item.className = "metric";
+    item.innerHTML = `<span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong>`;
+    assessmentSummary.appendChild(item);
+  });
+
+  renderAssessmentPriorities(priorities);
+  renderAssessmentQuickWins(quickWins);
+  renderAssessmentPlan(plan);
+  renderAssessmentNotes(notes);
+}
+
+function renderAssessmentPriorities(items) {
+  assessmentPriorities.innerHTML = "";
+  if (!items.length) {
+    assessmentPriorities.innerHTML = '<div class="empty-inline">Sin prioridades derivadas.</div>';
+    return;
+  }
+  items.forEach((item) => {
+    const severity = normalizeSeverity(item.severity);
+    const card = document.createElement("article");
+    card.className = "finding-item";
+    card.innerHTML = `
+      <span class="badge ${severity}">${escapeHtml(severity)}</span>
+      <h3>${escapeHtml(item.rank || "?")}. ${escapeHtml(item.title || "Untitled")}</h3>
+      <p><strong>ID:</strong> <code>${escapeHtml(item.finding_id || "unknown")}</code></p>
+      <p>${escapeHtml(item.reason || "")}</p>
+      <p><strong>Accion:</strong> ${escapeHtml(item.recommended_action || "")}</p>
+    `;
+    assessmentPriorities.appendChild(card);
+  });
+}
+
+function renderAssessmentQuickWins(items) {
+  assessmentQuickWins.innerHTML = "";
+  if (!items.length) {
+    assessmentQuickWins.innerHTML = '<div class="empty-inline">Sin acciones rapidas detectadas.</div>';
+    return;
+  }
+  items.forEach((item) => {
+    const severity = normalizeSeverity(item.severity);
+    const card = document.createElement("article");
+    card.className = "finding-item";
+    card.innerHTML = `
+      <span class="badge ${severity}">${escapeHtml(severity)}</span>
+      <h3>${escapeHtml(item.title || "Untitled")}</h3>
+      <p><strong>Esfuerzo:</strong> ${escapeHtml(item.effort || "low")}</p>
+      <p>${escapeHtml(item.recommended_action || "")}</p>
+    `;
+    assessmentQuickWins.appendChild(card);
+  });
+}
+
+function renderAssessmentPlan(phases) {
+  assessmentPlan.innerHTML = "";
+  if (!phases.length) {
+    assessmentPlan.innerHTML = '<div class="empty-inline">Sin plan disponible.</div>';
+    return;
+  }
+  phases.forEach((phase) => {
+    const items = Array.isArray(phase.items) ? phase.items : [];
+    const list = items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
+    const card = document.createElement("article");
+    card.className = "finding-item";
+    card.innerHTML = `
+      <h3>${escapeHtml(phase.phase || "Fase")}</h3>
+      <p>${escapeHtml(phase.objective || "")}</p>
+      <ul>${list}</ul>
+    `;
+    assessmentPlan.appendChild(card);
+  });
+}
+
+function renderAssessmentNotes(notes) {
+  assessmentNotes.innerHTML = "";
+  if (!notes.length) {
+    assessmentNotes.innerHTML = '<div class="empty-inline">Sin notas adicionales.</div>';
+    return;
+  }
+  notes.forEach((note) => {
+    const item = document.createElement("article");
+    item.className = "finding-item";
+    item.innerHTML = `<p>${escapeHtml(note)}</p>`;
+    assessmentNotes.appendChild(item);
   });
 }
 

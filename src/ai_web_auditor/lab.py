@@ -94,7 +94,7 @@ class LabManager:
 
 
 class VulnerableLabHandler(BaseHTTPRequestHandler):
-    server_version = "AIWebAuditorLab/0.14"
+    server_version = "AIWebAuditorLab/0.15"
     sys_version = ""
 
     def do_GET(self) -> None:  # noqa: N802 - http.server uses this naming.

@@ -2,6 +2,25 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.15.0] - 2026-08-16
+
+### Anade
+
+- Valoracion determinista de riesgo en el bloque `assessment` de cada JSON de auditoria.
+- Puntuacion de 0 a 100, nivel de riesgo, prioridades, quick wins y plan de remediacion por fases.
+- Comando `assess` para recalcular la valoracion desde un JSON ya existente.
+- Resumen de riesgo en la salida por consola.
+- Seccion `Risk Assessment` en informes Markdown, HTML y PDF.
+- Pestana `Riesgo` en la interfaz grafica local.
+- Enriquecimiento de auditorias antiguas al abrirlas desde historial, sin repetir escaneos.
+- Tests dedicados para assessment, CLI, laboratorio y reporting.
+
+### Seguridad
+
+- No se anaden nuevas peticiones ni pruebas contra el objetivo.
+- La valoracion se calcula solo con evidencias ya recogidas por modulos no intrusivos.
+- La IA sigue siendo opcional y no sustituye la priorizacion determinista del JSON.
+
 ## [0.14.0] - 2026-08-16
 
 ### Anade

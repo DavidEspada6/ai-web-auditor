@@ -74,6 +74,39 @@ class CliTests(unittest.TestCase):
         self.assertIn("url,status_code,content_type", content)
         self.assertIn("https://example.com/login", content)
 
+    def test_assess_command_writes_assessment_json(self):
+        scan_data = {
+            "target": {"scheme": "http", "host": "example.com", "normalized_url": "http://example.com/"},
+            "modules": [{"name": "basic_auth", "status": "warning", "summary": "Basic Auth detected."}],
+            "findings": [
+                {
+                    "id": "AUTH-BASIC-OVER-HTTP",
+                    "title": "HTTP Basic Authentication over HTTP",
+                    "severity": "high",
+                    "category": "authentication",
+                    "description": "Credentials may be exposed.",
+                    "recommendation": "Force HTTPS before authentication.",
+                    "module": "basic_auth",
+                    "target": "http://example.com/",
+                    "evidence": [],
+                }
+            ],
+        }
+        with tempfile.TemporaryDirectory() as tmpdir:
+            scan_path = Path(tmpdir) / "scan.json"
+            output = Path(tmpdir) / "assessment.json"
+            scan_path.write_text(json.dumps(scan_data), encoding="utf-8")
+
+            with redirect_stdout(StringIO()) as stdout:
+                exit_code = main(["assess", str(scan_path), "--output", str(output)])
+
+            assessment = json.loads(output.read_text(encoding="utf-8"))
+
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(assessment["summary"]["risk_level"], "high")
+        self.assertEqual(assessment["priorities"][0]["finding_id"], "AUTH-BASIC-OVER-HTTP")
+        self.assertIn("Assessment JSON written", stdout.getvalue())
+
 
 if __name__ == "__main__":
     unittest.main()

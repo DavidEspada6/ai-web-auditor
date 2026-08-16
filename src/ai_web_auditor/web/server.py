@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs, urlparse
 
+from ..assessment import build_assessment
 from ..ai.analyzer import analyze_scan_data
 from ..compare import compare_scans
 from ..config import AuditConfig
@@ -27,7 +28,7 @@ LAB_MANAGER = LabManager()
 
 
 class LocalAuditHandler(BaseHTTPRequestHandler):
-    server_version = "AIWebAuditorGUI/0.14"
+    server_version = "AIWebAuditorGUI/0.15"
 
     def do_GET(self) -> None:  # noqa: N802 - http.server uses this naming.
         parsed = urlparse(self.path)
@@ -225,6 +226,7 @@ class LocalAuditHandler(BaseHTTPRequestHandler):
         history_dir = _history_dir_from_payload(payload)
         scan = load_scan_reference(identifier, history_dir=history_dir)
         scan["inventory"] = build_inventory_from_scan(scan)
+        scan["assessment"] = build_assessment(scan)
         self._send_json({"ok": True, "scan": scan})
 
     def _handle_compare(self, payload: dict[str, Any]) -> None:
