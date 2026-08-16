@@ -14,7 +14,7 @@ from ai_web_auditor.reporting import generate_html_report, generate_markdown_rep
 
 SCAN_DATA = {
     "tool": "ai-web-auditor",
-    "version": "0.12.0",
+    "version": "0.13.0",
     "generated_at": "2026-08-16T00:00:00Z",
     "status": "completed",
     "target": {
@@ -60,6 +60,27 @@ SCAN_DATA = {
                 "discovered_urls": ["https://example.com/", "https://example.com/about"],
                 "out_of_scope_urls": ["https://outside.example/"],
                 "excluded_urls": ["https://example.com/admin"],
+            },
+        },
+        {
+            "name": "subdomains",
+            "status": "warning",
+            "summary": "Checked 2 candidate subdomain(s), resolved 1 in-scope host(s).",
+            "artifacts": {
+                "root_domains": ["example.com"],
+                "candidate_count": 2,
+                "resolved_count": 1,
+                "unresolved_count": 1,
+                "out_of_scope_count": 0,
+                "out_of_scope": [],
+                "resolved": [
+                    {
+                        "host": "api.example.com",
+                        "ip_addresses": ["93.184.216.35"],
+                        "source": "dns_candidate",
+                        "in_scope": True,
+                    }
+                ],
             },
         },
     ],
@@ -123,6 +144,8 @@ class ReportingTests(unittest.TestCase):
         self.assertIn("https://example.com/about", markdown)
         self.assertIn("## Web Inventory", markdown)
         self.assertIn("https://example.com/admin", markdown)
+        self.assertIn("## Subdomain Discovery", markdown)
+        self.assertIn("api.example.com", markdown)
         self.assertIn("## AI Prioritization", markdown)
 
     def test_generate_html_report_escapes_content_and_includes_metadata(self):
@@ -141,6 +164,7 @@ class ReportingTests(unittest.TestCase):
         self.assertIn("Client A", html)
         self.assertIn("Public web", html)
         self.assertIn("Web Inventory", html)
+        self.assertIn("Subdomain Discovery", html)
         self.assertIn("&lt;script&gt;alert(1)&lt;/script&gt;", html)
         self.assertNotIn("<script>alert(1)</script>", html)
 

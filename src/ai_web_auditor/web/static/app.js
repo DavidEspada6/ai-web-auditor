@@ -25,6 +25,9 @@ const inventoryCount = document.querySelector("#inventory-count");
 const inventorySearch = document.querySelector("#inventory-search");
 const inventorySummary = document.querySelector("#inventory-summary");
 const inventoryTable = document.querySelector("#inventory-table");
+const subdomainCount = document.querySelector("#subdomain-count");
+const subdomainSummary = document.querySelector("#subdomain-summary");
+const subdomainTable = document.querySelector("#subdomain-table");
 const jsonOutput = document.querySelector("#json-output");
 const reportOutput = document.querySelector("#report-output");
 const htmlPreview = document.querySelector("#html-preview");
@@ -364,6 +367,10 @@ function collectPayload() {
       max_pages: document.querySelector("#max-pages").value,
       delay_seconds: document.querySelector("#delay").value,
     },
+    subdomains: {
+      max_candidates: document.querySelector("#subdomain-limit").value,
+      timeout_seconds: document.querySelector("#subdomain-timeout").value,
+    },
   };
 }
 
@@ -408,14 +415,16 @@ function renderScan(scan) {
   const findings = Array.isArray(scan.findings) ? scan.findings : [];
   const modules = Array.isArray(scan.modules) ? scan.modules : [];
   const requests = Array.isArray(scan.requests) ? scan.requests : [];
+  const subdomains = subdomainArtifacts(modules);
 
   statusText.textContent = scan.status || "completed";
   targetPill.textContent = scan.target?.normalized_url || scan.target?.host || "Sin objetivo";
   renderSeverityCounts(findings);
-  renderSummary(scan, findings, modules, requests);
+  renderSummary(scan, findings, modules, requests, subdomains);
   renderFindings(findings);
   renderModules(modules);
   renderInventory(scan.inventory || {});
+  renderSubdomains(subdomains);
   jsonOutput.textContent = JSON.stringify(scan, null, 2);
   downloadInventoryButton.disabled = !hasInventory(scan);
   loadHistory();
@@ -479,7 +488,7 @@ function applyLabDefaults(lab) {
     projectAuditorInput.value = "David";
   }
   if (!projectEngagementInput.value.trim()) {
-    projectEngagementInput.value = "Simulacion v0.12.0";
+    projectEngagementInput.value = "Simulacion v0.13.0";
   }
 
   document.querySelector("#target").value = defaults.target;
@@ -497,6 +506,10 @@ function applyLabDefaults(lab) {
     document.querySelector("#max-depth").value = defaults.crawler.max_depth ?? 1;
     document.querySelector("#max-pages").value = defaults.crawler.max_pages ?? 20;
     document.querySelector("#delay").value = defaults.crawler.delay_seconds ?? 0;
+  }
+  if (defaults.subdomains) {
+    document.querySelector("#subdomain-limit").value = defaults.subdomains.max_candidates ?? 25;
+    document.querySelector("#subdomain-timeout").value = defaults.subdomains.timeout_seconds ?? 2;
   }
   if (defaults.modules) {
     document.querySelectorAll("[data-module]").forEach((input) => {
@@ -571,6 +584,10 @@ function applyProject(project) {
     document.querySelector("#max-pages").value = config.crawler.max_pages ?? 25;
     document.querySelector("#delay").value = config.crawler.delay_seconds ?? 0;
   }
+  if (config.subdomains) {
+    document.querySelector("#subdomain-limit").value = config.subdomains.max_candidates ?? 25;
+    document.querySelector("#subdomain-timeout").value = config.subdomains.timeout_seconds ?? 2;
+  }
   if (config.modules) {
     document.querySelectorAll("[data-module]").forEach((input) => {
       if (Object.prototype.hasOwnProperty.call(config.modules, input.dataset.module)) {
@@ -601,11 +618,12 @@ function renderSeverityCounts(findings) {
   });
 }
 
-function renderSummary(scan, findings, modules, requests) {
+function renderSummary(scan, findings, modules, requests, subdomains) {
   summaryEmpty.hidden = true;
   summaryContent.hidden = false;
   summaryContent.innerHTML = "";
   const inventorySummaryData = scan.inventory?.summary || {};
+  const resolvedSubdomains = Array.isArray(subdomains.resolved) ? subdomains.resolved.length : 0;
 
   const values = [
     ["Objetivo", scan.target?.normalized_url || "unknown"],
@@ -616,6 +634,7 @@ function renderSummary(scan, findings, modules, requests) {
     ["Peticiones", requests.length],
     ["URLs", inventorySummaryData.total_urls || 0],
     ["Forms", inventorySummaryData.forms || 0],
+    ["Subdominios", resolvedSubdomains],
   ];
 
   values.forEach(([label, value]) => {
@@ -746,6 +765,68 @@ function inventorySearchText(item) {
   ]
     .join(" ")
     .toLowerCase();
+}
+
+function renderSubdomains(artifacts) {
+  const resolved = Array.isArray(artifacts.resolved) ? artifacts.resolved : [];
+  const outOfScope = Array.isArray(artifacts.out_of_scope) ? artifacts.out_of_scope : [];
+  const candidateCount = artifacts.candidate_count ?? 0;
+
+  subdomainCount.textContent = `${resolved.length} subdominio${resolved.length === 1 ? "" : "s"}`;
+  subdomainSummary.innerHTML = "";
+  [
+    ["Candidatos", candidateCount],
+    ["Resueltos", resolved.length],
+    ["Sin resolver", artifacts.unresolved_count ?? 0],
+    ["Fuera scope", artifacts.out_of_scope_count ?? outOfScope.length],
+  ].forEach(([label, value]) => {
+    const item = document.createElement("div");
+    item.className = "metric";
+    item.innerHTML = `<span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong>`;
+    subdomainSummary.appendChild(item);
+  });
+
+  subdomainTable.innerHTML = "";
+  if (!Object.keys(artifacts).length) {
+    const row = document.createElement("tr");
+    row.innerHTML = '<td colspan="4">Modulo no ejecutado.</td>';
+    subdomainTable.appendChild(row);
+    return;
+  }
+  if (!resolved.length && !outOfScope.length) {
+    const row = document.createElement("tr");
+    row.innerHTML = '<td colspan="4">Sin subdominios resueltos.</td>';
+    subdomainTable.appendChild(row);
+    return;
+  }
+
+  resolved.forEach((item) => {
+    const row = document.createElement("tr");
+    const ips = Array.isArray(item.ip_addresses) ? item.ip_addresses.join(", ") : "";
+    row.innerHTML = `
+      <td><code>${escapeHtml(item.host || "")}</code></td>
+      <td>${escapeHtml(ips)}</td>
+      <td>${escapeHtml(item.source || "dns_candidate")}</td>
+      <td><span class="status-chip connected">En scope</span></td>
+    `;
+    subdomainTable.appendChild(row);
+  });
+
+  outOfScope.forEach((host) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td><code>${escapeHtml(host)}</code></td>
+      <td></td>
+      <td>dns_candidate</td>
+      <td><span class="status-chip disconnected">Fuera scope</span></td>
+    `;
+    subdomainTable.appendChild(row);
+  });
+}
+
+function subdomainArtifacts(modules) {
+  const module = modules.find((item) => item.name === "subdomains");
+  return module?.artifacts && typeof module.artifacts === "object" ? module.artifacts : {};
 }
 
 function renderAiAnalysis(analysisResult) {

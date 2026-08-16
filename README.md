@@ -9,11 +9,11 @@ Auth, metodos anunciados por OPTIONS, TLS basico y crawling seguro limitado por
 scope. Tambien incluye fingerprinting web no intrusivo a partir de cabeceras,
 cookies, HTML inicial y ficheros publicos habituales, analisis IA opcional desde
 CLI y GUI, informes Markdown/HTML/PDF, proyectos locales, historial separado por
-proyecto, inventario web exportable, laboratorio vulnerable local y comparacion
-de auditorias.
+proyecto, inventario web exportable, descubrimiento DNS seguro de subdominios,
+laboratorio vulnerable local y comparacion de auditorias.
 
 No implementa explotacion, fuerza bruta, fuzzing agresivo, crawling masivo,
-escaneo de puertos ni pruebas intrusivas.
+escaneo de puertos, fuerza bruta DNS agresiva ni pruebas intrusivas.
 
 ## Instalacion
 
@@ -29,7 +29,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.12 no necesita librerias externas en tiempo de ejecucion.
+La v0.13 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -214,7 +214,7 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.12",
+    "user_agent": "AI-Web-Auditor/0.13",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -245,6 +245,11 @@ Ejemplo en `examples/audit.json`:
     "max_body_bytes": 262144,
     "include_query_strings": false
   },
+  "subdomains": {
+    "candidates": ["www", "app", "api", "portal", "admin"],
+    "max_candidates": 25,
+    "timeout_seconds": 2.0
+  },
   "modules": {
     "scope": true,
     "http": true,
@@ -253,6 +258,7 @@ Ejemplo en `examples/audit.json`:
     "basic_auth": true,
     "http_methods": true,
     "tls": true,
+    "subdomains": false,
     "fingerprinting": true,
     "crawler": true
   }
@@ -273,6 +279,9 @@ Ejemplo en `examples/audit.json`:
 - `http_methods`: usa `OPTIONS` para leer metodos anunciados por el servidor.
 - `tls`: obtiene informacion basica del certificado y de la version TLS
   negociada.
+- `subdomains`: resuelve una lista corta de subdominios candidatos por DNS,
+  respetando el scope. Esta desactivado por defecto y no escanea los hosts
+  encontrados automaticamente.
 - `fingerprinting`: identifica senales de servidor, CDN, framework, lenguaje,
   CMS y ficheros publicos como `robots.txt`, `security.txt` y `sitemap.xml`.
 - `crawler`: recorre enlaces internos sin enviar formularios, sin salir del
@@ -340,6 +349,7 @@ El informe incluye:
 - hallazgos y evidencias;
 - fingerprinting y crawler si estan presentes;
 - inventario web con URLs, estados, tipos de contenido y formularios detectados;
+- descubrimiento de subdominios si se activa;
 - priorizacion IA si se aporta;
 - limitaciones de la auditoria.
 
@@ -347,7 +357,7 @@ Hay ejemplos en `examples/report-example.md` y `examples/report-example.html`.
 
 ## Laboratorio local
 
-La v0.12 incluye un laboratorio vulnerable solo para pruebas locales. Sirve una
+La v0.13 incluye un laboratorio vulnerable solo para pruebas locales. Sirve una
 web de demo en `127.0.0.1` con problemas controlados:
 
 - HTTP sin TLS;
@@ -407,6 +417,43 @@ estado HTTP, tipo de contenido, fuente o motivo de interes. El boton
 `Inventario CSV` descarga la tabla para revisarla en Excel u otra herramienta.
 
 Hay un ejemplo en `examples/inventory-example.csv`.
+
+## Descubrimiento de subdominios
+
+La v0.13 anade un modulo DNS seguro para descubrir subdominios candidatos. Esta
+desactivado por defecto porque amplia la fase de reconocimiento y conviene
+usarlo solo cuando el scope lo permita.
+
+Para activarlo en `audit.json`:
+
+```json
+{
+  "scope": {
+    "allowed_hosts": ["example.com"],
+    "allow_subdomains": true,
+    "resolve_dns": true
+  },
+  "modules": {
+    "subdomains": true
+  },
+  "subdomains": {
+    "candidates": ["www", "app", "api", "portal", "admin"],
+    "max_candidates": 25,
+    "timeout_seconds": 2.0
+  }
+}
+```
+
+El modulo:
+
+- solo resuelve hosts que entren en el scope configurado;
+- registra candidatos fuera de scope sin resolverlos;
+- no ejecuta HTTP, crawler, TLS ni otros modulos contra los subdominios
+  encontrados;
+- deja los resultados en el modulo `subdomains` del JSON y en los informes.
+
+En la interfaz grafica se activa con el checkbox `Subdominios DNS` y se revisa
+en la pestana `Subdominios`.
 
 ## Historial y comparacion
 
@@ -496,7 +543,7 @@ Desde la interfaz se puede:
 - configurar objetivo, hosts, rutas y limites principales;
 - activar o desactivar modulos;
 - ejecutar una auditoria no intrusiva;
-- revisar resumen, hallazgos, modulos, inventario y JSON;
+- revisar resumen, hallazgos, modulos, inventario, subdominios y JSON;
 - analizar la auditoria con IA en modo dry-run o con API;
 - guardar el analisis IA en el historial local;
 - guardar y abrir auditorias del historial local o del proyecto activo;
@@ -520,7 +567,8 @@ Ese archivo deja fijados los limites principales:
 - rutas incluidas;
 - rutas excluidas;
 - si se permiten redes privadas o locales;
-- limites del crawler.
+- limites del crawler;
+- limite de candidatos para descubrimiento de subdominios.
 
 Despues se puede repetir la auditoria de forma consistente:
 
@@ -570,7 +618,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.12.0
+git tag v0.13.0
 git push
 git push --tags
 ```
@@ -583,7 +631,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",

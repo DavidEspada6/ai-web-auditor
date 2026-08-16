@@ -2,6 +2,27 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.13.0] - 2026-08-16
+
+### Anade
+
+- Modulo `subdomains` para descubrimiento DNS seguro de subdominios candidatos.
+- Configuracion `subdomains.candidates` y `subdomains.max_candidates`.
+- El modulo queda desactivado por defecto y debe activarse explicitamente.
+- Respeto estricto de `allowed_hosts`, `allow_subdomains` y `resolve_dns`.
+- Hallazgo informativo cuando se resuelven subdominios dentro de scope.
+- Artefactos con hosts resueltos, IPs, candidatos sin resolver y candidatos fuera de scope.
+- Panel `Subdominios` en la interfaz grafica con resumen y tabla.
+- Control de limite de candidatos desde la interfaz.
+- Seccion `Subdomain Discovery` en informes Markdown, HTML y PDF.
+- Tests del modulo DNS, configuracion GUI y reporting.
+
+### Seguridad
+
+- Los subdominios resueltos no se escanean automaticamente.
+- Los candidatos fuera de scope se registran pero no se resuelven ni se auditan.
+- No se anade crawling masivo, fuerza bruta DNS agresiva ni ataques intrusivos.
+
 ## [0.12.0] - 2026-08-16
 
 ### Anade

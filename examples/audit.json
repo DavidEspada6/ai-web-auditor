@@ -17,7 +17,7 @@
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.12",
+    "user_agent": "AI-Web-Auditor/0.13",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -70,6 +70,30 @@
       ".zip"
     ]
   },
+  "subdomains": {
+    "candidates": [
+      "www",
+      "app",
+      "api",
+      "portal",
+      "admin",
+      "login",
+      "dev",
+      "test",
+      "staging",
+      "pre",
+      "beta",
+      "docs",
+      "status",
+      "cdn",
+      "static",
+      "assets",
+      "mail",
+      "vpn"
+    ],
+    "max_candidates": 25,
+    "timeout_seconds": 2.0
+  },
   "modules": {
     "scope": true,
     "http": true,
@@ -78,6 +102,7 @@
     "basic_auth": true,
     "http_methods": true,
     "tls": true,
+    "subdomains": false,
     "fingerprinting": true,
     "crawler": true
   }

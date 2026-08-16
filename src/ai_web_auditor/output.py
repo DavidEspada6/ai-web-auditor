@@ -30,6 +30,13 @@ def render_console(result: ScanResult) -> None:
         f"Interesting: {summary.get('interesting_urls', 0)}"
     )
 
+    subdomain_module = next((module for module in result.modules if module.name == "subdomains"), None)
+    if subdomain_module and isinstance(subdomain_module.artifacts, dict):
+        print(
+            f"Subdomains: {subdomain_module.artifacts.get('resolved_count', 0)} resolved | "
+            f"{subdomain_module.artifacts.get('candidate_count', 0)} candidates"
+        )
+
     findings = sorted(result.findings, key=lambda item: SEVERITY_RANK.get(item.severity, 99))
     if not findings:
         print()

@@ -13,6 +13,7 @@ from .modules import (
     HTTPRedirectsModule,
     ScopeModule,
     SecurityHeadersModule,
+    SubdomainModule,
     TLSBasicModule,
 )
 from .modules.base import AuditModule
@@ -74,6 +75,7 @@ def _enabled_modules(config: AuditConfig) -> list[AuditModule]:
         (config.modules.basic_auth, BasicAuthModule()),
         (config.modules.http_methods, HTTPMethodsModule()),
         (config.modules.tls, TLSBasicModule()),
+        (config.modules.subdomains, SubdomainModule()),
         (config.modules.fingerprinting, FingerprintingModule()),
         (config.modules.crawler, CrawlerModule()),
     ]

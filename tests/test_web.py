@@ -26,8 +26,13 @@ class WebConfigTests(unittest.TestCase):
                     "max_pages": "40",
                     "delay_seconds": "0.5",
                 },
+                "subdomains": {
+                    "max_candidates": "12",
+                    "timeout_seconds": "3",
+                },
                 "modules": {
                     "crawler": False,
+                    "subdomains": True,
                     "tls": True,
                 },
             }
@@ -46,7 +51,10 @@ class WebConfigTests(unittest.TestCase):
         self.assertEqual(config.crawler.max_depth, 2)
         self.assertEqual(config.crawler.max_pages, 40)
         self.assertEqual(config.crawler.delay_seconds, 0.5)
+        self.assertEqual(config.subdomains.max_candidates, 12)
+        self.assertEqual(config.subdomains.timeout_seconds, 3)
         self.assertFalse(config.modules.crawler)
+        self.assertTrue(config.modules.subdomains)
         self.assertTrue(config.modules.tls)
 
     def test_build_config_rejects_excessive_crawler_limit(self):

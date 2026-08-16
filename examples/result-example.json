@@ -1,6 +1,6 @@
 {
   "tool": "ai-web-auditor",
-  "version": "0.12.0",
+  "version": "0.13.0",
   "generated_at": "2026-08-16T00:00:00Z",
   "status": "completed",
   "target": {
@@ -93,9 +93,72 @@
           }
         ]
       }
+    },
+    {
+      "name": "subdomains",
+      "status": "warning",
+      "summary": "Checked 3 candidate subdomain(s), resolved 1 in-scope host(s).",
+      "findings": [
+        {
+          "id": "SUBDOMAIN-DISCOVERY-RESOLVED",
+          "title": "In-scope subdomains resolved by DNS",
+          "severity": "info",
+          "category": "reconnaissance",
+          "description": "The scan resolved one or more candidate subdomains inside the configured scope. They were recorded but not audited automatically.",
+          "recommendation": "Review these hosts and add them explicitly to the authorized scope before running deeper checks against them.",
+          "module": "subdomains",
+          "target": "example.com",
+          "evidence": [
+            {
+              "label": "host",
+              "value": "api.example.com",
+              "location": "93.184.216.35"
+            }
+          ]
+        }
+      ],
+      "artifacts": {
+        "root_domains": [
+          "example.com"
+        ],
+        "candidate_count": 3,
+        "resolved": [
+          {
+            "host": "api.example.com",
+            "ip_addresses": [
+              "93.184.216.35"
+            ],
+            "source": "dns_candidate",
+            "in_scope": true
+          }
+        ],
+        "resolved_count": 1,
+        "unresolved_count": 2,
+        "out_of_scope": [],
+        "out_of_scope_count": 0,
+        "note": "Resolved hosts were not scanned automatically."
+      }
     }
   ],
-  "findings": [],
+  "findings": [
+    {
+      "id": "SUBDOMAIN-DISCOVERY-RESOLVED",
+      "title": "In-scope subdomains resolved by DNS",
+      "severity": "info",
+      "category": "reconnaissance",
+      "description": "The scan resolved one or more candidate subdomains inside the configured scope. They were recorded but not audited automatically.",
+      "recommendation": "Review these hosts and add them explicitly to the authorized scope before running deeper checks against them.",
+      "module": "subdomains",
+      "target": "example.com",
+      "evidence": [
+        {
+          "label": "host",
+          "value": "api.example.com",
+          "location": "93.184.216.35"
+        }
+      ]
+    }
+  ],
   "requests": [
     {
       "method": "GET",

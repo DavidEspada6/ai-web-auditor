@@ -85,6 +85,7 @@ def generate_markdown_report(
     lines.extend(_technology_section(modules))
     lines.extend(_crawler_section(modules))
     lines.extend(_inventory_section(inventory))
+    lines.extend(_subdomain_section(modules))
     lines.extend(_ai_section(ai_body))
     lines.extend(_limitations_section(ai_body))
 
@@ -193,6 +194,7 @@ def generate_html_report(
             _technology_html_section(modules),
             _crawler_html_section(modules),
             _inventory_html_section(inventory),
+            _subdomain_html_section(modules),
             _ai_html_section(ai_body),
             _limitations_html_section(ai_body),
             "</main>",
@@ -473,6 +475,44 @@ def _inventory_section(inventory: dict[str, Any]) -> list[str]:
     return lines
 
 
+def _subdomain_section(modules: list[dict[str, Any]]) -> list[str]:
+    subdomains = _module_by_name(modules, "subdomains")
+    if not subdomains:
+        return []
+
+    artifacts = subdomains.get("artifacts") if isinstance(subdomains.get("artifacts"), dict) else {}
+    resolved = _dict_list(artifacts.get("resolved"))
+    out_of_scope = _string_list(artifacts.get("out_of_scope"))
+    lines = [
+        "## Subdomain Discovery",
+        "",
+        f"- Candidate hosts checked: {_text(artifacts.get('candidate_count', 0))}",
+        f"- Resolved in-scope hosts: {_text(artifacts.get('resolved_count', len(resolved)))}",
+        f"- Unresolved candidates: {_text(artifacts.get('unresolved_count', 0))}",
+        f"- Out-of-scope candidates skipped: {_text(artifacts.get('out_of_scope_count', len(out_of_scope)))}",
+        "- Resolved hosts were not scanned automatically.",
+        "",
+    ]
+
+    if resolved:
+        lines.extend(["### Resolved Subdomains", "", "| Host | IP Addresses | Source |", "| --- | --- | --- |"])
+        for item in resolved[:50]:
+            ips = item.get("ip_addresses") if isinstance(item.get("ip_addresses"), list) else []
+            lines.append(f"| {_cell(item.get('host'))} | {_cell(', '.join(map(str, ips)))} | {_cell(item.get('source'))} |")
+        if len(resolved) > 50:
+            lines.append(f"| ... {len(resolved) - 50} more |  |  |")
+        lines.append("")
+
+    if out_of_scope:
+        lines.extend(["### Out-of-Scope Candidates", ""])
+        lines.extend(f"- `{host}`" for host in out_of_scope[:25])
+        lines.append("")
+
+    if not resolved and not out_of_scope:
+        lines.extend(["No subdomains were resolved by this module.", ""])
+    return lines
+
+
 def _ai_section(ai_body: dict[str, Any] | None) -> list[str]:
     if not ai_body:
         return []
@@ -731,6 +771,40 @@ def _inventory_html_section(inventory: dict[str, Any]) -> str:
             for form in forms[:25]
         ]
         lines.extend(["<h3>Forms</h3>", _html_table(["Page", "Action", "Method", "Inputs", "Password Fields"], form_rows)])
+    lines.append("</section>")
+    return "\n".join(lines)
+
+
+def _subdomain_html_section(modules: list[dict[str, Any]]) -> str:
+    subdomains = _module_by_name(modules, "subdomains")
+    if not subdomains:
+        return ""
+
+    artifacts = subdomains.get("artifacts") if isinstance(subdomains.get("artifacts"), dict) else {}
+    resolved = _dict_list(artifacts.get("resolved"))
+    out_of_scope = _string_list(artifacts.get("out_of_scope"))
+    rows = [
+        ["Candidate hosts checked", artifacts.get("candidate_count", 0)],
+        ["Resolved in-scope hosts", artifacts.get("resolved_count", len(resolved))],
+        ["Unresolved candidates", artifacts.get("unresolved_count", 0)],
+        ["Out-of-scope candidates skipped", artifacts.get("out_of_scope_count", len(out_of_scope))],
+    ]
+    lines = [
+        '<section class="section">',
+        "<h2>Subdomain Discovery</h2>",
+        _html_table(["Field", "Value"], rows),
+        "<p>Resolved hosts were not scanned automatically.</p>",
+    ]
+    if resolved:
+        resolved_rows = []
+        for item in resolved[:50]:
+            ips = item.get("ip_addresses") if isinstance(item.get("ip_addresses"), list) else []
+            resolved_rows.append([item.get("host"), ", ".join(map(str, ips)), item.get("source")])
+        lines.extend(["<h3>Resolved Subdomains</h3>", _html_table(["Host", "IP Addresses", "Source"], resolved_rows)])
+    if out_of_scope:
+        lines.extend(["<h3>Out-of-Scope Candidates</h3>", _html_list(out_of_scope[:25])])
+    if not resolved and not out_of_scope:
+        lines.append('<p class="empty">No subdomains were resolved by this module.</p>')
     lines.append("</section>")
     return "\n".join(lines)
 

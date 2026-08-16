@@ -15,7 +15,7 @@ from ai_web_auditor.history import list_history, load_scan_reference, save_analy
 
 BASELINE_SCAN = {
     "tool": "ai-web-auditor",
-    "version": "0.12.0",
+    "version": "0.13.0",
     "generated_at": "2026-08-16T00:00:00Z",
     "status": "completed",
     "target": {"normalized_url": "https://example.com/", "host": "example.com"},
@@ -40,7 +40,7 @@ BASELINE_SCAN = {
 
 CURRENT_SCAN = {
     "tool": "ai-web-auditor",
-    "version": "0.12.0",
+    "version": "0.13.0",
     "generated_at": "2026-08-16T01:00:00Z",
     "status": "completed",
     "target": {"normalized_url": "https://example.com/", "host": "example.com"},

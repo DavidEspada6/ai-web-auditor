@@ -111,6 +111,7 @@
               <label><input data-module="basic_auth" type="checkbox" checked> Basic Auth</label>
               <label><input data-module="http_methods" type="checkbox" checked> Metodos</label>
               <label><input data-module="tls" type="checkbox" checked> TLS</label>
+              <label><input data-module="subdomains" type="checkbox"> Subdominios DNS</label>
               <label><input data-module="fingerprinting" type="checkbox" checked> Fingerprinting</label>
               <label><input data-module="crawler" type="checkbox" checked> Crawler</label>
             </div>
@@ -134,6 +135,14 @@
               <label class="field">
                 <span>Paginas</span>
                 <input id="max-pages" type="number" min="1" max="100" step="1" value="25">
+              </label>
+              <label class="field">
+                <span>Subdominios</span>
+                <input id="subdomain-limit" type="number" min="1" max="100" step="1" value="25">
+              </label>
+              <label class="field">
+                <span>Timeout DNS</span>
+                <input id="subdomain-timeout" type="number" min="0.5" max="10" step="0.5" value="2">
               </label>
             </div>
             <label class="field">
@@ -168,6 +177,7 @@
           <button class="tab" type="button" data-tab="findings">Hallazgos</button>
           <button class="tab" type="button" data-tab="modules">Modulos</button>
           <button class="tab" type="button" data-tab="inventory">Inventario</button>
+          <button class="tab" type="button" data-tab="subdomains">Subdominios</button>
           <button class="tab" type="button" data-tab="json">JSON</button>
           <button class="tab" type="button" data-tab="ai">IA</button>
           <button class="tab" type="button" data-tab="report">Informe</button>
@@ -226,6 +236,29 @@
                 </tr>
               </thead>
               <tbody id="inventory-table"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="subdomains-view" class="panel view">
+          <div class="section-toolbar">
+            <div>
+              <p class="eyebrow">Reconocimiento DNS</p>
+              <strong id="subdomain-count">0 subdominios</strong>
+            </div>
+          </div>
+          <div id="subdomain-summary" class="summary-grid compact-summary"></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Host</th>
+                  <th>IPs</th>
+                  <th>Fuente</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+              <tbody id="subdomain-table"></tbody>
             </table>
           </div>
         </section>

@@ -1,8 +1,8 @@
 # Web Audit Report - example.com
 
-- Generated: 2026-08-16T00:12:50Z
-- Report generator: ai-web-auditor 0.12.0
-- Scan version: 0.12.0
+- Generated: 2026-08-16T00:25:10Z
+- Report generator: ai-web-auditor 0.13.0
+- Scan version: 0.13.0
 - Scan status: completed
 
 ## Target
@@ -31,7 +31,7 @@ Los hallazgos son principalmente informativos o de endurecimiento defensivo.
 | HIGH | 0 |
 | MEDIUM | 0 |
 | LOW | 0 |
-| INFO | 0 |
+| INFO | 1 |
 
 ## Module Summary
 
@@ -39,10 +39,28 @@ Los hallazgos son principalmente informativos o de endurecimiento defensivo.
 | --- | --- | --- |
 | fingerprinting | passed | Identified 0 technology signal(s) and checked 4 public metadata path(s). |
 | crawler | passed | Crawled 1 page(s), discovered 2 in-scope URL(s). |
+| subdomains | warning | Checked 3 candidate subdomain(s), resolved 1 in-scope host(s). |
 
 ## Findings
 
-No findings were reported.
+### INFO - In-scope subdomains resolved by DNS
+
+- ID: `SUBDOMAIN-DISCOVERY-RESOLVED`
+- Category: reconnaissance
+- Module: `subdomains`
+- Target: `example.com`
+
+**Description**
+
+The scan resolved one or more candidate subdomains inside the configured scope. They were recorded but not audited automatically.
+
+**Recommendation**
+
+Review these hosts and add them explicitly to the authorized scope before running deeper checks against them.
+
+**Evidence**
+
+- host (93.184.216.35): `api.example.com`
 
 ## Technology Fingerprinting
 
@@ -87,6 +105,20 @@ No technology signals were identified.
 | --- | ---: | --- | ---: | --- |
 | https://example.com/login | unknown | unknown | 0 | login_path |
 | https://example.com/ | 200 | text/html | 0 | unknown |
+
+## Subdomain Discovery
+
+- Candidate hosts checked: 3
+- Resolved in-scope hosts: 1
+- Unresolved candidates: 2
+- Out-of-scope candidates skipped: 0
+- Resolved hosts were not scanned automatically.
+
+### Resolved Subdomains
+
+| Host | IP Addresses | Source |
+| --- | --- | --- |
+| api.example.com | 93.184.216.35 | dns_candidate |
 
 ## AI Prioritization
 

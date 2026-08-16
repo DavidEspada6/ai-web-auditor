@@ -110,9 +110,12 @@ def init_scope_command(args: argparse.Namespace) -> int:
     config.http.check_http_counterpart = _prompt_bool("Check HTTP counterpart for HTTPS targets", True)
     config.modules.fingerprinting = _prompt_bool("Enable web fingerprinting", True)
     config.modules.crawler = _prompt_bool("Enable safe crawler", True)
+    config.modules.subdomains = _prompt_bool("Enable DNS subdomain discovery", False)
     config.crawler.max_depth = _prompt_int("Crawler max depth", config.crawler.max_depth, minimum=0)
     config.crawler.max_pages = _prompt_int("Crawler max pages", config.crawler.max_pages, minimum=1)
     config.crawler.delay_seconds = _prompt_float("Crawler delay between requests", config.crawler.delay_seconds, minimum=0.0)
+    config.subdomains.max_candidates = _prompt_int("Subdomain candidate limit", config.subdomains.max_candidates, minimum=1)
+    config.subdomains.timeout_seconds = _prompt_float("Subdomain DNS timeout seconds", config.subdomains.timeout_seconds, minimum=0.5)
 
     config.write_json(output)
     print(f"Config written to {output}")

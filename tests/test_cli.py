@@ -15,7 +15,7 @@ from ai_web_auditor.config import AuditConfig
 
 class CliTests(unittest.TestCase):
     def test_init_scope_writes_config_with_defaults(self):
-        answers = iter([""] * 20)
+        answers = iter([""] * 30)
 
         with tempfile.TemporaryDirectory() as tmpdir:
             output = Path(tmpdir) / "audit.json"
@@ -30,7 +30,10 @@ class CliTests(unittest.TestCase):
         self.assertEqual(config.scope.allowed_hosts, ["example.com"])
         self.assertTrue(config.modules.fingerprinting)
         self.assertTrue(config.modules.crawler)
+        self.assertFalse(config.modules.subdomains)
         self.assertEqual(config.crawler.max_depth, 1)
+        self.assertEqual(config.subdomains.max_candidates, 25)
+        self.assertEqual(config.subdomains.timeout_seconds, 2.0)
 
     def test_inventory_command_writes_csv(self):
         scan_data = {

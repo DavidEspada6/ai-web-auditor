@@ -30,7 +30,7 @@ class ScopeConfig:
 class HTTPConfig:
     timeout_seconds: float = 10.0
     max_redirects: int = 10
-    user_agent: str = "AI-Web-Auditor/0.12"
+    user_agent: str = "AI-Web-Auditor/0.13"
     verify_tls: bool = True
     check_http_counterpart: bool = True
 
@@ -95,6 +95,34 @@ class CrawlerConfig:
 
 
 @dataclass
+class SubdomainConfig:
+    candidates: list[str] = field(
+        default_factory=lambda: [
+            "www",
+            "app",
+            "api",
+            "portal",
+            "admin",
+            "login",
+            "dev",
+            "test",
+            "staging",
+            "pre",
+            "beta",
+            "docs",
+            "status",
+            "cdn",
+            "static",
+            "assets",
+            "mail",
+            "vpn",
+        ]
+    )
+    max_candidates: int = 25
+    timeout_seconds: float = 2.0
+
+
+@dataclass
 class ModuleConfig:
     scope: bool = True
     http: bool = True
@@ -105,6 +133,7 @@ class ModuleConfig:
     tls: bool = True
     fingerprinting: bool = True
     crawler: bool = True
+    subdomains: bool = False
 
 
 @dataclass
@@ -115,6 +144,7 @@ class AuditConfig:
     ai: AIConfig = field(default_factory=AIConfig)
     fingerprinting: FingerprintConfig = field(default_factory=FingerprintConfig)
     crawler: CrawlerConfig = field(default_factory=CrawlerConfig)
+    subdomains: SubdomainConfig = field(default_factory=SubdomainConfig)
     modules: ModuleConfig = field(default_factory=ModuleConfig)
 
     @classmethod
