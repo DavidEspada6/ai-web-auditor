@@ -30,9 +30,15 @@ class WebConfigTests(unittest.TestCase):
                     "max_candidates": "12",
                     "timeout_seconds": "3",
                 },
+                "ports": {
+                    "ports": "80, 443, 8080",
+                    "max_ports": "3",
+                    "timeout_seconds": "0.5",
+                },
                 "modules": {
                     "crawler": False,
                     "subdomains": True,
+                    "ports": True,
                     "tls": True,
                 },
             }
@@ -53,8 +59,12 @@ class WebConfigTests(unittest.TestCase):
         self.assertEqual(config.crawler.delay_seconds, 0.5)
         self.assertEqual(config.subdomains.max_candidates, 12)
         self.assertEqual(config.subdomains.timeout_seconds, 3)
+        self.assertEqual(config.ports.ports, [80, 443, 8080])
+        self.assertEqual(config.ports.max_ports, 3)
+        self.assertEqual(config.ports.timeout_seconds, 0.5)
         self.assertFalse(config.modules.crawler)
         self.assertTrue(config.modules.subdomains)
+        self.assertTrue(config.modules.ports)
         self.assertTrue(config.modules.tls)
 
     def test_build_config_rejects_excessive_crawler_limit(self):

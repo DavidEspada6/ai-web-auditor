@@ -36,6 +36,12 @@ def render_console(result: ScanResult) -> None:
             f"Subdomains: {subdomain_module.artifacts.get('resolved_count', 0)} resolved | "
             f"{subdomain_module.artifacts.get('candidate_count', 0)} candidates"
         )
+    ports_module = next((module for module in result.modules if module.name == "ports"), None)
+    if ports_module and isinstance(ports_module.artifacts, dict):
+        print(
+            f"Ports: {ports_module.artifacts.get('open_count', 0)} open | "
+            f"{len(ports_module.artifacts.get('results', []))} checked"
+        )
 
     findings = sorted(result.findings, key=lambda item: SEVERITY_RANK.get(item.severity, 99))
     if not findings:

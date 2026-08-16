@@ -111,11 +111,15 @@ def init_scope_command(args: argparse.Namespace) -> int:
     config.modules.fingerprinting = _prompt_bool("Enable web fingerprinting", True)
     config.modules.crawler = _prompt_bool("Enable safe crawler", True)
     config.modules.subdomains = _prompt_bool("Enable DNS subdomain discovery", False)
+    config.modules.ports = _prompt_bool("Enable limited TCP port check", False)
     config.crawler.max_depth = _prompt_int("Crawler max depth", config.crawler.max_depth, minimum=0)
     config.crawler.max_pages = _prompt_int("Crawler max pages", config.crawler.max_pages, minimum=1)
     config.crawler.delay_seconds = _prompt_float("Crawler delay between requests", config.crawler.delay_seconds, minimum=0.0)
     config.subdomains.max_candidates = _prompt_int("Subdomain candidate limit", config.subdomains.max_candidates, minimum=1)
     config.subdomains.timeout_seconds = _prompt_float("Subdomain DNS timeout seconds", config.subdomains.timeout_seconds, minimum=0.5)
+    config.ports.ports = _prompt_port_list("TCP ports to check", ",".join(map(str, config.ports.ports)))
+    config.ports.max_ports = _prompt_int("TCP port limit", config.ports.max_ports, minimum=1)
+    config.ports.timeout_seconds = _prompt_float("TCP port timeout seconds", config.ports.timeout_seconds, minimum=0.2)
 
     config.write_json(output)
     print(f"Config written to {output}")
@@ -428,6 +432,17 @@ def _prompt_list(label: str, default: str) -> list[str]:
     if not value:
         return []
     return [item.strip() for item in value.split(",") if item.strip()]
+
+
+def _prompt_port_list(label: str, default: str) -> list[int]:
+    raw_values = _prompt_list(label, default)
+    ports: list[int] = []
+    for value in raw_values:
+        port = int(value)
+        if port < 1 or port > 65535:
+            raise ValueError(f"Invalid TCP port for {label}: {port}")
+        ports.append(port)
+    return ports
 
 
 def _prompt_bool(label: str, default: bool) -> bool:

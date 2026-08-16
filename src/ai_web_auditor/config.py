@@ -30,7 +30,7 @@ class ScopeConfig:
 class HTTPConfig:
     timeout_seconds: float = 10.0
     max_redirects: int = 10
-    user_agent: str = "AI-Web-Auditor/0.13"
+    user_agent: str = "AI-Web-Auditor/0.14"
     verify_tls: bool = True
     check_http_counterpart: bool = True
 
@@ -123,6 +123,13 @@ class SubdomainConfig:
 
 
 @dataclass
+class PortScanConfig:
+    ports: list[int] = field(default_factory=lambda: [80, 443, 8080, 8443, 8000, 3000, 5000, 9000])
+    max_ports: int = 20
+    timeout_seconds: float = 1.0
+
+
+@dataclass
 class ModuleConfig:
     scope: bool = True
     http: bool = True
@@ -134,6 +141,7 @@ class ModuleConfig:
     fingerprinting: bool = True
     crawler: bool = True
     subdomains: bool = False
+    ports: bool = False
 
 
 @dataclass
@@ -145,6 +153,7 @@ class AuditConfig:
     fingerprinting: FingerprintConfig = field(default_factory=FingerprintConfig)
     crawler: CrawlerConfig = field(default_factory=CrawlerConfig)
     subdomains: SubdomainConfig = field(default_factory=SubdomainConfig)
+    ports: PortScanConfig = field(default_factory=PortScanConfig)
     modules: ModuleConfig = field(default_factory=ModuleConfig)
 
     @classmethod

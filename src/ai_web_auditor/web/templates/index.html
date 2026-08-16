@@ -112,6 +112,7 @@
               <label><input data-module="http_methods" type="checkbox" checked> Metodos</label>
               <label><input data-module="tls" type="checkbox" checked> TLS</label>
               <label><input data-module="subdomains" type="checkbox"> Subdominios DNS</label>
+              <label><input data-module="ports" type="checkbox"> Puertos TCP</label>
               <label><input data-module="fingerprinting" type="checkbox" checked> Fingerprinting</label>
               <label><input data-module="crawler" type="checkbox" checked> Crawler</label>
             </div>
@@ -144,7 +145,19 @@
                 <span>Timeout DNS</span>
                 <input id="subdomain-timeout" type="number" min="0.5" max="10" step="0.5" value="2">
               </label>
+              <label class="field">
+                <span>Limite puertos</span>
+                <input id="port-limit" type="number" min="1" max="100" step="1" value="20">
+              </label>
+              <label class="field">
+                <span>Timeout puertos</span>
+                <input id="port-timeout" type="number" min="0.2" max="10" step="0.2" value="1">
+              </label>
             </div>
+            <label class="field">
+              <span>Puertos TCP</span>
+              <input id="ports-list" type="text" value="80, 443, 8080, 8443, 8000, 3000, 5000, 9000">
+            </label>
             <label class="field">
               <span>Pausa crawler</span>
               <input id="delay" type="number" min="0" max="10" step="0.1" value="0">
@@ -178,6 +191,7 @@
           <button class="tab" type="button" data-tab="modules">Modulos</button>
           <button class="tab" type="button" data-tab="inventory">Inventario</button>
           <button class="tab" type="button" data-tab="subdomains">Subdominios</button>
+          <button class="tab" type="button" data-tab="ports">Puertos</button>
           <button class="tab" type="button" data-tab="json">JSON</button>
           <button class="tab" type="button" data-tab="ai">IA</button>
           <button class="tab" type="button" data-tab="report">Informe</button>
@@ -259,6 +273,30 @@
                 </tr>
               </thead>
               <tbody id="subdomain-table"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="ports-view" class="panel view">
+          <div class="section-toolbar">
+            <div>
+              <p class="eyebrow">Puertos TCP</p>
+              <strong id="port-count">0 abiertos</strong>
+            </div>
+          </div>
+          <div id="port-summary" class="summary-grid compact-summary"></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Host</th>
+                  <th>Puerto</th>
+                  <th>Servicio</th>
+                  <th>Estado</th>
+                  <th>Tiempo</th>
+                </tr>
+              </thead>
+              <tbody id="port-table"></tbody>
             </table>
           </div>
         </section>

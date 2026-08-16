@@ -86,6 +86,7 @@ def generate_markdown_report(
     lines.extend(_crawler_section(modules))
     lines.extend(_inventory_section(inventory))
     lines.extend(_subdomain_section(modules))
+    lines.extend(_ports_section(modules))
     lines.extend(_ai_section(ai_body))
     lines.extend(_limitations_section(ai_body))
 
@@ -195,6 +196,7 @@ def generate_html_report(
             _crawler_html_section(modules),
             _inventory_html_section(inventory),
             _subdomain_html_section(modules),
+            _ports_html_section(modules),
             _ai_html_section(ai_body),
             _limitations_html_section(ai_body),
             "</main>",
@@ -513,6 +515,40 @@ def _subdomain_section(modules: list[dict[str, Any]]) -> list[str]:
     return lines
 
 
+def _ports_section(modules: list[dict[str, Any]]) -> list[str]:
+    ports = _module_by_name(modules, "ports")
+    if not ports:
+        return []
+
+    artifacts = ports.get("artifacts") if isinstance(ports.get("artifacts"), dict) else {}
+    results = _dict_list(artifacts.get("results"))
+    lines = [
+        "## TCP Port Check",
+        "",
+        f"- Host: `{_text(artifacts.get('host', 'unknown'))}`",
+        f"- Ports checked: {len(results)}",
+        f"- Open ports: {_text(artifacts.get('open_count', 0))}",
+        f"- Closed ports: {_text(artifacts.get('closed_count', 0))}",
+        f"- Filtered ports: {_text(artifacts.get('filtered_count', 0))}",
+        "- Only TCP connect checks were performed; no payloads or banners were requested.",
+        "",
+    ]
+
+    if results:
+        lines.extend(["| Port | Service | Status | Elapsed |", "| ---: | --- | --- | ---: |"])
+        for item in results[:50]:
+            lines.append(
+                f"| {_cell(item.get('port'))} | {_cell(item.get('service'))} | "
+                f"{_cell(item.get('status'))} | {_cell(item.get('elapsed_ms'))} ms |"
+            )
+        if len(results) > 50:
+            lines.append(f"| ... {len(results) - 50} more |  |  |  |")
+        lines.append("")
+    else:
+        lines.extend(["No port check results were available.", ""])
+    return lines
+
+
 def _ai_section(ai_body: dict[str, Any] | None) -> list[str]:
     if not ai_body:
         return []
@@ -805,6 +841,38 @@ def _subdomain_html_section(modules: list[dict[str, Any]]) -> str:
         lines.extend(["<h3>Out-of-Scope Candidates</h3>", _html_list(out_of_scope[:25])])
     if not resolved and not out_of_scope:
         lines.append('<p class="empty">No subdomains were resolved by this module.</p>')
+    lines.append("</section>")
+    return "\n".join(lines)
+
+
+def _ports_html_section(modules: list[dict[str, Any]]) -> str:
+    ports = _module_by_name(modules, "ports")
+    if not ports:
+        return ""
+
+    artifacts = ports.get("artifacts") if isinstance(ports.get("artifacts"), dict) else {}
+    results = _dict_list(artifacts.get("results"))
+    rows = [
+        ["Host", artifacts.get("host", "unknown")],
+        ["Ports checked", len(results)],
+        ["Open ports", artifacts.get("open_count", 0)],
+        ["Closed ports", artifacts.get("closed_count", 0)],
+        ["Filtered ports", artifacts.get("filtered_count", 0)],
+    ]
+    lines = [
+        '<section class="section">',
+        "<h2>TCP Port Check</h2>",
+        _html_table(["Field", "Value"], rows),
+        "<p>Only TCP connect checks were performed; no payloads or banners were requested.</p>",
+    ]
+    if results:
+        result_rows = [
+            [item.get("port"), item.get("service"), item.get("status"), f"{item.get('elapsed_ms', '')} ms"]
+            for item in results[:50]
+        ]
+        lines.append(_html_table(["Port", "Service", "Status", "Elapsed"], result_rows))
+    else:
+        lines.append('<p class="empty">No port check results were available.</p>')
     lines.append("</section>")
     return "\n".join(lines)
 

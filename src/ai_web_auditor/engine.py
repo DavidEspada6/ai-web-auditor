@@ -11,6 +11,7 @@ from .modules import (
     FingerprintingModule,
     HTTPMethodsModule,
     HTTPRedirectsModule,
+    PortsModule,
     ScopeModule,
     SecurityHeadersModule,
     SubdomainModule,
@@ -76,6 +77,7 @@ def _enabled_modules(config: AuditConfig) -> list[AuditModule]:
         (config.modules.http_methods, HTTPMethodsModule()),
         (config.modules.tls, TLSBasicModule()),
         (config.modules.subdomains, SubdomainModule()),
+        (config.modules.ports, PortsModule()),
         (config.modules.fingerprinting, FingerprintingModule()),
         (config.modules.crawler, CrawlerModule()),
     ]

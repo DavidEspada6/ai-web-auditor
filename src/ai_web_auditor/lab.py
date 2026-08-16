@@ -94,7 +94,7 @@ class LabManager:
 
 
 class VulnerableLabHandler(BaseHTTPRequestHandler):
-    server_version = "AIWebAuditorLab/0.13"
+    server_version = "AIWebAuditorLab/0.14"
     sys_version = ""
 
     def do_GET(self) -> None:  # noqa: N802 - http.server uses this naming.
@@ -238,6 +238,7 @@ def lab_scan_defaults(status: LabStatus) -> dict[str, Any]:
             "http_methods": True,
             "tls": False,
             "subdomains": False,
+            "ports": True,
             "fingerprinting": True,
             "crawler": True,
         },
@@ -249,6 +250,11 @@ def lab_scan_defaults(status: LabStatus) -> dict[str, Any]:
         "subdomains": {
             "max_candidates": 25,
             "timeout_seconds": 2.0,
+        },
+        "ports": {
+            "ports": f"{status.port}, 80, 443",
+            "max_ports": 5,
+            "timeout_seconds": 0.5,
         },
     }
 

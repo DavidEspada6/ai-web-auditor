@@ -17,7 +17,7 @@
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.13",
+    "user_agent": "AI-Web-Auditor/0.14",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -94,6 +94,20 @@
     "max_candidates": 25,
     "timeout_seconds": 2.0
   },
+  "ports": {
+    "ports": [
+      80,
+      443,
+      8080,
+      8443,
+      8000,
+      3000,
+      5000,
+      9000
+    ],
+    "max_ports": 20,
+    "timeout_seconds": 1.0
+  },
   "modules": {
     "scope": true,
     "http": true,
@@ -103,6 +117,7 @@
     "http_methods": true,
     "tls": true,
     "subdomains": false,
+    "ports": false,
     "fingerprinting": true,
     "crawler": true
   }

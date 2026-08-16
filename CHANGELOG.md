@@ -2,6 +2,27 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.14.0] - 2026-08-16
+
+### Anade
+
+- Modulo `ports` para comprobacion TCP limitada de puertos del host objetivo.
+- Configuracion `ports.ports`, `ports.max_ports` y `ports.timeout_seconds`.
+- El modulo queda desactivado por defecto y debe activarse explicitamente, salvo en la demo local.
+- Estados `open`, `closed`, `filtered` y `error` para cada puerto comprobado.
+- Hallazgo informativo cuando se detectan puertos TCP abiertos.
+- Panel `Puertos` en la interfaz grafica con resumen y tabla.
+- Controles de lista de puertos, limite y timeout desde la interfaz.
+- Seccion `TCP Port Check` en informes Markdown, HTML y PDF.
+- Defaults del laboratorio para comprobar `127.0.0.1` de forma controlada.
+- Tests del modulo de puertos, configuracion GUI y reporting.
+
+### Seguridad
+
+- Solo se realizan conexiones TCP basicas; no se envian payloads ni se solicitan banners.
+- No se escanean subdominios automaticamente.
+- El limite y timeout reducen el riesgo de escaneos amplios o lentos.
+
 ## [0.13.0] - 2026-08-16
 
 ### Anade

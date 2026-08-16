@@ -191,9 +191,9 @@ dd {
 <h1>Web Audit Report - example.com</h1>
 <p>La auditoria no intrusiva no muestra hallazgos criticos en la muestra, pero conviene revisar las cabeceras y metadatos expuestos.</p>
 <div class="cover-grid">
-<div><span>Generated</span><strong>2026-08-16T00:25:10Z</strong></div>
-<div><span>Report generator</span><strong>ai-web-auditor 0.13.0</strong></div>
-<div><span>Scan version</span><strong>0.13.0</strong></div>
+<div><span>Generated</span><strong>2026-08-16T00:39:44Z</strong></div>
+<div><span>Report generator</span><strong>ai-web-auditor 0.14.0</strong></div>
+<div><span>Scan version</span><strong>0.14.0</strong></div>
 <div><span>Scan status</span><strong>completed</strong></div>
 <div><span>Overall risk</span><strong>low</strong></div>
 <div><span>Target</span><strong>https://example.com/</strong></div>
@@ -217,16 +217,30 @@ dd {
 <div class="severity-card high"><span>HIGH</span><strong>0</strong></div>
 <div class="severity-card medium"><span>MEDIUM</span><strong>0</strong></div>
 <div class="severity-card low"><span>LOW</span><strong>0</strong></div>
-<div class="severity-card info"><span>INFO</span><strong>1</strong></div>
+<div class="severity-card info"><span>INFO</span><strong>2</strong></div>
 </div>
 </section>
 <section class="section">
 <h2>Module Summary</h2>
-<table><thead><tr><th>Module</th><th>Status</th><th>Summary</th></tr></thead><tbody><tr><td>fingerprinting</td><td>passed</td><td>Identified 0 technology signal(s) and checked 4 public metadata path(s).</td></tr><tr><td>crawler</td><td>passed</td><td>Crawled 1 page(s), discovered 2 in-scope URL(s).</td></tr><tr><td>subdomains</td><td>warning</td><td>Checked 3 candidate subdomain(s), resolved 1 in-scope host(s).</td></tr></tbody></table>
+<table><thead><tr><th>Module</th><th>Status</th><th>Summary</th></tr></thead><tbody><tr><td>fingerprinting</td><td>passed</td><td>Identified 0 technology signal(s) and checked 4 public metadata path(s).</td></tr><tr><td>crawler</td><td>passed</td><td>Crawled 1 page(s), discovered 2 in-scope URL(s).</td></tr><tr><td>subdomains</td><td>warning</td><td>Checked 3 candidate subdomain(s), resolved 1 in-scope host(s).</td></tr><tr><td>ports</td><td>warning</td><td>Checked 3 TCP port(s), found 1 open port(s).</td></tr></tbody></table>
 </section>
 <section class="section">
 <h2>Findings</h2>
 <div class="finding-stack">
+<article class="finding-card">
+<span class="badge info">INFO</span>
+<h3>Open TCP ports detected</h3>
+<dl class="finding-meta">
+<div><dt>ID</dt><dd>PORTS-OPEN-TCP-PORTS</dd></div>
+<div><dt>Module</dt><dd>ports</dd></div>
+<div><dt>Category</dt><dd>network-exposure</dd></div>
+<div><dt>Target</dt><dd>example.com</dd></div>
+</dl>
+<p>The limited TCP connectivity check found open ports on the target host. This is inventory evidence, not exploitation.</p>
+<p><strong>Recommendation:</strong> Review whether each exposed service is expected, patched and covered by the authorized audit scope.</p>
+<h4>Evidence</h4>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>open_port</td><td>443</td><td>https</td></tr></tbody></table>
+</article>
 <article class="finding-card">
 <span class="badge info">INFO</span>
 <h3>In-scope subdomains resolved by DNS</h3>
@@ -267,6 +281,12 @@ dd {
 <p>Resolved hosts were not scanned automatically.</p>
 <h3>Resolved Subdomains</h3>
 <table><thead><tr><th>Host</th><th>IP Addresses</th><th>Source</th></tr></thead><tbody><tr><td>api.example.com</td><td>93.184.216.35</td><td>dns_candidate</td></tr></tbody></table>
+</section>
+<section class="section">
+<h2>TCP Port Check</h2>
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Host</td><td>example.com</td></tr><tr><td>Ports checked</td><td>3</td></tr><tr><td>Open ports</td><td>1</td></tr><tr><td>Closed ports</td><td>1</td></tr><tr><td>Filtered ports</td><td>1</td></tr></tbody></table>
+<p>Only TCP connect checks were performed; no payloads or banners were requested.</p>
+<table><thead><tr><th>Port</th><th>Service</th><th>Status</th><th>Elapsed</th></tr></thead><tbody><tr><td>80</td><td>http</td><td>closed</td><td>8 ms</td></tr><tr><td>443</td><td>https</td><td>open</td><td>5 ms</td></tr><tr><td>8080</td><td>http-alt</td><td>filtered</td><td>1000 ms</td></tr></tbody></table>
 </section>
 <section class="section">
 <h2>AI Prioritization</h2>

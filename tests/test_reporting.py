@@ -14,7 +14,7 @@ from ai_web_auditor.reporting import generate_html_report, generate_markdown_rep
 
 SCAN_DATA = {
     "tool": "ai-web-auditor",
-    "version": "0.13.0",
+    "version": "0.14.0",
     "generated_at": "2026-08-16T00:00:00Z",
     "status": "completed",
     "target": {
@@ -83,6 +83,24 @@ SCAN_DATA = {
                 ],
             },
         },
+        {
+            "name": "ports",
+            "status": "warning",
+            "summary": "Checked 3 TCP port(s), found 1 open port(s).",
+            "artifacts": {
+                "host": "example.com",
+                "ports_checked": [80, 443, 8080],
+                "open_count": 1,
+                "closed_count": 1,
+                "filtered_count": 1,
+                "error_count": 0,
+                "results": [
+                    {"host": "example.com", "port": 80, "status": "open", "service": "http", "elapsed_ms": 1},
+                    {"host": "example.com", "port": 443, "status": "closed", "service": "https", "elapsed_ms": 1},
+                    {"host": "example.com", "port": 8080, "status": "filtered", "service": "http-alt", "elapsed_ms": 200},
+                ],
+            },
+        },
     ],
     "findings": [
         {
@@ -146,6 +164,8 @@ class ReportingTests(unittest.TestCase):
         self.assertIn("https://example.com/admin", markdown)
         self.assertIn("## Subdomain Discovery", markdown)
         self.assertIn("api.example.com", markdown)
+        self.assertIn("## TCP Port Check", markdown)
+        self.assertIn("| 80 | http | open | 1 ms |", markdown)
         self.assertIn("## AI Prioritization", markdown)
 
     def test_generate_html_report_escapes_content_and_includes_metadata(self):
@@ -165,6 +185,7 @@ class ReportingTests(unittest.TestCase):
         self.assertIn("Public web", html)
         self.assertIn("Web Inventory", html)
         self.assertIn("Subdomain Discovery", html)
+        self.assertIn("TCP Port Check", html)
         self.assertIn("&lt;script&gt;alert(1)&lt;/script&gt;", html)
         self.assertNotIn("<script>alert(1)</script>", html)
 

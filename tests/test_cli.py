@@ -31,9 +31,13 @@ class CliTests(unittest.TestCase):
         self.assertTrue(config.modules.fingerprinting)
         self.assertTrue(config.modules.crawler)
         self.assertFalse(config.modules.subdomains)
+        self.assertFalse(config.modules.ports)
         self.assertEqual(config.crawler.max_depth, 1)
         self.assertEqual(config.subdomains.max_candidates, 25)
         self.assertEqual(config.subdomains.timeout_seconds, 2.0)
+        self.assertEqual(config.ports.ports, [80, 443, 8080, 8443, 8000, 3000, 5000, 9000])
+        self.assertEqual(config.ports.max_ports, 20)
+        self.assertEqual(config.ports.timeout_seconds, 1.0)
 
     def test_inventory_command_writes_csv(self):
         scan_data = {

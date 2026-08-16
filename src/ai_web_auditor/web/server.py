@@ -27,7 +27,7 @@ LAB_MANAGER = LabManager()
 
 
 class LocalAuditHandler(BaseHTTPRequestHandler):
-    server_version = "AIWebAuditorGUI/0.13"
+    server_version = "AIWebAuditorGUI/0.14"
 
     def do_GET(self) -> None:  # noqa: N802 - http.server uses this naming.
         parsed = urlparse(self.path)
@@ -310,6 +310,11 @@ def build_config_from_gui_payload(payload: dict[str, Any]) -> AuditConfig:
     config.subdomains.max_candidates = _int_value(subdomains.get("max_candidates"), 25, minimum=1, maximum=100)
     config.subdomains.timeout_seconds = _float_value(subdomains.get("timeout_seconds"), 2.0, minimum=0.5, maximum=10.0)
 
+    ports = payload.get("ports") if isinstance(payload.get("ports"), dict) else {}
+    config.ports.ports = _ports(ports.get("ports"), default=config.ports.ports)
+    config.ports.max_ports = _int_value(ports.get("max_ports"), 20, minimum=1, maximum=100)
+    config.ports.timeout_seconds = _float_value(ports.get("timeout_seconds"), 1.0, minimum=0.2, maximum=10.0)
+
     modules = payload.get("modules") if isinstance(payload.get("modules"), dict) else {}
     for module_field in fields(config.modules):
         if module_field.name in modules:
@@ -387,6 +392,19 @@ def _paths(value: Any, *, default: list[str]) -> list[str]:
     for item in items:
         output.append(item if item.startswith("/") else f"/{item}")
     return output
+
+
+def _ports(value: Any, *, default: list[int]) -> list[int]:
+    items = _split_items(value)
+    if not items:
+        return list(default)
+    ports: list[int] = []
+    for item in items:
+        port = int(item)
+        if port < 1 or port > 65535:
+            raise ValueError("TCP ports must be between 1 and 65535")
+        ports.append(port)
+    return ports
 
 
 def _project_from_payload(payload: dict[str, Any]) -> object | None:

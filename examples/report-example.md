@@ -1,8 +1,8 @@
 # Web Audit Report - example.com
 
-- Generated: 2026-08-16T00:25:10Z
-- Report generator: ai-web-auditor 0.13.0
-- Scan version: 0.13.0
+- Generated: 2026-08-16T00:39:44Z
+- Report generator: ai-web-auditor 0.14.0
+- Scan version: 0.14.0
 - Scan status: completed
 
 ## Target
@@ -31,7 +31,7 @@ Los hallazgos son principalmente informativos o de endurecimiento defensivo.
 | HIGH | 0 |
 | MEDIUM | 0 |
 | LOW | 0 |
-| INFO | 1 |
+| INFO | 2 |
 
 ## Module Summary
 
@@ -40,8 +40,28 @@ Los hallazgos son principalmente informativos o de endurecimiento defensivo.
 | fingerprinting | passed | Identified 0 technology signal(s) and checked 4 public metadata path(s). |
 | crawler | passed | Crawled 1 page(s), discovered 2 in-scope URL(s). |
 | subdomains | warning | Checked 3 candidate subdomain(s), resolved 1 in-scope host(s). |
+| ports | warning | Checked 3 TCP port(s), found 1 open port(s). |
 
 ## Findings
+
+### INFO - Open TCP ports detected
+
+- ID: `PORTS-OPEN-TCP-PORTS`
+- Category: network-exposure
+- Module: `ports`
+- Target: `example.com`
+
+**Description**
+
+The limited TCP connectivity check found open ports on the target host. This is inventory evidence, not exploitation.
+
+**Recommendation**
+
+Review whether each exposed service is expected, patched and covered by the authorized audit scope.
+
+**Evidence**
+
+- open_port (https): `443`
 
 ### INFO - In-scope subdomains resolved by DNS
 
@@ -119,6 +139,21 @@ No technology signals were identified.
 | Host | IP Addresses | Source |
 | --- | --- | --- |
 | api.example.com | 93.184.216.35 | dns_candidate |
+
+## TCP Port Check
+
+- Host: `example.com`
+- Ports checked: 3
+- Open ports: 1
+- Closed ports: 1
+- Filtered ports: 1
+- Only TCP connect checks were performed; no payloads or banners were requested.
+
+| Port | Service | Status | Elapsed |
+| ---: | --- | --- | ---: |
+| 80 | http | closed | 8 ms |
+| 443 | https | open | 5 ms |
+| 8080 | http-alt | filtered | 1000 ms |
 
 ## AI Prioritization
 

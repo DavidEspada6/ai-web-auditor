@@ -1,6 +1,6 @@
 {
   "tool": "ai-web-auditor",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "generated_at": "2026-08-16T00:00:00Z",
   "status": "completed",
   "target": {
@@ -138,6 +138,68 @@
         "out_of_scope_count": 0,
         "note": "Resolved hosts were not scanned automatically."
       }
+    },
+    {
+      "name": "ports",
+      "status": "warning",
+      "summary": "Checked 3 TCP port(s), found 1 open port(s).",
+      "findings": [
+        {
+          "id": "PORTS-OPEN-TCP-PORTS",
+          "title": "Open TCP ports detected",
+          "severity": "info",
+          "category": "network-exposure",
+          "description": "The limited TCP connectivity check found open ports on the target host. This is inventory evidence, not exploitation.",
+          "recommendation": "Review whether each exposed service is expected, patched and covered by the authorized audit scope.",
+          "module": "ports",
+          "target": "example.com",
+          "evidence": [
+            {
+              "label": "open_port",
+              "value": "443",
+              "location": "https"
+            }
+          ]
+        }
+      ],
+      "artifacts": {
+        "host": "example.com",
+        "ports_checked": [
+          80,
+          443,
+          8080
+        ],
+        "max_ports": 20,
+        "timeout_seconds": 1.0,
+        "open_count": 1,
+        "closed_count": 1,
+        "filtered_count": 1,
+        "error_count": 0,
+        "results": [
+          {
+            "host": "example.com",
+            "port": 80,
+            "status": "closed",
+            "service": "http",
+            "elapsed_ms": 8
+          },
+          {
+            "host": "example.com",
+            "port": 443,
+            "status": "open",
+            "service": "https",
+            "elapsed_ms": 5
+          },
+          {
+            "host": "example.com",
+            "port": 8080,
+            "status": "filtered",
+            "service": "http-alt",
+            "elapsed_ms": 1000
+          }
+        ],
+        "note": "Only TCP connect checks were performed; no payloads or banners were requested."
+      }
     }
   ],
   "findings": [
@@ -155,6 +217,23 @@
           "label": "host",
           "value": "api.example.com",
           "location": "93.184.216.35"
+        }
+      ]
+    },
+    {
+      "id": "PORTS-OPEN-TCP-PORTS",
+      "title": "Open TCP ports detected",
+      "severity": "info",
+      "category": "network-exposure",
+      "description": "The limited TCP connectivity check found open ports on the target host. This is inventory evidence, not exploitation.",
+      "recommendation": "Review whether each exposed service is expected, patched and covered by the authorized audit scope.",
+      "module": "ports",
+      "target": "example.com",
+      "evidence": [
+        {
+          "label": "open_port",
+          "value": "443",
+          "location": "https"
         }
       ]
     }

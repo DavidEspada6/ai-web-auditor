@@ -32,7 +32,7 @@ class OpenAIProvider:
             headers={
                 "Authorization": f"Bearer {api_key}",
                 "Content-Type": "application/json",
-                "User-Agent": "AI-Web-Auditor/0.13",
+                "User-Agent": "AI-Web-Auditor/0.14",
             },
             method="POST",
         )

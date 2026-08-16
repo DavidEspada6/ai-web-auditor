@@ -10,10 +10,11 @@ scope. Tambien incluye fingerprinting web no intrusivo a partir de cabeceras,
 cookies, HTML inicial y ficheros publicos habituales, analisis IA opcional desde
 CLI y GUI, informes Markdown/HTML/PDF, proyectos locales, historial separado por
 proyecto, inventario web exportable, descubrimiento DNS seguro de subdominios,
-laboratorio vulnerable local y comparacion de auditorias.
+chequeo TCP limitado de puertos, laboratorio vulnerable local y comparacion de
+auditorias.
 
 No implementa explotacion, fuerza bruta, fuzzing agresivo, crawling masivo,
-escaneo de puertos, fuerza bruta DNS agresiva ni pruebas intrusivas.
+escaneo de puertos amplio, fuerza bruta DNS agresiva ni pruebas intrusivas.
 
 ## Instalacion
 
@@ -29,7 +30,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.13 no necesita librerias externas en tiempo de ejecucion.
+La v0.14 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -214,7 +215,7 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.13",
+    "user_agent": "AI-Web-Auditor/0.14",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -250,6 +251,11 @@ Ejemplo en `examples/audit.json`:
     "max_candidates": 25,
     "timeout_seconds": 2.0
   },
+  "ports": {
+    "ports": [80, 443, 8080, 8443, 8000],
+    "max_ports": 20,
+    "timeout_seconds": 1.0
+  },
   "modules": {
     "scope": true,
     "http": true,
@@ -259,6 +265,7 @@ Ejemplo en `examples/audit.json`:
     "http_methods": true,
     "tls": true,
     "subdomains": false,
+    "ports": false,
     "fingerprinting": true,
     "crawler": true
   }
@@ -282,6 +289,9 @@ Ejemplo en `examples/audit.json`:
 - `subdomains`: resuelve una lista corta de subdominios candidatos por DNS,
   respetando el scope. Esta desactivado por defecto y no escanea los hosts
   encontrados automaticamente.
+- `ports`: realiza conexiones TCP basicas a una lista limitada de puertos del
+  host objetivo. Esta desactivado por defecto y no solicita banners ni envia
+  payloads.
 - `fingerprinting`: identifica senales de servidor, CDN, framework, lenguaje,
   CMS y ficheros publicos como `robots.txt`, `security.txt` y `sitemap.xml`.
 - `crawler`: recorre enlaces internos sin enviar formularios, sin salir del
@@ -350,6 +360,7 @@ El informe incluye:
 - fingerprinting y crawler si estan presentes;
 - inventario web con URLs, estados, tipos de contenido y formularios detectados;
 - descubrimiento de subdominios si se activa;
+- chequeo TCP limitado de puertos si se activa;
 - priorizacion IA si se aporta;
 - limitaciones de la auditoria.
 
@@ -357,7 +368,7 @@ Hay ejemplos en `examples/report-example.md` y `examples/report-example.html`.
 
 ## Laboratorio local
 
-La v0.13 incluye un laboratorio vulnerable solo para pruebas locales. Sirve una
+La v0.14 incluye un laboratorio vulnerable solo para pruebas locales. Sirve una
 web de demo en `127.0.0.1` con problemas controlados:
 
 - HTTP sin TLS;
@@ -420,7 +431,7 @@ Hay un ejemplo en `examples/inventory-example.csv`.
 
 ## Descubrimiento de subdominios
 
-La v0.13 anade un modulo DNS seguro para descubrir subdominios candidatos. Esta
+La v0.14 mantiene un modulo DNS seguro para descubrir subdominios candidatos. Esta
 desactivado por defecto porque amplia la fase de reconocimiento y conviene
 usarlo solo cuando el scope lo permita.
 
@@ -454,6 +465,38 @@ El modulo:
 
 En la interfaz grafica se activa con el checkbox `Subdominios DNS` y se revisa
 en la pestana `Subdominios`.
+
+## Chequeo limitado de puertos
+
+La v0.14 anade un modulo `ports` para comprobar conectividad TCP contra el host
+objetivo. Esta desactivado por defecto porque, aunque es limitado, forma parte
+de la fase de reconocimiento y debe usarse solo con autorizacion.
+
+Para activarlo en `audit.json`:
+
+```json
+{
+  "modules": {
+    "ports": true
+  },
+  "ports": {
+    "ports": [80, 443, 8080, 8443, 8000],
+    "max_ports": 20,
+    "timeout_seconds": 1.0
+  }
+}
+```
+
+El modulo:
+
+- solo comprueba el host objetivo validado por scope;
+- no escanea automaticamente subdominios descubiertos;
+- no envia payloads ni solicita banners;
+- registra `open`, `closed`, `filtered` o `error` por puerto;
+- genera un hallazgo informativo si encuentra puertos abiertos.
+
+En la interfaz grafica se activa con `Puertos TCP` y se revisa en la pestana
+`Puertos`.
 
 ## Historial y comparacion
 
@@ -543,7 +586,7 @@ Desde la interfaz se puede:
 - configurar objetivo, hosts, rutas y limites principales;
 - activar o desactivar modulos;
 - ejecutar una auditoria no intrusiva;
-- revisar resumen, hallazgos, modulos, inventario, subdominios y JSON;
+- revisar resumen, hallazgos, modulos, inventario, subdominios, puertos y JSON;
 - analizar la auditoria con IA en modo dry-run o con API;
 - guardar el analisis IA en el historial local;
 - guardar y abrir auditorias del historial local o del proyecto activo;
@@ -568,7 +611,8 @@ Ese archivo deja fijados los limites principales:
 - rutas excluidas;
 - si se permiten redes privadas o locales;
 - limites del crawler;
-- limite de candidatos para descubrimiento de subdominios.
+- limite de candidatos para descubrimiento de subdominios;
+- lista, limite y timeout para el chequeo TCP de puertos.
 
 Despues se puede repetir la auditoria de forma consistente:
 
@@ -589,7 +633,6 @@ anadir uno nuevo:
 Los siguientes pasos naturales son:
 
 - descubrimiento de subdominios;
-- escaneo de puertos con limites claros;
 - mejoras en la integracion con IA para comparar hallazgos entre auditorias;
 - modulos de verificacion controlada para confirmar hallazgos sin explotacion destructiva;
 - base de datos local opcional para proyectos grandes;
@@ -618,7 +661,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.13.0
+git tag v0.14.0
 git push
 git push --tags
 ```
@@ -631,7 +674,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.13.0",
+  "version": "0.14.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",

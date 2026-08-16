@@ -28,6 +28,9 @@ const inventoryTable = document.querySelector("#inventory-table");
 const subdomainCount = document.querySelector("#subdomain-count");
 const subdomainSummary = document.querySelector("#subdomain-summary");
 const subdomainTable = document.querySelector("#subdomain-table");
+const portCount = document.querySelector("#port-count");
+const portSummary = document.querySelector("#port-summary");
+const portTable = document.querySelector("#port-table");
 const jsonOutput = document.querySelector("#json-output");
 const reportOutput = document.querySelector("#report-output");
 const htmlPreview = document.querySelector("#html-preview");
@@ -371,6 +374,11 @@ function collectPayload() {
       max_candidates: document.querySelector("#subdomain-limit").value,
       timeout_seconds: document.querySelector("#subdomain-timeout").value,
     },
+    ports: {
+      ports: document.querySelector("#ports-list").value.trim(),
+      max_ports: document.querySelector("#port-limit").value,
+      timeout_seconds: document.querySelector("#port-timeout").value,
+    },
   };
 }
 
@@ -416,15 +424,17 @@ function renderScan(scan) {
   const modules = Array.isArray(scan.modules) ? scan.modules : [];
   const requests = Array.isArray(scan.requests) ? scan.requests : [];
   const subdomains = subdomainArtifacts(modules);
+  const ports = portArtifacts(modules);
 
   statusText.textContent = scan.status || "completed";
   targetPill.textContent = scan.target?.normalized_url || scan.target?.host || "Sin objetivo";
   renderSeverityCounts(findings);
-  renderSummary(scan, findings, modules, requests, subdomains);
+  renderSummary(scan, findings, modules, requests, subdomains, ports);
   renderFindings(findings);
   renderModules(modules);
   renderInventory(scan.inventory || {});
   renderSubdomains(subdomains);
+  renderPorts(ports);
   jsonOutput.textContent = JSON.stringify(scan, null, 2);
   downloadInventoryButton.disabled = !hasInventory(scan);
   loadHistory();
@@ -488,7 +498,7 @@ function applyLabDefaults(lab) {
     projectAuditorInput.value = "David";
   }
   if (!projectEngagementInput.value.trim()) {
-    projectEngagementInput.value = "Simulacion v0.13.0";
+    projectEngagementInput.value = "Simulacion v0.14.0";
   }
 
   document.querySelector("#target").value = defaults.target;
@@ -510,6 +520,11 @@ function applyLabDefaults(lab) {
   if (defaults.subdomains) {
     document.querySelector("#subdomain-limit").value = defaults.subdomains.max_candidates ?? 25;
     document.querySelector("#subdomain-timeout").value = defaults.subdomains.timeout_seconds ?? 2;
+  }
+  if (defaults.ports) {
+    document.querySelector("#ports-list").value = defaults.ports.ports || "80, 443, 8080";
+    document.querySelector("#port-limit").value = defaults.ports.max_ports ?? 20;
+    document.querySelector("#port-timeout").value = defaults.ports.timeout_seconds ?? 1;
   }
   if (defaults.modules) {
     document.querySelectorAll("[data-module]").forEach((input) => {
@@ -588,6 +603,11 @@ function applyProject(project) {
     document.querySelector("#subdomain-limit").value = config.subdomains.max_candidates ?? 25;
     document.querySelector("#subdomain-timeout").value = config.subdomains.timeout_seconds ?? 2;
   }
+  if (config.ports) {
+    document.querySelector("#ports-list").value = joinList(config.ports.ports);
+    document.querySelector("#port-limit").value = config.ports.max_ports ?? 20;
+    document.querySelector("#port-timeout").value = config.ports.timeout_seconds ?? 1;
+  }
   if (config.modules) {
     document.querySelectorAll("[data-module]").forEach((input) => {
       if (Object.prototype.hasOwnProperty.call(config.modules, input.dataset.module)) {
@@ -618,12 +638,13 @@ function renderSeverityCounts(findings) {
   });
 }
 
-function renderSummary(scan, findings, modules, requests, subdomains) {
+function renderSummary(scan, findings, modules, requests, subdomains, ports) {
   summaryEmpty.hidden = true;
   summaryContent.hidden = false;
   summaryContent.innerHTML = "";
   const inventorySummaryData = scan.inventory?.summary || {};
   const resolvedSubdomains = Array.isArray(subdomains.resolved) ? subdomains.resolved.length : 0;
+  const openPorts = ports.open_count ?? 0;
 
   const values = [
     ["Objetivo", scan.target?.normalized_url || "unknown"],
@@ -635,6 +656,7 @@ function renderSummary(scan, findings, modules, requests, subdomains) {
     ["URLs", inventorySummaryData.total_urls || 0],
     ["Forms", inventorySummaryData.forms || 0],
     ["Subdominios", resolvedSubdomains],
+    ["Puertos abiertos", openPorts],
   ];
 
   values.forEach(([label, value]) => {
@@ -826,6 +848,57 @@ function renderSubdomains(artifacts) {
 
 function subdomainArtifacts(modules) {
   const module = modules.find((item) => item.name === "subdomains");
+  return module?.artifacts && typeof module.artifacts === "object" ? module.artifacts : {};
+}
+
+function renderPorts(artifacts) {
+  const results = Array.isArray(artifacts.results) ? artifacts.results : [];
+  const openCount = artifacts.open_count ?? results.filter((item) => item.status === "open").length;
+
+  portCount.textContent = `${openCount} abierto${openCount === 1 ? "" : "s"}`;
+  portSummary.innerHTML = "";
+  [
+    ["Revisados", results.length],
+    ["Abiertos", openCount],
+    ["Cerrados", artifacts.closed_count ?? 0],
+    ["Filtrados", artifacts.filtered_count ?? 0],
+    ["Errores", artifacts.error_count ?? 0],
+  ].forEach(([label, value]) => {
+    const item = document.createElement("div");
+    item.className = "metric";
+    item.innerHTML = `<span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong>`;
+    portSummary.appendChild(item);
+  });
+
+  portTable.innerHTML = "";
+  if (!Object.keys(artifacts).length) {
+    const row = document.createElement("tr");
+    row.innerHTML = '<td colspan="5">Modulo no ejecutado.</td>';
+    portTable.appendChild(row);
+    return;
+  }
+  if (!results.length) {
+    const row = document.createElement("tr");
+    row.innerHTML = '<td colspan="5">Sin resultados de puertos.</td>';
+    portTable.appendChild(row);
+    return;
+  }
+
+  results.forEach((item) => {
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td><code>${escapeHtml(item.host || "")}</code></td>
+      <td>${escapeHtml(item.port ?? "")}</td>
+      <td>${escapeHtml(item.service || "")}</td>
+      <td><span class="status-chip ${item.status === "open" ? "connected" : "disconnected"}">${escapeHtml(item.status || "unknown")}</span></td>
+      <td>${escapeHtml(item.elapsed_ms ?? "")} ms</td>
+    `;
+    portTable.appendChild(row);
+  });
+}
+
+function portArtifacts(modules) {
+  const module = modules.find((item) => item.name === "ports");
   return module?.artifacts && typeof module.artifacts === "object" ? module.artifacts : {};
 }
 
