@@ -51,8 +51,12 @@ class HTTPRequestRecord:
     url: str
     status_code: int | None
     elapsed_ms: int | None
+    id: str = ""
     final_url: str | None = None
     error: str | None = None
+    request_headers: dict[str, str] = field(default_factory=dict)
+    response_headers: dict[str, str] = field(default_factory=dict)
+    response_body: dict[str, Any] | None = None
 
 
 @dataclass
@@ -83,13 +87,18 @@ class ScanResult:
 
     def to_dict(self) -> dict[str, Any]:
         from .assessment import build_assessment
+        from .evidence import sanitize_scan_data, sanitize_url
         from .inventory import build_inventory_from_scan
 
         data = asdict(self)
+        target = data.get("target") if isinstance(data.get("target"), dict) else {}
+        for key in ["original_url", "normalized_url", "base_url"]:
+            if isinstance(target.get(key), str):
+                target[key] = sanitize_url(target[key])
         data["findings"] = [asdict(finding) for finding in self.findings]
         data["inventory"] = build_inventory_from_scan(data)
         data["assessment"] = build_assessment(data)
-        return data
+        return sanitize_scan_data(data)
 
     def to_json(self, indent: int = 2) -> str:
         return json.dumps(self.to_dict(), indent=indent, ensure_ascii=True)

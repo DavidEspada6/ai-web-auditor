@@ -15,6 +15,7 @@ from ..compare import compare_scans
 from ..config import AuditConfig
 from ..engine import run_scan
 from ..errors import AuditError
+from ..evidence import build_evidence_manifest, build_evidence_package, evidence_package_filename
 from ..history import DEFAULT_HISTORY_DIR, list_history, load_scan_reference, save_analysis_for_history, save_scan_history
 from ..inventory import build_inventory_from_scan
 from ..lab import DEFAULT_LAB_HOST, DEFAULT_LAB_PORT, LabManager
@@ -28,7 +29,7 @@ LAB_MANAGER = LabManager()
 
 
 class LocalAuditHandler(BaseHTTPRequestHandler):
-    server_version = "AIWebAuditorGUI/0.16"
+    server_version = "AIWebAuditorGUI/0.17"
 
     def do_GET(self) -> None:  # noqa: N802 - http.server uses this naming.
         parsed = urlparse(self.path)
@@ -64,6 +65,9 @@ class LocalAuditHandler(BaseHTTPRequestHandler):
                 return
             if path == "/api/report":
                 self._handle_report(payload)
+                return
+            if path == "/api/evidence":
+                self._handle_evidence(payload)
                 return
             if path == "/api/analyze":
                 self._handle_analyze(payload)
@@ -195,6 +199,20 @@ class LocalAuditHandler(BaseHTTPRequestHandler):
             raise ValueError(f"Unsupported report format: {report_format}")
 
         self._send_json(response)
+
+    def _handle_evidence(self, payload: dict[str, Any]) -> None:
+        scan_data = payload.get("scan")
+        if not isinstance(scan_data, dict):
+            raise ValueError("scan must be a JSON object")
+        package = build_evidence_package(scan_data)
+        self._send_json(
+            {
+                "ok": True,
+                "filename": evidence_package_filename(scan_data),
+                "manifest": build_evidence_manifest(scan_data),
+                "zip_base64": b64encode(package).decode("ascii"),
+            }
+        )
 
     def _handle_project_create(self, payload: dict[str, Any]) -> None:
         name = _clean_text(payload.get("name"))

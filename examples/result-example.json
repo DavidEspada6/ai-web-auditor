@@ -1,6 +1,6 @@
 {
   "tool": "ai-web-auditor",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "generated_at": "2026-08-16T00:00:00Z",
   "status": "completed",
   "target": {
@@ -240,12 +240,30 @@
   ],
   "requests": [
     {
+      "id": "req-0001",
       "method": "GET",
       "url": "https://example.com/",
       "status_code": 200,
       "elapsed_ms": 42,
       "final_url": "https://example.com/",
-      "error": null
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.17",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Content-Type": "text/html"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "text/html",
+        "sha256": "436d515b914c42f568e818074f042f2a0218ed8a198676dd582cc125bb3b778e",
+        "bytes": 40,
+        "truncated_by_probe": false,
+        "sample": "<html><body>Example Domain</body></html>",
+        "sample_chars": 40,
+        "sample_truncated": false
+      }
     }
   ],
   "inventory": {

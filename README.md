@@ -11,7 +11,8 @@ cookies, HTML inicial y ficheros publicos habituales, analisis IA opcional desde
 CLI y GUI, informes Markdown/HTML/PDF, proyectos locales, historial separado por
 proyecto, inventario web exportable, descubrimiento DNS seguro de subdominios,
 chequeo TCP limitado de puertos, valoracion determinista de riesgo, plan de
-remediacion, laboratorio vulnerable local y comparacion de auditorias.
+remediacion, laboratorio vulnerable local, comparacion de auditorias y paquetes
+de evidencias saneadas.
 
 No implementa explotacion, fuerza bruta, fuzzing agresivo, crawling masivo,
 escaneo de puertos amplio, fuerza bruta DNS agresiva ni pruebas intrusivas.
@@ -30,7 +31,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.16 no necesita librerias externas en tiempo de ejecucion.
+La v0.17 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -48,6 +49,7 @@ lanzador incluido:
 .\ai-web-auditor.cmd analyze outputs/result.json --dry-run
 .\ai-web-auditor.cmd inventory outputs/result.json --output outputs/inventory.csv
 .\ai-web-auditor.cmd assess outputs/result.json --output outputs/assessment.json
+.\ai-web-auditor.cmd evidence outputs/result.json --output outputs/evidence.zip
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.md
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.html
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.pdf
@@ -105,6 +107,18 @@ Guardar JSON:
 
 ```powershell
 ai-web-auditor scan https://example.com --json-output outputs/example.json
+```
+
+Guardar JSON y paquete de evidencias en una sola ejecucion:
+
+```powershell
+ai-web-auditor scan https://example.com --json-output outputs/example.json --evidence-output outputs/evidence.zip
+```
+
+Generar un paquete de evidencias desde un JSON existente:
+
+```powershell
+ai-web-auditor evidence outputs/example.json --output outputs/evidence.zip
 ```
 
 Exportar inventario de URLs a CSV:
@@ -223,7 +237,7 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.16",
+    "user_agent": "AI-Web-Auditor/0.17",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -263,6 +277,13 @@ Ejemplo en `examples/audit.json`:
     "ports": [80, 443, 8080, 8443, 8000],
     "max_ports": 20,
     "timeout_seconds": 1.0
+  },
+  "evidence": {
+    "enabled": true,
+    "capture_request_headers": true,
+    "capture_response_headers": true,
+    "capture_response_body_sample": true,
+    "max_body_chars": 4000
   },
   "modules": {
     "scope": true,
@@ -400,7 +421,7 @@ Hay ejemplos en `examples/report-example.md` y `examples/report-example.html`.
 
 ## Laboratorio local
 
-La v0.16 incluye un laboratorio vulnerable solo para pruebas locales. Sirve una
+La v0.17 incluye un laboratorio vulnerable solo para pruebas locales. Sirve una
 web de demo en `127.0.0.1` con problemas controlados:
 
 - HTTP sin TLS;
@@ -435,6 +456,42 @@ Desde la interfaz grafica puedes usar el panel `Laboratorio`:
 El laboratorio esta pensado para la demo de la practica y no debe publicarse en
 red. Por seguridad, solo permite arrancar en localhost o direcciones loopback.
 
+## Evidencias
+
+Cada auditoria registra evidencias HTTP saneadas dentro del bloque `requests`:
+
+- identificador estable de peticion;
+- metodo, URL saneada, codigo de estado y tiempo;
+- cabeceras de request y response con valores sensibles redactados;
+- muestra truncada del cuerpo de respuesta si es texto;
+- hash SHA-256 de la muestra capturada por el cliente HTTP;
+- motivo de no captura cuando el cuerpo esta vacio, desactivado o no es texto.
+
+El paquete ZIP de evidencias contiene:
+
+- `manifest.json`;
+- `scan-result.json`;
+- `http/requests.json`;
+- un JSON individual por peticion en `http/`;
+- `findings/findings.json`;
+- `modules/modules.json`;
+- `inventory/inventory.json`;
+- `assessment/assessment.json`;
+- `README.md` con notas de seguridad.
+
+La herramienta redacta `Authorization`, `Cookie`, `Set-Cookie`, posibles tokens,
+passwords, secrets y parametros de query sensibles. No guarda cuerpos de request
+ni cuerpos completos de respuesta.
+
+Generar evidencias:
+
+```powershell
+ai-web-auditor evidence outputs/result.json --output outputs/evidence.zip
+```
+
+Desde la interfaz grafica usa el boton `Evidencias ZIP` despues de ejecutar o
+abrir una auditoria.
+
 ## Inventario web
 
 Cada escaneo nuevo incluye un bloque `inventory` dentro del JSON. Este bloque
@@ -463,7 +520,7 @@ Hay un ejemplo en `examples/inventory-example.csv`.
 
 ## Descubrimiento de subdominios
 
-La v0.16 mantiene un modulo DNS seguro para descubrir subdominios candidatos. Esta
+La v0.17 mantiene un modulo DNS seguro para descubrir subdominios candidatos. Esta
 desactivado por defecto porque amplia la fase de reconocimiento y conviene
 usarlo solo cuando el scope lo permita.
 
@@ -500,7 +557,7 @@ en la pestana `Subdominios`.
 
 ## Chequeo limitado de puertos
 
-La v0.16 mantiene un modulo `ports` para comprobar conectividad TCP contra el host
+La v0.17 mantiene un modulo `ports` para comprobar conectividad TCP contra el host
 objetivo. Esta desactivado por defecto porque, aunque es limitado, forma parte
 de la fase de reconocimiento y debe usarse solo con autorizacion.
 
@@ -627,7 +684,7 @@ Desde la interfaz se puede:
 - guardar y abrir auditorias del historial local o del proyecto activo;
 - comparar dos auditorias guardadas;
 - generar informes Markdown, HTML y PDF;
-- descargar JSON, Inventario CSV, AI JSON, Markdown, HTML y PDF;
+- descargar JSON, Evidencias ZIP, Inventario CSV, AI JSON, Markdown, HTML y PDF;
 - anadir metadatos de auditoria al informe.
 
 ## Scope de auditoria
@@ -665,13 +722,18 @@ anadir uno nuevo:
 3. Registrarla en `engine.py`.
 4. Anadir el interruptor correspondiente en `config.py`.
 
-Los siguientes pasos naturales son:
+La secuencia de producto esta fijada en `ROADMAP.md`. Hasta completarla, no se
+priorizaran funcionalidades fuera de estos bloques:
 
 - v0.17: paquete de evidencias descargable por auditoria;
-- v0.18: perfiles de autenticacion seguros para auditorias autorizadas;
-- v0.19: verificaciones controladas con consentimiento explicito;
-- mejoras progresivas de reporting y comparacion entre auditorias;
-- empaquetado como aplicacion de escritorio cuando la GUI este mas estable.
+- v0.18: crawler avanzado con `robots.txt`, `sitemap.xml`, `.well-known` y clasificacion de rutas;
+- v0.19: modelo de entry points: endpoints, parametros, formularios y metodos;
+- v0.20: analisis de JavaScript y descubrimiento de endpoints;
+- v0.21: motor pasivo de reglas con mapeo OWASP WSTG/ASVS;
+- v0.22: importadores/adaptadores para herramientas externas;
+- v0.23: perfiles autenticados y comparacion por roles;
+- v0.24: screenshots, fingerprint visual y agrupacion de pantallas;
+- v0.25: dashboard de auditoria real con cobertura, cambios, riesgos, pendientes y checklist.
 
 ## Futuras pruebas controladas
 
@@ -696,7 +758,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.16.0
+git tag v0.17.0
 git push
 git push --tags
 ```
@@ -709,7 +771,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",

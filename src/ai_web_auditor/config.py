@@ -30,9 +30,30 @@ class ScopeConfig:
 class HTTPConfig:
     timeout_seconds: float = 10.0
     max_redirects: int = 10
-    user_agent: str = "AI-Web-Auditor/0.16"
+    user_agent: str = "AI-Web-Auditor/0.17"
     verify_tls: bool = True
     check_http_counterpart: bool = True
+
+
+@dataclass
+class EvidenceCaptureConfig:
+    enabled: bool = True
+    capture_request_headers: bool = True
+    capture_response_headers: bool = True
+    capture_response_body_sample: bool = True
+    max_body_chars: int = 4000
+    text_content_types: list[str] = field(
+        default_factory=lambda: [
+            "text/",
+            "application/json",
+            "application/xml",
+            "application/xhtml+xml",
+            "application/javascript",
+            "application/x-javascript",
+            "application/problem+json",
+            "application/ld+json",
+        ]
+    )
 
 
 @dataclass
@@ -154,6 +175,7 @@ class AuditConfig:
     crawler: CrawlerConfig = field(default_factory=CrawlerConfig)
     subdomains: SubdomainConfig = field(default_factory=SubdomainConfig)
     ports: PortScanConfig = field(default_factory=PortScanConfig)
+    evidence: EvidenceCaptureConfig = field(default_factory=EvidenceCaptureConfig)
     modules: ModuleConfig = field(default_factory=ModuleConfig)
 
     @classmethod

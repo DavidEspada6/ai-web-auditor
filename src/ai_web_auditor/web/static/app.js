@@ -43,6 +43,7 @@ const reportOutput = document.querySelector("#report-output");
 const htmlPreview = document.querySelector("#html-preview");
 const generateReportButton = document.querySelector("#generate-report");
 const downloadJsonButton = document.querySelector("#download-json");
+const downloadEvidenceButton = document.querySelector("#download-evidence");
 const downloadInventoryButton = document.querySelector("#download-inventory");
 const downloadAiButton = document.querySelector("#download-ai");
 const downloadMdButton = document.querySelector("#download-md");
@@ -175,6 +176,7 @@ form.addEventListener("submit", async (event) => {
     generateReportButton.disabled = false;
     runAiButton.disabled = false;
     downloadJsonButton.disabled = false;
+    downloadEvidenceButton.disabled = false;
     downloadInventoryButton.disabled = !hasInventory(state.scan);
     downloadAiButton.disabled = !state.aiAnalysis;
     downloadMdButton.disabled = true;
@@ -253,6 +255,7 @@ historyTable.addEventListener("click", async (event) => {
     generateReportButton.disabled = false;
     runAiButton.disabled = false;
     downloadJsonButton.disabled = false;
+    downloadEvidenceButton.disabled = false;
     downloadInventoryButton.disabled = !hasInventory(state.scan);
     downloadAiButton.disabled = !state.aiAnalysis;
     downloadMdButton.disabled = true;
@@ -319,6 +322,25 @@ runAiButton.addEventListener("click", async () => {
 downloadJsonButton.addEventListener("click", () => {
   if (state.scan) {
     downloadText("audit-result.json", JSON.stringify(state.scan, null, 2) + "\n", "application/json");
+  }
+});
+
+downloadEvidenceButton.addEventListener("click", async () => {
+  if (!state.scan) {
+    return;
+  }
+  clearMessage();
+  downloadEvidenceButton.disabled = true;
+  try {
+    const response = await postJson("/api/evidence", {
+      project_id: currentProjectId(),
+      scan: state.scan,
+    });
+    downloadBase64(response.filename || "audit-evidence.zip", response.zip_base64, "application/zip");
+  } catch (error) {
+    showMessage(error.message);
+  } finally {
+    downloadEvidenceButton.disabled = false;
   }
 });
 
@@ -446,6 +468,7 @@ function renderScan(scan) {
   renderSubdomains(subdomains);
   renderPorts(ports);
   jsonOutput.textContent = JSON.stringify(scan, null, 2);
+  downloadEvidenceButton.disabled = false;
   downloadInventoryButton.disabled = !hasInventory(scan);
   loadHistory();
 }
@@ -508,7 +531,7 @@ function applyLabDefaults(lab) {
     projectAuditorInput.value = "David";
   }
   if (!projectEngagementInput.value.trim()) {
-    projectEngagementInput.value = "Simulacion v0.16.0";
+    projectEngagementInput.value = "Simulacion v0.17.0";
   }
 
   document.querySelector("#target").value = defaults.target;
@@ -656,6 +679,7 @@ function renderSummary(scan, findings, modules, requests, subdomains, ports, ass
   const resolvedSubdomains = Array.isArray(subdomains.resolved) ? subdomains.resolved.length : 0;
   const openPorts = ports.open_count ?? 0;
   const assessmentSummaryData = assessment?.summary || {};
+  const capturedSamples = requests.filter((request) => request?.response_body?.captured === true).length;
 
   const values = [
     ["Objetivo", scan.target?.normalized_url || "unknown"],
@@ -666,6 +690,7 @@ function renderSummary(scan, findings, modules, requests, subdomains, ports, ass
     ["Modulos", modules.length],
     ["Hallazgos", findings.length],
     ["Peticiones", requests.length],
+    ["Muestras HTTP", capturedSamples],
     ["URLs", inventorySummaryData.total_urls || 0],
     ["Forms", inventorySummaryData.forms || 0],
     ["Subdominios", resolvedSubdomains],

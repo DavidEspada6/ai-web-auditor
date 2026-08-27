@@ -17,4 +17,4 @@ class ScanContext:
 
     @property
     def probe(self) -> HttpProbe:
-        return HttpProbe(self.config.http, self.requests)
+        return HttpProbe(self.config.http, self.requests, self.config.evidence)

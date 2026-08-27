@@ -2,6 +2,32 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.17.0] - 2026-08-27
+
+### Anade
+
+- Captura segura de evidencias HTTP por peticion: metodo, URL saneada, estado, tiempos, cabeceras y muestra truncada del cuerpo.
+- Configuracion `evidence` para activar captura, cabeceras y muestras de respuesta con limite de caracteres.
+- Redaccion de cabeceras sensibles, cookies, tokens, secretos y parametros de query sensibles.
+- Comando `evidence` para generar un ZIP saneado desde un JSON de auditoria.
+- Opcion `scan --evidence-output` para generar el paquete de evidencias durante la auditoria.
+- Boton `Evidencias ZIP` en la interfaz grafica.
+- `ROADMAP.md` con la secuencia cerrada hasta `v0.25.0`.
+- Tests dedicados para redaccion, ZIP de evidencias, CLI y descarga en GUI.
+
+### Cambia
+
+- El JSON de auditoria incluye registros HTTP enriquecidos con `id`, cabeceras saneadas y muestras de respuesta cuando aplica.
+- El saneado se aplica tambien a URLs y evidencias textuales antes de serializar resultados.
+- La roadmap pasa a estar versionada en el repositorio para mantener foco de producto.
+
+### Seguridad
+
+- No se anaden pruebas ofensivas ni intrusivas.
+- No se guardan cuerpos de request.
+- Los cuerpos de respuesta se guardan solo como muestras de texto truncadas.
+- Valores de `Authorization`, `Cookie`, `Set-Cookie`, tokens, passwords, secrets y parametros sensibles se redactan.
+
 ## [0.16.0] - 2026-08-27
 
 ### Anade

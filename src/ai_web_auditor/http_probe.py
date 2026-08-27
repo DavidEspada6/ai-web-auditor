@@ -7,8 +7,9 @@ from dataclasses import dataclass, field
 from typing import Mapping
 from urllib.parse import urljoin, urlsplit, urlunsplit
 
-from .config import HTTPConfig
+from .config import EvidenceCaptureConfig, HTTPConfig
 from .errors import ProbeError
+from .evidence import build_body_capture, sanitize_headers, sanitize_url
 from .models import HTTPRequestRecord
 
 
@@ -50,9 +51,10 @@ class SimpleResponse:
 
 
 class HttpProbe:
-    def __init__(self, config: HTTPConfig, records: list[HTTPRequestRecord]) -> None:
+    def __init__(self, config: HTTPConfig, records: list[HTTPRequestRecord], evidence_config: EvidenceCaptureConfig) -> None:
         self._config = config
         self._records = records
+        self._evidence_config = evidence_config
 
     def request(
         self,
@@ -101,7 +103,13 @@ class HttpProbe:
             raise ProbeError("URL has no hostname")
 
         started = time.monotonic()
-        record = HTTPRequestRecord(method=method, url=url, status_code=None, elapsed_ms=None)
+        record = HTTPRequestRecord(
+            method=method,
+            url=sanitize_url(url),
+            status_code=None,
+            elapsed_ms=None,
+            id=f"req-{len(self._records) + 1:04d}",
+        )
         connection: http.client.HTTPConnection | http.client.HTTPSConnection | None = None
         try:
             connection = self._connection(parsed.scheme, parsed.hostname, parsed.port)
@@ -111,9 +119,13 @@ class HttpProbe:
                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
                 **headers,
             }
+            if self._evidence_config.enabled and self._evidence_config.capture_request_headers:
+                record.request_headers = sanitize_headers(request_headers)
             connection.request(method, request_path, headers=request_headers)
             raw_response = connection.getresponse()
             header_items = raw_response.getheaders()
+            if self._evidence_config.enabled and self._evidence_config.capture_response_headers:
+                record.response_headers = sanitize_headers(header_items)
             body = b""
             body_truncated = False
             if max_body_bytes > 0:
@@ -131,7 +143,24 @@ class HttpProbe:
                 body_truncated=body_truncated,
             )
             record.status_code = raw_response.status
-            record.final_url = url
+            record.final_url = sanitize_url(url)
+            content_type = response.get_header("content-type", "") or ""
+            if max_body_bytes > 0:
+                record.response_body = build_body_capture(
+                    body,
+                    content_type,
+                    body_truncated=body_truncated,
+                    config=self._evidence_config,
+                )
+            else:
+                record.response_body = {
+                    "captured": False,
+                    "content_type": content_type,
+                    "sha256": "",
+                    "bytes": 0,
+                    "truncated_by_probe": False,
+                    "reason": "body_not_requested",
+                }
             return response
         except (OSError, http.client.HTTPException, ssl.SSLError) as exc:
             record.error = f"{exc.__class__.__name__}: {exc}"

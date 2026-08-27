@@ -132,6 +132,16 @@ class WebConfigTests(unittest.TestCase):
         self.assertIn("setupResizableTables();", javascript)
         self.assertIn("startColumnResize", javascript)
 
+    def test_gui_exposes_evidence_download(self):
+        root = Path(__file__).resolve().parents[1]
+        html = (root / "src" / "ai_web_auditor" / "web" / "templates" / "index.html").read_text(encoding="utf-8")
+        javascript = (root / "src" / "ai_web_auditor" / "web" / "static" / "app.js").read_text(encoding="utf-8")
+
+        self.assertIn('id="download-evidence"', html)
+        self.assertIn("Evidencias ZIP", html)
+        self.assertIn('postJson("/api/evidence"', javascript)
+        self.assertIn("downloadEvidenceButton.disabled = false", javascript)
+
 
 if __name__ == "__main__":
     unittest.main()
