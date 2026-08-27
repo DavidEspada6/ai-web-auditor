@@ -27,26 +27,26 @@
         <form id="scan-form">
           <section class="module-section project-section">
             <h2>Proyecto</h2>
-            <label class="field">
+            <label class="field" data-help="Selecciona un proyecto local para reutilizar scope, historial e informes. Si no eliges ninguno, la auditoria se guarda fuera de un proyecto.">
               <span>Proyecto activo</span>
               <select id="project-select">
                 <option value="">Sin proyecto</option>
               </select>
             </label>
             <div class="grid-two">
-              <label class="field">
+              <label class="field" data-help="Nombre corto para crear una carpeta de proyecto local. No se sube automaticamente a ningun servicio.">
                 <span>Nuevo proyecto</span>
                 <input id="project-name" type="text" placeholder="Cliente demo">
               </label>
-              <label class="field">
+              <label class="field" data-help="Nombre de la organizacion o cliente que aparecera en los informes generados.">
                 <span>Cliente</span>
                 <input id="project-client" type="text" placeholder="Organizacion">
               </label>
-              <label class="field">
+              <label class="field" data-help="Nombre de quien realiza la auditoria. Se usa como metadato en el proyecto y en los informes.">
                 <span>Auditor</span>
                 <input id="project-auditor" type="text" placeholder="David">
               </label>
-              <label class="field">
+              <label class="field" data-help="Nombre del trabajo o practica. Ayuda a separar revisiones dentro del historial.">
                 <span>Trabajo</span>
                 <input id="project-engagement" type="text" placeholder="Practica 1">
               </label>
@@ -67,36 +67,36 @@
             </div>
           </section>
 
-          <label class="field">
+          <label class="field" data-help="URL inicial que se va a revisar. Debe ser un sistema propio, laboratorio u objetivo con autorizacion explicita.">
             <span>Objetivo</span>
             <input id="target" name="target" type="url" placeholder="https://example.com" required>
           </label>
 
           <div class="grid-two">
-            <label class="field">
+            <label class="field" data-help="Lista de hosts permitidos separados por comas. La herramienta no seguira enlaces fuera de estos hosts.">
               <span>Hosts autorizados</span>
               <input id="allowed-hosts" name="allowed_hosts" type="text" placeholder="example.com">
             </label>
-            <label class="field">
+            <label class="field" data-help="Rutas que entran en el alcance. Usa / para permitir todo el sitio dentro de los hosts autorizados.">
               <span>Rutas incluidas</span>
               <input id="include-paths" name="include_paths" type="text" value="/">
             </label>
           </div>
 
-          <label class="field">
+          <label class="field" data-help="Rutas que se registran como excluidas y no se visitan. Util para admin, private o zonas no autorizadas.">
             <span>Rutas excluidas</span>
             <input id="exclude-paths" name="exclude_paths" type="text" placeholder="/admin, /private">
           </label>
 
           <div class="toggles">
-            <label><input id="allow-subdomains" type="checkbox" checked> Subdominios</label>
-            <label><input id="resolve-dns" type="checkbox" checked> DNS</label>
-            <label><input id="check-http" type="checkbox" checked> HTTP paralelo</label>
-            <label><input id="allow-private" type="checkbox"> Laboratorio local</label>
-            <label><input id="save-history" type="checkbox" checked> Guardar historial</label>
+            <label data-help="Permite considerar subdominios de los hosts autorizados como parte del scope. No los escanea automaticamente."><input id="allow-subdomains" type="checkbox" checked><span>Subdominios</span></label>
+            <label data-help="Resuelve DNS del objetivo para registrar IPs y validar alcance. Desactivalo en laboratorios locales si no hace falta."><input id="resolve-dns" type="checkbox" checked><span>DNS</span></label>
+            <label data-help="Si el objetivo es HTTPS, comprueba tambien si la version HTTP existe y redirige correctamente a HTTPS."><input id="check-http" type="checkbox" checked><span>HTTP paralelo</span></label>
+            <label data-help="Permite auditar localhost o redes privadas. Usalo solo para laboratorios o entornos propios."><input id="allow-private" type="checkbox"><span>Laboratorio local</span></label>
+            <label data-help="Guarda el resultado JSON en el historial local para abrirlo, compararlo o generar informes despues."><input id="save-history" type="checkbox" checked><span>Guardar historial</span></label>
           </div>
 
-          <label class="field history-label">
+          <label class="field history-label" data-help="Texto opcional para identificar esta ejecucion en el historial, por ejemplo pre-fix, demo o cliente-v1.">
             <span>Etiqueta historial</span>
             <input id="history-label" type="text" placeholder="Cliente, entorno o version">
           </label>
@@ -104,61 +104,61 @@
           <section class="module-section">
             <h2>Modulos</h2>
             <div class="module-grid">
-              <label><input data-module="scope" type="checkbox" checked> Scope</label>
-              <label><input data-module="http" type="checkbox" checked> HTTP</label>
-              <label><input data-module="security_headers" type="checkbox" checked> Headers</label>
-              <label><input data-module="cookies" type="checkbox" checked> Cookies</label>
-              <label><input data-module="basic_auth" type="checkbox" checked> Basic Auth</label>
-              <label><input data-module="http_methods" type="checkbox" checked> Metodos</label>
-              <label><input data-module="tls" type="checkbox" checked> TLS</label>
-              <label><input data-module="subdomains" type="checkbox"> Subdominios DNS</label>
-              <label><input data-module="ports" type="checkbox"> Puertos TCP</label>
-              <label><input data-module="fingerprinting" type="checkbox" checked> Fingerprinting</label>
-              <label><input data-module="crawler" type="checkbox" checked> Crawler</label>
+              <label data-help="Valida que la URL sea http/https, no incluya credenciales y este dentro de los hosts y rutas autorizadas."><input data-module="scope" type="checkbox" checked><span>Scope</span></label>
+              <label data-help="Comprueba disponibilidad, estado HTTP, redirecciones y si HTTP fuerza correctamente HTTPS cuando aplica."><input data-module="http" type="checkbox" checked><span>HTTP</span></label>
+              <label data-help="Revisa cabeceras defensivas como HSTS, CSP, X-Frame-Options, Referrer-Policy y Permissions-Policy."><input data-module="security_headers" type="checkbox" checked><span>Headers</span></label>
+              <label data-help="Analiza cookies recibidas y avisa si faltan flags como Secure, HttpOnly o SameSite. No envia cookies nuevas."><input data-module="cookies" type="checkbox" checked><span>Cookies</span></label>
+              <label data-help="Detecta desafios WWW-Authenticate: Basic y eleva riesgo si aparecen sobre HTTP sin TLS. No prueba credenciales."><input data-module="basic_auth" type="checkbox" checked><span>Basic Auth</span></label>
+              <label data-help="Usa OPTIONS para leer metodos anunciados por el servidor y marcar metodos de riesgo como TRACE."><input data-module="http_methods" type="checkbox" checked><span>Metodos</span></label>
+              <label data-help="Obtiene datos basicos de TLS y certificado en objetivos HTTPS. No intenta romper cifrados ni explotar nada."><input data-module="tls" type="checkbox" checked><span>TLS</span></label>
+              <label data-help="Resuelve una lista limitada de subdominios candidatos dentro de scope. No escanea automaticamente los hosts encontrados."><input data-module="subdomains" type="checkbox"><span>Subdominios DNS</span></label>
+              <label data-help="Comprueba conectividad TCP contra una lista corta de puertos del host objetivo. No envia payloads ni solicita banners."><input data-module="ports" type="checkbox"><span>Puertos TCP</span></label>
+              <label data-help="Identifica tecnologias por cabeceras, cookies, HTML inicial y ficheros publicos como robots.txt o security.txt."><input data-module="fingerprinting" type="checkbox" checked><span>Fingerprinting</span></label>
+              <label data-help="Recorre enlaces internos dentro del scope con limites de profundidad y paginas. No envia formularios."><input data-module="crawler" type="checkbox" checked><span>Crawler</span></label>
             </div>
           </section>
 
           <section class="module-section">
             <h2>Limites</h2>
             <div class="grid-two">
-              <label class="field">
+              <label class="field" data-help="Tiempo maximo de espera por peticion HTTP antes de marcarla como error o timeout.">
                 <span>Timeout</span>
                 <input id="timeout" type="number" min="1" max="60" step="1" value="10">
               </label>
-              <label class="field">
+              <label class="field" data-help="Numero maximo de redirecciones HTTP que se seguiran dentro del scope permitido.">
                 <span>Redirecciones</span>
                 <input id="max-redirects" type="number" min="0" max="20" step="1" value="10">
               </label>
-              <label class="field">
+              <label class="field" data-help="Profundidad maxima del crawler desde la URL inicial. Mantener bajo evita crawling amplio.">
                 <span>Profundidad</span>
                 <input id="max-depth" type="number" min="0" max="3" step="1" value="1">
               </label>
-              <label class="field">
+              <label class="field" data-help="Numero maximo de paginas que el crawler puede visitar dentro del scope autorizado.">
                 <span>Paginas</span>
                 <input id="max-pages" type="number" min="1" max="100" step="1" value="25">
               </label>
-              <label class="field">
+              <label class="field" data-help="Numero maximo de candidatos DNS que se intentaran resolver si activas Subdominios DNS.">
                 <span>Subdominios</span>
                 <input id="subdomain-limit" type="number" min="1" max="100" step="1" value="25">
               </label>
-              <label class="field">
+              <label class="field" data-help="Tiempo de espera por resolucion DNS de cada candidato de subdominio.">
                 <span>Timeout DNS</span>
                 <input id="subdomain-timeout" type="number" min="0.5" max="10" step="0.5" value="2">
               </label>
-              <label class="field">
+              <label class="field" data-help="Cantidad maxima de puertos TCP que se comprobaran aunque la lista contenga mas valores.">
                 <span>Limite puertos</span>
                 <input id="port-limit" type="number" min="1" max="100" step="1" value="20">
               </label>
-              <label class="field">
+              <label class="field" data-help="Tiempo maximo de espera para cada conexion TCP basica del modulo Puertos.">
                 <span>Timeout puertos</span>
                 <input id="port-timeout" type="number" min="0.2" max="10" step="0.2" value="1">
               </label>
             </div>
-            <label class="field">
+            <label class="field" data-help="Lista de puertos TCP separados por comas. Solo se comprueba conectividad, sin banners ni payloads.">
               <span>Puertos TCP</span>
               <input id="ports-list" type="text" value="80, 443, 8080, 8443, 8000, 3000, 5000, 9000">
             </label>
-            <label class="field">
+            <label class="field" data-help="Pausa entre peticiones del crawler. Sube este valor si quieres una auditoria mas lenta y conservadora.">
               <span>Pausa crawler</span>
               <input id="delay" type="number" min="0" max="10" step="0.1" value="0">
             </label>
@@ -185,22 +185,36 @@
           <div class="severity info"><span>Info</span><strong id="count-info">0</strong></div>
         </section>
 
-        <nav class="tabs" aria-label="Vistas">
-          <button class="tab active" type="button" data-tab="summary">Resumen</button>
-          <button class="tab" type="button" data-tab="assessment">Riesgo</button>
-          <button class="tab" type="button" data-tab="findings">Hallazgos</button>
-          <button class="tab" type="button" data-tab="modules">Modulos</button>
-          <button class="tab" type="button" data-tab="inventory">Inventario</button>
-          <button class="tab" type="button" data-tab="subdomains">Subdominios</button>
-          <button class="tab" type="button" data-tab="ports">Puertos</button>
-          <button class="tab" type="button" data-tab="json">JSON</button>
-          <button class="tab" type="button" data-tab="ai">IA</button>
-          <button class="tab" type="button" data-tab="report">Informe</button>
-          <button class="tab" type="button" data-tab="history">Historial</button>
-          <button class="tab" type="button" data-tab="compare">Comparar</button>
-        </nav>
+        <div class="workspace-body">
+          <nav class="tabs view-nav" aria-label="Vistas">
+            <section class="nav-group">
+              <h2>Auditar</h2>
+              <button class="tab active" type="button" data-tab="summary">Resumen</button>
+              <button class="tab" type="button" data-tab="assessment">Riesgo</button>
+              <button class="tab" type="button" data-tab="findings">Hallazgos</button>
+              <button class="tab" type="button" data-tab="modules">Modulos</button>
+            </section>
+            <section class="nav-group">
+              <h2>Superficie</h2>
+              <button class="tab" type="button" data-tab="inventory">Inventario</button>
+              <button class="tab" type="button" data-tab="subdomains">Subdominios</button>
+              <button class="tab" type="button" data-tab="ports">Puertos</button>
+              <button class="tab" type="button" data-tab="json">JSON</button>
+            </section>
+            <section class="nav-group">
+              <h2>Entregables</h2>
+              <button class="tab" type="button" data-tab="ai">IA</button>
+              <button class="tab" type="button" data-tab="report">Informe</button>
+            </section>
+            <section class="nav-group">
+              <h2>Auditorias recientes</h2>
+              <button class="tab" type="button" data-tab="history">Historial</button>
+              <button class="tab" type="button" data-tab="compare">Comparar</button>
+            </section>
+          </nav>
 
-        <section id="message" class="message" hidden></section>
+          <div class="view-stage">
+            <section id="message" class="message" hidden></section>
 
         <section id="summary-view" class="panel view active">
           <div id="summary-empty" class="empty">Ejecuta una auditoria para ver resultados.</div>
@@ -241,7 +255,7 @@
 
         <section id="modules-view" class="panel view">
           <div class="table-wrap">
-            <table>
+            <table class="resizable-table" data-table="modules">
               <thead>
                 <tr>
                   <th>Modulo</th>
@@ -267,7 +281,7 @@
           </div>
           <div id="inventory-summary" class="summary-grid compact-summary"></div>
           <div class="table-wrap">
-            <table>
+            <table class="resizable-table" data-table="inventory">
               <thead>
                 <tr>
                   <th>URL</th>
@@ -292,7 +306,7 @@
           </div>
           <div id="subdomain-summary" class="summary-grid compact-summary"></div>
           <div class="table-wrap">
-            <table>
+            <table class="resizable-table" data-table="subdomains">
               <thead>
                 <tr>
                   <th>Host</th>
@@ -315,7 +329,7 @@
           </div>
           <div id="port-summary" class="summary-grid compact-summary"></div>
           <div class="table-wrap">
-            <table>
+            <table class="resizable-table" data-table="ports">
               <thead>
                 <tr>
                   <th>Host</th>
@@ -409,7 +423,7 @@
             <button id="refresh-history" class="ghost" type="button">Actualizar</button>
           </div>
           <div class="table-wrap">
-            <table>
+            <table class="resizable-table" data-table="history">
               <thead>
                 <tr>
                   <th>ID</th>
@@ -440,6 +454,8 @@
           </div>
           <div id="compare-output" class="compare-output"></div>
         </section>
+          </div>
+        </div>
       </section>
     </main>
 

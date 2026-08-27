@@ -78,6 +78,60 @@ class WebConfigTests(unittest.TestCase):
                 }
             )
 
+    def test_gui_module_controls_have_help_text(self):
+        html = (Path(__file__).resolve().parents[1] / "src" / "ai_web_auditor" / "web" / "templates" / "index.html").read_text(
+            encoding="utf-8"
+        )
+
+        for module in [
+            "scope",
+            "http",
+            "security_headers",
+            "cookies",
+            "basic_auth",
+            "http_methods",
+            "tls",
+            "subdomains",
+            "ports",
+            "fingerprinting",
+            "crawler",
+        ]:
+            marker = f'data-module="{module}"'
+            start = html.index(marker)
+            label_start = html.rfind("<label", 0, start)
+            label_end = html.find(">", label_start)
+            self.assertIn("data-help=", html[label_start:label_end])
+
+    def test_gui_tabs_use_stable_layout_css(self):
+        css = (Path(__file__).resolve().parents[1] / "src" / "ai_web_auditor" / "web" / "static" / "app.css").read_text(
+            encoding="utf-8"
+        )
+
+        self.assertIn("align-content: start;", css)
+        self.assertIn("grid-template-columns: 176px minmax(0, 1fr);", css)
+        self.assertIn("overflow-x: hidden;", css)
+        self.assertIn("height: 38px;", css)
+        self.assertIn("transition-delay: 2s", css)
+
+    def test_gui_uses_grouped_navigation_and_resizable_tables(self):
+        root = Path(__file__).resolve().parents[1]
+        html = (root / "src" / "ai_web_auditor" / "web" / "templates" / "index.html").read_text(encoding="utf-8")
+        css = (root / "src" / "ai_web_auditor" / "web" / "static" / "app.css").read_text(encoding="utf-8")
+        javascript = (root / "src" / "ai_web_auditor" / "web" / "static" / "app.js").read_text(encoding="utf-8")
+
+        self.assertIn("workspace-body", html)
+        self.assertIn("view-nav", html)
+        self.assertIn("Auditorias recientes", html)
+        for table in ["modules", "inventory", "subdomains", "ports", "history"]:
+            self.assertIn(f'data-table="{table}"', html)
+
+        self.assertIn("table-layout: fixed;", css)
+        self.assertIn(".column-resizer", css)
+        self.assertIn("max-width: 100%;", css)
+        self.assertIn("overflow: auto;", css)
+        self.assertIn("setupResizableTables();", javascript)
+        self.assertIn("startColumnResize", javascript)
+
 
 if __name__ == "__main__":
     unittest.main()

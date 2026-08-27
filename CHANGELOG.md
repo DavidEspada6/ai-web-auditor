@@ -2,6 +2,31 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.16.0] - 2026-08-27
+
+### Anade
+
+- Ayuda contextual en la interfaz para opciones de scope, modulos y limites.
+- Tooltips con retardo al pasar el raton sobre cada opcion configurable.
+- Indicador visual discreto de ayuda en controles con informacion adicional.
+- Navegacion lateral agrupada por `Auditar`, `Superficie`, `Entregables` y `Auditorias recientes`.
+- Columnas redimensionables en tablas de modulos, inventario, subdominios, puertos e historial.
+- Tests para comprobar que los modulos de la GUI mantienen textos de ayuda.
+
+### Cambia
+
+- La barra de pestanas se reorganiza para evitar desplazamiento horizontal de la pagina.
+- Las tablas anchas se desplazan dentro de su propio contenedor en vez de romper el layout general.
+- Los controles de navegacion usan dimensiones estables y uniformes.
+- La zona principal deja de estirar filas automaticamente segun la altura del panel lateral.
+- Las tarjetas de severidad conservan una altura fija para evitar saltos visuales entre pestanas.
+- La roadmap mueve el paquete de evidencias a la siguiente version para priorizar usabilidad.
+
+### Seguridad
+
+- No se anaden nuevas peticiones ni pruebas contra objetivos.
+- Los cambios son solo de interfaz, documentacion y versionado.
+
 ## [0.15.0] - 2026-08-16
 
 ### Anade

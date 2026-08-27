@@ -30,7 +30,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.15 no necesita librerias externas en tiempo de ejecucion.
+La v0.16 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -223,7 +223,7 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.15",
+    "user_agent": "AI-Web-Auditor/0.16",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -400,7 +400,7 @@ Hay ejemplos en `examples/report-example.md` y `examples/report-example.html`.
 
 ## Laboratorio local
 
-La v0.15 incluye un laboratorio vulnerable solo para pruebas locales. Sirve una
+La v0.16 incluye un laboratorio vulnerable solo para pruebas locales. Sirve una
 web de demo en `127.0.0.1` con problemas controlados:
 
 - HTTP sin TLS;
@@ -463,7 +463,7 @@ Hay un ejemplo en `examples/inventory-example.csv`.
 
 ## Descubrimiento de subdominios
 
-La v0.15 mantiene un modulo DNS seguro para descubrir subdominios candidatos. Esta
+La v0.16 mantiene un modulo DNS seguro para descubrir subdominios candidatos. Esta
 desactivado por defecto porque amplia la fase de reconocimiento y conviene
 usarlo solo cuando el scope lo permita.
 
@@ -500,7 +500,7 @@ en la pestana `Subdominios`.
 
 ## Chequeo limitado de puertos
 
-La v0.15 mantiene un modulo `ports` para comprobar conectividad TCP contra el host
+La v0.16 mantiene un modulo `ports` para comprobar conectividad TCP contra el host
 objetivo. Esta desactivado por defecto porque, aunque es limitado, forma parte
 de la fase de reconocimiento y debe usarse solo con autorizacion.
 
@@ -617,8 +617,11 @@ Desde la interfaz se puede:
 - iniciar, detener y usar el laboratorio local de demo;
 - configurar objetivo, hosts, rutas y limites principales;
 - activar o desactivar modulos;
+- ver ayuda contextual dejando el raton sobre opciones, modulos y limites;
 - ejecutar una auditoria no intrusiva;
+- moverse por vistas agrupadas: auditoria, superficie, entregables e historial;
 - revisar resumen, riesgo, hallazgos, modulos, inventario, subdominios, puertos y JSON;
+- ajustar el ancho de columnas en tablas como inventario, subdominios, puertos e historial;
 - analizar la auditoria con IA en modo dry-run o con API;
 - guardar el analisis IA en el historial local;
 - guardar y abrir auditorias del historial local o del proyecto activo;
@@ -664,9 +667,9 @@ anadir uno nuevo:
 
 Los siguientes pasos naturales son:
 
-- v0.16: paquete de evidencias descargable por auditoria;
-- v0.17: perfiles de autenticacion seguros para auditorias autorizadas;
-- v0.18: verificaciones controladas con consentimiento explicito;
+- v0.17: paquete de evidencias descargable por auditoria;
+- v0.18: perfiles de autenticacion seguros para auditorias autorizadas;
+- v0.19: verificaciones controladas con consentimiento explicito;
 - mejoras progresivas de reporting y comparacion entre auditorias;
 - empaquetado como aplicacion de escritorio cuando la GUI este mas estable.
 
@@ -693,7 +696,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.15.0
+git tag v0.16.0
 git push
 git push --tags
 ```
@@ -706,7 +709,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",

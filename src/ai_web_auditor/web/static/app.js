@@ -12,6 +12,7 @@ const state = {
 };
 
 const severityOrder = ["critical", "high", "medium", "low", "info"];
+const minColumnWidth = 56;
 
 const form = document.querySelector("#scan-form");
 const message = document.querySelector("#message");
@@ -78,6 +79,7 @@ inventorySearch.addEventListener("input", () => {
 });
 
 initialize();
+setupResizableTables();
 
 async function initialize() {
   await loadLabStatus();
@@ -506,7 +508,7 @@ function applyLabDefaults(lab) {
     projectAuditorInput.value = "David";
   }
   if (!projectEngagementInput.value.trim()) {
-    projectEngagementInput.value = "Simulacion v0.15.0";
+    projectEngagementInput.value = "Simulacion v0.16.0";
   }
 
   document.querySelector("#target").value = defaults.target;
@@ -1135,6 +1137,66 @@ function activateTab(name) {
   document.querySelectorAll(".view").forEach((view) => {
     view.classList.toggle("active", view.id === `${name}-view`);
   });
+}
+
+function setupResizableTables() {
+  document.querySelectorAll("table.resizable-table").forEach((table) => {
+    if (table.dataset.resizableReady === "true") {
+      return;
+    }
+    table.dataset.resizableReady = "true";
+    const headers = Array.from(table.querySelectorAll("thead th"));
+    headers.slice(0, -1).forEach((header) => {
+      const handle = document.createElement("span");
+      handle.className = "column-resizer";
+      handle.setAttribute("aria-hidden", "true");
+      header.appendChild(handle);
+      handle.addEventListener("pointerdown", (event) => startColumnResize(event, header));
+    });
+  });
+}
+
+function startColumnResize(event, header) {
+  event.preventDefault();
+  const nextHeader = header.nextElementSibling;
+  const handle = event.currentTarget;
+  const startX = event.clientX;
+  const startWidth = header.getBoundingClientRect().width;
+  const nextStartWidth = nextHeader ? nextHeader.getBoundingClientRect().width : 0;
+
+  handle.classList.add("active");
+  document.body.classList.add("is-resizing-column");
+  if (typeof handle.setPointerCapture === "function") {
+    handle.setPointerCapture(event.pointerId);
+  }
+
+  function onPointerMove(moveEvent) {
+    const delta = moveEvent.clientX - startX;
+    const newWidth = Math.max(minColumnWidth, startWidth + delta);
+    setColumnWidth(header, newWidth);
+    if (nextHeader) {
+      setColumnWidth(nextHeader, Math.max(minColumnWidth, nextStartWidth - delta));
+    }
+  }
+
+  function onPointerUp(upEvent) {
+    handle.classList.remove("active");
+    document.body.classList.remove("is-resizing-column");
+    document.removeEventListener("pointermove", onPointerMove);
+    document.removeEventListener("pointerup", onPointerUp);
+    if (typeof handle.releasePointerCapture === "function") {
+      handle.releasePointerCapture(upEvent.pointerId);
+    }
+  }
+
+  document.addEventListener("pointermove", onPointerMove);
+  document.addEventListener("pointerup", onPointerUp, { once: true });
+}
+
+function setColumnWidth(header, width) {
+  const value = `${Math.round(width)}px`;
+  header.style.width = value;
+  header.style.minWidth = value;
 }
 
 function parseOptionalJson(value) {
