@@ -71,7 +71,19 @@ class EvidenceTests(unittest.TestCase):
             "generated_at": "2026-08-27T10:00:00Z",
             "status": "completed",
             "target": {"normalized_url": "https://example.com/", "host": "example.com"},
-            "modules": [{"name": "http", "status": "passed", "summary": "ok"}],
+            "modules": [
+                {"name": "http", "status": "passed", "summary": "ok"},
+                {
+                    "name": "javascript",
+                    "status": "passed",
+                    "summary": "ok",
+                    "artifacts": {
+                        "discovered_endpoints": [
+                            {"url": "https://example.com/api/profile?session_id=%5Bredacted%5D", "method": "POST"}
+                        ]
+                    },
+                },
+            ],
             "findings": [{"id": "TEST", "severity": "info"}],
             "requests": [
                 {
@@ -98,8 +110,11 @@ class EvidenceTests(unittest.TestCase):
         self.assertIn("http/requests.json", names)
         self.assertIn("findings/findings.json", names)
         self.assertIn("entry-points/entry-points.json", names)
+        self.assertIn("javascript/javascript.json", names)
+        self.assertIn("javascript/endpoints.json", names)
         self.assertEqual(manifest["counts"]["requests"], 1)
         self.assertEqual(manifest["counts"]["entry_points"], 1)
+        self.assertEqual(manifest["counts"]["javascript_endpoints"], 1)
         self.assertTrue(manifest["safety"]["sanitized"])
         self.assertEqual(request["id"], "req-0001")
 

@@ -12,7 +12,8 @@ CLI y GUI, informes Markdown/HTML/PDF, proyectos locales, historial separado por
 proyecto, inventario web exportable, descubrimiento DNS seguro de subdominios,
 chequeo TCP limitado de puertos, valoracion determinista de riesgo, plan de
 remediacion, laboratorio vulnerable local, comparacion de auditorias y paquetes
-de evidencias saneadas. Desde v0.19 tambien genera un modelo de entry points
+de evidencias saneadas. Desde v0.20 tambien analiza JavaScript de forma pasiva
+para descubrir endpoints citados en scripts, y genera un modelo de entry points
 con endpoints, parametros, formularios y metodos observados para orientar la
 revision manual posterior.
 
@@ -33,7 +34,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.19 no necesita librerias externas en tiempo de ejecucion.
+La v0.20 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -246,7 +247,7 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.19",
+    "user_agent": "AI-Web-Auditor/0.20",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -283,6 +284,13 @@ Ejemplo en `examples/audit.json`:
     "follow_robots_paths": false,
     "metadata_max_urls": 100
   },
+  "javascript": {
+    "max_pages": 10,
+    "max_scripts": 25,
+    "max_body_bytes": 262144,
+    "include_inline": true,
+    "fetch_external_scripts": true
+  },
   "subdomains": {
     "candidates": ["www", "app", "api", "portal", "admin"],
     "max_candidates": 25,
@@ -311,7 +319,8 @@ Ejemplo en `examples/audit.json`:
     "subdomains": false,
     "ports": false,
     "fingerprinting": true,
-    "crawler": true
+    "crawler": true,
+    "javascript": true
   }
 }
 ```
@@ -342,6 +351,10 @@ Ejemplo en `examples/audit.json`:
   scope, con profundidad y numero de paginas limitados. Tambien
   lee `robots.txt`, `sitemap.xml`, endpoints `.well-known` y clasifica rutas
   interesantes como login, admin, API, recovery, callbacks o uploads.
+- `javascript`: analiza HTML y ficheros JavaScript dentro del scope para
+  descubrir endpoints, parametros y metodos inferidos desde llamadas como
+  `fetch()` o `axios.post()`. No ejecuta los endpoints descubiertos ni envia
+  cuerpos de peticion.
 
 ## Analisis IA
 
@@ -428,6 +441,7 @@ El informe incluye:
 - resumen por modulo;
 - hallazgos y evidencias;
 - fingerprinting, crawler, metadatos publicos y rutas clasificadas si estan presentes;
+- analisis JavaScript con scripts revisados y endpoints citados por el cliente;
 - inventario web con URLs, estados, tipos de contenido y formularios detectados;
 - puntos de entrada con endpoints, parametros, formularios y metodos observados;
 - descubrimiento de subdominios si se activa;
@@ -451,6 +465,8 @@ web de demo en `127.0.0.1` con problemas controlados:
 - `robots.txt`, `sitemap.xml`, `security.txt` y OpenID metadata de ejemplo;
 - rutas de login, API y recuperacion para probar la clasificacion del crawler;
 - formulario HTML de login detectado de forma pasiva, sin envio de datos.
+- ficheros JavaScript y bloques inline con endpoints de API de demo, parametros
+  sensibles ficticios y referencias fuera de scope.
 
 Arrancarlo desde consola:
 
@@ -496,6 +512,8 @@ El paquete ZIP de evidencias contiene:
 - `modules/modules.json`;
 - `inventory/inventory.json`;
 - `entry-points/entry-points.json`;
+- `javascript/javascript.json`;
+- `javascript/endpoints.json`;
 - `assessment/assessment.json`;
 - `README.md` con notas de seguridad.
 
@@ -521,6 +539,7 @@ resume:
 - URLs descubiertas pero no visitadas;
 - URLs excluidas por scope;
 - URLs externas registradas sin solicitarlas;
+- scripts JavaScript revisados y endpoints declarados en cliente;
 - codigos HTTP y tipos de contenido disponibles;
 - formularios HTML encontrados sin enviarlos;
 - rutas interesantes como `/login`, `/admin`, `/members`, `/api` o `/private`.
@@ -560,6 +579,53 @@ ai-web-auditor entrypoints outputs/result.json --output outputs/entry-points.csv
 En la interfaz grafica, la pestana `Entradas` permite filtrar por URL, metodo,
 parametro, tipo de ruta o nota. El boton `Entradas CSV` descarga la tabla para
 priorizar revision manual. No se envian formularios ni se prueban valores.
+
+## Analisis JavaScript
+
+La v0.20 incorpora el modulo `javascript`. Su objetivo es ampliar la
+enumeracion inicial detectando endpoints que no aparecen como enlaces HTML,
+pero si estan citados en scripts del cliente.
+
+Que hace:
+
+- revisa paginas HTML ya vistas por el crawler y la URL inicial;
+- extrae scripts externos con `<script src="...">`;
+- descarga scripts externos solo si estan dentro del scope autorizado;
+- analiza tambien bloques inline si `include_inline` esta activo;
+- extrae URLs absolutas, rutas relativas, rutas `/api/...`, `/graphql`,
+  login, auth, callbacks, uploads, health y patrones similares;
+- infiere metodos cuando aparecen cerca de `fetch()`, `method: "POST"` o
+  llamadas tipo `axios.post()`;
+- registra parametros de query y marca nombres sensibles como `token`,
+  `session`, `csrf`, `password`, `secret` o `key`;
+- envia los endpoints encontrados a `inventory` y `entry_points`.
+
+Que no hace:
+
+- no ejecuta los endpoints descubiertos;
+- no envia cuerpos de peticion;
+- no analiza scripts de terceros fuera del scope;
+- no desofusca codigo ni ejecuta JavaScript en navegador.
+
+Configuracion:
+
+```json
+{
+  "modules": {
+    "javascript": true
+  },
+  "javascript": {
+    "max_pages": 10,
+    "max_scripts": 25,
+    "max_body_bytes": 262144,
+    "include_inline": true,
+    "fetch_external_scripts": true
+  }
+}
+```
+
+En la interfaz grafica se revisa desde la pestana `JavaScript`. Ahi puedes
+filtrar por endpoint, metodo, parametro, tipo de ruta u origen.
 
 ## Descubrimiento de subdominios
 
@@ -721,7 +787,8 @@ Desde la interfaz se puede:
 - ejecutar una auditoria no intrusiva;
 - moverse por vistas agrupadas: auditoria, superficie, entregables e historial;
 - revisar resumen, riesgo, hallazgos, modulos, inventario, entradas, subdominios, puertos y JSON;
-- ajustar el ancho de columnas en tablas como inventario, entradas, subdominios, puertos e historial;
+- revisar endpoints detectados en JavaScript desde su pestana dedicada;
+- ajustar el ancho de columnas en tablas como inventario, entradas, JavaScript, subdominios, puertos e historial;
 - analizar la auditoria con IA en modo dry-run o con API;
 - guardar el analisis IA en el historial local;
 - guardar y abrir auditorias del historial local o del proyecto activo;
@@ -746,6 +813,7 @@ Ese archivo deja fijados los limites principales:
 - rutas excluidas;
 - si se permiten redes privadas o locales;
 - limites del crawler y opciones de metadatos (`robots.txt`, `sitemap.xml`, `.well-known`);
+- limites de analisis JavaScript: paginas, scripts, tamano maximo, inline y scripts externos;
 - limite de candidatos para descubrimiento de subdominios;
 - lista, limite y timeout para el chequeo TCP de puertos.
 
@@ -801,7 +869,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.19.0
+git tag v0.20.0
 git push
 git push --tags
 ```
@@ -814,7 +882,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.19.0",
+  "version": "0.20.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",

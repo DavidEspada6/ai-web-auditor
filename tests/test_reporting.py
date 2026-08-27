@@ -78,6 +78,35 @@ SCAN_DATA = {
             },
         },
         {
+            "name": "javascript",
+            "status": "passed",
+            "summary": "Analyzed 1 page and 1 script.",
+            "artifacts": {
+                "pages_checked": [{"url": "https://example.com/login", "status_code": 200, "scripts_found": 1}],
+                "scripts": [
+                    {
+                        "kind": "external",
+                        "url": "https://example.com/static/app.js",
+                        "status_code": 200,
+                        "content_type": "application/javascript",
+                        "endpoints_found": 1,
+                    }
+                ],
+                "discovered_endpoints": [
+                    {
+                        "url": "https://example.com/api/profile?session_id=%5Bredacted%5D",
+                        "method": "POST",
+                        "parameter_names": ["session_id"],
+                        "sensitive_parameter_names": ["session_id"],
+                        "route_types": ["api", "account"],
+                        "sources": ["external_script"],
+                    }
+                ],
+                "out_of_scope_endpoints": [{"url": "https://outside.example/collect"}],
+                "excluded_endpoints": [],
+            },
+        },
+        {
             "name": "subdomains",
             "status": "warning",
             "summary": "Checked 2 candidate subdomain(s), resolved 1 in-scope host(s).",
@@ -177,6 +206,8 @@ class ReportingTests(unittest.TestCase):
         self.assertIn("nginx 1.24.0", markdown)
         self.assertIn("## Crawler", markdown)
         self.assertIn("https://example.com/about", markdown)
+        self.assertIn("## JavaScript Analysis", markdown)
+        self.assertIn("https://example.com/api/profile?session_id=%5Bredacted%5D", markdown)
         self.assertIn("## Web Inventory", markdown)
         self.assertIn("https://example.com/admin", markdown)
         self.assertIn("## Entry Points", markdown)
@@ -206,6 +237,8 @@ class ReportingTests(unittest.TestCase):
         self.assertIn("Risk Assessment", html)
         self.assertIn("Remediation Plan", html)
         self.assertIn("Web Inventory", html)
+        self.assertIn("JavaScript Analysis", html)
+        self.assertIn("https://example.com/api/profile?session_id=%5Bredacted%5D", html)
         self.assertIn("Entry Points", html)
         self.assertIn("https://example.com/session", html)
         self.assertIn("Subdomain Discovery", html)

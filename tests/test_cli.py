@@ -15,7 +15,7 @@ from ai_web_auditor.config import AuditConfig
 
 class CliTests(unittest.TestCase):
     def test_init_scope_writes_config_with_defaults(self):
-        answers = iter([""] * 30)
+        answers = iter([""] * 40)
 
         with tempfile.TemporaryDirectory() as tmpdir:
             output = Path(tmpdir) / "audit.json"
@@ -30,6 +30,7 @@ class CliTests(unittest.TestCase):
         self.assertEqual(config.scope.allowed_hosts, ["example.com"])
         self.assertTrue(config.modules.fingerprinting)
         self.assertTrue(config.modules.crawler)
+        self.assertTrue(config.modules.javascript)
         self.assertFalse(config.modules.subdomains)
         self.assertFalse(config.modules.ports)
         self.assertEqual(config.crawler.max_depth, 1)
@@ -39,6 +40,11 @@ class CliTests(unittest.TestCase):
         self.assertTrue(config.crawler.follow_sitemap_urls)
         self.assertFalse(config.crawler.follow_robots_paths)
         self.assertEqual(config.crawler.metadata_max_urls, 100)
+        self.assertEqual(config.javascript.max_pages, 10)
+        self.assertEqual(config.javascript.max_scripts, 25)
+        self.assertEqual(config.javascript.max_body_bytes, 262144)
+        self.assertTrue(config.javascript.include_inline)
+        self.assertTrue(config.javascript.fetch_external_scripts)
         self.assertEqual(config.subdomains.max_candidates, 25)
         self.assertEqual(config.subdomains.timeout_seconds, 2.0)
         self.assertEqual(config.ports.ports, [80, 443, 8080, 8443, 8000, 3000, 5000, 9000])

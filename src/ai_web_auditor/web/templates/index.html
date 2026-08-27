@@ -117,6 +117,7 @@
               <label data-help="Comprueba conectividad TCP contra una lista corta de puertos del host objetivo. No envia payloads ni solicita banners."><input data-module="ports" type="checkbox"><span>Puertos TCP</span></label>
               <label data-help="Identifica tecnologias por cabeceras, cookies, HTML inicial y ficheros publicos como robots.txt o security.txt."><input data-module="fingerprinting" type="checkbox" checked><span>Fingerprinting</span></label>
               <label data-help="Recorre enlaces internos dentro del scope con limites de profundidad y paginas. Tambien puede leer robots.txt, sitemap.xml y .well-known sin enviar formularios."><input data-module="crawler" type="checkbox" checked><span>Crawler</span></label>
+              <label data-help="Lee HTML y ficheros JavaScript dentro del scope para extraer rutas y endpoints citados en el cliente. No ejecuta esos endpoints ni envia datos."><input data-module="javascript" type="checkbox" checked><span>JavaScript</span></label>
             </div>
           </section>
 
@@ -181,6 +182,28 @@
             </label>
           </section>
 
+          <section class="module-section">
+            <h2>JavaScript</h2>
+            <div class="grid-two">
+              <label class="field" data-help="Numero maximo de paginas HTML que se revisaran buscando etiquetas script. Normalmente basta con pocas paginas de entrada.">
+                <span>Paginas JS</span>
+                <input id="javascript-pages" type="number" min="1" max="50" step="1" value="10">
+              </label>
+              <label class="field" data-help="Numero maximo de scripts externos o bloques inline que se analizaran. Si se alcanza el limite, se registrara como nota informativa.">
+                <span>Scripts JS</span>
+                <input id="javascript-scripts" type="number" min="1" max="100" step="1" value="25">
+              </label>
+              <label class="field" data-help="Tamano maximo leido por pagina o script. Sirve para evitar descargar ficheros grandes durante la enumeracion.">
+                <span>Bytes JS</span>
+                <input id="javascript-bytes" type="number" min="1024" max="1048576" step="1024" value="262144">
+              </label>
+            </div>
+            <div class="toggles">
+              <label data-help="Analiza bloques script escritos directamente dentro del HTML. Util para aplicaciones que incrustan rutas en la pagina inicial."><input id="javascript-inline" type="checkbox" checked><span>JS inline</span></label>
+              <label data-help="Descarga y analiza ficheros script externos solo si estan dentro del scope autorizado. No toca scripts de terceros."><input id="javascript-external" type="checkbox" checked><span>JS externo</span></label>
+            </div>
+          </section>
+
           <button id="run-scan" class="primary" type="submit">Ejecutar auditoria</button>
         </form>
       </aside>
@@ -215,6 +238,7 @@
               <h2>Superficie</h2>
               <button class="tab" type="button" data-tab="inventory">Inventario</button>
               <button class="tab" type="button" data-tab="entrypoints">Entradas</button>
+              <button class="tab" type="button" data-tab="javascript">JavaScript</button>
               <button class="tab" type="button" data-tab="subdomains">Subdominios</button>
               <button class="tab" type="button" data-tab="ports">Puertos</button>
               <button class="tab" type="button" data-tab="json">JSON</button>
@@ -341,6 +365,35 @@
                 </tr>
               </thead>
               <tbody id="entrypoint-table"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="javascript-view" class="panel view">
+          <div class="section-toolbar">
+            <div>
+              <p class="eyebrow">Analisis JavaScript</p>
+              <strong id="javascript-count">0 endpoints</strong>
+            </div>
+            <label class="field inventory-filter">
+              <span>Filtrar</span>
+              <input id="javascript-search" type="search" placeholder="api, token, POST, upload">
+            </label>
+          </div>
+          <div id="javascript-summary" class="summary-grid compact-summary"></div>
+          <div class="table-wrap">
+            <table class="resizable-table" data-table="javascript">
+              <thead>
+                <tr>
+                  <th>URL</th>
+                  <th>Metodo</th>
+                  <th>Parametros</th>
+                  <th>Rutas</th>
+                  <th>Origen</th>
+                  <th>Lineas</th>
+                </tr>
+              </thead>
+              <tbody id="javascript-table"></tbody>
             </table>
           </div>
         </section>

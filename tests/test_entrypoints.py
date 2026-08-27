@@ -49,6 +49,17 @@ class EntryPointTests(unittest.TestCase):
                         "excluded_urls": ["https://example.com/admin"],
                     },
                 },
+                {
+                    "name": "javascript",
+                    "artifacts": {
+                        "discovered_endpoints": [
+                            {
+                                "url": "https://example.com/api/profile?session_id=%5Bredacted%5D",
+                                "method": "POST",
+                            }
+                        ]
+                    },
+                },
             ],
         }
 
@@ -62,6 +73,7 @@ class EntryPointTests(unittest.TestCase):
         self.assertIn("POST", entry_points["summary"]["methods"])
         self.assertIn("q", parameters)
         self.assertIn("role", parameters)
+        self.assertIn("session_id", parameters)
         self.assertIn("next", parameters)
         self.assertTrue(parameters["token"]["sensitive_hint"])
         self.assertTrue(parameters["password"]["sensitive_hint"])
@@ -72,6 +84,7 @@ class EntryPointTests(unittest.TestCase):
         self.assertTrue(session["review_candidate"])
         self.assertIn("POST", session["methods"])
         self.assertIn("form_action", session["sources"])
+        self.assertIn("javascript_endpoint", endpoints["https://example.com/api/profile?session_id=%5Bredacted%5D"]["sources"])
         self.assertIn("login", endpoints["https://example.com/login"]["route_types"])
         self.assertEqual(endpoints["https://example.com/admin"]["state"], "excluded")
 

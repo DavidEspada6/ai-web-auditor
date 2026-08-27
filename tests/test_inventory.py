@@ -51,6 +51,28 @@ SCAN_DATA = {
                 "excluded_urls": ["https://example.com/admin"],
             },
         }
+        ,
+        {
+            "name": "javascript",
+            "artifacts": {
+                "scripts": [
+                    {
+                        "kind": "external",
+                        "url": "https://example.com/static/app.js",
+                        "status_code": 200,
+                        "content_type": "application/javascript",
+                    }
+                ],
+                "discovered_endpoints": [
+                    {
+                        "url": "https://example.com/api/profile?session_id=%5Bredacted%5D",
+                        "method": "POST",
+                    }
+                ],
+                "out_of_scope_endpoints": [{"url": "https://outside.example/collect"}],
+                "excluded_endpoints": [{"url": "https://example.com/admin/export?token=%5Bredacted%5D"}],
+            },
+        },
     ],
     "requests": [
         {
@@ -69,10 +91,12 @@ class InventoryTests(unittest.TestCase):
         inventory = build_inventory_from_scan(SCAN_DATA)
         urls = {item["url"]: item for item in inventory["urls"]}
 
-        self.assertEqual(inventory["summary"]["total_urls"], 5)
+        self.assertEqual(inventory["summary"]["total_urls"], 9)
         self.assertEqual(inventory["summary"]["forms"], 1)
-        self.assertEqual(inventory["summary"]["external_urls"], 1)
-        self.assertEqual(inventory["summary"]["excluded_urls"], 1)
+        self.assertEqual(inventory["summary"]["javascript_endpoints"], 1)
+        self.assertEqual(inventory["summary"]["javascript_scripts"], 1)
+        self.assertEqual(inventory["summary"]["external_urls"], 2)
+        self.assertEqual(inventory["summary"]["excluded_urls"], 2)
         self.assertIn("form_detected", urls["https://example.com/"]["reasons"])
         self.assertIn("login_path", urls["https://example.com/login"]["reasons"])
         self.assertIn("admin_path", urls["https://example.com/admin"]["reasons"])
@@ -83,8 +107,9 @@ class InventoryTests(unittest.TestCase):
         csv_text = inventory_to_csv(inventory)
         rows = list(csv.DictReader(io.StringIO(csv_text)))
 
-        self.assertEqual(len(rows), 5)
+        self.assertEqual(len(rows), 9)
         self.assertIn("https://example.com/login", {row["url"] for row in rows})
+        self.assertIn("https://example.com/api/profile?session_id=%5Bredacted%5D", {row["url"] for row in rows})
         self.assertIn("reasons", rows[0])
 
 

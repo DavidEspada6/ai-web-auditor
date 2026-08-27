@@ -42,10 +42,13 @@ def build_inventory_from_scan(scan_data: dict[str, Any]) -> dict[str, Any]:
         _add_url(entries, source_index, method_index, target_url, source="target")
 
     for module in _modules(scan_data):
+        artifacts = module.get("artifacts") if isinstance(module.get("artifacts"), dict) else {}
+        if module.get("name") == "javascript":
+            _merge_javascript_artifacts(entries, source_index, method_index, artifacts)
+            continue
         if module.get("name") != "crawler":
             continue
 
-        artifacts = module.get("artifacts") if isinstance(module.get("artifacts"), dict) else {}
         for page in _dict_list(artifacts.get("pages")):
             page_url = _clean_text(page.get("url"))
             if not page_url:
@@ -119,6 +122,8 @@ def build_inventory_from_scan(scan_data: dict[str, Any]) -> dict[str, Any]:
         "interesting_urls": sum(1 for item in urls if item.get("interesting")),
         "forms": len(forms),
         "pages_with_forms": sum(1 for item in urls if int(item.get("forms_found") or 0) > 0),
+        "javascript_endpoints": sum(1 for item in urls if "javascript_endpoint" in item.get("sources", [])),
+        "javascript_scripts": sum(1 for item in urls if "javascript_script" in item.get("sources", [])),
         "external_urls": sum(1 for item in urls if "out_of_scope" in item.get("sources", [])),
         "excluded_urls": sum(1 for item in urls if "excluded" in item.get("sources", [])),
         "status_codes": dict(sorted(status_counts.items())),
@@ -140,6 +145,77 @@ def inventory_to_csv(inventory: dict[str, Any]) -> str:
     for row in _dict_list(inventory.get("urls")):
         writer.writerow({field: _csv_value(row.get(field)) for field in CSV_FIELDS})
     return output.getvalue()
+
+
+def _merge_javascript_artifacts(
+    entries: dict[str, dict[str, Any]],
+    source_index: dict[str, set[str]],
+    method_index: dict[str, set[str]],
+    artifacts: dict[str, Any],
+) -> None:
+    for script in _dict_list(artifacts.get("scripts")):
+        script_url = _clean_text(script.get("url"))
+        if not script_url:
+            continue
+        _add_url(
+            entries,
+            source_index,
+            method_index,
+            script_url,
+            source="javascript_script",
+            status_code=_optional_int(script.get("status_code")),
+            content_type=_clean_text(script.get("content_type")),
+            fetched=script.get("status_code") is not None,
+            method="GET",
+        )
+
+    for script in _dict_list(artifacts.get("script_urls")):
+        script_url = _clean_text(script.get("url"))
+        status = _clean_text(script.get("status"))
+        if not script_url or status in {"in_scope", "duplicate"}:
+            continue
+        if status == "out_of_scope":
+            _add_url(entries, source_index, method_index, script_url, source="out_of_scope")
+        elif status == "excluded_path":
+            _add_url(entries, source_index, method_index, script_url, source="excluded")
+
+    for endpoint in _dict_list(artifacts.get("discovered_endpoints")):
+        _add_javascript_endpoint(entries, source_index, method_index, endpoint, source="javascript_endpoint")
+    for endpoint in _dict_list(artifacts.get("out_of_scope_endpoints")):
+        _add_url(entries, source_index, method_index, _clean_text(endpoint.get("url")), source="out_of_scope")
+    for endpoint in _dict_list(artifacts.get("excluded_endpoints")):
+        _add_javascript_endpoint(entries, source_index, method_index, endpoint, source="excluded")
+
+
+def _add_javascript_endpoint(
+    entries: dict[str, dict[str, Any]],
+    source_index: dict[str, set[str]],
+    method_index: dict[str, set[str]],
+    endpoint: dict[str, Any],
+    *,
+    source: str,
+) -> None:
+    methods = _string_list(endpoint.get("methods"))
+    if not methods and _clean_text(endpoint.get("method")):
+        methods = [_clean_text(endpoint.get("method"))]
+    if not methods:
+        _add_url(
+            entries,
+            source_index,
+            method_index,
+            _clean_text(endpoint.get("url")),
+            source=source,
+        )
+        return
+    for method in methods:
+        _add_url(
+            entries,
+            source_index,
+            method_index,
+            _clean_text(endpoint.get("url")),
+            source=source,
+            method=method.upper(),
+        )
 
 
 def forms_for_page(forms: list[dict[str, Any]], page_url: str) -> list[dict[str, Any]]:

@@ -207,6 +207,8 @@ def _remediation_plan(
 
     if _int(coverage.get("open_ports"), 0) > 0:
         _append_unique(immediate, "Review every open TCP port and confirm it is required for the approved scope.")
+    if _int(coverage.get("javascript_endpoints"), 0) > 0:
+        _append_unique(planned, "Review JavaScript-discovered endpoints before selecting later validation tests.")
     if _int(coverage.get("modules_error"), 0) > 0:
         _append_unique(planned, "Repeat modules that ended in error before closing the audit.")
     if _int(coverage.get("modules_skipped"), 0) > 0:
@@ -234,6 +236,8 @@ def _coverage(modules: list[dict[str, Any]], inventory: dict[str, Any], entry_po
     subdomain_artifacts = subdomains.get("artifacts") if subdomains and isinstance(subdomains.get("artifacts"), dict) else {}
     ports = _module_by_name(modules, "ports")
     port_artifacts = ports.get("artifacts") if ports and isinstance(ports.get("artifacts"), dict) else {}
+    javascript = _module_by_name(modules, "javascript")
+    javascript_artifacts = javascript.get("artifacts") if javascript and isinstance(javascript.get("artifacts"), dict) else {}
 
     return {
         "modules_run": len(modules),
@@ -249,6 +253,8 @@ def _coverage(modules: list[dict[str, Any]], inventory: dict[str, Any], entry_po
         "entry_point_review_candidates": _int(entry_summary.get("review_candidates"), 0),
         "entry_point_parameters": _int(entry_summary.get("parameters"), 0),
         "state_changing_entry_points": _int(entry_summary.get("state_changing_endpoints"), 0),
+        "javascript_endpoints": len(_dict_list(javascript_artifacts.get("discovered_endpoints"))),
+        "javascript_scripts": len(_dict_list(javascript_artifacts.get("scripts"))),
         "subdomains": _int(subdomain_artifacts.get("resolved_count"), 0),
         "open_ports": _int(port_artifacts.get("open_count"), 0),
     }
@@ -274,6 +280,8 @@ def _coverage_notes(
         notes.append("State-changing entry points were inferred from methods or form actions; no request bodies were sent.")
     if _entry_points_have_sensitive_parameters(entry_points):
         notes.append("Some entry point parameters have sensitive-looking names and should be reviewed without exposing their values.")
+    if _int(coverage.get("javascript_endpoints"), 0) > 0:
+        notes.append("JavaScript endpoint references were extracted passively; discovered endpoints were not requested by this module.")
     if _int(coverage.get("subdomains"), 0) > 0:
         notes.append("Resolved subdomains were recorded as evidence but not scanned automatically.")
     if _int(coverage.get("open_ports"), 0) > 0:

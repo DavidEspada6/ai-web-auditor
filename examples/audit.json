@@ -17,7 +17,7 @@
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.19",
+    "user_agent": "AI-Web-Auditor/0.20",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -75,6 +75,13 @@
       ".webp",
       ".zip"
     ]
+  },
+  "javascript": {
+    "max_pages": 10,
+    "max_scripts": 25,
+    "max_body_bytes": 262144,
+    "include_inline": true,
+    "fetch_external_scripts": true
   },
   "subdomains": {
     "candidates": [
@@ -142,6 +149,7 @@
     "subdomains": false,
     "ports": false,
     "fingerprinting": true,
-    "crawler": true
+    "crawler": true,
+    "javascript": true
   }
 }

@@ -30,6 +30,10 @@ const entrypointCount = document.querySelector("#entrypoint-count");
 const entrypointSearch = document.querySelector("#entrypoint-search");
 const entrypointSummary = document.querySelector("#entrypoint-summary");
 const entrypointTable = document.querySelector("#entrypoint-table");
+const javascriptCount = document.querySelector("#javascript-count");
+const javascriptSearch = document.querySelector("#javascript-search");
+const javascriptSummary = document.querySelector("#javascript-summary");
+const javascriptTable = document.querySelector("#javascript-table");
 const subdomainCount = document.querySelector("#subdomain-count");
 const subdomainSummary = document.querySelector("#subdomain-summary");
 const subdomainTable = document.querySelector("#subdomain-table");
@@ -86,6 +90,10 @@ inventorySearch.addEventListener("input", () => {
 
 entrypointSearch.addEventListener("input", () => {
   renderEntryPoints(state.scan?.entry_points || {});
+});
+
+javascriptSearch.addEventListener("input", () => {
+  renderJavaScript(javascriptArtifacts(state.scan?.modules || []));
 });
 
 initialize();
@@ -423,6 +431,13 @@ function collectPayload() {
       follow_robots_paths: document.querySelector("#follow-robots").checked,
       metadata_max_urls: document.querySelector("#metadata-limit").value,
     },
+    javascript: {
+      max_pages: document.querySelector("#javascript-pages").value,
+      max_scripts: document.querySelector("#javascript-scripts").value,
+      max_body_bytes: document.querySelector("#javascript-bytes").value,
+      include_inline: document.querySelector("#javascript-inline").checked,
+      fetch_external_scripts: document.querySelector("#javascript-external").checked,
+    },
     subdomains: {
       max_candidates: document.querySelector("#subdomain-limit").value,
       timeout_seconds: document.querySelector("#subdomain-timeout").value,
@@ -478,17 +493,19 @@ function renderScan(scan) {
   const requests = Array.isArray(scan.requests) ? scan.requests : [];
   const subdomains = subdomainArtifacts(modules);
   const ports = portArtifacts(modules);
+  const javascript = javascriptArtifacts(modules);
   const assessment = scan.assessment || {};
 
   statusText.textContent = scan.status || "completed";
   targetPill.textContent = scan.target?.normalized_url || scan.target?.host || "Sin objetivo";
   renderSeverityCounts(findings);
-  renderSummary(scan, findings, modules, requests, subdomains, ports, assessment);
+  renderSummary(scan, findings, modules, requests, subdomains, ports, javascript, assessment);
   renderAssessment(assessment);
   renderFindings(findings);
   renderModules(modules);
   renderInventory(scan.inventory || {});
   renderEntryPoints(scan.entry_points || {});
+  renderJavaScript(javascript);
   renderSubdomains(subdomains);
   renderPorts(ports);
   jsonOutput.textContent = JSON.stringify(scan, null, 2);
@@ -556,7 +573,7 @@ function applyLabDefaults(lab) {
     projectAuditorInput.value = "David";
   }
   if (!projectEngagementInput.value.trim()) {
-    projectEngagementInput.value = "Simulacion v0.19.0";
+    projectEngagementInput.value = "Simulacion v0.20.0";
   }
 
   document.querySelector("#target").value = defaults.target;
@@ -580,6 +597,13 @@ function applyLabDefaults(lab) {
     setChecked("#follow-sitemap", defaults.crawler.follow_sitemap_urls);
     setChecked("#follow-robots", defaults.crawler.follow_robots_paths);
     document.querySelector("#metadata-limit").value = defaults.crawler.metadata_max_urls ?? 100;
+  }
+  if (defaults.javascript) {
+    document.querySelector("#javascript-pages").value = defaults.javascript.max_pages ?? 10;
+    document.querySelector("#javascript-scripts").value = defaults.javascript.max_scripts ?? 25;
+    document.querySelector("#javascript-bytes").value = defaults.javascript.max_body_bytes ?? 262144;
+    setChecked("#javascript-inline", defaults.javascript.include_inline);
+    setChecked("#javascript-external", defaults.javascript.fetch_external_scripts);
   }
   if (defaults.subdomains) {
     document.querySelector("#subdomain-limit").value = defaults.subdomains.max_candidates ?? 25;
@@ -669,6 +693,13 @@ function applyProject(project) {
     setChecked("#follow-robots", config.crawler.follow_robots_paths);
     document.querySelector("#metadata-limit").value = config.crawler.metadata_max_urls ?? 100;
   }
+  if (config.javascript) {
+    document.querySelector("#javascript-pages").value = config.javascript.max_pages ?? 10;
+    document.querySelector("#javascript-scripts").value = config.javascript.max_scripts ?? 25;
+    document.querySelector("#javascript-bytes").value = config.javascript.max_body_bytes ?? 262144;
+    setChecked("#javascript-inline", config.javascript.include_inline);
+    setChecked("#javascript-external", config.javascript.fetch_external_scripts);
+  }
   if (config.subdomains) {
     document.querySelector("#subdomain-limit").value = config.subdomains.max_candidates ?? 25;
     document.querySelector("#subdomain-timeout").value = config.subdomains.timeout_seconds ?? 2;
@@ -708,7 +739,7 @@ function renderSeverityCounts(findings) {
   });
 }
 
-function renderSummary(scan, findings, modules, requests, subdomains, ports, assessment) {
+function renderSummary(scan, findings, modules, requests, subdomains, ports, javascript, assessment) {
   summaryEmpty.hidden = true;
   summaryContent.hidden = false;
   summaryContent.innerHTML = "";
@@ -722,6 +753,7 @@ function renderSummary(scan, findings, modules, requests, subdomains, ports, ass
   const crawlerArtifacts = crawler?.artifacts && typeof crawler.artifacts === "object" ? crawler.artifacts : {};
   const metadataUrls = Array.isArray(crawlerArtifacts.metadata_discovered_urls) ? crawlerArtifacts.metadata_discovered_urls.length : 0;
   const classifiedRoutes = Array.isArray(crawlerArtifacts.route_classifications) ? crawlerArtifacts.route_classifications.length : 0;
+  const javascriptEndpoints = Array.isArray(javascript.discovered_endpoints) ? javascript.discovered_endpoints.length : 0;
 
   const values = [
     ["Objetivo", scan.target?.normalized_url || "unknown"],
@@ -739,6 +771,7 @@ function renderSummary(scan, findings, modules, requests, subdomains, ports, ass
     ["Forms", inventorySummaryData.forms || 0],
     ["Entradas", entryPointsSummaryData.total_endpoints || 0],
     ["Parametros", entryPointsSummaryData.parameters || 0],
+    ["Endpoints JS", javascriptEndpoints],
     ["Subdominios", resolvedSubdomains],
     ["Puertos abiertos", openPorts],
   ];
@@ -772,6 +805,7 @@ function renderAssessment(assessment) {
     ["Forms", coverage.forms ?? 0],
     ["Entradas", coverage.entry_points ?? 0],
     ["Parametros", coverage.entry_point_parameters ?? 0],
+    ["Endpoints JS", coverage.javascript_endpoints ?? 0],
     ["Subdominios", coverage.subdomains ?? 0],
     ["Puertos abiertos", coverage.open_ports ?? 0],
   ].forEach(([label, value]) => {
@@ -1076,6 +1110,93 @@ function endpointParameterNames(item) {
 function sensitiveParameterCount(entryPoints) {
   const parameters = Array.isArray(entryPoints?.parameters) ? entryPoints.parameters : [];
   return parameters.filter((item) => item.sensitive_hint).length;
+}
+
+function renderJavaScript(artifacts) {
+  const endpoints = Array.isArray(artifacts.discovered_endpoints) ? artifacts.discovered_endpoints : [];
+  const scripts = Array.isArray(artifacts.scripts) ? artifacts.scripts : [];
+  const outOfScope = Array.isArray(artifacts.out_of_scope_endpoints) ? artifacts.out_of_scope_endpoints : [];
+  const excluded = Array.isArray(artifacts.excluded_endpoints) ? artifacts.excluded_endpoints : [];
+  const pages = Array.isArray(artifacts.pages_checked) ? artifacts.pages_checked : [];
+  const query = javascriptSearch.value.trim().toLowerCase();
+  const filtered = query
+    ? endpoints.filter((item) => javascriptSearchText(item).includes(query))
+    : endpoints;
+
+  javascriptCount.textContent = query ? `${filtered.length} de ${endpoints.length} endpoints` : `${endpoints.length} endpoints`;
+  javascriptSummary.innerHTML = "";
+  [
+    ["Paginas", pages.length],
+    ["Scripts", scripts.length],
+    ["Endpoints", endpoints.length],
+    ["Sensibles", endpoints.filter((item) => Array.isArray(item.sensitive_parameter_names) && item.sensitive_parameter_names.length).length],
+    ["Fuera scope", outOfScope.length],
+    ["Excluidos", excluded.length],
+  ].forEach(([label, value]) => {
+    const item = document.createElement("div");
+    item.className = "metric";
+    item.innerHTML = `<span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong>`;
+    javascriptSummary.appendChild(item);
+  });
+
+  javascriptTable.innerHTML = "";
+  if (!Object.keys(artifacts).length) {
+    const row = document.createElement("tr");
+    row.innerHTML = '<td colspan="6">Modulo no ejecutado.</td>';
+    javascriptTable.appendChild(row);
+    return;
+  }
+  if (!endpoints.length) {
+    const row = document.createElement("tr");
+    row.innerHTML = '<td colspan="6">Sin endpoints JavaScript detectados.</td>';
+    javascriptTable.appendChild(row);
+    return;
+  }
+  if (!filtered.length) {
+    const row = document.createElement("tr");
+    row.innerHTML = '<td colspan="6">Sin coincidencias.</td>';
+    javascriptTable.appendChild(row);
+    return;
+  }
+
+  filtered.forEach((item) => {
+    const params = Array.isArray(item.parameter_names) ? item.parameter_names.join(", ") : "";
+    const sensitive = Array.isArray(item.sensitive_parameter_names) && item.sensitive_parameter_names.length;
+    const routes = Array.isArray(item.route_types) ? item.route_types.join(", ") : "";
+    const sources = Array.isArray(item.sources) ? item.sources.join(", ") : "";
+    const lines = Array.isArray(item.line_numbers) ? item.line_numbers.join(", ") : "";
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td><code>${escapeHtml(item.url || "")}</code></td>
+      <td>${escapeHtml(item.method || "")}</td>
+      <td>${params ? `<span class="interest-chip${sensitive ? " attention" : ""}">${escapeHtml(params)}</span>` : ""}</td>
+      <td>${routes ? `<span class="interest-chip">${escapeHtml(routes)}</span>` : ""}</td>
+      <td>${escapeHtml(sources)}</td>
+      <td>${escapeHtml(lines)}</td>
+    `;
+    javascriptTable.appendChild(row);
+  });
+}
+
+function javascriptSearchText(item) {
+  return [
+    item.url,
+    item.method,
+    item.status,
+    ...(Array.isArray(item.methods) ? item.methods : []),
+    ...(Array.isArray(item.parameter_names) ? item.parameter_names : []),
+    ...(Array.isArray(item.sensitive_parameter_names) ? item.sensitive_parameter_names : []),
+    ...(Array.isArray(item.route_types) ? item.route_types : []),
+    ...(Array.isArray(item.sources) ? item.sources : []),
+    ...(Array.isArray(item.raw_values) ? item.raw_values : []),
+  ]
+    .join(" ")
+    .toLowerCase();
+}
+
+function javascriptArtifacts(modules) {
+  const module = modules.find((item) => item.name === "javascript");
+  return module?.artifacts && typeof module.artifacts === "object" ? module.artifacts : {};
 }
 
 function renderSubdomains(artifacts) {

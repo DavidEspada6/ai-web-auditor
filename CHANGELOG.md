@@ -2,6 +2,32 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.20.0] - 2026-08-27
+
+### Anade
+
+- Modulo `javascript` para analisis pasivo de HTML, scripts externos en scope y bloques inline.
+- Extraccion de referencias a endpoints desde strings JavaScript: URLs absolutas, rutas relativas, APIs, login, auth, callbacks, uploads, health y patrones similares.
+- Inferencia basica de metodos desde contexto cercano como `fetch()`, `method: "POST"` y llamadas tipo `axios.post()`.
+- Deteccion de parametros de query y nombres sensibles como `token`, `session`, `csrf`, `password`, `secret` o `key`, con valores saneados.
+- Pestana `JavaScript` en la interfaz grafica con resumen, filtro y tabla redimensionable.
+- Integracion de endpoints JS en `inventory`, `entry_points`, valoracion de riesgo, informes Markdown/HTML/PDF y ZIP de evidencias.
+- Laboratorio local ampliado con `/static/app.js` y scripts inline para probar endpoints JS sin tocar dominios reales.
+- Tests dedicados para el modulo JS y cobertura adicional en CLI, GUI, inventario, entry points, reporting, evidencias y laboratorio.
+
+### Cambia
+
+- El resumen principal y la vista `Riesgo` muestran cobertura de endpoints JavaScript.
+- `init-scope` pregunta por limites de analisis JavaScript.
+- El paquete de evidencias incluye `javascript/javascript.json` y `javascript/endpoints.json`.
+
+### Seguridad
+
+- No se anaden explotacion, fuzzing, fuerza bruta ni envio de formularios.
+- El modulo JavaScript no ejecuta los endpoints descubiertos.
+- Los scripts externos solo se descargan si estan dentro del scope autorizado.
+- Las referencias fuera de scope o excluidas se registran como evidencia, pero no se solicitan.
+
 ## [0.19.0] - 2026-08-27
 
 ### Anade

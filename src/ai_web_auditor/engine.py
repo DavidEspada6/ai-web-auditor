@@ -11,6 +11,7 @@ from .modules import (
     FingerprintingModule,
     HTTPMethodsModule,
     HTTPRedirectsModule,
+    JavaScriptAnalysisModule,
     PortsModule,
     ScopeModule,
     SecurityHeadersModule,
@@ -29,7 +30,7 @@ def run_scan(raw_target: str, config: AuditConfig) -> ScanResult:
 
     modules = _enabled_modules(config)
     results: list[ModuleResult] = []
-    context = ScanContext(target=target, config=config, requests=requests)
+    context = ScanContext(target=target, config=config, requests=requests, module_results=results)
     for module in modules:
         try:
             results.append(module.run(context))
@@ -80,5 +81,6 @@ def _enabled_modules(config: AuditConfig) -> list[AuditModule]:
         (config.modules.ports, PortsModule()),
         (config.modules.fingerprinting, FingerprintingModule()),
         (config.modules.crawler, CrawlerModule()),
+        (config.modules.javascript, JavaScriptAnalysisModule()),
     ]
     return [module for enabled, module in candidates if enabled]

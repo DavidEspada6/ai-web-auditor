@@ -29,7 +29,7 @@ LAB_MANAGER = LabManager()
 
 
 class LocalAuditHandler(BaseHTTPRequestHandler):
-    server_version = "AIWebAuditorGUI/0.19"
+    server_version = "AIWebAuditorGUI/0.20"
 
     def do_GET(self) -> None:  # noqa: N802 - http.server uses this naming.
         parsed = urlparse(self.path)
@@ -331,6 +331,13 @@ def build_config_from_gui_payload(payload: dict[str, Any]) -> AuditConfig:
     config.crawler.follow_sitemap_urls = _bool_value(crawler.get("follow_sitemap_urls"), True)
     config.crawler.follow_robots_paths = _bool_value(crawler.get("follow_robots_paths"), False)
     config.crawler.metadata_max_urls = _int_value(crawler.get("metadata_max_urls"), 100, minimum=1, maximum=500)
+
+    javascript = payload.get("javascript") if isinstance(payload.get("javascript"), dict) else {}
+    config.javascript.max_pages = _int_value(javascript.get("max_pages"), 10, minimum=1, maximum=50)
+    config.javascript.max_scripts = _int_value(javascript.get("max_scripts"), 25, minimum=1, maximum=100)
+    config.javascript.max_body_bytes = _int_value(javascript.get("max_body_bytes"), 262144, minimum=1024, maximum=1048576)
+    config.javascript.include_inline = _bool_value(javascript.get("include_inline"), True)
+    config.javascript.fetch_external_scripts = _bool_value(javascript.get("fetch_external_scripts"), True)
 
     subdomains = payload.get("subdomains") if isinstance(payload.get("subdomains"), dict) else {}
     config.subdomains.max_candidates = _int_value(subdomains.get("max_candidates"), 25, minimum=1, maximum=100)

@@ -94,7 +94,7 @@ class LabManager:
 
 
 class VulnerableLabHandler(BaseHTTPRequestHandler):
-    server_version = "AIWebAuditorLab/0.19"
+    server_version = "AIWebAuditorLab/0.20"
     sys_version = ""
 
     def do_GET(self) -> None:  # noqa: N802 - http.server uses this naming.
@@ -138,6 +138,9 @@ class VulnerableLabHandler(BaseHTTPRequestHandler):
                     "token_endpoint": f"{base_url}/oauth/token",
                 }
             )
+            return
+        if path == "/static/app.js":
+            self._send_text(_lab_javascript(), "application/javascript; charset=utf-8")
             return
         if path == "/members/":
             self._send_members_challenge()
@@ -278,6 +281,7 @@ def lab_scan_defaults(status: LabStatus) -> dict[str, Any]:
             "ports": True,
             "fingerprinting": True,
             "crawler": True,
+            "javascript": True,
         },
         "crawler": {
             "max_depth": 1,
@@ -289,6 +293,13 @@ def lab_scan_defaults(status: LabStatus) -> dict[str, Any]:
             "follow_sitemap_urls": True,
             "follow_robots_paths": False,
             "metadata_max_urls": 100,
+        },
+        "javascript": {
+            "max_pages": 10,
+            "max_scripts": 25,
+            "max_body_bytes": 262144,
+            "include_inline": True,
+            "fetch_external_scripts": True,
         },
         "subdomains": {
             "max_candidates": 25,
@@ -338,6 +349,7 @@ def _home_page() -> str:
     <meta charset="utf-8">
     <meta name="generator" content="WordPress 4.7.0">
     <title>AI Web Auditor Lab</title>
+    <script src="/static/app.js"></script>
   </head>
   <body>
     <h1>AI Web Auditor Lab</h1>
@@ -348,6 +360,10 @@ def _home_page() -> str:
       <a href="/private/report">Informe privado</a>
       <a href="https://example.org/external">Externo</a>
     </nav>
+    <script>
+      window.labInlineRoutes = ["/api/profile?session_id=demo", "/health"];
+      fetch("/api/profile?session_id=demo", { method: "POST" });
+    </script>
   </body>
 </html>
 """
@@ -360,6 +376,7 @@ def _page(title: str, text: str) -> str:
     <meta charset="utf-8">
     <meta name="generator" content="WordPress 4.7.0">
     <title>{title}</title>
+    <script src="/static/app.js"></script>
   </head>
   <body>
     <h1>{title}</h1>
@@ -377,6 +394,7 @@ def _members_page() -> str:
     <meta charset="utf-8">
     <meta name="generator" content="WordPress 4.7.0">
     <title>Miembros</title>
+    <script src="/static/app.js"></script>
   </head>
   <body>
     <h1>Miembros</h1>
@@ -387,7 +405,32 @@ def _members_page() -> str:
       <input type="password" name="password">
       <button type="submit">Entrar</button>
     </form>
+    <script>
+      const passwordReset = "/reset-password?token=demo-token";
+      fetch("/api/member-profile?csrf_token=demo-token", { method: "POST" });
+    </script>
     <a href="/">Inicio</a>
   </body>
 </html>
+"""
+
+
+def _lab_javascript() -> str:
+    return """
+const apiBase = "/api";
+const endpoints = [
+  "/api/users?role=member",
+  "/api/profile?session_id=demo-session",
+  "/api/upload",
+  "/admin/export?token=demo-token",
+  "https://example.org/collect"
+];
+
+fetch("/api/users?role=member");
+fetch("/api/profile?session_id=demo-session", { method: "POST" });
+axios.post("/api/upload");
+window.openIdRoutes = {
+  authorize: "/oauth/authorize?client_id=demo",
+  callback: "/callback/oauth"
+};
 """

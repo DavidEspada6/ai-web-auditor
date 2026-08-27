@@ -40,6 +40,11 @@ class LabTests(unittest.TestCase):
                 body = response.read().decode("utf-8")
                 self.assertIn("/api/users", body)
                 self.assertIn("/reset-password", body)
+
+            with urllib.request.urlopen(f"{lab.url}static/app.js", timeout=5) as response:
+                body = response.read().decode("utf-8")
+                self.assertEqual(response.status, 200)
+                self.assertIn("/api/profile", body)
         finally:
             lab.stop()
 
@@ -55,6 +60,7 @@ class LabTests(unittest.TestCase):
             config.scope.exclude_paths = []
             config.http.check_http_counterpart = False
             config.modules.tls = False
+            config.modules.javascript = True
             config.crawler.max_depth = 1
             config.crawler.max_pages = 20
 
@@ -63,6 +69,7 @@ class LabTests(unittest.TestCase):
             result_data = result.to_dict()
             inventory = result_data["inventory"]
             assessment = result_data["assessment"]
+            javascript = next(module for module in result_data["modules"] if module["name"] == "javascript")
 
         finally:
             lab.stop()
@@ -72,7 +79,10 @@ class LabTests(unittest.TestCase):
         self.assertIn("HEADER-CONTENT_SECURITY_POLICY-MISSING", finding_ids)
         self.assertIn("COOKIE-HTTPONLY-MISSING", finding_ids)
         self.assertIn("METHOD-TRACE-ADVERTISED", finding_ids)
+        self.assertIn("JS-ENDPOINTS-DISCOVERED", finding_ids)
         self.assertGreaterEqual(inventory["summary"]["forms"], 1)
+        self.assertGreaterEqual(inventory["summary"]["javascript_endpoints"], 1)
+        self.assertGreaterEqual(len(javascript["artifacts"]["discovered_endpoints"]), 1)
         self.assertTrue(any("login_path" in item["reasons"] for item in inventory["interesting_paths"]))
         self.assertEqual(assessment["summary"]["risk_level"], "high")
         self.assertGreaterEqual(assessment["summary"]["priority_count"], 1)

@@ -30,7 +30,7 @@ class ScopeConfig:
 class HTTPConfig:
     timeout_seconds: float = 10.0
     max_redirects: int = 10
-    user_agent: str = "AI-Web-Auditor/0.19"
+    user_agent: str = "AI-Web-Auditor/0.20"
     verify_tls: bool = True
     check_http_counterpart: bool = True
 
@@ -134,6 +134,15 @@ class CrawlerConfig:
 
 
 @dataclass
+class JavaScriptAnalysisConfig:
+    max_pages: int = 10
+    max_scripts: int = 25
+    max_body_bytes: int = 262144
+    include_inline: bool = True
+    fetch_external_scripts: bool = True
+
+
+@dataclass
 class SubdomainConfig:
     candidates: list[str] = field(
         default_factory=lambda: [
@@ -179,6 +188,7 @@ class ModuleConfig:
     tls: bool = True
     fingerprinting: bool = True
     crawler: bool = True
+    javascript: bool = True
     subdomains: bool = False
     ports: bool = False
 
@@ -191,6 +201,7 @@ class AuditConfig:
     ai: AIConfig = field(default_factory=AIConfig)
     fingerprinting: FingerprintConfig = field(default_factory=FingerprintConfig)
     crawler: CrawlerConfig = field(default_factory=CrawlerConfig)
+    javascript: JavaScriptAnalysisConfig = field(default_factory=JavaScriptAnalysisConfig)
     subdomains: SubdomainConfig = field(default_factory=SubdomainConfig)
     ports: PortScanConfig = field(default_factory=PortScanConfig)
     evidence: EvidenceCaptureConfig = field(default_factory=EvidenceCaptureConfig)

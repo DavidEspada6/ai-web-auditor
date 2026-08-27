@@ -622,6 +622,11 @@ label[data-help]:focus-within::after {
   overflow-wrap: anywhere;
 }
 
+.interest-chip.attention {
+  background: #fff7ed;
+  color: #9a3412;
+}
+
 .metric,
 .finding-item {
   border: 1px solid var(--line);
@@ -733,6 +738,13 @@ table {
 .resizable-table[data-table="entrypoints"] th:nth-child(5) { width: 80px; }
 .resizable-table[data-table="entrypoints"] th:nth-child(6) { width: 180px; }
 .resizable-table[data-table="entrypoints"] th:nth-child(7) { width: 190px; }
+.resizable-table[data-table="javascript"] { min-width: 1080px; }
+.resizable-table[data-table="javascript"] th:nth-child(1) { width: 42%; }
+.resizable-table[data-table="javascript"] th:nth-child(2) { width: 110px; }
+.resizable-table[data-table="javascript"] th:nth-child(3) { width: 220px; }
+.resizable-table[data-table="javascript"] th:nth-child(4) { width: 180px; }
+.resizable-table[data-table="javascript"] th:nth-child(5) { width: 170px; }
+.resizable-table[data-table="javascript"] th:nth-child(6) { width: 110px; }
 .resizable-table[data-table="subdomains"] th:nth-child(1) { width: 260px; }
 .resizable-table[data-table="subdomains"] th:nth-child(2) { width: 260px; }
 .resizable-table[data-table="subdomains"] th:nth-child(4) { width: 140px; }

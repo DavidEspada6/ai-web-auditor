@@ -144,6 +144,11 @@ def build_evidence_package(scan_data: dict[str, Any]) -> bytes:
         if isinstance(entry_points, dict):
             _write_json(archive, "entry-points/entry-points.json", entry_points)
 
+        javascript = _module_artifacts(safe_scan_data, "javascript")
+        if javascript:
+            _write_json(archive, "javascript/javascript.json", javascript)
+            _write_json(archive, "javascript/endpoints.json", _list_value(javascript.get("discovered_endpoints")))
+
         assessment = safe_scan_data.get("assessment")
         if isinstance(assessment, dict):
             _write_json(archive, "assessment/assessment.json", assessment)
@@ -158,6 +163,8 @@ def build_evidence_manifest(scan_data: dict[str, Any]) -> dict[str, Any]:
     modules = _list_value(scan_data.get("modules"))
     entry_points = scan_data.get("entry_points") if isinstance(scan_data.get("entry_points"), dict) else {}
     endpoint_list = _list_value(entry_points.get("endpoints")) if entry_points else []
+    javascript = _module_artifacts(scan_data, "javascript")
+    javascript_endpoints = _list_value(javascript.get("discovered_endpoints")) if javascript else []
     captured_bodies = [
         item
         for item in requests
@@ -180,6 +187,7 @@ def build_evidence_manifest(scan_data: dict[str, Any]) -> dict[str, Any]:
             "findings": len([item for item in findings if isinstance(item, dict)]),
             "requests": len([item for item in requests if isinstance(item, dict)]),
             "entry_points": len([item for item in endpoint_list if isinstance(item, dict)]),
+            "javascript_endpoints": len([item for item in javascript_endpoints if isinstance(item, dict)]),
             "captured_body_samples": len(captured_bodies),
         },
         "safety": {
@@ -199,6 +207,8 @@ def build_evidence_manifest(scan_data: dict[str, Any]) -> dict[str, Any]:
             "http/<request-id>.json",
             "inventory/inventory.json",
             "entry-points/entry-points.json",
+            "javascript/javascript.json",
+            "javascript/endpoints.json",
             "assessment/assessment.json",
         ],
     }
@@ -255,6 +265,13 @@ def _package_readme(manifest: dict[str, Any]) -> str:
 
 def _write_json(archive: ZipFile, path: str, data: Any) -> None:
     archive.writestr(path, json.dumps(data, indent=2, ensure_ascii=True) + "\n")
+
+
+def _module_artifacts(scan_data: dict[str, Any], name: str) -> dict[str, Any]:
+    for module in _list_value(scan_data.get("modules")):
+        if isinstance(module, dict) and module.get("name") == name and isinstance(module.get("artifacts"), dict):
+            return module["artifacts"]
+    return {}
 
 
 def _list_value(value: Any) -> list[Any]:

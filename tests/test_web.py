@@ -32,6 +32,13 @@ class WebConfigTests(unittest.TestCase):
                     "follow_robots_paths": True,
                     "metadata_max_urls": "42",
                 },
+                "javascript": {
+                    "max_pages": "8",
+                    "max_scripts": "16",
+                    "max_body_bytes": "131072",
+                    "include_inline": False,
+                    "fetch_external_scripts": True,
+                },
                 "subdomains": {
                     "max_candidates": "12",
                     "timeout_seconds": "3",
@@ -46,6 +53,7 @@ class WebConfigTests(unittest.TestCase):
                     "subdomains": True,
                     "ports": True,
                     "tls": True,
+                    "javascript": False,
                 },
             }
         )
@@ -69,6 +77,11 @@ class WebConfigTests(unittest.TestCase):
         self.assertFalse(config.crawler.follow_sitemap_urls)
         self.assertTrue(config.crawler.follow_robots_paths)
         self.assertEqual(config.crawler.metadata_max_urls, 42)
+        self.assertEqual(config.javascript.max_pages, 8)
+        self.assertEqual(config.javascript.max_scripts, 16)
+        self.assertEqual(config.javascript.max_body_bytes, 131072)
+        self.assertFalse(config.javascript.include_inline)
+        self.assertTrue(config.javascript.fetch_external_scripts)
         self.assertEqual(config.subdomains.max_candidates, 12)
         self.assertEqual(config.subdomains.timeout_seconds, 3)
         self.assertEqual(config.ports.ports, [80, 443, 8080])
@@ -78,6 +91,7 @@ class WebConfigTests(unittest.TestCase):
         self.assertTrue(config.modules.subdomains)
         self.assertTrue(config.modules.ports)
         self.assertTrue(config.modules.tls)
+        self.assertFalse(config.modules.javascript)
 
     def test_build_config_rejects_excessive_crawler_limit(self):
         with self.assertRaises(ValueError):
@@ -101,6 +115,17 @@ class WebConfigTests(unittest.TestCase):
                 }
             )
 
+    def test_build_config_rejects_excessive_javascript_script_limit(self):
+        with self.assertRaises(ValueError):
+            build_config_from_gui_payload(
+                {
+                    "target": "https://example.com",
+                    "javascript": {
+                        "max_scripts": "1000",
+                    },
+                }
+            )
+
     def test_gui_module_controls_have_help_text(self):
         html = (Path(__file__).resolve().parents[1] / "src" / "ai_web_auditor" / "web" / "templates" / "index.html").read_text(
             encoding="utf-8"
@@ -118,6 +143,7 @@ class WebConfigTests(unittest.TestCase):
             "ports",
             "fingerprinting",
             "crawler",
+            "javascript",
         ]:
             marker = f'data-module="{module}"'
             start = html.index(marker)
@@ -145,7 +171,7 @@ class WebConfigTests(unittest.TestCase):
         self.assertIn("workspace-body", html)
         self.assertIn("view-nav", html)
         self.assertIn("Auditorias recientes", html)
-        for table in ["modules", "inventory", "entrypoints", "subdomains", "ports", "history"]:
+        for table in ["modules", "inventory", "entrypoints", "javascript", "subdomains", "ports", "history"]:
             self.assertIn(f'data-table="{table}"', html)
 
         self.assertIn("table-layout: fixed;", css)
@@ -193,6 +219,19 @@ class WebConfigTests(unittest.TestCase):
             "metadata_max_urls",
         ]:
             self.assertIn(payload_key, javascript)
+
+    def test_gui_exposes_javascript_controls_and_view(self):
+        root = Path(__file__).resolve().parents[1]
+        html = (root / "src" / "ai_web_auditor" / "web" / "templates" / "index.html").read_text(encoding="utf-8")
+        javascript = (root / "src" / "ai_web_auditor" / "web" / "static" / "app.js").read_text(encoding="utf-8")
+
+        self.assertIn('data-module="javascript"', html)
+        self.assertIn('data-tab="javascript"', html)
+        self.assertIn('id="javascript-table"', html)
+        for element_id in ["javascript-pages", "javascript-scripts", "javascript-bytes", "javascript-inline", "javascript-external"]:
+            self.assertIn(f'id="{element_id}"', html)
+        self.assertIn("renderJavaScript(javascript", javascript)
+        self.assertIn("javascriptArtifacts", javascript)
 
 
 if __name__ == "__main__":

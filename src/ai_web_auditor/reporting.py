@@ -89,6 +89,7 @@ def generate_markdown_report(
     lines.extend(_findings_section(findings))
     lines.extend(_technology_section(modules))
     lines.extend(_crawler_section(modules))
+    lines.extend(_javascript_section(modules))
     lines.extend(_inventory_section(inventory))
     lines.extend(_entry_points_section(entry_points))
     lines.extend(_subdomain_section(modules))
@@ -204,6 +205,7 @@ def generate_html_report(
             _findings_html_section(findings),
             _technology_html_section(modules),
             _crawler_html_section(modules),
+            _javascript_html_section(modules),
             _inventory_html_section(inventory),
             _entry_points_html_section(entry_points),
             _subdomain_html_section(modules),
@@ -333,6 +335,8 @@ def _assessment_section(assessment: dict[str, Any]) -> list[str]:
         f"| Entry points | {_cell(coverage.get('entry_points', 0))} |",
         f"| Entry point parameters | {_cell(coverage.get('entry_point_parameters', 0))} |",
         f"| State-changing entry points | {_cell(coverage.get('state_changing_entry_points', 0))} |",
+        f"| JavaScript endpoints | {_cell(coverage.get('javascript_endpoints', 0))} |",
+        f"| JavaScript scripts | {_cell(coverage.get('javascript_scripts', 0))} |",
         f"| Resolved subdomains | {_cell(coverage.get('subdomains', 0))} |",
         f"| Open TCP ports | {_cell(coverage.get('open_ports', 0))} |",
         "",
@@ -592,6 +596,74 @@ def _inventory_section(inventory: dict[str, Any]) -> list[str]:
 
     if not urls:
         lines.extend(["No inventory data was available.", ""])
+    return lines
+
+
+def _javascript_section(modules: list[dict[str, Any]]) -> list[str]:
+    javascript = _module_by_name(modules, "javascript")
+    if not javascript:
+        return []
+
+    artifacts = javascript.get("artifacts") if isinstance(javascript.get("artifacts"), dict) else {}
+    pages = _dict_list(artifacts.get("pages_checked"))
+    scripts = _dict_list(artifacts.get("scripts"))
+    endpoints = _dict_list(artifacts.get("discovered_endpoints"))
+    out_of_scope = _dict_list(artifacts.get("out_of_scope_endpoints"))
+    excluded = _dict_list(artifacts.get("excluded_endpoints"))
+    sensitive = [item for item in endpoints if _string_list(item.get("sensitive_parameter_names"))]
+
+    lines = [
+        "## JavaScript Analysis",
+        "",
+        f"- Pages checked: {len(pages)}",
+        f"- Script blocks analyzed: {len(scripts)}",
+        f"- In-scope endpoint references: {len(endpoints)}",
+        f"- Sensitive-looking parameter names: {len(sensitive)}",
+        f"- Out-of-scope endpoint references recorded but not requested: {len(out_of_scope)}",
+        f"- Excluded endpoint references recorded but not requested: {len(excluded)}",
+        "",
+        "Only HTML and JavaScript resources inside the configured scope were requested. Discovered endpoints were not executed.",
+        "",
+    ]
+
+    if endpoints:
+        lines.extend(["### JavaScript Endpoint References", "", "| URL | Method | Parameters | Route types | Sources |", "| --- | --- | --- | --- | --- |"])
+        for item in endpoints[:50]:
+            lines.append(
+                f"| {_cell(item.get('url'))} | {_cell(item.get('method'))} | "
+                f"{_cell(', '.join(_string_list(item.get('parameter_names'))))} | "
+                f"{_cell(', '.join(_string_list(item.get('route_types'))))} | "
+                f"{_cell(', '.join(_string_list(item.get('sources'))))} |"
+            )
+        if len(endpoints) > 50:
+            lines.append(f"| ... {len(endpoints) - 50} more |  |  |  |  |")
+        lines.append("")
+
+    if scripts:
+        lines.extend(["### Scripts Analyzed", "", "| Kind | URL/Page | Status | Type | Endpoints |", "| --- | --- | --- | --- | ---: |"])
+        for item in scripts[:25]:
+            location = item.get("url") or item.get("page_url")
+            lines.append(
+                f"| {_cell(item.get('kind'))} | {_cell(location)} | "
+                f"{_cell(item.get('status_code', item.get('status')))} | {_cell(item.get('content_type'))} | "
+                f"{_cell(item.get('endpoints_found', 0))} |"
+            )
+        if len(scripts) > 25:
+            lines.append(f"| ... {len(scripts) - 25} more |  |  |  |  |")
+        lines.append("")
+
+    if out_of_scope:
+        lines.extend(["### Out-of-Scope JavaScript References", ""])
+        lines.extend(f"- `{_text(item.get('url'))}`" for item in out_of_scope[:25])
+        lines.append("")
+
+    if excluded:
+        lines.extend(["### Excluded JavaScript References", ""])
+        lines.extend(f"- `{_text(item.get('url'))}`" for item in excluded[:25])
+        lines.append("")
+
+    if not endpoints and not scripts:
+        lines.extend(["No JavaScript endpoint data was available.", ""])
     return lines
 
 
@@ -881,6 +953,8 @@ def _assessment_html_section(assessment: dict[str, Any]) -> str:
                 ["Entry points", coverage.get("entry_points", 0)],
                 ["Entry point parameters", coverage.get("entry_point_parameters", 0)],
                 ["State-changing entry points", coverage.get("state_changing_entry_points", 0)],
+                ["JavaScript endpoints", coverage.get("javascript_endpoints", 0)],
+                ["JavaScript scripts", coverage.get("javascript_scripts", 0)],
                 ["Resolved subdomains", coverage.get("subdomains", 0)],
                 ["Open TCP ports", coverage.get("open_ports", 0)],
             ],
@@ -1111,6 +1185,69 @@ def _inventory_html_section(inventory: dict[str, Any]) -> str:
             for form in forms[:25]
         ]
         lines.extend(["<h3>Forms</h3>", _html_table(["Page", "Action", "Method", "Inputs", "Password Fields"], form_rows)])
+    lines.append("</section>")
+    return "\n".join(lines)
+
+
+def _javascript_html_section(modules: list[dict[str, Any]]) -> str:
+    javascript = _module_by_name(modules, "javascript")
+    if not javascript:
+        return ""
+
+    artifacts = javascript.get("artifacts") if isinstance(javascript.get("artifacts"), dict) else {}
+    pages = _dict_list(artifacts.get("pages_checked"))
+    scripts = _dict_list(artifacts.get("scripts"))
+    endpoints = _dict_list(artifacts.get("discovered_endpoints"))
+    out_of_scope = _dict_list(artifacts.get("out_of_scope_endpoints"))
+    excluded = _dict_list(artifacts.get("excluded_endpoints"))
+    sensitive = [item for item in endpoints if _string_list(item.get("sensitive_parameter_names"))]
+    rows = [
+        ["Pages checked", len(pages)],
+        ["Script blocks analyzed", len(scripts)],
+        ["In-scope endpoint references", len(endpoints)],
+        ["Sensitive-looking parameter names", len(sensitive)],
+        ["Out-of-scope endpoint references recorded but not requested", len(out_of_scope)],
+        ["Excluded endpoint references recorded but not requested", len(excluded)],
+    ]
+    lines = [
+        '<section class="section">',
+        "<h2>JavaScript Analysis</h2>",
+        _html_table(["Field", "Value"], rows),
+        "<p>Only HTML and JavaScript resources inside the configured scope were requested. Discovered endpoints were not executed.</p>",
+    ]
+
+    if endpoints:
+        endpoint_rows = [
+            [
+                item.get("url"),
+                item.get("method"),
+                ", ".join(_string_list(item.get("parameter_names"))),
+                ", ".join(_string_list(item.get("route_types"))),
+                ", ".join(_string_list(item.get("sources"))),
+            ]
+            for item in endpoints[:50]
+        ]
+        lines.extend(["<h3>JavaScript Endpoint References</h3>", _html_table(["URL", "Method", "Parameters", "Route types", "Sources"], endpoint_rows)])
+
+    if scripts:
+        script_rows = [
+            [
+                item.get("kind"),
+                item.get("url") or item.get("page_url"),
+                item.get("status_code", item.get("status")),
+                item.get("content_type"),
+                item.get("endpoints_found", 0),
+            ]
+            for item in scripts[:25]
+        ]
+        lines.extend(["<h3>Scripts Analyzed</h3>", _html_table(["Kind", "URL/Page", "Status", "Type", "Endpoints"], script_rows)])
+
+    if out_of_scope:
+        lines.extend(["<h3>Out-of-Scope JavaScript References</h3>", _html_list([item.get("url") for item in out_of_scope[:25]])])
+    if excluded:
+        lines.extend(["<h3>Excluded JavaScript References</h3>", _html_list([item.get("url") for item in excluded[:25]])])
+    if not endpoints and not scripts:
+        lines.append('<p class="empty">No JavaScript endpoint data was available.</p>')
     lines.append("</section>")
     return "\n".join(lines)
 

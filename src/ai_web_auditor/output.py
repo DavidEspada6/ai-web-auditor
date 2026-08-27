@@ -46,6 +46,13 @@ def render_console(result: ScanResult) -> None:
         f"State-changing: {entry_summary.get('state_changing_endpoints', 0)}"
     )
 
+    javascript_module = next((module for module in result.modules if module.name == "javascript"), None)
+    if javascript_module and isinstance(javascript_module.artifacts, dict):
+        print(
+            f"JavaScript: {len(javascript_module.artifacts.get('discovered_endpoints', []))} endpoint reference(s) | "
+            f"{len(javascript_module.artifacts.get('scripts', []))} script block(s)"
+        )
+
     subdomain_module = next((module for module in result.modules if module.name == "subdomains"), None)
     if subdomain_module and isinstance(subdomain_module.artifacts, dict):
         print(

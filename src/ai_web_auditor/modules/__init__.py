@@ -4,6 +4,7 @@ from .crawler import CrawlerModule
 from .fingerprinting import FingerprintingModule
 from .http_methods import HTTPMethodsModule
 from .http_redirects import HTTPRedirectsModule
+from .javascript import JavaScriptAnalysisModule
 from .ports import PortsModule
 from .scope import ScopeModule
 from .security_headers import SecurityHeadersModule
@@ -17,6 +18,7 @@ __all__ = [
     "FingerprintingModule",
     "HTTPMethodsModule",
     "HTTPRedirectsModule",
+    "JavaScriptAnalysisModule",
     "PortsModule",
     "ScopeModule",
     "SecurityHeadersModule",
