@@ -30,6 +30,16 @@ class LabTests(unittest.TestCase):
             options = urllib.request.Request(lab.target_url, method="OPTIONS")
             with urllib.request.urlopen(options, timeout=5) as response:
                 self.assertIn("TRACE", response.headers.get("Allow", ""))
+
+            with urllib.request.urlopen(f"{lab.url}.well-known/security.txt", timeout=5) as response:
+                body = response.read().decode("utf-8")
+                self.assertEqual(response.status, 200)
+                self.assertIn("Contact:", body)
+
+            with urllib.request.urlopen(f"{lab.url}sitemap.xml", timeout=5) as response:
+                body = response.read().decode("utf-8")
+                self.assertIn("/api/users", body)
+                self.assertIn("/reset-password", body)
         finally:
             lab.stop()
 

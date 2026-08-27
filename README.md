@@ -31,7 +31,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.17 no necesita librerias externas en tiempo de ejecucion.
+La v0.18 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -237,7 +237,7 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.17",
+    "user_agent": "AI-Web-Auditor/0.18",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -266,7 +266,13 @@ Ejemplo en `examples/audit.json`:
     "max_pages": 25,
     "delay_seconds": 0.0,
     "max_body_bytes": 262144,
-    "include_query_strings": false
+    "include_query_strings": false,
+    "use_robots_txt": true,
+    "use_sitemap_xml": true,
+    "use_well_known": true,
+    "follow_sitemap_urls": true,
+    "follow_robots_paths": false,
+    "metadata_max_urls": 100
   },
   "subdomains": {
     "candidates": ["www", "app", "api", "portal", "admin"],
@@ -324,7 +330,9 @@ Ejemplo en `examples/audit.json`:
 - `fingerprinting`: identifica senales de servidor, CDN, framework, lenguaje,
   CMS y ficheros publicos como `robots.txt`, `security.txt` y `sitemap.xml`.
 - `crawler`: recorre enlaces internos sin enviar formularios, sin salir del
-  scope, con profundidad y numero de paginas limitados.
+  scope, con profundidad y numero de paginas limitados. Desde v0.18 tambien
+  lee `robots.txt`, `sitemap.xml`, endpoints `.well-known` y clasifica rutas
+  interesantes como login, admin, API, recovery, callbacks o uploads.
 
 ## Analisis IA
 
@@ -410,7 +418,7 @@ El informe incluye:
 - valoracion determinista de riesgo, prioridades y plan de remediacion;
 - resumen por modulo;
 - hallazgos y evidencias;
-- fingerprinting y crawler si estan presentes;
+- fingerprinting, crawler, metadatos publicos y rutas clasificadas si estan presentes;
 - inventario web con URLs, estados, tipos de contenido y formularios detectados;
 - descubrimiento de subdominios si se activa;
 - chequeo TCP limitado de puertos si se activa;
@@ -421,7 +429,7 @@ Hay ejemplos en `examples/report-example.md` y `examples/report-example.html`.
 
 ## Laboratorio local
 
-La v0.17 incluye un laboratorio vulnerable solo para pruebas locales. Sirve una
+La v0.18 incluye un laboratorio vulnerable solo para pruebas locales. Sirve una
 web de demo en `127.0.0.1` con problemas controlados:
 
 - HTTP sin TLS;
@@ -430,7 +438,8 @@ web de demo en `127.0.0.1` con problemas controlados:
 - cabeceras de seguridad ausentes;
 - metadatos de tecnologia expuestos;
 - metodos HTTP de riesgo anunciados por `OPTIONS`;
-- `robots.txt` y `sitemap.xml` de ejemplo.
+- `robots.txt`, `sitemap.xml`, `security.txt` y OpenID metadata de ejemplo;
+- rutas de login, API y recuperacion para probar la clasificacion del crawler;
 - formulario HTML de login detectado de forma pasiva, sin envio de datos.
 
 Arrancarlo desde consola:
@@ -520,7 +529,7 @@ Hay un ejemplo en `examples/inventory-example.csv`.
 
 ## Descubrimiento de subdominios
 
-La v0.17 mantiene un modulo DNS seguro para descubrir subdominios candidatos. Esta
+La v0.18 mantiene un modulo DNS seguro para descubrir subdominios candidatos. Esta
 desactivado por defecto porque amplia la fase de reconocimiento y conviene
 usarlo solo cuando el scope lo permita.
 
@@ -557,7 +566,7 @@ en la pestana `Subdominios`.
 
 ## Chequeo limitado de puertos
 
-La v0.17 mantiene un modulo `ports` para comprobar conectividad TCP contra el host
+La v0.18 mantiene un modulo `ports` para comprobar conectividad TCP contra el host
 objetivo. Esta desactivado por defecto porque, aunque es limitado, forma parte
 de la fase de reconocimiento y debe usarse solo con autorizacion.
 
@@ -702,7 +711,7 @@ Ese archivo deja fijados los limites principales:
 - rutas incluidas;
 - rutas excluidas;
 - si se permiten redes privadas o locales;
-- limites del crawler;
+- limites del crawler y opciones de metadatos (`robots.txt`, `sitemap.xml`, `.well-known`);
 - limite de candidatos para descubrimiento de subdominios;
 - lista, limite y timeout para el chequeo TCP de puertos.
 
@@ -758,7 +767,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.17.0
+git tag v0.18.0
 git push
 git push --tags
 ```
@@ -771,7 +780,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",

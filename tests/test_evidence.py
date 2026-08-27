@@ -67,7 +67,7 @@ class EvidenceTests(unittest.TestCase):
     def test_evidence_package_contains_manifest_and_requests(self):
         scan_data = {
             "tool": "ai-web-auditor",
-            "version": "0.17.0",
+            "version": "0.18.0",
             "generated_at": "2026-08-27T10:00:00Z",
             "status": "completed",
             "target": {"normalized_url": "https://example.com/", "host": "example.com"},
@@ -102,7 +102,7 @@ class EvidenceTests(unittest.TestCase):
 
     def test_evidence_cli_writes_zip(self):
         scan_data = {
-            "version": "0.17.0",
+            "version": "0.18.0",
             "generated_at": "2026-08-27T10:00:00Z",
             "target": {"normalized_url": "https://example.com/", "host": "example.com"},
             "modules": [],

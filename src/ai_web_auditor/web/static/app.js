@@ -399,6 +399,12 @@ function collectPayload() {
       max_depth: document.querySelector("#max-depth").value,
       max_pages: document.querySelector("#max-pages").value,
       delay_seconds: document.querySelector("#delay").value,
+      use_robots_txt: document.querySelector("#use-robots").checked,
+      use_sitemap_xml: document.querySelector("#use-sitemap").checked,
+      use_well_known: document.querySelector("#use-well-known").checked,
+      follow_sitemap_urls: document.querySelector("#follow-sitemap").checked,
+      follow_robots_paths: document.querySelector("#follow-robots").checked,
+      metadata_max_urls: document.querySelector("#metadata-limit").value,
     },
     subdomains: {
       max_candidates: document.querySelector("#subdomain-limit").value,
@@ -531,7 +537,7 @@ function applyLabDefaults(lab) {
     projectAuditorInput.value = "David";
   }
   if (!projectEngagementInput.value.trim()) {
-    projectEngagementInput.value = "Simulacion v0.17.0";
+    projectEngagementInput.value = "Simulacion v0.18.0";
   }
 
   document.querySelector("#target").value = defaults.target;
@@ -549,6 +555,12 @@ function applyLabDefaults(lab) {
     document.querySelector("#max-depth").value = defaults.crawler.max_depth ?? 1;
     document.querySelector("#max-pages").value = defaults.crawler.max_pages ?? 20;
     document.querySelector("#delay").value = defaults.crawler.delay_seconds ?? 0;
+    setChecked("#use-robots", defaults.crawler.use_robots_txt);
+    setChecked("#use-sitemap", defaults.crawler.use_sitemap_xml);
+    setChecked("#use-well-known", defaults.crawler.use_well_known);
+    setChecked("#follow-sitemap", defaults.crawler.follow_sitemap_urls);
+    setChecked("#follow-robots", defaults.crawler.follow_robots_paths);
+    document.querySelector("#metadata-limit").value = defaults.crawler.metadata_max_urls ?? 100;
   }
   if (defaults.subdomains) {
     document.querySelector("#subdomain-limit").value = defaults.subdomains.max_candidates ?? 25;
@@ -631,6 +643,12 @@ function applyProject(project) {
     document.querySelector("#max-depth").value = config.crawler.max_depth ?? 1;
     document.querySelector("#max-pages").value = config.crawler.max_pages ?? 25;
     document.querySelector("#delay").value = config.crawler.delay_seconds ?? 0;
+    setChecked("#use-robots", config.crawler.use_robots_txt);
+    setChecked("#use-sitemap", config.crawler.use_sitemap_xml);
+    setChecked("#use-well-known", config.crawler.use_well_known);
+    setChecked("#follow-sitemap", config.crawler.follow_sitemap_urls);
+    setChecked("#follow-robots", config.crawler.follow_robots_paths);
+    document.querySelector("#metadata-limit").value = config.crawler.metadata_max_urls ?? 100;
   }
   if (config.subdomains) {
     document.querySelector("#subdomain-limit").value = config.subdomains.max_candidates ?? 25;
@@ -680,6 +698,10 @@ function renderSummary(scan, findings, modules, requests, subdomains, ports, ass
   const openPorts = ports.open_count ?? 0;
   const assessmentSummaryData = assessment?.summary || {};
   const capturedSamples = requests.filter((request) => request?.response_body?.captured === true).length;
+  const crawler = modules.find((item) => item.name === "crawler");
+  const crawlerArtifacts = crawler?.artifacts && typeof crawler.artifacts === "object" ? crawler.artifacts : {};
+  const metadataUrls = Array.isArray(crawlerArtifacts.metadata_discovered_urls) ? crawlerArtifacts.metadata_discovered_urls.length : 0;
+  const classifiedRoutes = Array.isArray(crawlerArtifacts.route_classifications) ? crawlerArtifacts.route_classifications.length : 0;
 
   const values = [
     ["Objetivo", scan.target?.normalized_url || "unknown"],
@@ -692,6 +714,8 @@ function renderSummary(scan, findings, modules, requests, subdomains, ports, ass
     ["Peticiones", requests.length],
     ["Muestras HTTP", capturedSamples],
     ["URLs", inventorySummaryData.total_urls || 0],
+    ["URLs metadatos", metadataUrls],
+    ["Rutas clave", classifiedRoutes],
     ["Forms", inventorySummaryData.forms || 0],
     ["Subdominios", resolvedSubdomains],
     ["Puertos abiertos", openPorts],
@@ -908,6 +932,8 @@ function renderInventory(inventory) {
 
   filtered.forEach((item) => {
     const reasons = Array.isArray(item.reasons) ? item.reasons.join(", ") : "";
+    const routeTypes = Array.isArray(item.route_types) ? item.route_types.join(", ") : "";
+    const interest = [routeTypes, reasons].filter(Boolean).join(" | ");
     const sources = Array.isArray(item.sources) ? item.sources.join(", ") : item.source || "";
     const row = document.createElement("tr");
     row.innerHTML = `
@@ -915,7 +941,7 @@ function renderInventory(inventory) {
       <td>${escapeHtml(item.status_code ?? "")}</td>
       <td>${escapeHtml(item.content_type || "")}</td>
       <td>${escapeHtml(item.forms_found ?? 0)}</td>
-      <td>${reasons ? `<span class="interest-chip">${escapeHtml(reasons)}</span>` : ""}</td>
+      <td>${interest ? `<span class="interest-chip">${escapeHtml(interest)}</span>` : ""}</td>
       <td>${escapeHtml(sources)}</td>
     `;
     inventoryTable.appendChild(row);
@@ -931,6 +957,7 @@ function inventorySearchText(item) {
     item.source,
     ...(Array.isArray(item.sources) ? item.sources : []),
     ...(Array.isArray(item.reasons) ? item.reasons : []),
+    ...(Array.isArray(item.route_types) ? item.route_types : []),
   ]
     .join(" ")
     .toLowerCase();
@@ -1276,6 +1303,7 @@ function inventoryToCsv(inventory) {
     "forms_found",
     "interesting",
     "reasons",
+    "route_types",
     "sources",
     "title",
     "error",

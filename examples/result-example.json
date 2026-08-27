@@ -1,142 +1,374 @@
 {
   "tool": "ai-web-auditor",
-  "version": "0.17.0",
-  "generated_at": "2026-08-16T00:00:00Z",
+  "version": "0.18.0",
+  "generated_at": "2026-08-27T04:32:20Z",
   "status": "completed",
   "target": {
-    "original_url": "https://example.com",
-    "normalized_url": "https://example.com/",
-    "scheme": "https",
-    "host": "example.com",
-    "port": 443,
-    "base_url": "https://example.com/",
-    "ip_addresses": []
+    "original_url": "http://127.0.0.1:62566/members/",
+    "normalized_url": "http://127.0.0.1:62566/members/",
+    "scheme": "http",
+    "host": "127.0.0.1",
+    "port": 62566,
+    "base_url": "http://127.0.0.1:62566/",
+    "ip_addresses": [
+      "127.0.0.1"
+    ]
   },
   "modules": [
     {
-      "name": "fingerprinting",
+      "name": "scope",
       "status": "passed",
-      "summary": "Identified 0 technology signal(s) and checked 4 public metadata path(s).",
+      "summary": "Target URL validated and inside configured scope.",
       "findings": [],
       "artifacts": {
-        "url": "https://example.com/",
-        "technologies": [],
-        "public_files": [
-          {
-            "path": "/robots.txt",
-            "url": "https://example.com/robots.txt",
-            "status_code": 404,
-            "content_type": "text/html",
-            "present": false,
-            "body_truncated": false
-          },
-          {
-            "path": "/.well-known/security.txt",
-            "url": "https://example.com/.well-known/security.txt",
-            "status_code": 404,
-            "content_type": "text/html",
-            "present": false,
-            "body_truncated": false
-          },
-          {
-            "path": "/security.txt",
-            "url": "https://example.com/security.txt",
-            "status_code": 404,
-            "content_type": "text/html",
-            "present": false,
-            "body_truncated": false
-          },
-          {
-            "path": "/sitemap.xml",
-            "url": "https://example.com/sitemap.xml",
-            "status_code": 404,
-            "content_type": "text/html",
-            "present": false,
-            "body_truncated": false
-          }
+        "normalized_url": "http://127.0.0.1:62566/members/",
+        "host": "127.0.0.1",
+        "scheme": "http",
+        "port": 62566,
+        "ip_addresses": [
+          "127.0.0.1"
         ],
-        "headers": {}
+        "allowed_hosts": [
+          "127.0.0.1"
+        ],
+        "allow_subdomains": false,
+        "allow_private_networks": true
       }
     },
     {
-      "name": "crawler",
-      "status": "passed",
-      "summary": "Crawled 1 page(s), discovered 2 in-scope URL(s).",
-      "findings": [],
-      "artifacts": {
-        "seed_url": "https://example.com/",
-        "max_depth": 1,
-        "max_pages": 25,
-        "fetched_urls": [
-          "https://example.com/"
-        ],
-        "discovered_urls": [
-          "https://example.com/",
-          "https://example.com/login"
-        ],
-        "out_of_scope_urls": [],
-        "excluded_urls": [],
-        "ignored_urls_count": 0,
-        "limit_reached": false,
-        "pages": [
-          {
-            "url": "https://example.com/",
-            "depth": 0,
-            "status_code": 200,
-            "content_type": "text/html",
-            "body_truncated": false,
-            "location": null,
-            "absolute_location": null,
-            "links_found": 1,
-            "forms_found": 0,
-            "title": "Example Domain"
-          }
-        ]
-      }
-    },
-    {
-      "name": "subdomains",
+      "name": "http",
       "status": "warning",
-      "summary": "Checked 3 candidate subdomain(s), resolved 1 in-scope host(s).",
+      "summary": "HTTP/HTTPS reachability and redirects checked.",
       "findings": [
         {
-          "id": "SUBDOMAIN-DISCOVERY-RESOLVED",
-          "title": "In-scope subdomains resolved by DNS",
-          "severity": "info",
-          "category": "reconnaissance",
-          "description": "The scan resolved one or more candidate subdomains inside the configured scope. They were recorded but not audited automatically.",
-          "recommendation": "Review these hosts and add them explicitly to the authorized scope before running deeper checks against them.",
-          "module": "subdomains",
-          "target": "example.com",
+          "id": "HTTP-NO-HTTPS-REDIRECT",
+          "title": "HTTP is not redirected to HTTPS",
+          "severity": "high",
+          "category": "transport-security",
+          "description": "The requested HTTP URL remains available without being upgraded to HTTPS.",
+          "recommendation": "Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification.",
+          "module": "http",
+          "target": "http://127.0.0.1:62566/members/",
           "evidence": [
             {
-              "label": "host",
-              "value": "api.example.com",
-              "location": "93.184.216.35"
+              "label": "initial_url",
+              "value": "http://127.0.0.1:62566/members/",
+              "location": null
+            },
+            {
+              "label": "final_url",
+              "value": "http://127.0.0.1:62566/members/",
+              "location": null
+            },
+            {
+              "label": "status_code",
+              "value": "401",
+              "location": null
             }
           ]
         }
       ],
       "artifacts": {
-        "root_domains": [
-          "example.com"
-        ],
-        "candidate_count": 3,
-        "resolved": [
+        "initial_status_code": 401,
+        "final_status_code": 401,
+        "final_url": "http://127.0.0.1:62566/members/",
+        "redirect_chain": [
           {
-            "host": "api.example.com",
-            "ip_addresses": [
-              "93.184.216.35"
-            ],
-            "source": "dns_candidate",
-            "in_scope": true
+            "status_code": 401,
+            "url": "http://127.0.0.1:62566/members/",
+            "location": null
           }
-        ],
-        "resolved_count": 1,
-        "unresolved_count": 2,
-        "out_of_scope": [],
-        "out_of_scope_count": 0,
-        "note": "Resolved hosts were not scanned automatically."
+        ]
+      }
+    },
+    {
+      "name": "security_headers",
+      "status": "warning",
+      "summary": "Security headers checked.",
+      "findings": [
+        {
+          "id": "HEADER-CONTENT_SECURITY_POLICY-MISSING",
+          "title": "Content-Security-Policy header is missing",
+          "severity": "medium",
+          "category": "security-headers",
+          "description": "The response does not include the Content-Security-Policy header.",
+          "recommendation": "Define an appropriate Content-Security-Policy header for this application.",
+          "module": "security_headers",
+          "target": "http://127.0.0.1:62566/members/",
+          "evidence": []
+        },
+        {
+          "id": "HEADER-CLICKJACKING-MISSING",
+          "title": "Clickjacking protection header is missing",
+          "severity": "low",
+          "category": "security-headers",
+          "description": "The response does not include X-Frame-Options or a CSP frame-ancestors directive.",
+          "recommendation": "Set frame-ancestors in Content-Security-Policy or use X-Frame-Options where appropriate.",
+          "module": "security_headers",
+          "target": "http://127.0.0.1:62566/members/",
+          "evidence": []
+        },
+        {
+          "id": "HEADER-NOSNIFF-MISSING",
+          "title": "X-Content-Type-Options nosniff is missing",
+          "severity": "low",
+          "category": "security-headers",
+          "description": "The browser may try to infer content types when nosniff is absent.",
+          "recommendation": "Set X-Content-Type-Options: nosniff.",
+          "module": "security_headers",
+          "target": "http://127.0.0.1:62566/members/",
+          "evidence": [
+            {
+              "label": "x-content-type-options",
+              "value": "missing",
+              "location": null
+            }
+          ]
+        },
+        {
+          "id": "HEADER-REFERRER_POLICY-MISSING",
+          "title": "Referrer-Policy header is missing",
+          "severity": "low",
+          "category": "security-headers",
+          "description": "The response does not include the Referrer-Policy header.",
+          "recommendation": "Define an appropriate Referrer-Policy header for this application.",
+          "module": "security_headers",
+          "target": "http://127.0.0.1:62566/members/",
+          "evidence": []
+        },
+        {
+          "id": "HEADER-PERMISSIONS_POLICY-MISSING",
+          "title": "Permissions-Policy header is missing",
+          "severity": "info",
+          "category": "security-headers",
+          "description": "The response does not include the Permissions-Policy header.",
+          "recommendation": "Define an appropriate Permissions-Policy header for this application.",
+          "module": "security_headers",
+          "target": "http://127.0.0.1:62566/members/",
+          "evidence": []
+        }
+      ],
+      "artifacts": {
+        "headers": {}
+      }
+    },
+    {
+      "name": "cookies",
+      "status": "warning",
+      "summary": "Checked 2 cookie(s).",
+      "findings": [
+        {
+          "id": "COOKIE-HTTPONLY-MISSING",
+          "title": "Cookie missing HttpOnly flag",
+          "severity": "low",
+          "category": "cookies",
+          "description": "A cookie is accessible to client-side scripts when HttpOnly is absent.",
+          "recommendation": "Set HttpOnly for session or sensitive cookies.",
+          "module": "cookies",
+          "target": "http://127.0.0.1:62566/members/",
+          "evidence": [
+            {
+              "label": "cookie",
+              "value": "sessionid",
+              "location": null
+            }
+          ]
+        },
+        {
+          "id": "COOKIE-SAMESITE-MISSING",
+          "title": "Cookie missing SameSite attribute",
+          "severity": "low",
+          "category": "cookies",
+          "description": "A cookie does not declare a SameSite policy.",
+          "recommendation": "Set SameSite=Lax or SameSite=Strict unless cross-site usage is required.",
+          "module": "cookies",
+          "target": "http://127.0.0.1:62566/members/",
+          "evidence": [
+            {
+              "label": "cookie",
+              "value": "sessionid",
+              "location": null
+            }
+          ]
+        },
+        {
+          "id": "COOKIE-HTTPONLY-MISSING",
+          "title": "Cookie missing HttpOnly flag",
+          "severity": "low",
+          "category": "cookies",
+          "description": "A cookie is accessible to client-side scripts when HttpOnly is absent.",
+          "recommendation": "Set HttpOnly for session or sensitive cookies.",
+          "module": "cookies",
+          "target": "http://127.0.0.1:62566/members/",
+          "evidence": [
+            {
+              "label": "cookie",
+              "value": "tracking_id",
+              "location": null
+            }
+          ]
+        },
+        {
+          "id": "COOKIE-SAMESITE-NONE-WITHOUT-SECURE",
+          "title": "Cookie uses SameSite=None without Secure",
+          "severity": "medium",
+          "category": "cookies",
+          "description": "SameSite=None cookies should also use Secure.",
+          "recommendation": "Set Secure or avoid SameSite=None if cross-site usage is not required.",
+          "module": "cookies",
+          "target": "http://127.0.0.1:62566/members/",
+          "evidence": [
+            {
+              "label": "cookie",
+              "value": "tracking_id",
+              "location": null
+            }
+          ]
+        }
+      ],
+      "artifacts": {
+        "cookies": [
+          {
+            "name": "sessionid",
+            "secure": false,
+            "httponly": false,
+            "samesite": null,
+            "path": "/",
+            "domain": null
+          },
+          {
+            "name": "tracking_id",
+            "secure": false,
+            "httponly": false,
+            "samesite": "None",
+            "path": "/",
+            "domain": null
+          }
+        ]
+      }
+    },
+    {
+      "name": "basic_auth",
+      "status": "warning",
+      "summary": "HTTP authentication challenge checked.",
+      "findings": [
+        {
+          "id": "AUTH-BASIC-OVER-HTTP",
+          "title": "HTTP Basic Authentication over HTTP",
+          "severity": "high",
+          "category": "authentication",
+          "description": "The server requests Basic Authentication over unencrypted HTTP.",
+          "recommendation": "Force HTTPS before authentication and enable HSTS after validation.",
+          "module": "basic_auth",
+          "target": "http://127.0.0.1:62566/members/",
+          "evidence": [
+            {
+              "label": "status_code",
+              "value": "401",
+              "location": null
+            },
+            {
+              "label": "www-authenticate",
+              "value": "Basic realm=\"AI Web Auditor Lab\"",
+              "location": null
+            }
+          ]
+        }
+      ],
+      "artifacts": {
+        "challenges": [
+          {
+            "url": "http://127.0.0.1:62566/members/",
+            "status_code": 401,
+            "www_authenticate": "Basic realm=\"AI Web Auditor Lab\""
+          }
+        ]
+      }
+    },
+    {
+      "name": "http_methods",
+      "status": "warning",
+      "summary": "HTTP methods advertised by OPTIONS checked.",
+      "findings": [
+        {
+          "id": "METHOD-DELETE-ADVERTISED",
+          "title": "HTTP method DELETE is advertised",
+          "severity": "medium",
+          "category": "http-methods",
+          "description": "DELETE may allow destructive actions if authorization is weak.",
+          "recommendation": "Disable unnecessary HTTP methods or enforce strict authorization before use.",
+          "module": "http_methods",
+          "target": "http://127.0.0.1:62566/members/",
+          "evidence": [
+            {
+              "label": "allow",
+              "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+              "location": null
+            },
+            {
+              "label": "access-control-allow-methods",
+              "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+              "location": null
+            }
+          ]
+        },
+        {
+          "id": "METHOD-PUT-ADVERTISED",
+          "title": "HTTP method PUT is advertised",
+          "severity": "medium",
+          "category": "http-methods",
+          "description": "PUT may allow content upload if authorization is weak.",
+          "recommendation": "Disable unnecessary HTTP methods or enforce strict authorization before use.",
+          "module": "http_methods",
+          "target": "http://127.0.0.1:62566/members/",
+          "evidence": [
+            {
+              "label": "allow",
+              "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+              "location": null
+            },
+            {
+              "label": "access-control-allow-methods",
+              "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+              "location": null
+            }
+          ]
+        },
+        {
+          "id": "METHOD-TRACE-ADVERTISED",
+          "title": "HTTP method TRACE is advertised",
+          "severity": "high",
+          "category": "http-methods",
+          "description": "TRACE can expose request data and is rarely needed.",
+          "recommendation": "Disable unnecessary HTTP methods or enforce strict authorization before use.",
+          "module": "http_methods",
+          "target": "http://127.0.0.1:62566/members/",
+          "evidence": [
+            {
+              "label": "allow",
+              "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+              "location": null
+            },
+            {
+              "label": "access-control-allow-methods",
+              "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+              "location": null
+            }
+          ]
+        }
+      ],
+      "artifacts": {
+        "status_code": 204,
+        "allow": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+        "access_control_allow_methods": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+        "methods": [
+          "DELETE",
+          "GET",
+          "OPTIONS",
+          "POST",
+          "PUT",
+          "TRACE"
+        ]
       }
     },
     {
@@ -152,71 +384,1835 @@
           "description": "The limited TCP connectivity check found open ports on the target host. This is inventory evidence, not exploitation.",
           "recommendation": "Review whether each exposed service is expected, patched and covered by the authorized audit scope.",
           "module": "ports",
-          "target": "example.com",
+          "target": "127.0.0.1",
           "evidence": [
             {
               "label": "open_port",
-              "value": "443",
-              "location": "https"
+              "value": "62566",
+              "location": ""
             }
           ]
         }
       ],
       "artifacts": {
-        "host": "example.com",
+        "host": "127.0.0.1",
         "ports_checked": [
+          62566,
           80,
-          443,
-          8080
+          443
         ],
-        "max_ports": 20,
-        "timeout_seconds": 1.0,
+        "max_ports": 5,
+        "timeout_seconds": 0.5,
         "open_count": 1,
-        "closed_count": 1,
-        "filtered_count": 1,
+        "closed_count": 0,
+        "filtered_count": 2,
         "error_count": 0,
         "results": [
           {
-            "host": "example.com",
-            "port": 80,
-            "status": "closed",
-            "service": "http",
-            "elapsed_ms": 8
-          },
-          {
-            "host": "example.com",
-            "port": 443,
+            "host": "127.0.0.1",
+            "port": 62566,
             "status": "open",
-            "service": "https",
-            "elapsed_ms": 5
+            "service": "",
+            "elapsed_ms": 0
           },
           {
-            "host": "example.com",
-            "port": 8080,
+            "host": "127.0.0.1",
+            "port": 80,
             "status": "filtered",
-            "service": "http-alt",
-            "elapsed_ms": 1000
+            "service": "http",
+            "elapsed_ms": 500,
+            "error": "timeout"
+          },
+          {
+            "host": "127.0.0.1",
+            "port": 443,
+            "status": "filtered",
+            "service": "https",
+            "elapsed_ms": 515,
+            "error": "timeout"
           }
         ],
         "note": "Only TCP connect checks were performed; no payloads or banners were requested."
+      }
+    },
+    {
+      "name": "fingerprinting",
+      "status": "warning",
+      "summary": "Identified 4 technology signal(s) and checked 4 public metadata path(s).",
+      "findings": [
+        {
+          "id": "FINGERPRINT-SERVER-VERSION-DISCLOSED",
+          "title": "Server header discloses version information",
+          "severity": "info",
+          "category": "fingerprinting",
+          "description": "The Server header appears to include product version information.",
+          "recommendation": "Avoid exposing precise server versions unless there is an operational reason.",
+          "module": "fingerprinting",
+          "target": "http://127.0.0.1:62566/members/",
+          "evidence": [
+            {
+              "label": "server",
+              "value": "AIWebAuditorLab/0.18 ",
+              "location": null
+            }
+          ]
+        },
+        {
+          "id": "FINGERPRINT-POWERED-BY-DISCLOSED",
+          "title": "X-Powered-By header discloses technology information",
+          "severity": "info",
+          "category": "fingerprinting",
+          "description": "The X-Powered-By header can reveal backend technology details to attackers.",
+          "recommendation": "Remove or reduce technology-identifying response headers where practical.",
+          "module": "fingerprinting",
+          "target": "http://127.0.0.1:62566/members/",
+          "evidence": [
+            {
+              "label": "x-powered-by",
+              "value": "PHP/5.6.40",
+              "location": null
+            }
+          ]
+        },
+        {
+          "id": "FINGERPRINT-GENERATOR-DISCLOSED",
+          "title": "HTML generator metadata is exposed",
+          "severity": "info",
+          "category": "fingerprinting",
+          "description": "The HTML generator metadata can disclose CMS or framework details.",
+          "recommendation": "Remove generator metadata if it is not required.",
+          "module": "fingerprinting",
+          "target": "http://127.0.0.1:62566/members/",
+          "evidence": [
+            {
+              "label": "generator",
+              "value": "WordPress 4.7.0",
+              "location": null
+            }
+          ]
+        }
+      ],
+      "artifacts": {
+        "url": "http://127.0.0.1:62566/members/",
+        "technologies": [
+          {
+            "name": "AIWebAuditorLab/0.18",
+            "category": "server",
+            "confidence": "low",
+            "signals": [
+              "header:server"
+            ]
+          },
+          {
+            "name": "Django",
+            "category": "framework",
+            "confidence": "medium",
+            "signals": [
+              "cookie:sessionid"
+            ]
+          },
+          {
+            "name": "PHP",
+            "category": "language",
+            "confidence": "high",
+            "signals": [
+              "header:x-powered-by"
+            ],
+            "version": "5.6.40"
+          },
+          {
+            "name": "WordPress",
+            "category": "cms",
+            "confidence": "high",
+            "signals": [
+              "html:meta-generator"
+            ],
+            "version": "4.7.0"
+          }
+        ],
+        "public_files": [
+          {
+            "path": "/robots.txt",
+            "url": "http://127.0.0.1:62566/robots.txt",
+            "status_code": 200,
+            "content_type": "text/plain; charset=utf-8",
+            "present": true,
+            "body_truncated": false,
+            "directives": {
+              "user-agent": [
+                "*"
+              ],
+              "disallow": [
+                "/admin/",
+                "/private/"
+              ],
+              "allow": [
+                "/members/"
+              ],
+              "sitemap": [
+                "/sitemap.xml"
+              ]
+            }
+          },
+          {
+            "path": "/.well-known/security.txt",
+            "url": "http://127.0.0.1:62566/.well-known/security.txt",
+            "status_code": 200,
+            "content_type": "text/plain; charset=utf-8",
+            "present": true,
+            "body_truncated": false,
+            "fields": {
+              "contact": [
+                "mailto:security@example.test"
+              ],
+              "policy": [
+                "http://127.0.0.1/security-policy"
+              ]
+            }
+          },
+          {
+            "path": "/security.txt",
+            "url": "http://127.0.0.1:62566/security.txt",
+            "status_code": 404,
+            "content_type": "text/html; charset=utf-8",
+            "present": false,
+            "body_truncated": false
+          },
+          {
+            "path": "/sitemap.xml",
+            "url": "http://127.0.0.1:62566/sitemap.xml",
+            "status_code": 200,
+            "content_type": "application/xml; charset=utf-8",
+            "present": true,
+            "body_truncated": false,
+            "url_count": 5
+          }
+        ],
+        "headers": {
+          "server": "AIWebAuditorLab/0.18 ",
+          "x-powered-by": "PHP/5.6.40"
+        }
+      }
+    },
+    {
+      "name": "crawler",
+      "status": "warning",
+      "summary": "Crawled 5 page(s), discovered 9 in-scope URL(s), 9 from metadata.",
+      "findings": [
+        {
+          "id": "CRAWLER-OUT-OF-SCOPE-LINKS",
+          "title": "Crawler found links outside scope",
+          "severity": "info",
+          "category": "crawler",
+          "description": "The crawler discovered links outside the configured scope. They were recorded but not requested.",
+          "recommendation": "Review whether any external host should be added to the authorized scope before scanning it.",
+          "module": "crawler",
+          "target": "http://127.0.0.1:62566/members/",
+          "evidence": [
+            {
+              "label": "sample_url",
+              "value": "https://example.org/external",
+              "location": null
+            }
+          ]
+        }
+      ],
+      "artifacts": {
+        "seed_url": "http://127.0.0.1:62566/members/",
+        "max_depth": 1,
+        "max_pages": 20,
+        "fetched_urls": [
+          "http://127.0.0.1:62566/",
+          "http://127.0.0.1:62566/api/users",
+          "http://127.0.0.1:62566/login",
+          "http://127.0.0.1:62566/members/",
+          "http://127.0.0.1:62566/reset-password"
+        ],
+        "discovered_urls": [
+          "http://127.0.0.1:62566/",
+          "http://127.0.0.1:62566/.well-known/openid-configuration",
+          "http://127.0.0.1:62566/.well-known/security.txt",
+          "http://127.0.0.1:62566/api/users",
+          "http://127.0.0.1:62566/login",
+          "http://127.0.0.1:62566/members/",
+          "http://127.0.0.1:62566/oauth/authorize",
+          "http://127.0.0.1:62566/oauth/token",
+          "http://127.0.0.1:62566/reset-password"
+        ],
+        "metadata_discovered_urls": [
+          "http://127.0.0.1:62566/",
+          "http://127.0.0.1:62566/.well-known/openid-configuration",
+          "http://127.0.0.1:62566/.well-known/security.txt",
+          "http://127.0.0.1:62566/api/users",
+          "http://127.0.0.1:62566/login",
+          "http://127.0.0.1:62566/members/",
+          "http://127.0.0.1:62566/oauth/authorize",
+          "http://127.0.0.1:62566/oauth/token",
+          "http://127.0.0.1:62566/reset-password"
+        ],
+        "url_sources": [
+          {
+            "url": "http://127.0.0.1:62566/",
+            "sources": [
+              "crawler_fetched",
+              "html_link",
+              "sitemap"
+            ]
+          },
+          {
+            "url": "http://127.0.0.1:62566/.well-known/apple-app-site-association",
+            "sources": [
+              "well_known"
+            ]
+          },
+          {
+            "url": "http://127.0.0.1:62566/.well-known/assetlinks.json",
+            "sources": [
+              "well_known"
+            ]
+          },
+          {
+            "url": "http://127.0.0.1:62566/.well-known/change-password",
+            "sources": [
+              "well_known"
+            ]
+          },
+          {
+            "url": "http://127.0.0.1:62566/.well-known/oauth-authorization-server",
+            "sources": [
+              "well_known"
+            ]
+          },
+          {
+            "url": "http://127.0.0.1:62566/.well-known/openid-configuration",
+            "sources": [
+              "well_known"
+            ]
+          },
+          {
+            "url": "http://127.0.0.1:62566/.well-known/security.txt",
+            "sources": [
+              "well_known"
+            ]
+          },
+          {
+            "url": "http://127.0.0.1:62566/.well-known/webfinger",
+            "sources": [
+              "well_known"
+            ]
+          },
+          {
+            "url": "http://127.0.0.1:62566/api/users",
+            "sources": [
+              "crawler_fetched",
+              "sitemap"
+            ]
+          },
+          {
+            "url": "http://127.0.0.1:62566/login",
+            "sources": [
+              "crawler_fetched",
+              "sitemap"
+            ]
+          },
+          {
+            "url": "http://127.0.0.1:62566/members/",
+            "sources": [
+              "crawler_fetched",
+              "html_link",
+              "robots_allow",
+              "seed",
+              "sitemap"
+            ]
+          },
+          {
+            "url": "http://127.0.0.1:62566/oauth/authorize",
+            "sources": [
+              "well_known_endpoint"
+            ]
+          },
+          {
+            "url": "http://127.0.0.1:62566/oauth/token",
+            "sources": [
+              "well_known_endpoint"
+            ]
+          },
+          {
+            "url": "http://127.0.0.1:62566/reset-password",
+            "sources": [
+              "crawler_fetched",
+              "sitemap"
+            ]
+          },
+          {
+            "url": "http://127.0.0.1:62566/security.txt",
+            "sources": [
+              "well_known"
+            ]
+          }
+        ],
+        "route_classifications": [
+          {
+            "url": "http://127.0.0.1:62566/api/users",
+            "types": [
+              "api"
+            ],
+            "sources": [
+              "crawler_fetched",
+              "sitemap"
+            ],
+            "classifications": [
+              {
+                "type": "api",
+                "label": "API surface",
+                "confidence": "high",
+                "reason": "api_path",
+                "interesting": true
+              }
+            ]
+          },
+          {
+            "url": "http://127.0.0.1:62566/login",
+            "types": [
+              "form",
+              "login"
+            ],
+            "sources": [
+              "crawler_fetched",
+              "sitemap"
+            ],
+            "classifications": [
+              {
+                "type": "login",
+                "label": "Login or authentication",
+                "confidence": "high",
+                "reason": "login_path",
+                "interesting": true
+              },
+              {
+                "type": "form",
+                "label": "HTML form",
+                "confidence": "high",
+                "reason": "form_detected",
+                "interesting": true
+              }
+            ]
+          },
+          {
+            "url": "http://127.0.0.1:62566/members/",
+            "types": [
+              "account",
+              "form",
+              "login"
+            ],
+            "sources": [
+              "crawler_fetched",
+              "html_link",
+              "robots_allow",
+              "seed",
+              "sitemap"
+            ],
+            "classifications": [
+              {
+                "type": "login",
+                "label": "Login or authentication",
+                "confidence": "high",
+                "reason": "login_path",
+                "interesting": true
+              },
+              {
+                "type": "account",
+                "label": "Account, member or customer area",
+                "confidence": "medium",
+                "reason": "account_area",
+                "interesting": true
+              },
+              {
+                "type": "form",
+                "label": "HTML form",
+                "confidence": "high",
+                "reason": "form_detected",
+                "interesting": true
+              }
+            ]
+          },
+          {
+            "url": "http://127.0.0.1:62566/oauth/authorize",
+            "types": [
+              "callback",
+              "login"
+            ],
+            "sources": [
+              "well_known_endpoint"
+            ],
+            "classifications": [
+              {
+                "type": "login",
+                "label": "Login or authentication",
+                "confidence": "high",
+                "reason": "login_path",
+                "interesting": true
+              },
+              {
+                "type": "callback",
+                "label": "Callback, webhook or federation flow",
+                "confidence": "high",
+                "reason": "callback_path",
+                "interesting": true
+              }
+            ]
+          },
+          {
+            "url": "http://127.0.0.1:62566/oauth/token",
+            "types": [
+              "callback"
+            ],
+            "sources": [
+              "well_known_endpoint"
+            ],
+            "classifications": [
+              {
+                "type": "callback",
+                "label": "Callback, webhook or federation flow",
+                "confidence": "high",
+                "reason": "callback_path",
+                "interesting": true
+              }
+            ]
+          },
+          {
+            "url": "http://127.0.0.1:62566/reset-password",
+            "types": [
+              "password_reset"
+            ],
+            "sources": [
+              "crawler_fetched",
+              "sitemap"
+            ],
+            "classifications": [
+              {
+                "type": "password_reset",
+                "label": "Password reset or account recovery",
+                "confidence": "high",
+                "reason": "password_reset_path",
+                "interesting": true
+              }
+            ]
+          }
+        ],
+        "out_of_scope_urls": [
+          "https://example.org/external"
+        ],
+        "excluded_urls": [
+          "http://127.0.0.1:62566/admin/",
+          "http://127.0.0.1:62566/private/",
+          "http://127.0.0.1:62566/private/report"
+        ],
+        "ignored_urls_count": 0,
+        "limit_reached": false,
+        "metadata": {
+          "robots": {
+            "url": "http://127.0.0.1:62566/robots.txt",
+            "status_code": 200,
+            "content_type": "text/plain; charset=utf-8",
+            "present": true,
+            "body_truncated": false,
+            "directives": {
+              "user-agent": [
+                "*"
+              ],
+              "disallow": [
+                "/admin/",
+                "/private/"
+              ],
+              "allow": [
+                "/members/"
+              ],
+              "sitemap": [
+                "/sitemap.xml"
+              ]
+            },
+            "paths": [
+              {
+                "directive": "allow",
+                "value": "/members/",
+                "url": "http://127.0.0.1:62566/members/",
+                "status": "in_scope",
+                "route_classifications": [
+                  {
+                    "type": "login",
+                    "label": "Login or authentication",
+                    "confidence": "high",
+                    "reason": "login_path",
+                    "interesting": true
+                  },
+                  {
+                    "type": "account",
+                    "label": "Account, member or customer area",
+                    "confidence": "medium",
+                    "reason": "account_area",
+                    "interesting": true
+                  }
+                ]
+              },
+              {
+                "directive": "disallow",
+                "value": "/admin/",
+                "url": "http://127.0.0.1:62566/admin/",
+                "status": "excluded_path",
+                "route_classifications": [
+                  {
+                    "type": "admin",
+                    "label": "Administration",
+                    "confidence": "high",
+                    "reason": "admin_path",
+                    "interesting": true
+                  }
+                ]
+              },
+              {
+                "directive": "disallow",
+                "value": "/private/",
+                "url": "http://127.0.0.1:62566/private/",
+                "status": "excluded_path",
+                "route_classifications": [
+                  {
+                    "type": "account",
+                    "label": "Account, member or customer area",
+                    "confidence": "medium",
+                    "reason": "account_area",
+                    "interesting": true
+                  }
+                ]
+              }
+            ]
+          },
+          "sitemaps": [
+            {
+              "url": "http://127.0.0.1:62566/sitemap.xml",
+              "source": "default",
+              "status_code": 200,
+              "content_type": "application/xml; charset=utf-8",
+              "present": true,
+              "body_truncated": false,
+              "url_count": 5,
+              "sitemap_count": 0,
+              "sample_urls": [
+                "http://127.0.0.1:62566/",
+                "http://127.0.0.1:62566/members/",
+                "http://127.0.0.1:62566/login",
+                "http://127.0.0.1:62566/reset-password",
+                "http://127.0.0.1:62566/api/users"
+              ],
+              "nested_sitemaps": []
+            }
+          ],
+          "well_known": [
+            {
+              "path": "/.well-known/security.txt",
+              "url": "http://127.0.0.1:62566/.well-known/security.txt",
+              "status_code": 200,
+              "content_type": "text/plain; charset=utf-8",
+              "present": true,
+              "body_truncated": false,
+              "route_classifications": [],
+              "fields": {
+                "contact": [
+                  "mailto:security@example.test"
+                ],
+                "policy": [
+                  "http://127.0.0.1/security-policy"
+                ]
+              }
+            },
+            {
+              "path": "/security.txt",
+              "url": "http://127.0.0.1:62566/security.txt",
+              "status_code": 404,
+              "content_type": "text/html; charset=utf-8",
+              "present": false,
+              "body_truncated": false,
+              "route_classifications": []
+            },
+            {
+              "path": "/.well-known/change-password",
+              "url": "http://127.0.0.1:62566/.well-known/change-password",
+              "status_code": 404,
+              "content_type": "text/html; charset=utf-8",
+              "present": false,
+              "body_truncated": false,
+              "route_classifications": [
+                {
+                  "type": "password_reset",
+                  "label": "Password reset or account recovery",
+                  "confidence": "high",
+                  "reason": "password_reset_path",
+                  "interesting": true
+                }
+              ]
+            },
+            {
+              "path": "/.well-known/openid-configuration",
+              "url": "http://127.0.0.1:62566/.well-known/openid-configuration",
+              "status_code": 200,
+              "content_type": "application/json; charset=utf-8",
+              "present": true,
+              "body_truncated": false,
+              "route_classifications": [],
+              "endpoints": [
+                "http://127.0.0.1:62566/oauth/authorize",
+                "http://127.0.0.1:62566/oauth/token"
+              ]
+            },
+            {
+              "path": "/.well-known/oauth-authorization-server",
+              "url": "http://127.0.0.1:62566/.well-known/oauth-authorization-server",
+              "status_code": 404,
+              "content_type": "text/html; charset=utf-8",
+              "present": false,
+              "body_truncated": false,
+              "route_classifications": [
+                {
+                  "type": "callback",
+                  "label": "Callback, webhook or federation flow",
+                  "confidence": "high",
+                  "reason": "callback_path",
+                  "interesting": true
+                }
+              ]
+            },
+            {
+              "path": "/.well-known/webfinger",
+              "url": "http://127.0.0.1:62566/.well-known/webfinger",
+              "status_code": 404,
+              "content_type": "text/html; charset=utf-8",
+              "present": false,
+              "body_truncated": false,
+              "route_classifications": []
+            },
+            {
+              "path": "/.well-known/assetlinks.json",
+              "url": "http://127.0.0.1:62566/.well-known/assetlinks.json",
+              "status_code": 404,
+              "content_type": "text/html; charset=utf-8",
+              "present": false,
+              "body_truncated": false,
+              "route_classifications": []
+            },
+            {
+              "path": "/.well-known/apple-app-site-association",
+              "url": "http://127.0.0.1:62566/.well-known/apple-app-site-association",
+              "status_code": 404,
+              "content_type": "text/html; charset=utf-8",
+              "present": false,
+              "body_truncated": false,
+              "route_classifications": []
+            }
+          ]
+        },
+        "pages": [
+          {
+            "url": "http://127.0.0.1:62566/members/",
+            "depth": 0,
+            "status_code": 401,
+            "content_type": "text/html; charset=utf-8",
+            "body_truncated": false,
+            "location": null,
+            "absolute_location": null,
+            "links_found": 1,
+            "forms_found": 1,
+            "route_classifications": [
+              {
+                "type": "login",
+                "label": "Login or authentication",
+                "confidence": "high",
+                "reason": "login_path",
+                "interesting": true
+              },
+              {
+                "type": "account",
+                "label": "Account, member or customer area",
+                "confidence": "medium",
+                "reason": "account_area",
+                "interesting": true
+              },
+              {
+                "type": "form",
+                "label": "HTML form",
+                "confidence": "high",
+                "reason": "form_detected",
+                "interesting": true
+              }
+            ],
+            "forms": [
+              {
+                "action": "http://127.0.0.1:62566/login/",
+                "method": "POST",
+                "input_count": 3,
+                "password_fields": 1,
+                "hidden_fields": 1,
+                "csrf_candidates": [
+                  "csrf_token"
+                ],
+                "fields": [
+                  {
+                    "name": "csrf_token",
+                    "type": "hidden"
+                  },
+                  {
+                    "name": "username",
+                    "type": "text"
+                  },
+                  {
+                    "name": "password",
+                    "type": "password"
+                  }
+                ]
+              }
+            ],
+            "title": "Miembros"
+          },
+          {
+            "url": "http://127.0.0.1:62566/",
+            "depth": 0,
+            "status_code": 200,
+            "content_type": "text/html; charset=utf-8",
+            "body_truncated": false,
+            "location": null,
+            "absolute_location": null,
+            "links_found": 4,
+            "forms_found": 0,
+            "route_classifications": [],
+            "title": "AI Web Auditor Lab"
+          },
+          {
+            "url": "http://127.0.0.1:62566/login",
+            "depth": 0,
+            "status_code": 200,
+            "content_type": "text/html; charset=utf-8",
+            "body_truncated": false,
+            "location": null,
+            "absolute_location": null,
+            "links_found": 1,
+            "forms_found": 1,
+            "route_classifications": [
+              {
+                "type": "login",
+                "label": "Login or authentication",
+                "confidence": "high",
+                "reason": "login_path",
+                "interesting": true
+              },
+              {
+                "type": "form",
+                "label": "HTML form",
+                "confidence": "high",
+                "reason": "form_detected",
+                "interesting": true
+              }
+            ],
+            "forms": [
+              {
+                "action": "http://127.0.0.1:62566/session",
+                "method": "POST",
+                "input_count": 2,
+                "password_fields": 1,
+                "hidden_fields": 0,
+                "csrf_candidates": [],
+                "fields": [
+                  {
+                    "name": "user",
+                    "type": "text"
+                  },
+                  {
+                    "name": "password",
+                    "type": "password"
+                  }
+                ]
+              }
+            ],
+            "title": "Login de laboratorio"
+          },
+          {
+            "url": "http://127.0.0.1:62566/reset-password",
+            "depth": 0,
+            "status_code": 200,
+            "content_type": "text/html; charset=utf-8",
+            "body_truncated": false,
+            "location": null,
+            "absolute_location": null,
+            "links_found": 1,
+            "forms_found": 0,
+            "route_classifications": [
+              {
+                "type": "password_reset",
+                "label": "Password reset or account recovery",
+                "confidence": "high",
+                "reason": "password_reset_path",
+                "interesting": true
+              }
+            ],
+            "title": "Recuperacion"
+          },
+          {
+            "url": "http://127.0.0.1:62566/api/users",
+            "depth": 0,
+            "status_code": 200,
+            "content_type": "application/json; charset=utf-8",
+            "body_truncated": false,
+            "location": null,
+            "absolute_location": null,
+            "links_found": 0,
+            "forms_found": 0,
+            "route_classifications": [
+              {
+                "type": "api",
+                "label": "API surface",
+                "confidence": "high",
+                "reason": "api_path",
+                "interesting": true
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/members/",
+      "status_code": 401,
+      "elapsed_ms": 0,
+      "id": "req-0001",
+      "final_url": "http://127.0.0.1:62566/members/",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:19 GMT",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "564",
+        "WWW-Authenticate": "[redacted]",
+        "Set-Cookie": "tracking_id=[redacted]; Path=/; SameSite=None",
+        "X-Powered-By": "PHP/5.6.40"
+      },
+      "response_body": {
+        "captured": false,
+        "content_type": "text/html; charset=utf-8",
+        "sha256": "",
+        "bytes": 0,
+        "truncated_by_probe": false,
+        "reason": "body_not_requested"
+      }
+    },
+    {
+      "method": "OPTIONS",
+      "url": "http://127.0.0.1:62566/members/",
+      "status_code": 204,
+      "elapsed_ms": 0,
+      "id": "req-0002",
+      "final_url": "http://127.0.0.1:62566/members/",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:19 GMT",
+        "Allow": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+        "X-Powered-By": "PHP/5.6.40",
+        "Content-Length": "0"
+      },
+      "response_body": {
+        "captured": false,
+        "content_type": "",
+        "sha256": "",
+        "bytes": 0,
+        "truncated_by_probe": false,
+        "reason": "body_not_requested"
+      }
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/members/",
+      "status_code": 401,
+      "elapsed_ms": 0,
+      "id": "req-0003",
+      "final_url": "http://127.0.0.1:62566/members/",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:20 GMT",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "564",
+        "WWW-Authenticate": "[redacted]",
+        "Set-Cookie": "tracking_id=[redacted]; Path=/; SameSite=None",
+        "X-Powered-By": "PHP/5.6.40"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "text/html; charset=utf-8",
+        "sha256": "233bf2974ac7969ab65933a82cd6677c2ba119039e105c06e84605d90a174486",
+        "bytes": 564,
+        "truncated_by_probe": false,
+        "sample": "<!doctype html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"generator\" content=\"WordPress 4.7.0\">\n    <title>Miembros</title>\n  </head>\n  <body>\n    <h1>Miembros</h1>\n    <p>Esta ruta de laboratorio fuerza HTTP Basic Auth sobre HTTP para generar evidencia controlada.</p>\n    <form action=\"/login/\" method=\"post\">\n      <input type=\"hidden\" name=\"csrf_token\">\n      <input type=\"text\" name=\"username\">\n      <input type=\"password\" name=\"password\">\n      <button type=\"submit\">Entrar</button>\n    </form>\n    <a href=\"/\">Inicio</a>\n  </body>\n</html>\n",
+        "sample_chars": 564,
+        "sample_truncated": false
+      }
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/robots.txt",
+      "status_code": 200,
+      "elapsed_ms": 0,
+      "id": "req-0004",
+      "final_url": "http://127.0.0.1:62566/robots.txt",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:20 GMT",
+        "Content-Type": "text/plain; charset=utf-8",
+        "Content-Length": "91",
+        "Set-Cookie": "sessionid=[redacted]; Path=/",
+        "X-Powered-By": "PHP/5.6.40"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "text/plain; charset=utf-8",
+        "sha256": "e21ee11187c1f1f7bef11f8a23970b27ad09c11ef5b995f28145e5bb4d79c675",
+        "bytes": 91,
+        "truncated_by_probe": false,
+        "sample": "User-agent: *\nDisallow: /admin/\nDisallow: /private/\nAllow: /members/\nSitemap: /sitemap.xml\n",
+        "sample_chars": 91,
+        "sample_truncated": false
+      }
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/.well-known/security.txt",
+      "status_code": 200,
+      "elapsed_ms": 0,
+      "id": "req-0005",
+      "final_url": "http://127.0.0.1:62566/.well-known/security.txt",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:20 GMT",
+        "Content-Type": "text/plain; charset=utf-8",
+        "Content-Length": "79",
+        "Set-Cookie": "sessionid=[redacted]; Path=/",
+        "X-Powered-By": "PHP/5.6.40"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "text/plain; charset=utf-8",
+        "sha256": "03a853392bca84ef47eb490e20a37775ce89f1bc6ec0018e5882a24d0e8d46df",
+        "bytes": 79,
+        "truncated_by_probe": false,
+        "sample": "Contact: mailto:security@example.test\nPolicy: http://127.0.0.1/security-policy\n",
+        "sample_chars": 79,
+        "sample_truncated": false
+      }
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/security.txt",
+      "status_code": 404,
+      "elapsed_ms": 0,
+      "id": "req-0006",
+      "final_url": "http://127.0.0.1:62566/security.txt",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:20 GMT",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "269",
+        "Set-Cookie": "sessionid=[redacted]; Path=/",
+        "X-Powered-By": "PHP/5.6.40",
+        "X-Lab-Page": "No encontrado"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "text/html; charset=utf-8",
+        "sha256": "e3f3f3acd562af68d209aaaec5790d1ffc54f255500aa79e9703b57ea0f3430f",
+        "bytes": 269,
+        "truncated_by_probe": false,
+        "sample": "<!doctype html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"generator\" content=\"WordPress 4.7.0\">\n    <title>No encontrado</title>\n  </head>\n  <body>\n    <h1>No encontrado</h1>\n    <p>Recurso inexistente.</p>\n    <a href=\"/\">Inicio</a>\n  </body>\n</html>\n",
+        "sample_chars": 269,
+        "sample_truncated": false
+      }
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/sitemap.xml",
+      "status_code": 200,
+      "elapsed_ms": 0,
+      "id": "req-0007",
+      "final_url": "http://127.0.0.1:62566/sitemap.xml",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:20 GMT",
+        "Content-Type": "application/xml; charset=utf-8",
+        "Content-Length": "386",
+        "Set-Cookie": "sessionid=[redacted]; Path=/",
+        "X-Powered-By": "PHP/5.6.40"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "application/xml; charset=utf-8",
+        "sha256": "69f857edcbab6cf4dc9b34fddac54c1e9d9f323b8895c84d52d9e2b459d944c3",
+        "bytes": 386,
+        "truncated_by_probe": false,
+        "sample": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n  <url><loc>http://127.0.0.1:62566/</loc></url>\n  <url><loc>http://127.0.0.1:62566/members/</loc></url>\n  <url><loc>http://127.0.0.1:62566/login</loc></url>\n  <url><loc>http://127.0.0.1:62566/reset-password</loc></url>\n  <url><loc>http://127.0.0.1:62566/api/users</loc></url>\n</urlset>\n",
+        "sample_chars": 386,
+        "sample_truncated": false
+      }
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/robots.txt",
+      "status_code": 200,
+      "elapsed_ms": 0,
+      "id": "req-0008",
+      "final_url": "http://127.0.0.1:62566/robots.txt",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:20 GMT",
+        "Content-Type": "text/plain; charset=utf-8",
+        "Content-Length": "91",
+        "Set-Cookie": "sessionid=[redacted]; Path=/",
+        "X-Powered-By": "PHP/5.6.40"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "text/plain; charset=utf-8",
+        "sha256": "e21ee11187c1f1f7bef11f8a23970b27ad09c11ef5b995f28145e5bb4d79c675",
+        "bytes": 91,
+        "truncated_by_probe": false,
+        "sample": "User-agent: *\nDisallow: /admin/\nDisallow: /private/\nAllow: /members/\nSitemap: /sitemap.xml\n",
+        "sample_chars": 91,
+        "sample_truncated": false
+      }
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/sitemap.xml",
+      "status_code": 200,
+      "elapsed_ms": 0,
+      "id": "req-0009",
+      "final_url": "http://127.0.0.1:62566/sitemap.xml",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:20 GMT",
+        "Content-Type": "application/xml; charset=utf-8",
+        "Content-Length": "386",
+        "Set-Cookie": "sessionid=[redacted]; Path=/",
+        "X-Powered-By": "PHP/5.6.40"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "application/xml; charset=utf-8",
+        "sha256": "69f857edcbab6cf4dc9b34fddac54c1e9d9f323b8895c84d52d9e2b459d944c3",
+        "bytes": 386,
+        "truncated_by_probe": false,
+        "sample": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n  <url><loc>http://127.0.0.1:62566/</loc></url>\n  <url><loc>http://127.0.0.1:62566/members/</loc></url>\n  <url><loc>http://127.0.0.1:62566/login</loc></url>\n  <url><loc>http://127.0.0.1:62566/reset-password</loc></url>\n  <url><loc>http://127.0.0.1:62566/api/users</loc></url>\n</urlset>\n",
+        "sample_chars": 386,
+        "sample_truncated": false
+      }
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/.well-known/security.txt",
+      "status_code": 200,
+      "elapsed_ms": 0,
+      "id": "req-0010",
+      "final_url": "http://127.0.0.1:62566/.well-known/security.txt",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:20 GMT",
+        "Content-Type": "text/plain; charset=utf-8",
+        "Content-Length": "79",
+        "Set-Cookie": "sessionid=[redacted]; Path=/",
+        "X-Powered-By": "PHP/5.6.40"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "text/plain; charset=utf-8",
+        "sha256": "03a853392bca84ef47eb490e20a37775ce89f1bc6ec0018e5882a24d0e8d46df",
+        "bytes": 79,
+        "truncated_by_probe": false,
+        "sample": "Contact: mailto:security@example.test\nPolicy: http://127.0.0.1/security-policy\n",
+        "sample_chars": 79,
+        "sample_truncated": false
+      }
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/security.txt",
+      "status_code": 404,
+      "elapsed_ms": 16,
+      "id": "req-0011",
+      "final_url": "http://127.0.0.1:62566/security.txt",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:20 GMT",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "269",
+        "Set-Cookie": "sessionid=[redacted]; Path=/",
+        "X-Powered-By": "PHP/5.6.40",
+        "X-Lab-Page": "No encontrado"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "text/html; charset=utf-8",
+        "sha256": "e3f3f3acd562af68d209aaaec5790d1ffc54f255500aa79e9703b57ea0f3430f",
+        "bytes": 269,
+        "truncated_by_probe": false,
+        "sample": "<!doctype html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"generator\" content=\"WordPress 4.7.0\">\n    <title>No encontrado</title>\n  </head>\n  <body>\n    <h1>No encontrado</h1>\n    <p>Recurso inexistente.</p>\n    <a href=\"/\">Inicio</a>\n  </body>\n</html>\n",
+        "sample_chars": 269,
+        "sample_truncated": false
+      }
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/.well-known/change-password",
+      "status_code": 404,
+      "elapsed_ms": 0,
+      "id": "req-0012",
+      "final_url": "http://127.0.0.1:62566/.well-known/change-password",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:20 GMT",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "269",
+        "Set-Cookie": "sessionid=[redacted]; Path=/",
+        "X-Powered-By": "PHP/5.6.40",
+        "X-Lab-Page": "No encontrado"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "text/html; charset=utf-8",
+        "sha256": "e3f3f3acd562af68d209aaaec5790d1ffc54f255500aa79e9703b57ea0f3430f",
+        "bytes": 269,
+        "truncated_by_probe": false,
+        "sample": "<!doctype html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"generator\" content=\"WordPress 4.7.0\">\n    <title>No encontrado</title>\n  </head>\n  <body>\n    <h1>No encontrado</h1>\n    <p>Recurso inexistente.</p>\n    <a href=\"/\">Inicio</a>\n  </body>\n</html>\n",
+        "sample_chars": 269,
+        "sample_truncated": false
+      }
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/.well-known/openid-configuration",
+      "status_code": 200,
+      "elapsed_ms": 0,
+      "id": "req-0013",
+      "final_url": "http://127.0.0.1:62566/.well-known/openid-configuration",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:20 GMT",
+        "Content-Type": "application/json; charset=utf-8",
+        "Content-Length": "160",
+        "Set-Cookie": "sessionid=[redacted]; Path=/",
+        "X-Powered-By": "PHP/5.6.40"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "application/json; charset=utf-8",
+        "sha256": "8c4eec77164316e556b76f4d2828be36c00c5b001822a25c17bff9164f4ae48e",
+        "bytes": 160,
+        "truncated_by_probe": false,
+        "sample": "{\"issuer\": \"http://127.0.0.1:62566\", \"authorization_endpoint\": \"http://127.0.0.1:62566/oauth/authorize\", \"token_endpoint\": \"http://127.0.0.1:62566/oauth/token\"}",
+        "sample_chars": 160,
+        "sample_truncated": false
+      }
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/.well-known/oauth-authorization-server",
+      "status_code": 404,
+      "elapsed_ms": 0,
+      "id": "req-0014",
+      "final_url": "http://127.0.0.1:62566/.well-known/oauth-authorization-server",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:20 GMT",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "269",
+        "Set-Cookie": "sessionid=[redacted]; Path=/",
+        "X-Powered-By": "PHP/5.6.40",
+        "X-Lab-Page": "No encontrado"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "text/html; charset=utf-8",
+        "sha256": "e3f3f3acd562af68d209aaaec5790d1ffc54f255500aa79e9703b57ea0f3430f",
+        "bytes": 269,
+        "truncated_by_probe": false,
+        "sample": "<!doctype html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"generator\" content=\"WordPress 4.7.0\">\n    <title>No encontrado</title>\n  </head>\n  <body>\n    <h1>No encontrado</h1>\n    <p>Recurso inexistente.</p>\n    <a href=\"/\">Inicio</a>\n  </body>\n</html>\n",
+        "sample_chars": 269,
+        "sample_truncated": false
+      }
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/.well-known/webfinger",
+      "status_code": 404,
+      "elapsed_ms": 0,
+      "id": "req-0015",
+      "final_url": "http://127.0.0.1:62566/.well-known/webfinger",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:20 GMT",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "269",
+        "Set-Cookie": "sessionid=[redacted]; Path=/",
+        "X-Powered-By": "PHP/5.6.40",
+        "X-Lab-Page": "No encontrado"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "text/html; charset=utf-8",
+        "sha256": "e3f3f3acd562af68d209aaaec5790d1ffc54f255500aa79e9703b57ea0f3430f",
+        "bytes": 269,
+        "truncated_by_probe": false,
+        "sample": "<!doctype html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"generator\" content=\"WordPress 4.7.0\">\n    <title>No encontrado</title>\n  </head>\n  <body>\n    <h1>No encontrado</h1>\n    <p>Recurso inexistente.</p>\n    <a href=\"/\">Inicio</a>\n  </body>\n</html>\n",
+        "sample_chars": 269,
+        "sample_truncated": false
+      }
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/.well-known/assetlinks.json",
+      "status_code": 404,
+      "elapsed_ms": 0,
+      "id": "req-0016",
+      "final_url": "http://127.0.0.1:62566/.well-known/assetlinks.json",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:20 GMT",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "269",
+        "Set-Cookie": "sessionid=[redacted]; Path=/",
+        "X-Powered-By": "PHP/5.6.40",
+        "X-Lab-Page": "No encontrado"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "text/html; charset=utf-8",
+        "sha256": "e3f3f3acd562af68d209aaaec5790d1ffc54f255500aa79e9703b57ea0f3430f",
+        "bytes": 269,
+        "truncated_by_probe": false,
+        "sample": "<!doctype html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"generator\" content=\"WordPress 4.7.0\">\n    <title>No encontrado</title>\n  </head>\n  <body>\n    <h1>No encontrado</h1>\n    <p>Recurso inexistente.</p>\n    <a href=\"/\">Inicio</a>\n  </body>\n</html>\n",
+        "sample_chars": 269,
+        "sample_truncated": false
+      }
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/.well-known/apple-app-site-association",
+      "status_code": 404,
+      "elapsed_ms": 0,
+      "id": "req-0017",
+      "final_url": "http://127.0.0.1:62566/.well-known/apple-app-site-association",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:20 GMT",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "269",
+        "Set-Cookie": "sessionid=[redacted]; Path=/",
+        "X-Powered-By": "PHP/5.6.40",
+        "X-Lab-Page": "No encontrado"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "text/html; charset=utf-8",
+        "sha256": "e3f3f3acd562af68d209aaaec5790d1ffc54f255500aa79e9703b57ea0f3430f",
+        "bytes": 269,
+        "truncated_by_probe": false,
+        "sample": "<!doctype html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"generator\" content=\"WordPress 4.7.0\">\n    <title>No encontrado</title>\n  </head>\n  <body>\n    <h1>No encontrado</h1>\n    <p>Recurso inexistente.</p>\n    <a href=\"/\">Inicio</a>\n  </body>\n</html>\n",
+        "sample_chars": 269,
+        "sample_truncated": false
+      }
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/members/",
+      "status_code": 401,
+      "elapsed_ms": 0,
+      "id": "req-0018",
+      "final_url": "http://127.0.0.1:62566/members/",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:20 GMT",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "564",
+        "WWW-Authenticate": "[redacted]",
+        "Set-Cookie": "tracking_id=[redacted]; Path=/; SameSite=None",
+        "X-Powered-By": "PHP/5.6.40"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "text/html; charset=utf-8",
+        "sha256": "233bf2974ac7969ab65933a82cd6677c2ba119039e105c06e84605d90a174486",
+        "bytes": 564,
+        "truncated_by_probe": false,
+        "sample": "<!doctype html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"generator\" content=\"WordPress 4.7.0\">\n    <title>Miembros</title>\n  </head>\n  <body>\n    <h1>Miembros</h1>\n    <p>Esta ruta de laboratorio fuerza HTTP Basic Auth sobre HTTP para generar evidencia controlada.</p>\n    <form action=\"/login/\" method=\"post\">\n      <input type=\"hidden\" name=\"csrf_token\">\n      <input type=\"text\" name=\"username\">\n      <input type=\"password\" name=\"password\">\n      <button type=\"submit\">Entrar</button>\n    </form>\n    <a href=\"/\">Inicio</a>\n  </body>\n</html>\n",
+        "sample_chars": 564,
+        "sample_truncated": false
+      }
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/",
+      "status_code": 200,
+      "elapsed_ms": 0,
+      "id": "req-0019",
+      "final_url": "http://127.0.0.1:62566/",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:20 GMT",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "488",
+        "Set-Cookie": "sessionid=[redacted]; Path=/",
+        "X-Powered-By": "PHP/5.6.40",
+        "X-Lab-Page": "Portal de laboratorio"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "text/html; charset=utf-8",
+        "sha256": "f71e284721b074456980dce9362b53e9f5f69620b4f6e663541878cfadadf2af",
+        "bytes": 488,
+        "truncated_by_probe": false,
+        "sample": "<!doctype html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"generator\" content=\"WordPress 4.7.0\">\n    <title>AI Web Auditor Lab</title>\n  </head>\n  <body>\n    <h1>AI Web Auditor Lab</h1>\n    <p>Laboratorio local para generar hallazgos controlados.</p>\n    <nav>\n      <a href=\"/members/\">Miembros</a>\n      <a href=\"/admin/\">Admin</a>\n      <a href=\"/private/report\">Informe privado</a>\n      <a href=\"https://example.org/external\">Externo</a>\n    </nav>\n  </body>\n</html>\n",
+        "sample_chars": 488,
+        "sample_truncated": false
+      }
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/login",
+      "status_code": 200,
+      "elapsed_ms": 0,
+      "id": "req-0020",
+      "final_url": "http://127.0.0.1:62566/login",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:20 GMT",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "366",
+        "Set-Cookie": "sessionid=[redacted]; Path=/",
+        "X-Powered-By": "PHP/5.6.40",
+        "X-Lab-Page": "Login de laboratorio"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "text/html; charset=utf-8",
+        "sha256": "a5275ee097987d9b55087ee2127b3732b6bd823b85a3fc3d7df5f73e33a6d8bb",
+        "bytes": 366,
+        "truncated_by_probe": false,
+        "sample": "<!doctype html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"generator\" content=\"WordPress 4.7.0\">\n    <title>Login de laboratorio</title>\n  </head>\n  <body>\n    <h1>Login de laboratorio</h1>\n    <p><form action=\"/session\" method=\"post\"><input name=\"user\"><input type=\"password\" name=\"password\"></form></p>\n    <a href=\"/\">Inicio</a>\n  </body>\n</html>\n",
+        "sample_chars": 366,
+        "sample_truncated": false
+      }
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/reset-password",
+      "status_code": 200,
+      "elapsed_ms": 0,
+      "id": "req-0021",
+      "final_url": "http://127.0.0.1:62566/reset-password",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:20 GMT",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "297",
+        "Set-Cookie": "sessionid=[redacted]; Path=/",
+        "X-Powered-By": "PHP/5.6.40",
+        "X-Lab-Page": "Recuperacion de laboratorio"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "text/html; charset=utf-8",
+        "sha256": "6e145459a453b5daf44528ba5af25fea8edafb503e029d9ad3226d79d5683c51",
+        "bytes": 297,
+        "truncated_by_probe": false,
+        "sample": "<!doctype html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"generator\" content=\"WordPress 4.7.0\">\n    <title>Recuperacion</title>\n  </head>\n  <body>\n    <h1>Recuperacion</h1>\n    <p>Ruta de recuperacion de cuenta para clasificacion.</p>\n    <a href=\"/\">Inicio</a>\n  </body>\n</html>\n",
+        "sample_chars": 297,
+        "sample_truncated": false
+      }
+    },
+    {
+      "method": "GET",
+      "url": "http://127.0.0.1:62566/api/users",
+      "status_code": 200,
+      "elapsed_ms": 0,
+      "id": "req-0022",
+      "final_url": "http://127.0.0.1:62566/api/users",
+      "error": null,
+      "request_headers": {
+        "User-Agent": "AI-Web-Auditor/0.18",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
+      },
+      "response_headers": {
+        "Server": "AIWebAuditorLab/0.18 ",
+        "Date": "Thu, 27 Aug 2026 04:32:20 GMT",
+        "Content-Type": "application/json; charset=utf-8",
+        "Content-Length": "13",
+        "Set-Cookie": "sessionid=[redacted]; Path=/",
+        "X-Powered-By": "PHP/5.6.40"
+      },
+      "response_body": {
+        "captured": true,
+        "content_type": "application/json; charset=utf-8",
+        "sha256": "386d664798fadef0ebe6ce579541ecf7ce34271795c2786ce0aa1e33357ba442",
+        "bytes": 13,
+        "truncated_by_probe": false,
+        "sample": "{\"users\": []}",
+        "sample_chars": 13,
+        "sample_truncated": false
       }
     }
   ],
   "findings": [
     {
-      "id": "SUBDOMAIN-DISCOVERY-RESOLVED",
-      "title": "In-scope subdomains resolved by DNS",
-      "severity": "info",
-      "category": "reconnaissance",
-      "description": "The scan resolved one or more candidate subdomains inside the configured scope. They were recorded but not audited automatically.",
-      "recommendation": "Review these hosts and add them explicitly to the authorized scope before running deeper checks against them.",
-      "module": "subdomains",
-      "target": "example.com",
+      "id": "HTTP-NO-HTTPS-REDIRECT",
+      "title": "HTTP is not redirected to HTTPS",
+      "severity": "high",
+      "category": "transport-security",
+      "description": "The requested HTTP URL remains available without being upgraded to HTTPS.",
+      "recommendation": "Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification.",
+      "module": "http",
+      "target": "http://127.0.0.1:62566/members/",
       "evidence": [
         {
-          "label": "host",
-          "value": "api.example.com",
-          "location": "93.184.216.35"
+          "label": "initial_url",
+          "value": "http://127.0.0.1:62566/members/",
+          "location": null
+        },
+        {
+          "label": "final_url",
+          "value": "http://127.0.0.1:62566/members/",
+          "location": null
+        },
+        {
+          "label": "status_code",
+          "value": "401",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "HEADER-CONTENT_SECURITY_POLICY-MISSING",
+      "title": "Content-Security-Policy header is missing",
+      "severity": "medium",
+      "category": "security-headers",
+      "description": "The response does not include the Content-Security-Policy header.",
+      "recommendation": "Define an appropriate Content-Security-Policy header for this application.",
+      "module": "security_headers",
+      "target": "http://127.0.0.1:62566/members/",
+      "evidence": []
+    },
+    {
+      "id": "HEADER-CLICKJACKING-MISSING",
+      "title": "Clickjacking protection header is missing",
+      "severity": "low",
+      "category": "security-headers",
+      "description": "The response does not include X-Frame-Options or a CSP frame-ancestors directive.",
+      "recommendation": "Set frame-ancestors in Content-Security-Policy or use X-Frame-Options where appropriate.",
+      "module": "security_headers",
+      "target": "http://127.0.0.1:62566/members/",
+      "evidence": []
+    },
+    {
+      "id": "HEADER-NOSNIFF-MISSING",
+      "title": "X-Content-Type-Options nosniff is missing",
+      "severity": "low",
+      "category": "security-headers",
+      "description": "The browser may try to infer content types when nosniff is absent.",
+      "recommendation": "Set X-Content-Type-Options: nosniff.",
+      "module": "security_headers",
+      "target": "http://127.0.0.1:62566/members/",
+      "evidence": [
+        {
+          "label": "x-content-type-options",
+          "value": "missing",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "HEADER-REFERRER_POLICY-MISSING",
+      "title": "Referrer-Policy header is missing",
+      "severity": "low",
+      "category": "security-headers",
+      "description": "The response does not include the Referrer-Policy header.",
+      "recommendation": "Define an appropriate Referrer-Policy header for this application.",
+      "module": "security_headers",
+      "target": "http://127.0.0.1:62566/members/",
+      "evidence": []
+    },
+    {
+      "id": "HEADER-PERMISSIONS_POLICY-MISSING",
+      "title": "Permissions-Policy header is missing",
+      "severity": "info",
+      "category": "security-headers",
+      "description": "The response does not include the Permissions-Policy header.",
+      "recommendation": "Define an appropriate Permissions-Policy header for this application.",
+      "module": "security_headers",
+      "target": "http://127.0.0.1:62566/members/",
+      "evidence": []
+    },
+    {
+      "id": "COOKIE-HTTPONLY-MISSING",
+      "title": "Cookie missing HttpOnly flag",
+      "severity": "low",
+      "category": "cookies",
+      "description": "A cookie is accessible to client-side scripts when HttpOnly is absent.",
+      "recommendation": "Set HttpOnly for session or sensitive cookies.",
+      "module": "cookies",
+      "target": "http://127.0.0.1:62566/members/",
+      "evidence": [
+        {
+          "label": "cookie",
+          "value": "sessionid",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "COOKIE-SAMESITE-MISSING",
+      "title": "Cookie missing SameSite attribute",
+      "severity": "low",
+      "category": "cookies",
+      "description": "A cookie does not declare a SameSite policy.",
+      "recommendation": "Set SameSite=Lax or SameSite=Strict unless cross-site usage is required.",
+      "module": "cookies",
+      "target": "http://127.0.0.1:62566/members/",
+      "evidence": [
+        {
+          "label": "cookie",
+          "value": "sessionid",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "COOKIE-HTTPONLY-MISSING",
+      "title": "Cookie missing HttpOnly flag",
+      "severity": "low",
+      "category": "cookies",
+      "description": "A cookie is accessible to client-side scripts when HttpOnly is absent.",
+      "recommendation": "Set HttpOnly for session or sensitive cookies.",
+      "module": "cookies",
+      "target": "http://127.0.0.1:62566/members/",
+      "evidence": [
+        {
+          "label": "cookie",
+          "value": "tracking_id",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "COOKIE-SAMESITE-NONE-WITHOUT-SECURE",
+      "title": "Cookie uses SameSite=None without Secure",
+      "severity": "medium",
+      "category": "cookies",
+      "description": "SameSite=None cookies should also use Secure.",
+      "recommendation": "Set Secure or avoid SameSite=None if cross-site usage is not required.",
+      "module": "cookies",
+      "target": "http://127.0.0.1:62566/members/",
+      "evidence": [
+        {
+          "label": "cookie",
+          "value": "tracking_id",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "AUTH-BASIC-OVER-HTTP",
+      "title": "HTTP Basic Authentication over HTTP",
+      "severity": "high",
+      "category": "authentication",
+      "description": "The server requests Basic Authentication over unencrypted HTTP.",
+      "recommendation": "Force HTTPS before authentication and enable HSTS after validation.",
+      "module": "basic_auth",
+      "target": "http://127.0.0.1:62566/members/",
+      "evidence": [
+        {
+          "label": "status_code",
+          "value": "401",
+          "location": null
+        },
+        {
+          "label": "www-authenticate",
+          "value": "Basic realm=\"AI Web Auditor Lab\"",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "METHOD-DELETE-ADVERTISED",
+      "title": "HTTP method DELETE is advertised",
+      "severity": "medium",
+      "category": "http-methods",
+      "description": "DELETE may allow destructive actions if authorization is weak.",
+      "recommendation": "Disable unnecessary HTTP methods or enforce strict authorization before use.",
+      "module": "http_methods",
+      "target": "http://127.0.0.1:62566/members/",
+      "evidence": [
+        {
+          "label": "allow",
+          "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+          "location": null
+        },
+        {
+          "label": "access-control-allow-methods",
+          "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "METHOD-PUT-ADVERTISED",
+      "title": "HTTP method PUT is advertised",
+      "severity": "medium",
+      "category": "http-methods",
+      "description": "PUT may allow content upload if authorization is weak.",
+      "recommendation": "Disable unnecessary HTTP methods or enforce strict authorization before use.",
+      "module": "http_methods",
+      "target": "http://127.0.0.1:62566/members/",
+      "evidence": [
+        {
+          "label": "allow",
+          "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+          "location": null
+        },
+        {
+          "label": "access-control-allow-methods",
+          "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "METHOD-TRACE-ADVERTISED",
+      "title": "HTTP method TRACE is advertised",
+      "severity": "high",
+      "category": "http-methods",
+      "description": "TRACE can expose request data and is rarely needed.",
+      "recommendation": "Disable unnecessary HTTP methods or enforce strict authorization before use.",
+      "module": "http_methods",
+      "target": "http://127.0.0.1:62566/members/",
+      "evidence": [
+        {
+          "label": "allow",
+          "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+          "location": null
+        },
+        {
+          "label": "access-control-allow-methods",
+          "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+          "location": null
         }
       ]
     },
@@ -228,63 +2224,176 @@
       "description": "The limited TCP connectivity check found open ports on the target host. This is inventory evidence, not exploitation.",
       "recommendation": "Review whether each exposed service is expected, patched and covered by the authorized audit scope.",
       "module": "ports",
-      "target": "example.com",
+      "target": "127.0.0.1",
       "evidence": [
         {
           "label": "open_port",
-          "value": "443",
-          "location": "https"
+          "value": "62566",
+          "location": ""
+        }
+      ]
+    },
+    {
+      "id": "FINGERPRINT-SERVER-VERSION-DISCLOSED",
+      "title": "Server header discloses version information",
+      "severity": "info",
+      "category": "fingerprinting",
+      "description": "The Server header appears to include product version information.",
+      "recommendation": "Avoid exposing precise server versions unless there is an operational reason.",
+      "module": "fingerprinting",
+      "target": "http://127.0.0.1:62566/members/",
+      "evidence": [
+        {
+          "label": "server",
+          "value": "AIWebAuditorLab/0.18 ",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "FINGERPRINT-POWERED-BY-DISCLOSED",
+      "title": "X-Powered-By header discloses technology information",
+      "severity": "info",
+      "category": "fingerprinting",
+      "description": "The X-Powered-By header can reveal backend technology details to attackers.",
+      "recommendation": "Remove or reduce technology-identifying response headers where practical.",
+      "module": "fingerprinting",
+      "target": "http://127.0.0.1:62566/members/",
+      "evidence": [
+        {
+          "label": "x-powered-by",
+          "value": "PHP/5.6.40",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "FINGERPRINT-GENERATOR-DISCLOSED",
+      "title": "HTML generator metadata is exposed",
+      "severity": "info",
+      "category": "fingerprinting",
+      "description": "The HTML generator metadata can disclose CMS or framework details.",
+      "recommendation": "Remove generator metadata if it is not required.",
+      "module": "fingerprinting",
+      "target": "http://127.0.0.1:62566/members/",
+      "evidence": [
+        {
+          "label": "generator",
+          "value": "WordPress 4.7.0",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "CRAWLER-OUT-OF-SCOPE-LINKS",
+      "title": "Crawler found links outside scope",
+      "severity": "info",
+      "category": "crawler",
+      "description": "The crawler discovered links outside the configured scope. They were recorded but not requested.",
+      "recommendation": "Review whether any external host should be added to the authorized scope before scanning it.",
+      "module": "crawler",
+      "target": "http://127.0.0.1:62566/members/",
+      "evidence": [
+        {
+          "label": "sample_url",
+          "value": "https://example.org/external",
+          "location": null
         }
       ]
     }
   ],
-  "requests": [
-    {
-      "id": "req-0001",
-      "method": "GET",
-      "url": "https://example.com/",
-      "status_code": 200,
-      "elapsed_ms": 42,
-      "final_url": "https://example.com/",
-      "error": null,
-      "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.17",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
-      },
-      "response_headers": {
-        "Content-Type": "text/html"
-      },
-      "response_body": {
-        "captured": true,
-        "content_type": "text/html",
-        "sha256": "436d515b914c42f568e818074f042f2a0218ed8a198676dd582cc125bb3b778e",
-        "bytes": 40,
-        "truncated_by_probe": false,
-        "sample": "<html><body>Example Domain</body></html>",
-        "sample_chars": 40,
-        "sample_truncated": false
-      }
-    }
-  ],
   "inventory": {
     "summary": {
-      "total_urls": 2,
-      "fetched_urls": 1,
-      "interesting_urls": 1,
-      "forms": 0,
-      "pages_with_forms": 0,
-      "external_urls": 0,
-      "excluded_urls": 0,
+      "total_urls": 23,
+      "fetched_urls": 15,
+      "interesting_urls": 13,
+      "forms": 2,
+      "pages_with_forms": 2,
+      "external_urls": 1,
+      "excluded_urls": 3,
       "status_codes": {
-        "200": 1
+        "200": 8,
+        "401": 1,
+        "404": 6
       },
       "content_types": {
-        "text/html": 1
+        "application/json": 1,
+        "text/html": 4
       }
     },
     "urls": [
       {
-        "url": "https://example.com/login",
+        "url": "http://127.0.0.1:62566/.well-known/change-password",
+        "status_code": 404,
+        "content_type": "",
+        "fetched": true,
+        "depth": null,
+        "methods": [
+          "GET"
+        ],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "password_reset_path"
+        ],
+        "route_types": [
+          "password_reset"
+        ],
+        "route_classifications": [
+          {
+            "type": "password_reset",
+            "label": "Password reset or account recovery",
+            "confidence": "high",
+            "reason": "password_reset_path",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "request",
+          "well_known"
+        ],
+        "source": "request, well_known",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/.well-known/oauth-authorization-server",
+        "status_code": 404,
+        "content_type": "",
+        "fetched": true,
+        "depth": null,
+        "methods": [
+          "GET"
+        ],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "callback_path"
+        ],
+        "route_types": [
+          "callback"
+        ],
+        "route_classifications": [
+          {
+            "type": "callback",
+            "label": "Callback, webhook or federation flow",
+            "confidence": "high",
+            "reason": "callback_path",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "request",
+          "well_known"
+        ],
+        "source": "request, well_known",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/admin/",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -294,19 +2403,364 @@
         "forms_found": 0,
         "interesting": true,
         "reasons": [
-          "login_path"
+          "admin_path"
+        ],
+        "route_types": [
+          "admin"
+        ],
+        "route_classifications": [
+          {
+            "type": "admin",
+            "label": "Administration",
+            "confidence": "high",
+            "reason": "admin_path",
+            "interesting": true
+          }
         ],
         "sources": [
-          "crawler_discovered"
+          "excluded"
         ],
-        "source": "crawler_discovered",
+        "source": "excluded",
         "title": "",
         "error": ""
       },
       {
-        "url": "https://example.com/",
+        "url": "http://127.0.0.1:62566/api/users",
         "status_code": 200,
-        "content_type": "text/html",
+        "content_type": "application/json; charset=utf-8",
+        "fetched": true,
+        "depth": 0,
+        "methods": [
+          "GET"
+        ],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "api_path"
+        ],
+        "route_types": [
+          "api"
+        ],
+        "route_classifications": [
+          {
+            "type": "api",
+            "label": "API surface",
+            "confidence": "high",
+            "reason": "api_path",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "crawler_discovered",
+          "crawler_fetched",
+          "crawler_page",
+          "metadata_discovered",
+          "request",
+          "sitemap"
+        ],
+        "source": "crawler_discovered, crawler_fetched, crawler_page, metadata_discovered, request, sitemap",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/login",
+        "status_code": 200,
+        "content_type": "text/html; charset=utf-8",
+        "fetched": true,
+        "depth": 0,
+        "methods": [
+          "GET"
+        ],
+        "links_found": 1,
+        "forms_found": 1,
+        "interesting": true,
+        "reasons": [
+          "login_path",
+          "form_detected"
+        ],
+        "route_types": [
+          "form",
+          "login"
+        ],
+        "route_classifications": [
+          {
+            "type": "login",
+            "label": "Login or authentication",
+            "confidence": "high",
+            "reason": "login_path",
+            "interesting": true
+          },
+          {
+            "type": "form",
+            "label": "HTML form",
+            "confidence": "high",
+            "reason": "form_detected",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "crawler_discovered",
+          "crawler_fetched",
+          "crawler_page",
+          "metadata_discovered",
+          "request",
+          "sitemap"
+        ],
+        "source": "crawler_discovered, crawler_fetched, crawler_page, metadata_discovered, request, sitemap",
+        "title": "Login de laboratorio",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/login/",
+        "status_code": null,
+        "content_type": "",
+        "fetched": false,
+        "depth": null,
+        "methods": [
+          "POST"
+        ],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "login_path",
+          "post_method"
+        ],
+        "route_types": [
+          "login",
+          "state_changing_candidate"
+        ],
+        "route_classifications": [
+          {
+            "type": "login",
+            "label": "Login or authentication",
+            "confidence": "high",
+            "reason": "login_path",
+            "interesting": true
+          },
+          {
+            "type": "state_changing_candidate",
+            "label": "State-changing candidate",
+            "confidence": "medium",
+            "reason": "post_method",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "form_action"
+        ],
+        "source": "form_action",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/members/",
+        "status_code": 401,
+        "content_type": "text/html; charset=utf-8",
+        "fetched": true,
+        "depth": 0,
+        "methods": [
+          "GET",
+          "OPTIONS"
+        ],
+        "links_found": 1,
+        "forms_found": 1,
+        "interesting": true,
+        "reasons": [
+          "login_path",
+          "account_area",
+          "form_detected"
+        ],
+        "route_types": [
+          "account",
+          "form",
+          "login"
+        ],
+        "route_classifications": [
+          {
+            "type": "login",
+            "label": "Login or authentication",
+            "confidence": "high",
+            "reason": "login_path",
+            "interesting": true
+          },
+          {
+            "type": "account",
+            "label": "Account, member or customer area",
+            "confidence": "medium",
+            "reason": "account_area",
+            "interesting": true
+          },
+          {
+            "type": "form",
+            "label": "HTML form",
+            "confidence": "high",
+            "reason": "form_detected",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "crawler_discovered",
+          "crawler_fetched",
+          "crawler_page",
+          "html_link",
+          "metadata_discovered",
+          "request",
+          "robots_allow",
+          "seed",
+          "sitemap",
+          "target"
+        ],
+        "source": "crawler_discovered, crawler_fetched, crawler_page, html_link, metadata_discovered, request, robots_allow, seed, sitemap, target",
+        "title": "Miembros",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/oauth/authorize",
+        "status_code": null,
+        "content_type": "",
+        "fetched": false,
+        "depth": null,
+        "methods": [],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "login_path",
+          "callback_path"
+        ],
+        "route_types": [
+          "callback",
+          "login"
+        ],
+        "route_classifications": [
+          {
+            "type": "login",
+            "label": "Login or authentication",
+            "confidence": "high",
+            "reason": "login_path",
+            "interesting": true
+          },
+          {
+            "type": "callback",
+            "label": "Callback, webhook or federation flow",
+            "confidence": "high",
+            "reason": "callback_path",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "crawler_discovered",
+          "metadata_discovered",
+          "well_known_endpoint"
+        ],
+        "source": "crawler_discovered, metadata_discovered, well_known_endpoint",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/oauth/token",
+        "status_code": null,
+        "content_type": "",
+        "fetched": false,
+        "depth": null,
+        "methods": [],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "callback_path"
+        ],
+        "route_types": [
+          "callback"
+        ],
+        "route_classifications": [
+          {
+            "type": "callback",
+            "label": "Callback, webhook or federation flow",
+            "confidence": "high",
+            "reason": "callback_path",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "crawler_discovered",
+          "metadata_discovered",
+          "well_known_endpoint"
+        ],
+        "source": "crawler_discovered, metadata_discovered, well_known_endpoint",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/private/",
+        "status_code": null,
+        "content_type": "",
+        "fetched": false,
+        "depth": null,
+        "methods": [],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "account_area"
+        ],
+        "route_types": [
+          "account"
+        ],
+        "route_classifications": [
+          {
+            "type": "account",
+            "label": "Account, member or customer area",
+            "confidence": "medium",
+            "reason": "account_area",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "excluded"
+        ],
+        "source": "excluded",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/private/report",
+        "status_code": null,
+        "content_type": "",
+        "fetched": false,
+        "depth": null,
+        "methods": [],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "account_area"
+        ],
+        "route_types": [
+          "account"
+        ],
+        "route_classifications": [
+          {
+            "type": "account",
+            "label": "Account, member or customer area",
+            "confidence": "medium",
+            "reason": "account_area",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "excluded"
+        ],
+        "source": "excluded",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/reset-password",
+        "status_code": 200,
+        "content_type": "text/html; charset=utf-8",
         "fetched": true,
         "depth": 0,
         "methods": [
@@ -314,24 +2768,431 @@
         ],
         "links_found": 1,
         "forms_found": 0,
-        "interesting": false,
-        "reasons": [],
+        "interesting": true,
+        "reasons": [
+          "password_reset_path"
+        ],
+        "route_types": [
+          "password_reset"
+        ],
+        "route_classifications": [
+          {
+            "type": "password_reset",
+            "label": "Password reset or account recovery",
+            "confidence": "high",
+            "reason": "password_reset_path",
+            "interesting": true
+          }
+        ],
         "sources": [
           "crawler_discovered",
           "crawler_fetched",
           "crawler_page",
+          "metadata_discovered",
           "request",
-          "target"
+          "sitemap"
         ],
-        "source": "crawler_discovered, crawler_fetched, crawler_page, request, target",
-        "title": "Example Domain",
+        "source": "crawler_discovered, crawler_fetched, crawler_page, metadata_discovered, request, sitemap",
+        "title": "Recuperacion",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/session",
+        "status_code": null,
+        "content_type": "",
+        "fetched": false,
+        "depth": null,
+        "methods": [
+          "POST"
+        ],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "login_path",
+          "post_method"
+        ],
+        "route_types": [
+          "login",
+          "state_changing_candidate"
+        ],
+        "route_classifications": [
+          {
+            "type": "login",
+            "label": "Login or authentication",
+            "confidence": "high",
+            "reason": "login_path",
+            "interesting": true
+          },
+          {
+            "type": "state_changing_candidate",
+            "label": "State-changing candidate",
+            "confidence": "medium",
+            "reason": "post_method",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "form_action"
+        ],
+        "source": "form_action",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/",
+        "status_code": 200,
+        "content_type": "text/html; charset=utf-8",
+        "fetched": true,
+        "depth": 0,
+        "methods": [
+          "GET"
+        ],
+        "links_found": 4,
+        "forms_found": 0,
+        "interesting": false,
+        "reasons": [],
+        "route_types": [],
+        "route_classifications": [],
+        "sources": [
+          "crawler_discovered",
+          "crawler_fetched",
+          "crawler_page",
+          "html_link",
+          "metadata_discovered",
+          "request",
+          "sitemap"
+        ],
+        "source": "crawler_discovered, crawler_fetched, crawler_page, html_link, metadata_discovered, request, sitemap",
+        "title": "AI Web Auditor Lab",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/.well-known/openid-configuration",
+        "status_code": 200,
+        "content_type": "",
+        "fetched": true,
+        "depth": null,
+        "methods": [
+          "GET"
+        ],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": false,
+        "reasons": [],
+        "route_types": [],
+        "route_classifications": [],
+        "sources": [
+          "crawler_discovered",
+          "metadata_discovered",
+          "request",
+          "well_known"
+        ],
+        "source": "crawler_discovered, metadata_discovered, request, well_known",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/.well-known/security.txt",
+        "status_code": 200,
+        "content_type": "",
+        "fetched": true,
+        "depth": null,
+        "methods": [
+          "GET"
+        ],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": false,
+        "reasons": [],
+        "route_types": [],
+        "route_classifications": [],
+        "sources": [
+          "crawler_discovered",
+          "metadata_discovered",
+          "request",
+          "well_known"
+        ],
+        "source": "crawler_discovered, metadata_discovered, request, well_known",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "https://example.org/external",
+        "status_code": null,
+        "content_type": "",
+        "fetched": false,
+        "depth": null,
+        "methods": [],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": false,
+        "reasons": [],
+        "route_types": [],
+        "route_classifications": [],
+        "sources": [
+          "out_of_scope"
+        ],
+        "source": "out_of_scope",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/.well-known/apple-app-site-association",
+        "status_code": 404,
+        "content_type": "",
+        "fetched": true,
+        "depth": null,
+        "methods": [
+          "GET"
+        ],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": false,
+        "reasons": [],
+        "route_types": [],
+        "route_classifications": [],
+        "sources": [
+          "request",
+          "well_known"
+        ],
+        "source": "request, well_known",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/.well-known/assetlinks.json",
+        "status_code": 404,
+        "content_type": "",
+        "fetched": true,
+        "depth": null,
+        "methods": [
+          "GET"
+        ],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": false,
+        "reasons": [],
+        "route_types": [],
+        "route_classifications": [],
+        "sources": [
+          "request",
+          "well_known"
+        ],
+        "source": "request, well_known",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/.well-known/webfinger",
+        "status_code": 404,
+        "content_type": "",
+        "fetched": true,
+        "depth": null,
+        "methods": [
+          "GET"
+        ],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": false,
+        "reasons": [],
+        "route_types": [],
+        "route_classifications": [],
+        "sources": [
+          "request",
+          "well_known"
+        ],
+        "source": "request, well_known",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/robots.txt",
+        "status_code": 200,
+        "content_type": "",
+        "fetched": true,
+        "depth": null,
+        "methods": [
+          "GET"
+        ],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": false,
+        "reasons": [],
+        "route_types": [],
+        "route_classifications": [],
+        "sources": [
+          "request"
+        ],
+        "source": "request",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/security.txt",
+        "status_code": 404,
+        "content_type": "",
+        "fetched": true,
+        "depth": null,
+        "methods": [
+          "GET"
+        ],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": false,
+        "reasons": [],
+        "route_types": [],
+        "route_classifications": [],
+        "sources": [
+          "request",
+          "well_known"
+        ],
+        "source": "request, well_known",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/sitemap.xml",
+        "status_code": 200,
+        "content_type": "",
+        "fetched": true,
+        "depth": null,
+        "methods": [
+          "GET"
+        ],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": false,
+        "reasons": [],
+        "route_types": [],
+        "route_classifications": [],
+        "sources": [
+          "request"
+        ],
+        "source": "request",
+        "title": "",
         "error": ""
       }
     ],
-    "forms": [],
+    "forms": [
+      {
+        "page_url": "http://127.0.0.1:62566/login",
+        "action": "http://127.0.0.1:62566/session",
+        "method": "POST",
+        "input_count": 2,
+        "password_fields": 1,
+        "hidden_fields": 0,
+        "csrf_candidates": [],
+        "fields": [
+          {
+            "name": "user",
+            "type": "text"
+          },
+          {
+            "name": "password",
+            "type": "password"
+          }
+        ]
+      },
+      {
+        "page_url": "http://127.0.0.1:62566/members/",
+        "action": "http://127.0.0.1:62566/login/",
+        "method": "POST",
+        "input_count": 3,
+        "password_fields": 1,
+        "hidden_fields": 1,
+        "csrf_candidates": [
+          "csrf_token"
+        ],
+        "fields": [
+          {
+            "name": "csrf_token",
+            "type": "hidden"
+          },
+          {
+            "name": "username",
+            "type": "text"
+          },
+          {
+            "name": "password",
+            "type": "password"
+          }
+        ]
+      }
+    ],
     "interesting_paths": [
       {
-        "url": "https://example.com/login",
+        "url": "http://127.0.0.1:62566/.well-known/change-password",
+        "status_code": 404,
+        "content_type": "",
+        "fetched": true,
+        "depth": null,
+        "methods": [
+          "GET"
+        ],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "password_reset_path"
+        ],
+        "route_types": [
+          "password_reset"
+        ],
+        "route_classifications": [
+          {
+            "type": "password_reset",
+            "label": "Password reset or account recovery",
+            "confidence": "high",
+            "reason": "password_reset_path",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "request",
+          "well_known"
+        ],
+        "source": "request, well_known",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/.well-known/oauth-authorization-server",
+        "status_code": 404,
+        "content_type": "",
+        "fetched": true,
+        "depth": null,
+        "methods": [
+          "GET"
+        ],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "callback_path"
+        ],
+        "route_types": [
+          "callback"
+        ],
+        "route_classifications": [
+          {
+            "type": "callback",
+            "label": "Callback, webhook or federation flow",
+            "confidence": "high",
+            "reason": "callback_path",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "request",
+          "well_known"
+        ],
+        "source": "request, well_known",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/admin/",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -341,12 +3202,439 @@
         "forms_found": 0,
         "interesting": true,
         "reasons": [
-          "login_path"
+          "admin_path"
+        ],
+        "route_types": [
+          "admin"
+        ],
+        "route_classifications": [
+          {
+            "type": "admin",
+            "label": "Administration",
+            "confidence": "high",
+            "reason": "admin_path",
+            "interesting": true
+          }
         ],
         "sources": [
-          "crawler_discovered"
+          "excluded"
         ],
-        "source": "crawler_discovered",
+        "source": "excluded",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/api/users",
+        "status_code": 200,
+        "content_type": "application/json; charset=utf-8",
+        "fetched": true,
+        "depth": 0,
+        "methods": [
+          "GET"
+        ],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "api_path"
+        ],
+        "route_types": [
+          "api"
+        ],
+        "route_classifications": [
+          {
+            "type": "api",
+            "label": "API surface",
+            "confidence": "high",
+            "reason": "api_path",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "crawler_discovered",
+          "crawler_fetched",
+          "crawler_page",
+          "metadata_discovered",
+          "request",
+          "sitemap"
+        ],
+        "source": "crawler_discovered, crawler_fetched, crawler_page, metadata_discovered, request, sitemap",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/login",
+        "status_code": 200,
+        "content_type": "text/html; charset=utf-8",
+        "fetched": true,
+        "depth": 0,
+        "methods": [
+          "GET"
+        ],
+        "links_found": 1,
+        "forms_found": 1,
+        "interesting": true,
+        "reasons": [
+          "login_path",
+          "form_detected"
+        ],
+        "route_types": [
+          "form",
+          "login"
+        ],
+        "route_classifications": [
+          {
+            "type": "login",
+            "label": "Login or authentication",
+            "confidence": "high",
+            "reason": "login_path",
+            "interesting": true
+          },
+          {
+            "type": "form",
+            "label": "HTML form",
+            "confidence": "high",
+            "reason": "form_detected",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "crawler_discovered",
+          "crawler_fetched",
+          "crawler_page",
+          "metadata_discovered",
+          "request",
+          "sitemap"
+        ],
+        "source": "crawler_discovered, crawler_fetched, crawler_page, metadata_discovered, request, sitemap",
+        "title": "Login de laboratorio",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/login/",
+        "status_code": null,
+        "content_type": "",
+        "fetched": false,
+        "depth": null,
+        "methods": [
+          "POST"
+        ],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "login_path",
+          "post_method"
+        ],
+        "route_types": [
+          "login",
+          "state_changing_candidate"
+        ],
+        "route_classifications": [
+          {
+            "type": "login",
+            "label": "Login or authentication",
+            "confidence": "high",
+            "reason": "login_path",
+            "interesting": true
+          },
+          {
+            "type": "state_changing_candidate",
+            "label": "State-changing candidate",
+            "confidence": "medium",
+            "reason": "post_method",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "form_action"
+        ],
+        "source": "form_action",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/members/",
+        "status_code": 401,
+        "content_type": "text/html; charset=utf-8",
+        "fetched": true,
+        "depth": 0,
+        "methods": [
+          "GET",
+          "OPTIONS"
+        ],
+        "links_found": 1,
+        "forms_found": 1,
+        "interesting": true,
+        "reasons": [
+          "login_path",
+          "account_area",
+          "form_detected"
+        ],
+        "route_types": [
+          "account",
+          "form",
+          "login"
+        ],
+        "route_classifications": [
+          {
+            "type": "login",
+            "label": "Login or authentication",
+            "confidence": "high",
+            "reason": "login_path",
+            "interesting": true
+          },
+          {
+            "type": "account",
+            "label": "Account, member or customer area",
+            "confidence": "medium",
+            "reason": "account_area",
+            "interesting": true
+          },
+          {
+            "type": "form",
+            "label": "HTML form",
+            "confidence": "high",
+            "reason": "form_detected",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "crawler_discovered",
+          "crawler_fetched",
+          "crawler_page",
+          "html_link",
+          "metadata_discovered",
+          "request",
+          "robots_allow",
+          "seed",
+          "sitemap",
+          "target"
+        ],
+        "source": "crawler_discovered, crawler_fetched, crawler_page, html_link, metadata_discovered, request, robots_allow, seed, sitemap, target",
+        "title": "Miembros",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/oauth/authorize",
+        "status_code": null,
+        "content_type": "",
+        "fetched": false,
+        "depth": null,
+        "methods": [],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "login_path",
+          "callback_path"
+        ],
+        "route_types": [
+          "callback",
+          "login"
+        ],
+        "route_classifications": [
+          {
+            "type": "login",
+            "label": "Login or authentication",
+            "confidence": "high",
+            "reason": "login_path",
+            "interesting": true
+          },
+          {
+            "type": "callback",
+            "label": "Callback, webhook or federation flow",
+            "confidence": "high",
+            "reason": "callback_path",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "crawler_discovered",
+          "metadata_discovered",
+          "well_known_endpoint"
+        ],
+        "source": "crawler_discovered, metadata_discovered, well_known_endpoint",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/oauth/token",
+        "status_code": null,
+        "content_type": "",
+        "fetched": false,
+        "depth": null,
+        "methods": [],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "callback_path"
+        ],
+        "route_types": [
+          "callback"
+        ],
+        "route_classifications": [
+          {
+            "type": "callback",
+            "label": "Callback, webhook or federation flow",
+            "confidence": "high",
+            "reason": "callback_path",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "crawler_discovered",
+          "metadata_discovered",
+          "well_known_endpoint"
+        ],
+        "source": "crawler_discovered, metadata_discovered, well_known_endpoint",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/private/",
+        "status_code": null,
+        "content_type": "",
+        "fetched": false,
+        "depth": null,
+        "methods": [],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "account_area"
+        ],
+        "route_types": [
+          "account"
+        ],
+        "route_classifications": [
+          {
+            "type": "account",
+            "label": "Account, member or customer area",
+            "confidence": "medium",
+            "reason": "account_area",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "excluded"
+        ],
+        "source": "excluded",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/private/report",
+        "status_code": null,
+        "content_type": "",
+        "fetched": false,
+        "depth": null,
+        "methods": [],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "account_area"
+        ],
+        "route_types": [
+          "account"
+        ],
+        "route_classifications": [
+          {
+            "type": "account",
+            "label": "Account, member or customer area",
+            "confidence": "medium",
+            "reason": "account_area",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "excluded"
+        ],
+        "source": "excluded",
+        "title": "",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/reset-password",
+        "status_code": 200,
+        "content_type": "text/html; charset=utf-8",
+        "fetched": true,
+        "depth": 0,
+        "methods": [
+          "GET"
+        ],
+        "links_found": 1,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "password_reset_path"
+        ],
+        "route_types": [
+          "password_reset"
+        ],
+        "route_classifications": [
+          {
+            "type": "password_reset",
+            "label": "Password reset or account recovery",
+            "confidence": "high",
+            "reason": "password_reset_path",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "crawler_discovered",
+          "crawler_fetched",
+          "crawler_page",
+          "metadata_discovered",
+          "request",
+          "sitemap"
+        ],
+        "source": "crawler_discovered, crawler_fetched, crawler_page, metadata_discovered, request, sitemap",
+        "title": "Recuperacion",
+        "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:62566/session",
+        "status_code": null,
+        "content_type": "",
+        "fetched": false,
+        "depth": null,
+        "methods": [
+          "POST"
+        ],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": true,
+        "reasons": [
+          "login_path",
+          "post_method"
+        ],
+        "route_types": [
+          "login",
+          "state_changing_candidate"
+        ],
+        "route_classifications": [
+          {
+            "type": "login",
+            "label": "Login or authentication",
+            "confidence": "high",
+            "reason": "login_path",
+            "interesting": true
+          },
+          {
+            "type": "state_changing_candidate",
+            "label": "State-changing candidate",
+            "confidence": "medium",
+            "reason": "post_method",
+            "interesting": true
+          }
+        ],
+        "sources": [
+          "form_action"
+        ],
+        "source": "form_action",
         "title": "",
         "error": ""
       }
@@ -354,61 +3642,209 @@
   },
   "assessment": {
     "summary": {
-      "risk_score": 13,
-      "risk_level": "informational",
-      "finding_count": 2,
+      "risk_score": 89,
+      "risk_level": "high",
+      "finding_count": 19,
       "critical": 0,
-      "high": 0,
-      "medium": 0,
-      "low": 0,
-      "info": 2,
-      "priority_count": 2,
-      "quick_win_count": 0,
+      "high": 3,
+      "medium": 4,
+      "low": 6,
+      "info": 6,
+      "priority_count": 10,
+      "quick_win_count": 8,
       "coverage": {
-        "modules_run": 4,
-        "modules_passed": 2,
-        "modules_warning": 2,
+        "modules_run": 9,
+        "modules_passed": 1,
+        "modules_warning": 8,
         "modules_skipped": 0,
         "modules_error": 0,
-        "urls": 2,
-        "fetched_urls": 1,
-        "forms": 0,
-        "interesting_urls": 1,
-        "subdomains": 1,
+        "urls": 23,
+        "fetched_urls": 15,
+        "forms": 2,
+        "interesting_urls": 13,
+        "subdomains": 0,
         "open_ports": 1
       }
     },
     "priorities": [
       {
         "rank": 1,
-        "finding_id": "PORTS-OPEN-TCP-PORTS",
-        "title": "Open TCP ports detected",
-        "severity": "info",
-        "module": "ports",
-        "target": "example.com",
-        "score": 17,
-        "reason": "additional exposed services increase the review surface",
-        "recommended_action": "Review whether each exposed service is expected, patched and covered by the authorized audit scope."
+        "finding_id": "AUTH-BASIC-OVER-HTTP",
+        "title": "HTTP Basic Authentication over HTTP",
+        "severity": "high",
+        "module": "basic_auth",
+        "target": "http://127.0.0.1:62566/members/",
+        "score": 96,
+        "reason": "credentials may be exposed before transport security is enforced",
+        "recommended_action": "Force HTTPS before authentication and enable HSTS after validation."
       },
       {
         "rank": 2,
-        "finding_id": "SUBDOMAIN-DISCOVERY-RESOLVED",
-        "title": "In-scope subdomains resolved by DNS",
-        "severity": "info",
-        "module": "subdomains",
-        "target": "example.com",
-        "score": 11,
-        "reason": "info finding reported by the subdomains module",
-        "recommended_action": "Review these hosts and add them explicitly to the authorized scope before running deeper checks against them."
+        "finding_id": "HTTP-NO-HTTPS-REDIRECT",
+        "title": "HTTP is not redirected to HTTPS",
+        "severity": "high",
+        "module": "http",
+        "target": "http://127.0.0.1:62566/members/",
+        "score": 95,
+        "reason": "unencrypted HTTP remains reachable for the same service",
+        "recommended_action": "Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification."
+      },
+      {
+        "rank": 3,
+        "finding_id": "METHOD-TRACE-ADVERTISED",
+        "title": "HTTP method TRACE is advertised",
+        "severity": "high",
+        "module": "http_methods",
+        "target": "http://127.0.0.1:62566/members/",
+        "score": 91,
+        "reason": "an unnecessary HTTP method is advertised by the server",
+        "recommended_action": "Disable unnecessary HTTP methods or enforce strict authorization before use."
+      },
+      {
+        "rank": 4,
+        "finding_id": "METHOD-DELETE-ADVERTISED",
+        "title": "HTTP method DELETE is advertised",
+        "severity": "medium",
+        "module": "http_methods",
+        "target": "http://127.0.0.1:62566/members/",
+        "score": 57,
+        "reason": "medium finding reported by the http_methods module",
+        "recommended_action": "Disable unnecessary HTTP methods or enforce strict authorization before use."
+      },
+      {
+        "rank": 5,
+        "finding_id": "METHOD-PUT-ADVERTISED",
+        "title": "HTTP method PUT is advertised",
+        "severity": "medium",
+        "module": "http_methods",
+        "target": "http://127.0.0.1:62566/members/",
+        "score": 57,
+        "reason": "medium finding reported by the http_methods module",
+        "recommended_action": "Disable unnecessary HTTP methods or enforce strict authorization before use."
+      },
+      {
+        "rank": 6,
+        "finding_id": "COOKIE-SAMESITE-NONE-WITHOUT-SECURE",
+        "title": "Cookie uses SameSite=None without Secure",
+        "severity": "medium",
+        "module": "cookies",
+        "target": "http://127.0.0.1:62566/members/",
+        "score": 56,
+        "reason": "medium finding reported by the cookies module",
+        "recommended_action": "Set Secure or avoid SameSite=None if cross-site usage is not required."
+      },
+      {
+        "rank": 7,
+        "finding_id": "HEADER-CONTENT_SECURITY_POLICY-MISSING",
+        "title": "Content-Security-Policy header is missing",
+        "severity": "medium",
+        "module": "security_headers",
+        "target": "http://127.0.0.1:62566/members/",
+        "score": 55,
+        "reason": "medium finding reported by the security_headers module",
+        "recommended_action": "Define an appropriate Content-Security-Policy header for this application."
+      },
+      {
+        "rank": 8,
+        "finding_id": "COOKIE-HTTPONLY-MISSING",
+        "title": "Cookie missing HttpOnly flag",
+        "severity": "low",
+        "module": "cookies",
+        "target": "http://127.0.0.1:62566/members/",
+        "score": 37,
+        "reason": "client-side scripts may access cookies without HttpOnly",
+        "recommended_action": "Set HttpOnly for session or sensitive cookies."
+      },
+      {
+        "rank": 9,
+        "finding_id": "COOKIE-HTTPONLY-MISSING",
+        "title": "Cookie missing HttpOnly flag",
+        "severity": "low",
+        "module": "cookies",
+        "target": "http://127.0.0.1:62566/members/",
+        "score": 37,
+        "reason": "client-side scripts may access cookies without HttpOnly",
+        "recommended_action": "Set HttpOnly for session or sensitive cookies."
+      },
+      {
+        "rank": 10,
+        "finding_id": "COOKIE-SAMESITE-MISSING",
+        "title": "Cookie missing SameSite attribute",
+        "severity": "low",
+        "module": "cookies",
+        "target": "http://127.0.0.1:62566/members/",
+        "score": 31,
+        "reason": "low finding reported by the cookies module",
+        "recommended_action": "Set SameSite=Lax or SameSite=Strict unless cross-site usage is required."
       }
     ],
-    "quick_wins": [],
+    "quick_wins": [
+      {
+        "finding_id": "HTTP-NO-HTTPS-REDIRECT",
+        "title": "HTTP is not redirected to HTTPS",
+        "severity": "high",
+        "effort": "low",
+        "recommended_action": "Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification."
+      },
+      {
+        "finding_id": "HEADER-CONTENT_SECURITY_POLICY-MISSING",
+        "title": "Content-Security-Policy header is missing",
+        "severity": "medium",
+        "effort": "low",
+        "recommended_action": "Define an appropriate Content-Security-Policy header for this application."
+      },
+      {
+        "finding_id": "HEADER-CLICKJACKING-MISSING",
+        "title": "Clickjacking protection header is missing",
+        "severity": "low",
+        "effort": "low",
+        "recommended_action": "Set frame-ancestors in Content-Security-Policy or use X-Frame-Options where appropriate."
+      },
+      {
+        "finding_id": "HEADER-NOSNIFF-MISSING",
+        "title": "X-Content-Type-Options nosniff is missing",
+        "severity": "low",
+        "effort": "low",
+        "recommended_action": "Set X-Content-Type-Options: nosniff."
+      },
+      {
+        "finding_id": "HEADER-REFERRER_POLICY-MISSING",
+        "title": "Referrer-Policy header is missing",
+        "severity": "low",
+        "effort": "low",
+        "recommended_action": "Define an appropriate Referrer-Policy header for this application."
+      },
+      {
+        "finding_id": "COOKIE-HTTPONLY-MISSING",
+        "title": "Cookie missing HttpOnly flag",
+        "severity": "low",
+        "effort": "low",
+        "recommended_action": "Set HttpOnly for session or sensitive cookies."
+      },
+      {
+        "finding_id": "COOKIE-SAMESITE-MISSING",
+        "title": "Cookie missing SameSite attribute",
+        "severity": "low",
+        "effort": "low",
+        "recommended_action": "Set SameSite=Lax or SameSite=Strict unless cross-site usage is required."
+      },
+      {
+        "finding_id": "COOKIE-HTTPONLY-MISSING",
+        "title": "Cookie missing HttpOnly flag",
+        "severity": "low",
+        "effort": "low",
+        "recommended_action": "Set HttpOnly for session or sensitive cookies."
+      }
+    ],
     "remediation_plan": [
       {
         "phase": "Immediate",
         "objective": "Reduce the highest observable risk first.",
         "items": [
-          "Open TCP ports detected: Review whether each exposed service is expected, patched and covered by the authorized audit scope.",
+          "HTTP Basic Authentication over HTTP: Force HTTPS before authentication and enable HSTS after validation.",
+          "HTTP is not redirected to HTTPS: Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification.",
+          "HTTP method TRACE is advertised: Disable unnecessary HTTP methods or enforce strict authorization before use.",
+          "Cookie missing HttpOnly flag: Set HttpOnly for session or sensitive cookies.",
           "Review every open TCP port and confirm it is required for the approved scope."
         ]
       },
@@ -416,21 +3852,34 @@
         "phase": "Short term",
         "objective": "Apply low-effort hardening and validation.",
         "items": [
-          "Review medium and low hardening items if more evidence is added later."
+          "HTTP method DELETE is advertised: Disable unnecessary HTTP methods or enforce strict authorization before use.",
+          "HTTP method PUT is advertised: Disable unnecessary HTTP methods or enforce strict authorization before use.",
+          "Cookie uses SameSite=None without Secure: Set Secure or avoid SameSite=None if cross-site usage is not required.",
+          "Content-Security-Policy header is missing: Define an appropriate Content-Security-Policy header for this application.",
+          "HTTP is not redirected to HTTPS: Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification.",
+          "Clickjacking protection header is missing: Set frame-ancestors in Content-Security-Policy or use X-Frame-Options where appropriate.",
+          "X-Content-Type-Options nosniff is missing: Set X-Content-Type-Options: nosniff.",
+          "Referrer-Policy header is missing: Define an appropriate Referrer-Policy header for this application."
         ]
       },
       {
         "phase": "Planned",
         "objective": "Improve evidence quality and follow-up coverage.",
         "items": [
-          "In-scope subdomains resolved by DNS: Review these hosts and add them explicitly to the authorized scope before running deeper checks against them."
+          "Cookie missing SameSite attribute: Set SameSite=Lax or SameSite=Strict unless cross-site usage is required."
         ]
       }
     ],
     "coverage_notes": [
-      "subdomains: warning - Checked 3 candidate subdomain(s), resolved 1 in-scope host(s).",
+      "http: warning - HTTP/HTTPS reachability and redirects checked.",
+      "security_headers: warning - Security headers checked.",
+      "cookies: warning - Checked 2 cookie(s).",
+      "basic_auth: warning - HTTP authentication challenge checked.",
+      "http_methods: warning - HTTP methods advertised by OPTIONS checked.",
       "ports: warning - Checked 3 TCP port(s), found 1 open port(s).",
-      "Resolved subdomains were recorded as evidence but not scanned automatically.",
+      "fingerprinting: warning - Identified 4 technology signal(s) and checked 4 public metadata path(s).",
+      "crawler: warning - Crawled 5 page(s), discovered 9 in-scope URL(s), 9 from metadata.",
+      "HTML forms were identified passively; no form submission was performed.",
       "Open TCP ports were detected using TCP connect checks only; no payloads or banners were requested."
     ],
     "safety_notes": [

@@ -25,6 +25,12 @@ class WebConfigTests(unittest.TestCase):
                     "max_depth": "2",
                     "max_pages": "40",
                     "delay_seconds": "0.5",
+                    "use_robots_txt": False,
+                    "use_sitemap_xml": True,
+                    "use_well_known": False,
+                    "follow_sitemap_urls": False,
+                    "follow_robots_paths": True,
+                    "metadata_max_urls": "42",
                 },
                 "subdomains": {
                     "max_candidates": "12",
@@ -57,6 +63,12 @@ class WebConfigTests(unittest.TestCase):
         self.assertEqual(config.crawler.max_depth, 2)
         self.assertEqual(config.crawler.max_pages, 40)
         self.assertEqual(config.crawler.delay_seconds, 0.5)
+        self.assertFalse(config.crawler.use_robots_txt)
+        self.assertTrue(config.crawler.use_sitemap_xml)
+        self.assertFalse(config.crawler.use_well_known)
+        self.assertFalse(config.crawler.follow_sitemap_urls)
+        self.assertTrue(config.crawler.follow_robots_paths)
+        self.assertEqual(config.crawler.metadata_max_urls, 42)
         self.assertEqual(config.subdomains.max_candidates, 12)
         self.assertEqual(config.subdomains.timeout_seconds, 3)
         self.assertEqual(config.ports.ports, [80, 443, 8080])
@@ -74,6 +86,17 @@ class WebConfigTests(unittest.TestCase):
                     "target": "https://example.com",
                     "crawler": {
                         "max_pages": "1000",
+                    },
+                }
+            )
+
+    def test_build_config_rejects_excessive_metadata_limit(self):
+        with self.assertRaises(ValueError):
+            build_config_from_gui_payload(
+                {
+                    "target": "https://example.com",
+                    "crawler": {
+                        "metadata_max_urls": "1000",
                     },
                 }
             )
@@ -141,6 +164,23 @@ class WebConfigTests(unittest.TestCase):
         self.assertIn("Evidencias ZIP", html)
         self.assertIn('postJson("/api/evidence"', javascript)
         self.assertIn("downloadEvidenceButton.disabled = false", javascript)
+
+    def test_gui_exposes_advanced_crawler_controls(self):
+        root = Path(__file__).resolve().parents[1]
+        html = (root / "src" / "ai_web_auditor" / "web" / "templates" / "index.html").read_text(encoding="utf-8")
+        javascript = (root / "src" / "ai_web_auditor" / "web" / "static" / "app.js").read_text(encoding="utf-8")
+
+        for element_id in ["use-robots", "use-sitemap", "use-well-known", "follow-sitemap", "follow-robots", "metadata-limit"]:
+            self.assertIn(f'id="{element_id}"', html)
+        for payload_key in [
+            "use_robots_txt",
+            "use_sitemap_xml",
+            "use_well_known",
+            "follow_sitemap_urls",
+            "follow_robots_paths",
+            "metadata_max_urls",
+        ]:
+            self.assertIn(payload_key, javascript)
 
 
 if __name__ == "__main__":

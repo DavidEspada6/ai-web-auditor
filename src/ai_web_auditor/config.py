@@ -30,7 +30,7 @@ class ScopeConfig:
 class HTTPConfig:
     timeout_seconds: float = 10.0
     max_redirects: int = 10
-    user_agent: str = "AI-Web-Auditor/0.17"
+    user_agent: str = "AI-Web-Auditor/0.18"
     verify_tls: bool = True
     check_http_counterpart: bool = True
 
@@ -89,6 +89,24 @@ class CrawlerConfig:
     delay_seconds: float = 0.0
     max_body_bytes: int = 262144
     include_query_strings: bool = False
+    use_robots_txt: bool = True
+    use_sitemap_xml: bool = True
+    use_well_known: bool = True
+    follow_sitemap_urls: bool = True
+    follow_robots_paths: bool = False
+    metadata_max_urls: int = 100
+    well_known_paths: list[str] = field(
+        default_factory=lambda: [
+            "/.well-known/security.txt",
+            "/security.txt",
+            "/.well-known/change-password",
+            "/.well-known/openid-configuration",
+            "/.well-known/oauth-authorization-server",
+            "/.well-known/webfinger",
+            "/.well-known/assetlinks.json",
+            "/.well-known/apple-app-site-association",
+        ]
+    )
     ignored_extensions: list[str] = field(
         default_factory=lambda: [
             ".7z",

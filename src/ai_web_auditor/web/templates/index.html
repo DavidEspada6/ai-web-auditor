@@ -115,7 +115,7 @@
               <label data-help="Resuelve una lista limitada de subdominios candidatos dentro de scope. No escanea automaticamente los hosts encontrados."><input data-module="subdomains" type="checkbox"><span>Subdominios DNS</span></label>
               <label data-help="Comprueba conectividad TCP contra una lista corta de puertos del host objetivo. No envia payloads ni solicita banners."><input data-module="ports" type="checkbox"><span>Puertos TCP</span></label>
               <label data-help="Identifica tecnologias por cabeceras, cookies, HTML inicial y ficheros publicos como robots.txt o security.txt."><input data-module="fingerprinting" type="checkbox" checked><span>Fingerprinting</span></label>
-              <label data-help="Recorre enlaces internos dentro del scope con limites de profundidad y paginas. No envia formularios."><input data-module="crawler" type="checkbox" checked><span>Crawler</span></label>
+              <label data-help="Recorre enlaces internos dentro del scope con limites de profundidad y paginas. Tambien puede leer robots.txt, sitemap.xml y .well-known sin enviar formularios."><input data-module="crawler" type="checkbox" checked><span>Crawler</span></label>
             </div>
           </section>
 
@@ -162,6 +162,21 @@
             <label class="field" data-help="Pausa entre peticiones del crawler. Sube este valor si quieres una auditoria mas lenta y conservadora.">
               <span>Pausa crawler</span>
               <input id="delay" type="number" min="0" max="10" step="0.1" value="0">
+            </label>
+          </section>
+
+          <section class="module-section">
+            <h2>Crawler avanzado</h2>
+            <div class="toggles">
+              <label data-help="Lee /robots.txt para registrar Allow, Disallow y sitemaps declarados. Las rutas se guardan como evidencia de enumeracion."><input id="use-robots" type="checkbox" checked><span>robots.txt</span></label>
+              <label data-help="Busca /sitemap.xml y sitemaps referenciados por robots.txt para descubrir URLs publicadas por el propio sitio."><input id="use-sitemap" type="checkbox" checked><span>Sitemap</span></label>
+              <label data-help="Comprueba endpoints publicos habituales como security.txt, OpenID metadata, webfinger o change-password."><input id="use-well-known" type="checkbox" checked><span>.well-known</span></label>
+              <label data-help="Permite visitar URLs encontradas en sitemap si estan dentro del scope y no tienen extensiones ignoradas."><input id="follow-sitemap" type="checkbox" checked><span>Visitar sitemap</span></label>
+              <label data-help="Visita tambien rutas Allow/Disallow de robots.txt si estan dentro del scope. Mantener desactivado evita tocar zonas sensibles solo porque aparecen en robots."><input id="follow-robots" type="checkbox"><span>Visitar robots</span></label>
+            </div>
+            <label class="field" data-help="Numero maximo de URLs incorporadas desde robots, sitemaps y .well-known antes de cortar la enumeracion por metadatos.">
+              <span>URLs metadatos</span>
+              <input id="metadata-limit" type="number" min="1" max="500" step="1" value="100">
             </label>
           </section>
 

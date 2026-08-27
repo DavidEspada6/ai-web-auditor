@@ -106,6 +106,116 @@ class CrawlHandler(BaseHTTPRequestHandler):
         return
 
 
+class MetadataCrawlerHandler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        host = self.headers.get("Host", "127.0.0.1")
+        base_url = f"http://{host}"
+
+        if self.path == "/":
+            body = b"""
+            <html>
+              <head><title>Demo</title></head>
+              <body>
+                <a href="/login">Login</a>
+                <a href="/docs">Docs</a>
+              </body>
+            </html>
+            """
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.end_headers()
+            self.wfile.write(body)
+            return
+
+        if self.path == "/robots.txt":
+            body = b"User-agent: *\nDisallow: /admin/\nAllow: /public/\nSitemap: /sitemap-index.xml\n"
+            self.send_response(200)
+            self.send_header("Content-Type", "text/plain")
+            self.end_headers()
+            self.wfile.write(body)
+            return
+
+        if self.path == "/sitemap-index.xml":
+            body = b"""<?xml version="1.0" encoding="UTF-8"?>
+            <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+              <sitemap><loc>/sitemap-pages.xml</loc></sitemap>
+            </sitemapindex>
+            """
+            self.send_response(200)
+            self.send_header("Content-Type", "application/xml")
+            self.end_headers()
+            self.wfile.write(body)
+            return
+
+        if self.path == "/sitemap-pages.xml":
+            body = f"""<?xml version="1.0" encoding="UTF-8"?>
+            <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+              <url><loc>{base_url}/api/users</loc></url>
+              <url><loc>{base_url}/reset-password</loc></url>
+              <url><loc>{base_url}/assets/app.js</loc></url>
+            </urlset>
+            """.encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/xml")
+            self.end_headers()
+            self.wfile.write(body)
+            return
+
+        if self.path == "/.well-known/security.txt":
+            self.send_response(200)
+            self.send_header("Content-Type", "text/plain")
+            self.end_headers()
+            self.wfile.write(b"Contact: mailto:security@example.test\nPolicy: https://example.test/security\n")
+            return
+
+        if self.path == "/.well-known/openid-configuration":
+            body = f"""{{
+              "issuer": "{base_url}",
+              "authorization_endpoint": "{base_url}/oauth/authorize",
+              "token_endpoint": "{base_url}/oauth/token"
+            }}""".encode()
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(body)
+            return
+
+        if self.path == "/login":
+            body = b'<html><body><form action="/session" method="post"><input name="user"><input type="password" name="password"></form></body></html>'
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html")
+            self.end_headers()
+            self.wfile.write(body)
+            return
+
+        if self.path == "/api/users":
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(b"[]")
+            return
+
+        if self.path in {"/reset-password", "/docs"}:
+            self.send_response(200)
+            self.send_header("Content-Type", "text/html")
+            self.end_headers()
+            self.wfile.write(b"<html><body>ok</body></html>")
+            return
+
+        self.send_response(404)
+        self.send_header("Content-Type", "text/plain")
+        self.end_headers()
+        self.wfile.write(b"not found")
+
+    def do_OPTIONS(self):
+        self.send_response(204)
+        self.send_header("Allow", "GET, OPTIONS")
+        self.end_headers()
+
+    def log_message(self, *args):
+        return
+
+
 class FingerprintHandler(BaseHTTPRequestHandler):
     server_version = "nginx/1.24.0"
     sys_version = ""
@@ -255,6 +365,43 @@ class LocalEngineTests(unittest.TestCase):
         self.assertIn("https://outside.example/path", artifacts["out_of_scope_urls"])
         self.assertEqual(artifacts["ignored_urls_count"], 1)
         self.assertEqual(request_hosts, {"127.0.0.1"})
+
+    def test_crawler_collects_safe_metadata_and_classifies_routes(self):
+        server = HTTPServer(("127.0.0.1", 0), MetadataCrawlerHandler)
+        thread = threading.Thread(target=server.serve_forever, daemon=True)
+        thread.start()
+        self.addCleanup(server.server_close)
+        self.addCleanup(server.shutdown)
+
+        config = AuditConfig()
+        config.scope.allow_private_networks = True
+        config.scope.resolve_dns = False
+        config.crawler.max_depth = 1
+        config.crawler.max_pages = 12
+
+        base_url = f"http://127.0.0.1:{server.server_port}"
+        result = run_scan(base_url, config)
+        crawler = next(module for module in result.modules if module.name == "crawler")
+        artifacts = crawler.artifacts
+        metadata = artifacts["metadata"]
+        classified = {item["url"]: item for item in artifacts["route_classifications"]}
+        inventory_urls = {item["url"]: item for item in result.to_dict()["inventory"]["urls"]}
+
+        self.assertTrue(metadata["robots"]["present"])
+        self.assertTrue(any(item["present"] for item in metadata["sitemaps"]))
+        self.assertTrue(any(item["path"] == "/.well-known/security.txt" and item["present"] for item in metadata["well_known"]))
+        self.assertIn(f"{base_url}/api/users", artifacts["metadata_discovered_urls"])
+        self.assertIn(f"{base_url}/reset-password", artifacts["metadata_discovered_urls"])
+        self.assertIn(f"{base_url}/admin/", artifacts["metadata_discovered_urls"])
+        self.assertNotIn(f"{base_url}/assets/app.js", artifacts["metadata_discovered_urls"])
+        self.assertNotIn(f"{base_url}/admin/", artifacts["fetched_urls"])
+        self.assertIn("api", classified[f"{base_url}/api/users"]["types"])
+        self.assertIn("password_reset", classified[f"{base_url}/reset-password"]["types"])
+        self.assertIn("admin", classified[f"{base_url}/admin/"]["types"])
+        self.assertIn("login", inventory_urls[f"{base_url}/login"]["route_types"])
+        self.assertIn("state_changing_candidate", inventory_urls[f"{base_url}/session"]["route_types"])
+        self.assertIn("sitemap", inventory_urls[f"{base_url}/api/users"]["sources"])
+        self.assertIn("robots_disallow", inventory_urls[f"{base_url}/admin/"]["sources"])
 
     def test_fingerprinting_detects_technologies_and_public_files(self):
         server = HTTPServer(("127.0.0.1", 0), FingerprintHandler)

@@ -6,15 +6,7 @@ from io import StringIO
 from typing import Any
 from urllib.parse import urlsplit, urlunsplit
 
-
-INTERESTING_PATH_RULES: tuple[tuple[str, tuple[str, ...]], ...] = (
-    ("admin_path", ("/admin", "/administrator", "/wp-admin", "/cpanel")),
-    ("login_path", ("/login", "/signin", "/sign-in", "/auth", "/account/login")),
-    ("members_area", ("/members", "/member", "/clientes", "/customer")),
-    ("api_path", ("/api", "/graphql", "/swagger", "/openapi")),
-    ("private_path", ("/private", "/internal", "/dashboard", "/panel")),
-    ("sensitive_file", ("/.env", "/config", "/backup", "/dump", "/db", "/database")),
-)
+from .routes import classify_url, interesting_reasons, route_types
 
 CSV_FIELDS = [
     "url",
@@ -27,6 +19,7 @@ CSV_FIELDS = [
     "forms_found",
     "interesting",
     "reasons",
+    "route_types",
     "sources",
     "title",
     "error",
@@ -78,7 +71,7 @@ def build_inventory_from_scan(scan_data: dict[str, Any]) -> dict[str, Any]:
                 forms.append(normalized)
                 action_url = _clean_text(normalized.get("action"))
                 if action_url:
-                    _add_url(entries, source_index, method_index, action_url, source="form_action")
+                    _add_url(entries, source_index, method_index, action_url, source="form_action", method=_clean_text(normalized.get("method")).upper())
                 if entry is not None:
                     entry["forms_found"] = max(int(entry.get("forms_found") or 0), len(forms_for_page(forms, page_url)))
 
@@ -86,6 +79,12 @@ def build_inventory_from_scan(scan_data: dict[str, Any]) -> dict[str, Any]:
             _add_url(entries, source_index, method_index, url, source="crawler_fetched", fetched=True, method="GET")
         for url in _string_list(artifacts.get("discovered_urls")):
             _add_url(entries, source_index, method_index, url, source="crawler_discovered")
+        for url in _string_list(artifacts.get("metadata_discovered_urls")):
+            _add_url(entries, source_index, method_index, url, source="metadata_discovered")
+        for item in _dict_list(artifacts.get("url_sources")):
+            url = _clean_text(item.get("url"))
+            for source in _string_list(item.get("sources")):
+                _add_url(entries, source_index, method_index, url, source=source)
         for url in _string_list(artifacts.get("out_of_scope_urls")):
             _add_url(entries, source_index, method_index, url, source="out_of_scope")
         for url in _string_list(artifacts.get("excluded_urls")):
@@ -181,6 +180,8 @@ def _add_url(
             "forms_found": 0,
             "interesting": False,
             "reasons": [],
+            "route_types": [],
+            "route_classifications": [],
             "sources": [],
             "source": "",
             "title": "",
@@ -217,12 +218,25 @@ def _finalize_entry(
     url = _clean_text(entry.get("url"))
     sources = sorted(source_index.get(url, set()))
     methods = sorted(method_index.get(url, set()))
-    reasons = _interesting_reasons(url, int(entry.get("forms_found") or 0))
+    classifications = classify_url(
+        url,
+        forms_found=int(entry.get("forms_found") or 0),
+        content_type=_clean_text(entry.get("content_type")),
+        methods=methods,
+    )
+    reasons = interesting_reasons(
+        url,
+        forms_found=int(entry.get("forms_found") or 0),
+        content_type=_clean_text(entry.get("content_type")),
+        methods=methods,
+    )
     output = dict(entry)
     output["sources"] = sources
     output["source"] = ", ".join(sources)
     output["methods"] = methods
     output["reasons"] = reasons
+    output["route_types"] = route_types(classifications)
+    output["route_classifications"] = classifications
     output["interesting"] = bool(reasons)
     return output
 
@@ -249,18 +263,6 @@ def _normalize_form(form: dict[str, Any], page_url: str) -> dict[str, Any]:
         "csrf_candidates": sorted(set(item for item in csrf_candidates if item)),
         "fields": fields[:25],
     }
-
-
-def _interesting_reasons(url: str, forms_found: int) -> list[str]:
-    parsed = urlsplit(url)
-    target = f"{parsed.path or '/'}?{parsed.query}".lower()
-    reasons: list[str] = []
-    for reason, markers in INTERESTING_PATH_RULES:
-        if any(marker in target for marker in markers):
-            reasons.append(reason)
-    if forms_found > 0:
-        reasons.append("form_detected")
-    return reasons
 
 
 def _inventory_sort_key(item: dict[str, Any]) -> tuple[int, str]:

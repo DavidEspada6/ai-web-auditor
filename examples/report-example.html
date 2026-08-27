@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Web Audit Report - example.com</title>
+<title>AI Web Auditor Lab Report</title>
 <style>
 :root {
   color-scheme: light;
@@ -188,26 +188,29 @@ dd {
 <main class="report">
 <section class="cover">
 <p class="label">AI Web Auditor</p>
-<h1>Web Audit Report - example.com</h1>
-<p>The scan generated 2 finding(s): 0 critical, 0 high, 0 medium, 0 low and 2 informational.</p>
+<h1>AI Web Auditor Lab Report</h1>
+<p>The scan generated 19 finding(s): 0 critical, 3 high, 4 medium, 6 low and 6 informational.</p>
 <div class="cover-grid">
-<div><span>Generated</span><strong>2026-08-27T02:25:24Z</strong></div>
-<div><span>Report generator</span><strong>ai-web-auditor 0.17.0</strong></div>
-<div><span>Scan version</span><strong>0.17.0</strong></div>
+<div><span>Generated</span><strong>2026-08-27T04:32:20Z</strong></div>
+<div><span>Report generator</span><strong>ai-web-auditor 0.18.0</strong></div>
+<div><span>Scan version</span><strong>0.18.0</strong></div>
 <div><span>Scan status</span><strong>completed</strong></div>
-<div><span>Overall risk</span><strong>informational</strong></div>
-<div><span>Risk score</span><strong>13/100</strong></div>
-<div><span>Target</span><strong>https://example.com/</strong></div>
+<div><span>Overall risk</span><strong>high</strong></div>
+<div><span>Risk score</span><strong>89/100</strong></div>
+<div><span>Target</span><strong>http://127.0.0.1:62566/members/</strong></div>
 </div>
 </section>
-
+<section class="section">
+<h2>Engagement</h2>
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Client</td><td>Practica Evolve</td></tr><tr><td>Auditor</td><td>David</td></tr><tr><td>Engagement</td><td>Demo v0.18.0</td></tr><tr><td>Scope summary</td><td>http://127.0.0.1:62566/members/</td></tr><tr><td>Notes</td><td>Laboratorio local controlado en localhost.</td></tr></tbody></table>
+</section>
 <section class="section">
 <h2>Target</h2>
-<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Original URL</td><td>https://example.com</td></tr><tr><td>Normalized URL</td><td>https://example.com/</td></tr><tr><td>Host</td><td>example.com</td></tr><tr><td>Scheme</td><td>https</td></tr><tr><td>Port</td><td>443</td></tr></tbody></table>
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Original URL</td><td>http://127.0.0.1:62566/members/</td></tr><tr><td>Normalized URL</td><td>http://127.0.0.1:62566/members/</td></tr><tr><td>Host</td><td>127.0.0.1</td></tr><tr><td>Scheme</td><td>http</td></tr><tr><td>Port</td><td>62566</td></tr></tbody></table>
 </section>
 <section class="section">
 <h2>Executive Summary</h2>
-<p>The scan generated 2 finding(s): 0 critical, 0 high, 0 medium, 0 low and 2 informational.</p>
+<p>The scan generated 19 finding(s): 0 critical, 3 high, 4 medium, 6 low and 6 informational.</p>
 <p class="risk">Overall risk: <strong>unknown</strong></p>
 <p>Review each finding against the authorized scope and business context.</p>
 </section>
@@ -215,53 +218,303 @@ dd {
 <h2>Severity Summary</h2>
 <div class="severity-grid">
 <div class="severity-card critical"><span>CRITICAL</span><strong>0</strong></div>
-<div class="severity-card high"><span>HIGH</span><strong>0</strong></div>
-<div class="severity-card medium"><span>MEDIUM</span><strong>0</strong></div>
-<div class="severity-card low"><span>LOW</span><strong>0</strong></div>
-<div class="severity-card info"><span>INFO</span><strong>2</strong></div>
+<div class="severity-card high"><span>HIGH</span><strong>3</strong></div>
+<div class="severity-card medium"><span>MEDIUM</span><strong>4</strong></div>
+<div class="severity-card low"><span>LOW</span><strong>6</strong></div>
+<div class="severity-card info"><span>INFO</span><strong>6</strong></div>
 </div>
 </section>
 <section class="section">
 <h2>Risk Assessment</h2>
 <div class="severity-grid">
-<div class="severity-card"><span>Risk level</span><strong>INFORMATIONAL</strong></div>
-<div class="severity-card"><span>Risk score</span><strong>13/100</strong></div>
-<div class="severity-card"><span>Priorities</span><strong>2</strong></div>
-<div class="severity-card"><span>Quick wins</span><strong>0</strong></div>
+<div class="severity-card"><span>Risk level</span><strong>HIGH</strong></div>
+<div class="severity-card"><span>Risk score</span><strong>89/100</strong></div>
+<div class="severity-card"><span>Priorities</span><strong>10</strong></div>
+<div class="severity-card"><span>Quick wins</span><strong>8</strong></div>
 <div class="severity-card"><span>Open ports</span><strong>1</strong></div>
 </div>
 <h3>Coverage</h3>
-<table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody><tr><td>Modules run</td><td>4</td></tr><tr><td>Module warnings</td><td>2</td></tr><tr><td>Module errors</td><td>0</td></tr><tr><td>URLs</td><td>2</td></tr><tr><td>Forms</td><td>0</td></tr><tr><td>Resolved subdomains</td><td>1</td></tr><tr><td>Open TCP ports</td><td>1</td></tr></tbody></table>
+<table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody><tr><td>Modules run</td><td>9</td></tr><tr><td>Module warnings</td><td>8</td></tr><tr><td>Module errors</td><td>0</td></tr><tr><td>URLs</td><td>23</td></tr><tr><td>Forms</td><td>2</td></tr><tr><td>Resolved subdomains</td><td>0</td></tr><tr><td>Open TCP ports</td><td>1</td></tr></tbody></table>
 <h3>Priorities</h3>
-<table><thead><tr><th>Rank</th><th>Severity</th><th>Finding</th><th>Reason</th><th>Recommended action</th></tr></thead><tbody><tr><td>1</td><td>INFO</td><td>PORTS-OPEN-TCP-PORTS: Open TCP ports detected</td><td>additional exposed services increase the review surface</td><td>Review whether each exposed service is expected, patched and covered by the authorized audit scope.</td></tr><tr><td>2</td><td>INFO</td><td>SUBDOMAIN-DISCOVERY-RESOLVED: In-scope subdomains resolved by DNS</td><td>info finding reported by the subdomains module</td><td>Review these hosts and add them explicitly to the authorized scope before running deeper checks against them.</td></tr></tbody></table>
+<table><thead><tr><th>Rank</th><th>Severity</th><th>Finding</th><th>Reason</th><th>Recommended action</th></tr></thead><tbody><tr><td>1</td><td>HIGH</td><td>AUTH-BASIC-OVER-HTTP: HTTP Basic Authentication over HTTP</td><td>credentials may be exposed before transport security is enforced</td><td>Force HTTPS before authentication and enable HSTS after validation.</td></tr><tr><td>2</td><td>HIGH</td><td>HTTP-NO-HTTPS-REDIRECT: HTTP is not redirected to HTTPS</td><td>unencrypted HTTP remains reachable for the same service</td><td>Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification.</td></tr><tr><td>3</td><td>HIGH</td><td>METHOD-TRACE-ADVERTISED: HTTP method TRACE is advertised</td><td>an unnecessary HTTP method is advertised by the server</td><td>Disable unnecessary HTTP methods or enforce strict authorization before use.</td></tr><tr><td>4</td><td>MEDIUM</td><td>METHOD-DELETE-ADVERTISED: HTTP method DELETE is advertised</td><td>medium finding reported by the http_methods module</td><td>Disable unnecessary HTTP methods or enforce strict authorization before use.</td></tr><tr><td>5</td><td>MEDIUM</td><td>METHOD-PUT-ADVERTISED: HTTP method PUT is advertised</td><td>medium finding reported by the http_methods module</td><td>Disable unnecessary HTTP methods or enforce strict authorization before use.</td></tr><tr><td>6</td><td>MEDIUM</td><td>COOKIE-SAMESITE-NONE-WITHOUT-SECURE: Cookie uses SameSite=None without Secure</td><td>medium finding reported by the cookies module</td><td>Set Secure or avoid SameSite=None if cross-site usage is not required.</td></tr><tr><td>7</td><td>MEDIUM</td><td>HEADER-CONTENT_SECURITY_POLICY-MISSING: Content-Security-Policy header is missing</td><td>medium finding reported by the security_headers module</td><td>Define an appropriate Content-Security-Policy header for this application.</td></tr><tr><td>8</td><td>LOW</td><td>COOKIE-HTTPONLY-MISSING: Cookie missing HttpOnly flag</td><td>client-side scripts may access cookies without HttpOnly</td><td>Set HttpOnly for session or sensitive cookies.</td></tr><tr><td>9</td><td>LOW</td><td>COOKIE-HTTPONLY-MISSING: Cookie missing HttpOnly flag</td><td>client-side scripts may access cookies without HttpOnly</td><td>Set HttpOnly for session or sensitive cookies.</td></tr><tr><td>10</td><td>LOW</td><td>COOKIE-SAMESITE-MISSING: Cookie missing SameSite attribute</td><td>low finding reported by the cookies module</td><td>Set SameSite=Lax or SameSite=Strict unless cross-site usage is required.</td></tr></tbody></table>
+<h3>Quick Wins</h3>
+<ul><li>HTTP is not redirected to HTTPS: Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification.</li><li>Content-Security-Policy header is missing: Define an appropriate Content-Security-Policy header for this application.</li><li>Clickjacking protection header is missing: Set frame-ancestors in Content-Security-Policy or use X-Frame-Options where appropriate.</li><li>X-Content-Type-Options nosniff is missing: Set X-Content-Type-Options: nosniff.</li><li>Referrer-Policy header is missing: Define an appropriate Referrer-Policy header for this application.</li><li>Cookie missing HttpOnly flag: Set HttpOnly for session or sensitive cookies.</li><li>Cookie missing SameSite attribute: Set SameSite=Lax or SameSite=Strict unless cross-site usage is required.</li><li>Cookie missing HttpOnly flag: Set HttpOnly for session or sensitive cookies.</li></ul>
 <h3>Remediation Plan</h3>
 <article class="finding-card">
 <h4>Immediate</h4>
 <p>Reduce the highest observable risk first.</p>
-<ul><li>Open TCP ports detected: Review whether each exposed service is expected, patched and covered by the authorized audit scope.</li><li>Review every open TCP port and confirm it is required for the approved scope.</li></ul>
+<ul><li>HTTP Basic Authentication over HTTP: Force HTTPS before authentication and enable HSTS after validation.</li><li>HTTP is not redirected to HTTPS: Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification.</li><li>HTTP method TRACE is advertised: Disable unnecessary HTTP methods or enforce strict authorization before use.</li><li>Cookie missing HttpOnly flag: Set HttpOnly for session or sensitive cookies.</li><li>Review every open TCP port and confirm it is required for the approved scope.</li></ul>
 </article>
 <article class="finding-card">
 <h4>Short term</h4>
 <p>Apply low-effort hardening and validation.</p>
-<ul><li>Review medium and low hardening items if more evidence is added later.</li></ul>
+<ul><li>HTTP method DELETE is advertised: Disable unnecessary HTTP methods or enforce strict authorization before use.</li><li>HTTP method PUT is advertised: Disable unnecessary HTTP methods or enforce strict authorization before use.</li><li>Cookie uses SameSite=None without Secure: Set Secure or avoid SameSite=None if cross-site usage is not required.</li><li>Content-Security-Policy header is missing: Define an appropriate Content-Security-Policy header for this application.</li><li>HTTP is not redirected to HTTPS: Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification.</li><li>Clickjacking protection header is missing: Set frame-ancestors in Content-Security-Policy or use X-Frame-Options where appropriate.</li><li>X-Content-Type-Options nosniff is missing: Set X-Content-Type-Options: nosniff.</li><li>Referrer-Policy header is missing: Define an appropriate Referrer-Policy header for this application.</li></ul>
 </article>
 <article class="finding-card">
 <h4>Planned</h4>
 <p>Improve evidence quality and follow-up coverage.</p>
-<ul><li>In-scope subdomains resolved by DNS: Review these hosts and add them explicitly to the authorized scope before running deeper checks against them.</li></ul>
+<ul><li>Cookie missing SameSite attribute: Set SameSite=Lax or SameSite=Strict unless cross-site usage is required.</li></ul>
 </article>
 <h3>Coverage Notes</h3>
-<ul><li>subdomains: warning - Checked 3 candidate subdomain(s), resolved 1 in-scope host(s).</li><li>ports: warning - Checked 3 TCP port(s), found 1 open port(s).</li><li>Resolved subdomains were recorded as evidence but not scanned automatically.</li><li>Open TCP ports were detected using TCP connect checks only; no payloads or banners were requested.</li></ul>
+<ul><li>http: warning - HTTP/HTTPS reachability and redirects checked.</li><li>security_headers: warning - Security headers checked.</li><li>cookies: warning - Checked 2 cookie(s).</li><li>basic_auth: warning - HTTP authentication challenge checked.</li><li>http_methods: warning - HTTP methods advertised by OPTIONS checked.</li><li>ports: warning - Checked 3 TCP port(s), found 1 open port(s).</li><li>fingerprinting: warning - Identified 4 technology signal(s) and checked 4 public metadata path(s).</li><li>crawler: warning - Crawled 5 page(s), discovered 9 in-scope URL(s), 9 from metadata.</li><li>HTML forms were identified passively; no form submission was performed.</li><li>Open TCP ports were detected using TCP connect checks only; no payloads or banners were requested.</li></ul>
 <h3>Safety Notes</h3>
 <ul><li>This assessment is generated from existing non-intrusive scan evidence only.</li><li>No exploitation, brute force, fuzzing or destructive validation was performed.</li><li>Risk should be reviewed against the authorized scope and business context.</li></ul>
 </section>
 <section class="section">
 <h2>Module Summary</h2>
-<table><thead><tr><th>Module</th><th>Status</th><th>Summary</th></tr></thead><tbody><tr><td>fingerprinting</td><td>passed</td><td>Identified 0 technology signal(s) and checked 4 public metadata path(s).</td></tr><tr><td>crawler</td><td>passed</td><td>Crawled 1 page(s), discovered 2 in-scope URL(s).</td></tr><tr><td>subdomains</td><td>warning</td><td>Checked 3 candidate subdomain(s), resolved 1 in-scope host(s).</td></tr><tr><td>ports</td><td>warning</td><td>Checked 3 TCP port(s), found 1 open port(s).</td></tr></tbody></table>
+<table><thead><tr><th>Module</th><th>Status</th><th>Summary</th></tr></thead><tbody><tr><td>scope</td><td>passed</td><td>Target URL validated and inside configured scope.</td></tr><tr><td>http</td><td>warning</td><td>HTTP/HTTPS reachability and redirects checked.</td></tr><tr><td>security_headers</td><td>warning</td><td>Security headers checked.</td></tr><tr><td>cookies</td><td>warning</td><td>Checked 2 cookie(s).</td></tr><tr><td>basic_auth</td><td>warning</td><td>HTTP authentication challenge checked.</td></tr><tr><td>http_methods</td><td>warning</td><td>HTTP methods advertised by OPTIONS checked.</td></tr><tr><td>ports</td><td>warning</td><td>Checked 3 TCP port(s), found 1 open port(s).</td></tr><tr><td>fingerprinting</td><td>warning</td><td>Identified 4 technology signal(s) and checked 4 public metadata path(s).</td></tr><tr><td>crawler</td><td>warning</td><td>Crawled 5 page(s), discovered 9 in-scope URL(s), 9 from metadata.</td></tr></tbody></table>
 </section>
 <section class="section">
 <h2>Findings</h2>
 <div class="finding-stack">
+<article class="finding-card">
+<span class="badge high">HIGH</span>
+<h3>HTTP Basic Authentication over HTTP</h3>
+<dl class="finding-meta">
+<div><dt>ID</dt><dd>AUTH-BASIC-OVER-HTTP</dd></div>
+<div><dt>Module</dt><dd>basic_auth</dd></div>
+<div><dt>Category</dt><dd>authentication</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:62566/members/</dd></div>
+</dl>
+<p>The server requests Basic Authentication over unencrypted HTTP.</p>
+<p><strong>Recommendation:</strong> Force HTTPS before authentication and enable HSTS after validation.</p>
+<h4>Evidence</h4>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>status_code</td><td>401</td><td>unknown</td></tr><tr><td>www-authenticate</td><td>Basic realm=&quot;AI Web Auditor Lab&quot;</td><td>unknown</td></tr></tbody></table>
+</article>
+<article class="finding-card">
+<span class="badge high">HIGH</span>
+<h3>HTTP is not redirected to HTTPS</h3>
+<dl class="finding-meta">
+<div><dt>ID</dt><dd>HTTP-NO-HTTPS-REDIRECT</dd></div>
+<div><dt>Module</dt><dd>http</dd></div>
+<div><dt>Category</dt><dd>transport-security</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:62566/members/</dd></div>
+</dl>
+<p>The requested HTTP URL remains available without being upgraded to HTTPS.</p>
+<p><strong>Recommendation:</strong> Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification.</p>
+<h4>Evidence</h4>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>initial_url</td><td>http://127.0.0.1:62566/members/</td><td>unknown</td></tr><tr><td>final_url</td><td>http://127.0.0.1:62566/members/</td><td>unknown</td></tr><tr><td>status_code</td><td>401</td><td>unknown</td></tr></tbody></table>
+</article>
+<article class="finding-card">
+<span class="badge high">HIGH</span>
+<h3>HTTP method TRACE is advertised</h3>
+<dl class="finding-meta">
+<div><dt>ID</dt><dd>METHOD-TRACE-ADVERTISED</dd></div>
+<div><dt>Module</dt><dd>http_methods</dd></div>
+<div><dt>Category</dt><dd>http-methods</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:62566/members/</dd></div>
+</dl>
+<p>TRACE can expose request data and is rarely needed.</p>
+<p><strong>Recommendation:</strong> Disable unnecessary HTTP methods or enforce strict authorization before use.</p>
+<h4>Evidence</h4>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>allow</td><td>GET, POST, OPTIONS, PUT, DELETE, TRACE</td><td>unknown</td></tr><tr><td>access-control-allow-methods</td><td>GET, POST, OPTIONS, PUT, DELETE, TRACE</td><td>unknown</td></tr></tbody></table>
+</article>
+<article class="finding-card">
+<span class="badge medium">MEDIUM</span>
+<h3>Cookie uses SameSite=None without Secure</h3>
+<dl class="finding-meta">
+<div><dt>ID</dt><dd>COOKIE-SAMESITE-NONE-WITHOUT-SECURE</dd></div>
+<div><dt>Module</dt><dd>cookies</dd></div>
+<div><dt>Category</dt><dd>cookies</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:62566/members/</dd></div>
+</dl>
+<p>SameSite=None cookies should also use Secure.</p>
+<p><strong>Recommendation:</strong> Set Secure or avoid SameSite=None if cross-site usage is not required.</p>
+<h4>Evidence</h4>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>cookie</td><td>tracking_id</td><td>unknown</td></tr></tbody></table>
+</article>
+<article class="finding-card">
+<span class="badge medium">MEDIUM</span>
+<h3>Content-Security-Policy header is missing</h3>
+<dl class="finding-meta">
+<div><dt>ID</dt><dd>HEADER-CONTENT_SECURITY_POLICY-MISSING</dd></div>
+<div><dt>Module</dt><dd>security_headers</dd></div>
+<div><dt>Category</dt><dd>security-headers</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:62566/members/</dd></div>
+</dl>
+<p>The response does not include the Content-Security-Policy header.</p>
+<p><strong>Recommendation:</strong> Define an appropriate Content-Security-Policy header for this application.</p>
+
+</article>
+<article class="finding-card">
+<span class="badge medium">MEDIUM</span>
+<h3>HTTP method DELETE is advertised</h3>
+<dl class="finding-meta">
+<div><dt>ID</dt><dd>METHOD-DELETE-ADVERTISED</dd></div>
+<div><dt>Module</dt><dd>http_methods</dd></div>
+<div><dt>Category</dt><dd>http-methods</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:62566/members/</dd></div>
+</dl>
+<p>DELETE may allow destructive actions if authorization is weak.</p>
+<p><strong>Recommendation:</strong> Disable unnecessary HTTP methods or enforce strict authorization before use.</p>
+<h4>Evidence</h4>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>allow</td><td>GET, POST, OPTIONS, PUT, DELETE, TRACE</td><td>unknown</td></tr><tr><td>access-control-allow-methods</td><td>GET, POST, OPTIONS, PUT, DELETE, TRACE</td><td>unknown</td></tr></tbody></table>
+</article>
+<article class="finding-card">
+<span class="badge medium">MEDIUM</span>
+<h3>HTTP method PUT is advertised</h3>
+<dl class="finding-meta">
+<div><dt>ID</dt><dd>METHOD-PUT-ADVERTISED</dd></div>
+<div><dt>Module</dt><dd>http_methods</dd></div>
+<div><dt>Category</dt><dd>http-methods</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:62566/members/</dd></div>
+</dl>
+<p>PUT may allow content upload if authorization is weak.</p>
+<p><strong>Recommendation:</strong> Disable unnecessary HTTP methods or enforce strict authorization before use.</p>
+<h4>Evidence</h4>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>allow</td><td>GET, POST, OPTIONS, PUT, DELETE, TRACE</td><td>unknown</td></tr><tr><td>access-control-allow-methods</td><td>GET, POST, OPTIONS, PUT, DELETE, TRACE</td><td>unknown</td></tr></tbody></table>
+</article>
+<article class="finding-card">
+<span class="badge low">LOW</span>
+<h3>Cookie missing HttpOnly flag</h3>
+<dl class="finding-meta">
+<div><dt>ID</dt><dd>COOKIE-HTTPONLY-MISSING</dd></div>
+<div><dt>Module</dt><dd>cookies</dd></div>
+<div><dt>Category</dt><dd>cookies</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:62566/members/</dd></div>
+</dl>
+<p>A cookie is accessible to client-side scripts when HttpOnly is absent.</p>
+<p><strong>Recommendation:</strong> Set HttpOnly for session or sensitive cookies.</p>
+<h4>Evidence</h4>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>cookie</td><td>sessionid</td><td>unknown</td></tr></tbody></table>
+</article>
+<article class="finding-card">
+<span class="badge low">LOW</span>
+<h3>Cookie missing HttpOnly flag</h3>
+<dl class="finding-meta">
+<div><dt>ID</dt><dd>COOKIE-HTTPONLY-MISSING</dd></div>
+<div><dt>Module</dt><dd>cookies</dd></div>
+<div><dt>Category</dt><dd>cookies</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:62566/members/</dd></div>
+</dl>
+<p>A cookie is accessible to client-side scripts when HttpOnly is absent.</p>
+<p><strong>Recommendation:</strong> Set HttpOnly for session or sensitive cookies.</p>
+<h4>Evidence</h4>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>cookie</td><td>tracking_id</td><td>unknown</td></tr></tbody></table>
+</article>
+<article class="finding-card">
+<span class="badge low">LOW</span>
+<h3>Cookie missing SameSite attribute</h3>
+<dl class="finding-meta">
+<div><dt>ID</dt><dd>COOKIE-SAMESITE-MISSING</dd></div>
+<div><dt>Module</dt><dd>cookies</dd></div>
+<div><dt>Category</dt><dd>cookies</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:62566/members/</dd></div>
+</dl>
+<p>A cookie does not declare a SameSite policy.</p>
+<p><strong>Recommendation:</strong> Set SameSite=Lax or SameSite=Strict unless cross-site usage is required.</p>
+<h4>Evidence</h4>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>cookie</td><td>sessionid</td><td>unknown</td></tr></tbody></table>
+</article>
+<article class="finding-card">
+<span class="badge low">LOW</span>
+<h3>Clickjacking protection header is missing</h3>
+<dl class="finding-meta">
+<div><dt>ID</dt><dd>HEADER-CLICKJACKING-MISSING</dd></div>
+<div><dt>Module</dt><dd>security_headers</dd></div>
+<div><dt>Category</dt><dd>security-headers</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:62566/members/</dd></div>
+</dl>
+<p>The response does not include X-Frame-Options or a CSP frame-ancestors directive.</p>
+<p><strong>Recommendation:</strong> Set frame-ancestors in Content-Security-Policy or use X-Frame-Options where appropriate.</p>
+
+</article>
+<article class="finding-card">
+<span class="badge low">LOW</span>
+<h3>X-Content-Type-Options nosniff is missing</h3>
+<dl class="finding-meta">
+<div><dt>ID</dt><dd>HEADER-NOSNIFF-MISSING</dd></div>
+<div><dt>Module</dt><dd>security_headers</dd></div>
+<div><dt>Category</dt><dd>security-headers</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:62566/members/</dd></div>
+</dl>
+<p>The browser may try to infer content types when nosniff is absent.</p>
+<p><strong>Recommendation:</strong> Set X-Content-Type-Options: nosniff.</p>
+<h4>Evidence</h4>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>x-content-type-options</td><td>missing</td><td>unknown</td></tr></tbody></table>
+</article>
+<article class="finding-card">
+<span class="badge low">LOW</span>
+<h3>Referrer-Policy header is missing</h3>
+<dl class="finding-meta">
+<div><dt>ID</dt><dd>HEADER-REFERRER_POLICY-MISSING</dd></div>
+<div><dt>Module</dt><dd>security_headers</dd></div>
+<div><dt>Category</dt><dd>security-headers</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:62566/members/</dd></div>
+</dl>
+<p>The response does not include the Referrer-Policy header.</p>
+<p><strong>Recommendation:</strong> Define an appropriate Referrer-Policy header for this application.</p>
+
+</article>
+<article class="finding-card">
+<span class="badge info">INFO</span>
+<h3>Crawler found links outside scope</h3>
+<dl class="finding-meta">
+<div><dt>ID</dt><dd>CRAWLER-OUT-OF-SCOPE-LINKS</dd></div>
+<div><dt>Module</dt><dd>crawler</dd></div>
+<div><dt>Category</dt><dd>crawler</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:62566/members/</dd></div>
+</dl>
+<p>The crawler discovered links outside the configured scope. They were recorded but not requested.</p>
+<p><strong>Recommendation:</strong> Review whether any external host should be added to the authorized scope before scanning it.</p>
+<h4>Evidence</h4>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>sample_url</td><td>https://example.org/external</td><td>unknown</td></tr></tbody></table>
+</article>
+<article class="finding-card">
+<span class="badge info">INFO</span>
+<h3>HTML generator metadata is exposed</h3>
+<dl class="finding-meta">
+<div><dt>ID</dt><dd>FINGERPRINT-GENERATOR-DISCLOSED</dd></div>
+<div><dt>Module</dt><dd>fingerprinting</dd></div>
+<div><dt>Category</dt><dd>fingerprinting</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:62566/members/</dd></div>
+</dl>
+<p>The HTML generator metadata can disclose CMS or framework details.</p>
+<p><strong>Recommendation:</strong> Remove generator metadata if it is not required.</p>
+<h4>Evidence</h4>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>generator</td><td>WordPress 4.7.0</td><td>unknown</td></tr></tbody></table>
+</article>
+<article class="finding-card">
+<span class="badge info">INFO</span>
+<h3>X-Powered-By header discloses technology information</h3>
+<dl class="finding-meta">
+<div><dt>ID</dt><dd>FINGERPRINT-POWERED-BY-DISCLOSED</dd></div>
+<div><dt>Module</dt><dd>fingerprinting</dd></div>
+<div><dt>Category</dt><dd>fingerprinting</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:62566/members/</dd></div>
+</dl>
+<p>The X-Powered-By header can reveal backend technology details to attackers.</p>
+<p><strong>Recommendation:</strong> Remove or reduce technology-identifying response headers where practical.</p>
+<h4>Evidence</h4>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>x-powered-by</td><td>PHP/5.6.40</td><td>unknown</td></tr></tbody></table>
+</article>
+<article class="finding-card">
+<span class="badge info">INFO</span>
+<h3>Server header discloses version information</h3>
+<dl class="finding-meta">
+<div><dt>ID</dt><dd>FINGERPRINT-SERVER-VERSION-DISCLOSED</dd></div>
+<div><dt>Module</dt><dd>fingerprinting</dd></div>
+<div><dt>Category</dt><dd>fingerprinting</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:62566/members/</dd></div>
+</dl>
+<p>The Server header appears to include product version information.</p>
+<p><strong>Recommendation:</strong> Avoid exposing precise server versions unless there is an operational reason.</p>
+<h4>Evidence</h4>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>server</td><td>AIWebAuditorLab/0.18</td><td>unknown</td></tr></tbody></table>
+</article>
+<article class="finding-card">
+<span class="badge info">INFO</span>
+<h3>Permissions-Policy header is missing</h3>
+<dl class="finding-meta">
+<div><dt>ID</dt><dd>HEADER-PERMISSIONS_POLICY-MISSING</dd></div>
+<div><dt>Module</dt><dd>security_headers</dd></div>
+<div><dt>Category</dt><dd>security-headers</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:62566/members/</dd></div>
+</dl>
+<p>The response does not include the Permissions-Policy header.</p>
+<p><strong>Recommendation:</strong> Define an appropriate Permissions-Policy header for this application.</p>
+
+</article>
 <article class="finding-card">
 <span class="badge info">INFO</span>
 <h3>Open TCP ports detected</h3>
@@ -269,59 +522,49 @@ dd {
 <div><dt>ID</dt><dd>PORTS-OPEN-TCP-PORTS</dd></div>
 <div><dt>Module</dt><dd>ports</dd></div>
 <div><dt>Category</dt><dd>network-exposure</dd></div>
-<div><dt>Target</dt><dd>example.com</dd></div>
+<div><dt>Target</dt><dd>127.0.0.1</dd></div>
 </dl>
 <p>The limited TCP connectivity check found open ports on the target host. This is inventory evidence, not exploitation.</p>
 <p><strong>Recommendation:</strong> Review whether each exposed service is expected, patched and covered by the authorized audit scope.</p>
 <h4>Evidence</h4>
-<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>open_port</td><td>443</td><td>https</td></tr></tbody></table>
-</article>
-<article class="finding-card">
-<span class="badge info">INFO</span>
-<h3>In-scope subdomains resolved by DNS</h3>
-<dl class="finding-meta">
-<div><dt>ID</dt><dd>SUBDOMAIN-DISCOVERY-RESOLVED</dd></div>
-<div><dt>Module</dt><dd>subdomains</dd></div>
-<div><dt>Category</dt><dd>reconnaissance</dd></div>
-<div><dt>Target</dt><dd>example.com</dd></div>
-</dl>
-<p>The scan resolved one or more candidate subdomains inside the configured scope. They were recorded but not audited automatically.</p>
-<p><strong>Recommendation:</strong> Review these hosts and add them explicitly to the authorized scope before running deeper checks against them.</p>
-<h4>Evidence</h4>
-<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>host</td><td>api.example.com</td><td>93.184.216.35</td></tr></tbody></table>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>open_port</td><td>62566</td><td>unknown</td></tr></tbody></table>
 </article>
 </div>
 </section>
 <section class="section">
 <h2>Technology Fingerprinting</h2>
-<p class="empty">No technology signals were identified.</p>
+<table><thead><tr><th>Technology</th><th>Category</th><th>Confidence</th><th>Signals</th></tr></thead><tbody><tr><td>AIWebAuditorLab/0.18</td><td>server</td><td>low</td><td>header:server</td></tr><tr><td>Django</td><td>framework</td><td>medium</td><td>cookie:sessionid</td></tr><tr><td>PHP 5.6.40</td><td>language</td><td>high</td><td>header:x-powered-by</td></tr><tr><td>WordPress 4.7.0</td><td>cms</td><td>high</td><td>html:meta-generator</td></tr></tbody></table>
 <h3>Public Metadata Files</h3>
-<table><thead><tr><th>Path</th><th>Status</th><th>Present</th></tr></thead><tbody><tr><td>/robots.txt</td><td>404</td><td>False</td></tr><tr><td>/.well-known/security.txt</td><td>404</td><td>False</td></tr><tr><td>/security.txt</td><td>404</td><td>False</td></tr><tr><td>/sitemap.xml</td><td>404</td><td>False</td></tr></tbody></table>
+<table><thead><tr><th>Path</th><th>Status</th><th>Present</th></tr></thead><tbody><tr><td>/robots.txt</td><td>200</td><td>True</td></tr><tr><td>/.well-known/security.txt</td><td>200</td><td>True</td></tr><tr><td>/security.txt</td><td>404</td><td>False</td></tr><tr><td>/sitemap.xml</td><td>200</td><td>True</td></tr></tbody></table>
 </section>
 <section class="section">
 <h2>Crawler</h2>
-<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Seed URL</td><td>https://example.com/</td></tr><tr><td>Max depth</td><td>1</td></tr><tr><td>Max pages</td><td>25</td></tr><tr><td>Fetched URLs</td><td>1</td></tr><tr><td>Discovered in-scope URLs</td><td>2</td></tr><tr><td>Out-of-scope URLs recorded but not visited</td><td>0</td></tr><tr><td>Excluded URLs recorded but not visited</td><td>0</td></tr></tbody></table>
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Seed URL</td><td>http://127.0.0.1:62566/members/</td></tr><tr><td>Max depth</td><td>1</td></tr><tr><td>Max pages</td><td>20</td></tr><tr><td>Fetched URLs</td><td>5</td></tr><tr><td>Discovered in-scope URLs</td><td>9</td></tr><tr><td>Metadata-discovered URLs</td><td>9</td></tr><tr><td>Classified interesting routes</td><td>6</td></tr><tr><td>robots.txt</td><td>present (200)</td></tr><tr><td>Sitemaps checked</td><td>1 (1 present)</td></tr><tr><td>.well-known endpoints checked</td><td>8 (2 present)</td></tr><tr><td>Out-of-scope URLs recorded but not visited</td><td>1</td></tr><tr><td>Excluded URLs recorded but not visited</td><td>3</td></tr></tbody></table>
+<h3>Interesting Routes</h3>
+<table><thead><tr><th>URL</th><th>Types</th><th>Sources</th></tr></thead><tbody><tr><td>http://127.0.0.1:62566/api/users</td><td>api</td><td>crawler_fetched, sitemap</td></tr><tr><td>http://127.0.0.1:62566/login</td><td>form, login</td><td>crawler_fetched, sitemap</td></tr><tr><td>http://127.0.0.1:62566/members/</td><td>account, form, login</td><td>crawler_fetched, html_link, robots_allow, seed, sitemap</td></tr><tr><td>http://127.0.0.1:62566/oauth/authorize</td><td>callback, login</td><td>well_known_endpoint</td></tr><tr><td>http://127.0.0.1:62566/oauth/token</td><td>callback</td><td>well_known_endpoint</td></tr><tr><td>http://127.0.0.1:62566/reset-password</td><td>password_reset</td><td>crawler_fetched, sitemap</td></tr></tbody></table>
+<h3>Present .well-known Endpoints</h3>
+<table><thead><tr><th>Path</th><th>Status</th><th>Highlights</th></tr></thead><tbody><tr><td>/.well-known/security.txt</td><td>200</td><td>contact: mailto:security@example.test; policy: http://127.0.0.1/security-policy</td></tr><tr><td>/.well-known/openid-configuration</td><td>200</td><td>endpoints: 2</td></tr></tbody></table>
 <h3>Discovered URLs</h3>
-<ul><li>https://example.com/</li><li>https://example.com/login</li></ul>
+<ul><li>http://127.0.0.1:62566/</li><li>http://127.0.0.1:62566/.well-known/openid-configuration</li><li>http://127.0.0.1:62566/.well-known/security.txt</li><li>http://127.0.0.1:62566/api/users</li><li>http://127.0.0.1:62566/login</li><li>http://127.0.0.1:62566/members/</li><li>http://127.0.0.1:62566/oauth/authorize</li><li>http://127.0.0.1:62566/oauth/token</li><li>http://127.0.0.1:62566/reset-password</li></ul>
+<h3>Out-of-Scope URLs</h3>
+<ul><li>https://example.org/external</li></ul>
+<h3>Excluded URLs</h3>
+<ul><li>http://127.0.0.1:62566/admin/</li><li>http://127.0.0.1:62566/private/</li><li>http://127.0.0.1:62566/private/report</li></ul>
 </section>
 <section class="section">
 <h2>Web Inventory</h2>
-<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Total URLs</td><td>2</td></tr><tr><td>Fetched URLs</td><td>1</td></tr><tr><td>Interesting URLs</td><td>1</td></tr><tr><td>Forms detected</td><td>0</td></tr><tr><td>Out-of-scope URLs recorded but not visited</td><td>0</td></tr><tr><td>Excluded URLs recorded but not visited</td><td>0</td></tr></tbody></table>
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Total URLs</td><td>23</td></tr><tr><td>Fetched URLs</td><td>15</td></tr><tr><td>Interesting URLs</td><td>13</td></tr><tr><td>Forms detected</td><td>2</td></tr><tr><td>Out-of-scope URLs recorded but not visited</td><td>1</td></tr><tr><td>Excluded URLs recorded but not visited</td><td>3</td></tr></tbody></table>
 <h3>URL Inventory</h3>
-<table><thead><tr><th>URL</th><th>Status</th><th>Type</th><th>Forms</th><th>Interest</th></tr></thead><tbody><tr><td>https://example.com/login</td><td>unknown</td><td>unknown</td><td>0</td><td>login_path</td></tr><tr><td>https://example.com/</td><td>200</td><td>text/html</td><td>0</td><td>unknown</td></tr></tbody></table>
+<table><thead><tr><th>URL</th><th>Status</th><th>Type</th><th>Forms</th><th>Interest</th></tr></thead><tbody><tr><td>http://127.0.0.1:62566/.well-known/change-password</td><td>404</td><td>unknown</td><td>0</td><td>password_reset, password_reset_path</td></tr><tr><td>http://127.0.0.1:62566/.well-known/oauth-authorization-server</td><td>404</td><td>unknown</td><td>0</td><td>callback, callback_path</td></tr><tr><td>http://127.0.0.1:62566/admin/</td><td>unknown</td><td>unknown</td><td>0</td><td>admin, admin_path</td></tr><tr><td>http://127.0.0.1:62566/api/users</td><td>200</td><td>application/json; charset=utf-8</td><td>0</td><td>api, api_path</td></tr><tr><td>http://127.0.0.1:62566/login</td><td>200</td><td>text/html; charset=utf-8</td><td>1</td><td>form, login, login_path, form_detected</td></tr><tr><td>http://127.0.0.1:62566/login/</td><td>unknown</td><td>unknown</td><td>0</td><td>login, state_changing_candidate, login_path, post_method</td></tr><tr><td>http://127.0.0.1:62566/members/</td><td>401</td><td>text/html; charset=utf-8</td><td>1</td><td>account, form, login, login_path, account_area, form_detected</td></tr><tr><td>http://127.0.0.1:62566/oauth/authorize</td><td>unknown</td><td>unknown</td><td>0</td><td>callback, login, login_path, callback_path</td></tr><tr><td>http://127.0.0.1:62566/oauth/token</td><td>unknown</td><td>unknown</td><td>0</td><td>callback, callback_path</td></tr><tr><td>http://127.0.0.1:62566/private/</td><td>unknown</td><td>unknown</td><td>0</td><td>account, account_area</td></tr><tr><td>http://127.0.0.1:62566/private/report</td><td>unknown</td><td>unknown</td><td>0</td><td>account, account_area</td></tr><tr><td>http://127.0.0.1:62566/reset-password</td><td>200</td><td>text/html; charset=utf-8</td><td>0</td><td>password_reset, password_reset_path</td></tr><tr><td>http://127.0.0.1:62566/session</td><td>unknown</td><td>unknown</td><td>0</td><td>login, state_changing_candidate, login_path, post_method</td></tr><tr><td>http://127.0.0.1:62566/</td><td>200</td><td>text/html; charset=utf-8</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:62566/.well-known/openid-configuration</td><td>200</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:62566/.well-known/security.txt</td><td>200</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>https://example.org/external</td><td>unknown</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:62566/.well-known/apple-app-site-association</td><td>404</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:62566/.well-known/assetlinks.json</td><td>404</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:62566/.well-known/webfinger</td><td>404</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:62566/robots.txt</td><td>200</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:62566/security.txt</td><td>404</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:62566/sitemap.xml</td><td>200</td><td>unknown</td><td>0</td><td>unknown</td></tr></tbody></table>
+<h3>Forms</h3>
+<table><thead><tr><th>Page</th><th>Action</th><th>Method</th><th>Inputs</th><th>Password Fields</th></tr></thead><tbody><tr><td>http://127.0.0.1:62566/login</td><td>http://127.0.0.1:62566/session</td><td>POST</td><td>2</td><td>1</td></tr><tr><td>http://127.0.0.1:62566/members/</td><td>http://127.0.0.1:62566/login/</td><td>POST</td><td>3</td><td>1</td></tr></tbody></table>
 </section>
-<section class="section">
-<h2>Subdomain Discovery</h2>
-<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Candidate hosts checked</td><td>3</td></tr><tr><td>Resolved in-scope hosts</td><td>1</td></tr><tr><td>Unresolved candidates</td><td>2</td></tr><tr><td>Out-of-scope candidates skipped</td><td>0</td></tr></tbody></table>
-<p>Resolved hosts were not scanned automatically.</p>
-<h3>Resolved Subdomains</h3>
-<table><thead><tr><th>Host</th><th>IP Addresses</th><th>Source</th></tr></thead><tbody><tr><td>api.example.com</td><td>93.184.216.35</td><td>dns_candidate</td></tr></tbody></table>
-</section>
+
 <section class="section">
 <h2>TCP Port Check</h2>
-<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Host</td><td>example.com</td></tr><tr><td>Ports checked</td><td>3</td></tr><tr><td>Open ports</td><td>1</td></tr><tr><td>Closed ports</td><td>1</td></tr><tr><td>Filtered ports</td><td>1</td></tr></tbody></table>
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Host</td><td>127.0.0.1</td></tr><tr><td>Ports checked</td><td>3</td></tr><tr><td>Open ports</td><td>1</td></tr><tr><td>Closed ports</td><td>0</td></tr><tr><td>Filtered ports</td><td>2</td></tr></tbody></table>
 <p>Only TCP connect checks were performed; no payloads or banners were requested.</p>
-<table><thead><tr><th>Port</th><th>Service</th><th>Status</th><th>Elapsed</th></tr></thead><tbody><tr><td>80</td><td>http</td><td>closed</td><td>8 ms</td></tr><tr><td>443</td><td>https</td><td>open</td><td>5 ms</td></tr><tr><td>8080</td><td>http-alt</td><td>filtered</td><td>1000 ms</td></tr></tbody></table>
+<table><thead><tr><th>Port</th><th>Service</th><th>Status</th><th>Elapsed</th></tr></thead><tbody><tr><td>62566</td><td>unknown</td><td>open</td><td>0 ms</td></tr><tr><td>80</td><td>http</td><td>filtered</td><td>500 ms</td></tr><tr><td>443</td><td>https</td><td>filtered</td><td>515 ms</td></tr></tbody></table>
 </section>
 
 <section class="section">

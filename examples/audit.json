@@ -17,7 +17,7 @@
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.17",
+    "user_agent": "AI-Web-Auditor/0.18",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -47,6 +47,12 @@
     "delay_seconds": 0.0,
     "max_body_bytes": 262144,
     "include_query_strings": false,
+    "use_robots_txt": true,
+    "use_sitemap_xml": true,
+    "use_well_known": true,
+    "follow_sitemap_urls": true,
+    "follow_robots_paths": false,
+    "metadata_max_urls": 100,
     "ignored_extensions": [
       ".7z",
       ".avi",

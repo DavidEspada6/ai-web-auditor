@@ -94,7 +94,7 @@ class LabManager:
 
 
 class VulnerableLabHandler(BaseHTTPRequestHandler):
-    server_version = "AIWebAuditorLab/0.17"
+    server_version = "AIWebAuditorLab/0.18"
     sys_version = ""
 
     def do_GET(self) -> None:  # noqa: N802 - http.server uses this naming.
@@ -104,7 +104,10 @@ class VulnerableLabHandler(BaseHTTPRequestHandler):
             self._send_json({"status": "ok", "lab": "ai-web-auditor"})
             return
         if path == "/robots.txt":
-            self._send_text("User-agent: *\nDisallow: /admin/\nDisallow: /private/\n", "text/plain; charset=utf-8")
+            self._send_text(
+                "User-agent: *\nDisallow: /admin/\nDisallow: /private/\nAllow: /members/\nSitemap: /sitemap.xml\n",
+                "text/plain; charset=utf-8",
+            )
             return
         if path == "/sitemap.xml":
             base_url = _lab_url(self.server.server_address[0], int(self.server.server_address[1]), "/")
@@ -113,12 +116,46 @@ class VulnerableLabHandler(BaseHTTPRequestHandler):
                 '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
                 f"  <url><loc>{base_url}</loc></url>\n"
                 f"  <url><loc>{base_url}members/</loc></url>\n"
+                f"  <url><loc>{base_url}login</loc></url>\n"
+                f"  <url><loc>{base_url}reset-password</loc></url>\n"
+                f"  <url><loc>{base_url}api/users</loc></url>\n"
                 "</urlset>\n"
             )
             self._send_text(body, "application/xml; charset=utf-8")
             return
+        if path == "/.well-known/security.txt":
+            self._send_text(
+                "Contact: mailto:security@example.test\nPolicy: http://127.0.0.1/security-policy\n",
+                "text/plain; charset=utf-8",
+            )
+            return
+        if path == "/.well-known/openid-configuration":
+            base_url = _lab_url(self.server.server_address[0], int(self.server.server_address[1]), "/").rstrip("/")
+            self._send_json(
+                {
+                    "issuer": base_url,
+                    "authorization_endpoint": f"{base_url}/oauth/authorize",
+                    "token_endpoint": f"{base_url}/oauth/token",
+                }
+            )
+            return
         if path == "/members/":
             self._send_members_challenge()
+            return
+        if path == "/login":
+            self._send_html(
+                "Login de laboratorio",
+                _page(
+                    "Login de laboratorio",
+                    '<form action="/session" method="post"><input name="user"><input type="password" name="password"></form>',
+                ),
+            )
+            return
+        if path == "/reset-password":
+            self._send_html("Recuperacion de laboratorio", _page("Recuperacion", "Ruta de recuperacion de cuenta para clasificacion."))
+            return
+        if path == "/api/users":
+            self._send_json({"users": []})
             return
         if path in {"/admin/", "/private/report"}:
             self._send_html("Panel interno de laboratorio", _page("Panel interno", "Ruta sensible de ejemplo para probar el scope."))
@@ -246,6 +283,12 @@ def lab_scan_defaults(status: LabStatus) -> dict[str, Any]:
             "max_depth": 1,
             "max_pages": 20,
             "delay_seconds": 0.0,
+            "use_robots_txt": True,
+            "use_sitemap_xml": True,
+            "use_well_known": True,
+            "follow_sitemap_urls": True,
+            "follow_robots_paths": False,
+            "metadata_max_urls": 100,
         },
         "subdomains": {
             "max_candidates": 25,

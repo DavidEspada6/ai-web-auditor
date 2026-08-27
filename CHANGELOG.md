@@ -2,6 +2,34 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.18.0] - 2026-08-27
+
+### Anade
+
+- Crawler avanzado con lectura segura de `robots.txt`, `sitemap.xml` y endpoints `.well-known`.
+- Descubrimiento de URLs desde metadatos publicos con origen trazable (`robots`, `sitemap`, `well_known`, etc.).
+- Clasificador de rutas para identificar superficies relevantes como login, admin, API, recovery, callbacks, uploads, health, debug y ficheros sensibles.
+- Artefactos `metadata_discovered_urls`, `url_sources`, `route_classifications` y `metadata` dentro del modulo `crawler`.
+- Nuevas opciones de configuracion `crawler.use_robots_txt`, `use_sitemap_xml`, `use_well_known`, `follow_sitemap_urls`, `follow_robots_paths` y `metadata_max_urls`.
+- Controles de crawler avanzado en la interfaz grafica local.
+- Inventario enriquecido con `route_types` y `route_classifications`, tambien en CSV.
+- Secciones de metadatos y rutas interesantes en informes Markdown y HTML.
+- Laboratorio local ampliado con `security.txt`, OpenID metadata, rutas de login, recovery y API para demo controlada.
+- Tests locales para validar crawler de metadatos sin tocar dominios reales.
+
+### Cambia
+
+- El resumen del crawler indica cuantas URLs vienen de metadatos publicos.
+- El inventario muestra tipos de ruta junto a los motivos de interes.
+- `init-scope` pregunta tambien por las opciones nuevas del crawler.
+
+### Seguridad
+
+- No se anaden pruebas ofensivas ni intrusivas.
+- El crawler no envia formularios, no fuerza credenciales y no sigue rutas fuera de scope.
+- Las rutas de `robots.txt` se registran por defecto pero no se visitan salvo configuracion explicita.
+- Las URLs de sitemap solo se visitan si estan dentro del scope y respetan extensiones ignoradas.
+
 ## [0.17.0] - 2026-08-27
 
 ### Anade

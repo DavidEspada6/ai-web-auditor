@@ -472,8 +472,15 @@ def _crawler_section(modules: list[dict[str, Any]]) -> list[str]:
     artifacts = crawler.get("artifacts") if isinstance(crawler.get("artifacts"), dict) else {}
     fetched = _string_list(artifacts.get("fetched_urls"))
     discovered = _string_list(artifacts.get("discovered_urls"))
+    metadata_urls = _string_list(artifacts.get("metadata_discovered_urls"))
+    route_classifications = _dict_list(artifacts.get("route_classifications"))
     out_of_scope = _string_list(artifacts.get("out_of_scope_urls"))
     excluded = _string_list(artifacts.get("excluded_urls"))
+    metadata = artifacts.get("metadata") if isinstance(artifacts.get("metadata"), dict) else {}
+    robots = metadata.get("robots") if isinstance(metadata.get("robots"), dict) else {}
+    sitemaps = _dict_list(metadata.get("sitemaps"))
+    well_known = _dict_list(metadata.get("well_known"))
+    present_well_known = [item for item in well_known if item.get("present")]
 
     lines = [
         "## Crawler",
@@ -483,10 +490,33 @@ def _crawler_section(modules: list[dict[str, Any]]) -> list[str]:
         f"- Max pages: {_text(artifacts.get('max_pages', 'unknown'))}",
         f"- Fetched URLs: {len(fetched)}",
         f"- Discovered in-scope URLs: {len(discovered)}",
+        f"- Metadata-discovered URLs: {len(metadata_urls)}",
+        f"- Classified interesting routes: {len(route_classifications)}",
+        f"- robots.txt: {_metadata_presence_label(robots)}",
+        f"- Sitemaps checked: {len(sitemaps)} ({sum(1 for item in sitemaps if item.get('present'))} present)",
+        f"- .well-known endpoints checked: {len(well_known)} ({len(present_well_known)} present)",
         f"- Out-of-scope URLs recorded but not visited: {len(out_of_scope)}",
         f"- Excluded URLs recorded but not visited: {len(excluded)}",
         "",
     ]
+
+    if route_classifications:
+        lines.extend(["### Interesting Routes", "", "| URL | Types | Sources |", "| --- | --- | --- |"])
+        for item in route_classifications[:50]:
+            lines.append(
+                f"| {_cell(item.get('url'))} | {_cell(', '.join(_string_list(item.get('types'))))} | "
+                f"{_cell(', '.join(_string_list(item.get('sources'))))} |"
+            )
+        if len(route_classifications) > 50:
+            lines.append(f"| ... {len(route_classifications) - 50} more |  |  |")
+        lines.append("")
+
+    if present_well_known:
+        lines.extend(["### Present .well-known Endpoints", "", "| Path | Status | Highlights |", "| --- | ---: | --- |"])
+        for item in present_well_known[:25]:
+            highlights = _well_known_highlights(item)
+            lines.append(f"| {_cell(item.get('path'))} | {_cell(item.get('status_code'))} | {_cell(highlights)} |")
+        lines.append("")
 
     if discovered:
         lines.extend(["### Discovered URLs", ""])
@@ -529,10 +559,12 @@ def _inventory_section(inventory: dict[str, Any]) -> list[str]:
         lines.extend(["### URL Inventory", "", "| URL | Status | Type | Forms | Interest |", "| --- | ---: | --- | ---: | --- |"])
         for item in urls[:50]:
             reasons = item.get("reasons") if isinstance(item.get("reasons"), list) else []
+            route_types_value = item.get("route_types") if isinstance(item.get("route_types"), list) else []
+            interest = ", ".join(map(str, route_types_value + reasons))
             lines.append(
                 f"| {_cell(item.get('url'))} | {_cell(item.get('status_code'))} | "
                 f"{_cell(item.get('content_type'))} | {_cell(item.get('forms_found'))} | "
-                f"{_cell(', '.join(map(str, reasons)))} |"
+                f"{_cell(interest)} |"
             )
         if len(urls) > 50:
             lines.append(f"| ... {len(urls) - 50} more |  |  |  |  |")
@@ -905,18 +937,39 @@ def _crawler_html_section(modules: list[dict[str, Any]]) -> str:
     artifacts = crawler.get("artifacts") if isinstance(crawler.get("artifacts"), dict) else {}
     fetched = _string_list(artifacts.get("fetched_urls"))
     discovered = _string_list(artifacts.get("discovered_urls"))
+    metadata_urls = _string_list(artifacts.get("metadata_discovered_urls"))
+    route_classifications = _dict_list(artifacts.get("route_classifications"))
     out_of_scope = _string_list(artifacts.get("out_of_scope_urls"))
     excluded = _string_list(artifacts.get("excluded_urls"))
+    metadata = artifacts.get("metadata") if isinstance(artifacts.get("metadata"), dict) else {}
+    robots = metadata.get("robots") if isinstance(metadata.get("robots"), dict) else {}
+    sitemaps = _dict_list(metadata.get("sitemaps"))
+    well_known = _dict_list(metadata.get("well_known"))
+    present_well_known = [item for item in well_known if item.get("present")]
     rows = [
         ["Seed URL", artifacts.get("seed_url", "unknown")],
         ["Max depth", artifacts.get("max_depth", "unknown")],
         ["Max pages", artifacts.get("max_pages", "unknown")],
         ["Fetched URLs", len(fetched)],
         ["Discovered in-scope URLs", len(discovered)],
+        ["Metadata-discovered URLs", len(metadata_urls)],
+        ["Classified interesting routes", len(route_classifications)],
+        ["robots.txt", _metadata_presence_label(robots)],
+        ["Sitemaps checked", f"{len(sitemaps)} ({sum(1 for item in sitemaps if item.get('present'))} present)"],
+        [".well-known endpoints checked", f"{len(well_known)} ({len(present_well_known)} present)"],
         ["Out-of-scope URLs recorded but not visited", len(out_of_scope)],
         ["Excluded URLs recorded but not visited", len(excluded)],
     ]
     lines = ['<section class="section">', "<h2>Crawler</h2>", _html_table(["Field", "Value"], rows)]
+    if route_classifications:
+        route_rows = [
+            [item.get("url"), ", ".join(_string_list(item.get("types"))), ", ".join(_string_list(item.get("sources")))]
+            for item in route_classifications[:50]
+        ]
+        lines.extend(["<h3>Interesting Routes</h3>", _html_table(["URL", "Types", "Sources"], route_rows)])
+    if present_well_known:
+        well_known_rows = [[item.get("path"), item.get("status_code"), _well_known_highlights(item)] for item in present_well_known[:25]]
+        lines.extend(["<h3>Present .well-known Endpoints</h3>", _html_table(["Path", "Status", "Highlights"], well_known_rows)])
     if discovered:
         lines.extend(["<h3>Discovered URLs</h3>", _html_list(discovered[:50])])
     if out_of_scope:
@@ -945,13 +998,15 @@ def _inventory_html_section(inventory: dict[str, Any]) -> str:
         url_rows = []
         for item in urls[:50]:
             reasons = item.get("reasons") if isinstance(item.get("reasons"), list) else []
+            route_types_value = item.get("route_types") if isinstance(item.get("route_types"), list) else []
+            interest = ", ".join(map(str, route_types_value + reasons))
             url_rows.append(
                 [
                     item.get("url"),
                     item.get("status_code"),
                     item.get("content_type"),
                     item.get("forms_found"),
-                    ", ".join(map(str, reasons)),
+                    interest,
                 ]
             )
         lines.extend(["<h3>URL Inventory</h3>", _html_table(["URL", "Status", "Type", "Forms", "Interest"], url_rows)])
@@ -1128,6 +1183,27 @@ def _metadata_rows(metadata: ReportMetadata) -> list[tuple[str, str]]:
         ("Notes", metadata.notes),
     ]
     return [(label, value) for label, value in rows if value]
+
+
+def _metadata_presence_label(item: dict[str, Any]) -> str:
+    if not item:
+        return "not checked"
+    status = item.get("status_code", item.get("status", "unknown"))
+    present = "present" if item.get("present") else "not present"
+    return f"{present} ({status})"
+
+
+def _well_known_highlights(item: dict[str, Any]) -> str:
+    fields = item.get("fields") if isinstance(item.get("fields"), dict) else {}
+    endpoints = _string_list(item.get("endpoints"))
+    highlights: list[str] = []
+    for key in ["contact", "policy", "expires"]:
+        values = _string_list(fields.get(key))
+        if values:
+            highlights.append(f"{key}: {values[0]}")
+    if endpoints:
+        highlights.append(f"endpoints: {len(endpoints)}")
+    return "; ".join(highlights)
 
 
 def _clean_metadata_value(value: Any) -> str:
