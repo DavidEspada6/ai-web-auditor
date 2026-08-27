@@ -16,6 +16,7 @@
         <button id="download-json" class="ghost" type="button" disabled>JSON</button>
         <button id="download-evidence" class="ghost" type="button" disabled>Evidencias ZIP</button>
         <button id="download-inventory" class="ghost" type="button" disabled>Inventario CSV</button>
+        <button id="download-entrypoints" class="ghost" type="button" disabled>Entradas CSV</button>
         <button id="download-ai" class="ghost" type="button" disabled>AI JSON</button>
         <button id="download-md" class="ghost" type="button" disabled>Markdown</button>
         <button id="download-html" class="ghost" type="button" disabled>HTML</button>
@@ -213,6 +214,7 @@
             <section class="nav-group">
               <h2>Superficie</h2>
               <button class="tab" type="button" data-tab="inventory">Inventario</button>
+              <button class="tab" type="button" data-tab="entrypoints">Entradas</button>
               <button class="tab" type="button" data-tab="subdomains">Subdominios</button>
               <button class="tab" type="button" data-tab="ports">Puertos</button>
               <button class="tab" type="button" data-tab="json">JSON</button>
@@ -309,6 +311,36 @@
                 </tr>
               </thead>
               <tbody id="inventory-table"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <section id="entrypoints-view" class="panel view">
+          <div class="section-toolbar">
+            <div>
+              <p class="eyebrow">Puntos de entrada</p>
+              <strong id="entrypoint-count">0 endpoints</strong>
+            </div>
+            <label class="field inventory-filter">
+              <span>Filtrar</span>
+              <input id="entrypoint-search" type="search" placeholder="login, token, POST, api">
+            </label>
+          </div>
+          <div id="entrypoint-summary" class="summary-grid compact-summary"></div>
+          <div class="table-wrap">
+            <table class="resizable-table" data-table="entrypoints">
+              <thead>
+                <tr>
+                  <th>URL</th>
+                  <th>Estado</th>
+                  <th>Metodos</th>
+                  <th>Parametros</th>
+                  <th>Forms</th>
+                  <th>Rutas</th>
+                  <th>Notas</th>
+                </tr>
+              </thead>
+              <tbody id="entrypoint-table"></tbody>
             </table>
           </div>
         </section>

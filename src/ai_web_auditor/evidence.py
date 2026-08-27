@@ -140,6 +140,10 @@ def build_evidence_package(scan_data: dict[str, Any]) -> bytes:
         if isinstance(inventory, dict):
             _write_json(archive, "inventory/inventory.json", inventory)
 
+        entry_points = safe_scan_data.get("entry_points")
+        if isinstance(entry_points, dict):
+            _write_json(archive, "entry-points/entry-points.json", entry_points)
+
         assessment = safe_scan_data.get("assessment")
         if isinstance(assessment, dict):
             _write_json(archive, "assessment/assessment.json", assessment)
@@ -152,6 +156,8 @@ def build_evidence_manifest(scan_data: dict[str, Any]) -> dict[str, Any]:
     requests = _list_value(scan_data.get("requests"))
     findings = _list_value(scan_data.get("findings"))
     modules = _list_value(scan_data.get("modules"))
+    entry_points = scan_data.get("entry_points") if isinstance(scan_data.get("entry_points"), dict) else {}
+    endpoint_list = _list_value(entry_points.get("endpoints")) if entry_points else []
     captured_bodies = [
         item
         for item in requests
@@ -173,6 +179,7 @@ def build_evidence_manifest(scan_data: dict[str, Any]) -> dict[str, Any]:
             "modules": len([item for item in modules if isinstance(item, dict)]),
             "findings": len([item for item in findings if isinstance(item, dict)]),
             "requests": len([item for item in requests if isinstance(item, dict)]),
+            "entry_points": len([item for item in endpoint_list if isinstance(item, dict)]),
             "captured_body_samples": len(captured_bodies),
         },
         "safety": {
@@ -191,6 +198,7 @@ def build_evidence_manifest(scan_data: dict[str, Any]) -> dict[str, Any]:
             "http/requests.json",
             "http/<request-id>.json",
             "inventory/inventory.json",
+            "entry-points/entry-points.json",
             "assessment/assessment.json",
         ],
     }

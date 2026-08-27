@@ -2,6 +2,31 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.19.0] - 2026-08-27
+
+### Anade
+
+- Modelo `entry_points` dentro del JSON de auditoria con endpoints, parametros, formularios y metodos observados.
+- Comando `entrypoints` para exportar puntos de entrada a JSON o CSV.
+- Resumen de puntos de entrada en consola y en la valoracion determinista de riesgo.
+- Pestana `Entradas` en la interfaz grafica con filtro, resumen y tabla redimensionable.
+- Boton `Entradas CSV` en la interfaz.
+- Seccion `Entry Points` en informes Markdown y HTML.
+- Inclusión de `entry-points/entry-points.json` en paquetes de evidencias.
+- Tests dedicados para extractor, CLI, reporting, evidencias, GUI y crawler local.
+
+### Cambia
+
+- El resumen principal de la GUI muestra tambien endpoints y parametros detectados.
+- La vista `Riesgo` incluye cobertura de entry points y parametros.
+- Los informes diferencian inventario web general de puntos de entrada revisables.
+
+### Seguridad
+
+- No se anaden ataques, fuzzing, fuerza bruta ni envio de formularios.
+- Los puntos de entrada se derivan solo de evidencias pasivas ya observadas.
+- Los parametros con nombres sensibles se marcan para revision, pero no se exponen valores secretos.
+
 ## [0.18.0] - 2026-08-27
 
 ### Anade

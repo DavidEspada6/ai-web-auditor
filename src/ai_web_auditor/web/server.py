@@ -29,7 +29,7 @@ LAB_MANAGER = LabManager()
 
 
 class LocalAuditHandler(BaseHTTPRequestHandler):
-    server_version = "AIWebAuditorGUI/0.18"
+    server_version = "AIWebAuditorGUI/0.19"
 
     def do_GET(self) -> None:  # noqa: N802 - http.server uses this naming.
         parsed = urlparse(self.path)

@@ -725,6 +725,14 @@ table {
 .resizable-table[data-table="inventory"] th:nth-child(4) { width: 80px; }
 .resizable-table[data-table="inventory"] th:nth-child(5) { width: 170px; }
 .resizable-table[data-table="inventory"] th:nth-child(6) { width: 170px; }
+.resizable-table[data-table="entrypoints"] { min-width: 1120px; }
+.resizable-table[data-table="entrypoints"] th:nth-child(1) { width: 38%; }
+.resizable-table[data-table="entrypoints"] th:nth-child(2) { width: 130px; }
+.resizable-table[data-table="entrypoints"] th:nth-child(3) { width: 130px; }
+.resizable-table[data-table="entrypoints"] th:nth-child(4) { width: 220px; }
+.resizable-table[data-table="entrypoints"] th:nth-child(5) { width: 80px; }
+.resizable-table[data-table="entrypoints"] th:nth-child(6) { width: 180px; }
+.resizable-table[data-table="entrypoints"] th:nth-child(7) { width: 190px; }
 .resizable-table[data-table="subdomains"] th:nth-child(1) { width: 260px; }
 .resizable-table[data-table="subdomains"] th:nth-child(2) { width: 260px; }
 .resizable-table[data-table="subdomains"] th:nth-child(4) { width: 140px; }

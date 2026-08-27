@@ -87,6 +87,7 @@ class ScanResult:
 
     def to_dict(self) -> dict[str, Any]:
         from .assessment import build_assessment
+        from .entrypoints import build_entry_points_from_scan
         from .evidence import sanitize_scan_data, sanitize_url
         from .inventory import build_inventory_from_scan
 
@@ -97,6 +98,7 @@ class ScanResult:
                 target[key] = sanitize_url(target[key])
         data["findings"] = [asdict(finding) for finding in self.findings]
         data["inventory"] = build_inventory_from_scan(data)
+        data["entry_points"] = build_entry_points_from_scan(data)
         data["assessment"] = build_assessment(data)
         return sanitize_scan_data(data)
 

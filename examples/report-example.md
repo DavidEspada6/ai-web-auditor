@@ -1,19 +1,19 @@
 # AI Web Auditor Lab Report
 
-- Generated: 2026-08-27T04:32:20Z
-- Report generator: ai-web-auditor 0.18.0
-- Scan version: 0.18.0
+- Generated: 2026-08-27T15:30:31Z
+- Report generator: ai-web-auditor 0.19.0
+- Scan version: 0.19.0
 - Scan status: completed
 
 ## Target
 
 | Field | Value |
 | --- | --- |
-| Original URL | http://127.0.0.1:62566/members/ |
-| Normalized URL | http://127.0.0.1:62566/members/ |
+| Original URL | http://127.0.0.1:56147/members/ |
+| Normalized URL | http://127.0.0.1:56147/members/ |
 | Host | 127.0.0.1 |
 | Scheme | http |
-| Port | 62566 |
+| Port | 56147 |
 
 ## Engagement
 
@@ -21,8 +21,8 @@
 | --- | --- |
 | Client | Practica Evolve |
 | Auditor | David |
-| Engagement | Demo v0.18.0 |
-| Scope summary | http://127.0.0.1:62566/members/ |
+| Engagement | Demo v0.19.0 |
+| Scope summary | http://127.0.0.1:56147/members/ |
 | Notes | Laboratorio local controlado en localhost. |
 
 ## Executive Summary
@@ -55,6 +55,9 @@ The scan generated 19 finding(s): 0 critical, 3 high, 4 medium, 6 low and 6 info
 | Module errors | 0 |
 | URLs | 23 |
 | Forms | 2 |
+| Entry points | 23 |
+| Entry point parameters | 4 |
+| State-changing entry points | 3 |
 | Resolved subdomains | 0 |
 | Open TCP ports | 1 |
 
@@ -126,6 +129,9 @@ Improve evidence quality and follow-up coverage.
 - fingerprinting: warning - Identified 4 technology signal(s) and checked 4 public metadata path(s).
 - crawler: warning - Crawled 5 page(s), discovered 9 in-scope URL(s), 9 from metadata.
 - HTML forms were identified passively; no form submission was performed.
+- Entry points were derived from passive evidence: URLs, query strings, forms and advertised HTTP methods.
+- State-changing entry points were inferred from methods or form actions; no request bodies were sent.
+- Some entry point parameters have sensitive-looking names and should be reviewed without exposing their values.
 - Open TCP ports were detected using TCP connect checks only; no payloads or banners were requested.
 
 ### Safety Notes
@@ -155,7 +161,7 @@ Improve evidence quality and follow-up coverage.
 - ID: `AUTH-BASIC-OVER-HTTP`
 - Category: authentication
 - Module: `basic_auth`
-- Target: `http://127.0.0.1:62566/members/`
+- Target: `http://127.0.0.1:56147/members/`
 
 **Description**
 
@@ -175,7 +181,7 @@ Force HTTPS before authentication and enable HSTS after validation.
 - ID: `HTTP-NO-HTTPS-REDIRECT`
 - Category: transport-security
 - Module: `http`
-- Target: `http://127.0.0.1:62566/members/`
+- Target: `http://127.0.0.1:56147/members/`
 
 **Description**
 
@@ -187,8 +193,8 @@ Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification
 
 **Evidence**
 
-- initial_url: `http://127.0.0.1:62566/members/`
-- final_url: `http://127.0.0.1:62566/members/`
+- initial_url: `http://127.0.0.1:56147/members/`
+- final_url: `http://127.0.0.1:56147/members/`
 - status_code: `401`
 
 ### HIGH - HTTP method TRACE is advertised
@@ -196,7 +202,7 @@ Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification
 - ID: `METHOD-TRACE-ADVERTISED`
 - Category: http-methods
 - Module: `http_methods`
-- Target: `http://127.0.0.1:62566/members/`
+- Target: `http://127.0.0.1:56147/members/`
 
 **Description**
 
@@ -216,7 +222,7 @@ Disable unnecessary HTTP methods or enforce strict authorization before use.
 - ID: `COOKIE-SAMESITE-NONE-WITHOUT-SECURE`
 - Category: cookies
 - Module: `cookies`
-- Target: `http://127.0.0.1:62566/members/`
+- Target: `http://127.0.0.1:56147/members/`
 
 **Description**
 
@@ -235,7 +241,7 @@ Set Secure or avoid SameSite=None if cross-site usage is not required.
 - ID: `HEADER-CONTENT_SECURITY_POLICY-MISSING`
 - Category: security-headers
 - Module: `security_headers`
-- Target: `http://127.0.0.1:62566/members/`
+- Target: `http://127.0.0.1:56147/members/`
 
 **Description**
 
@@ -250,7 +256,7 @@ Define an appropriate Content-Security-Policy header for this application.
 - ID: `METHOD-DELETE-ADVERTISED`
 - Category: http-methods
 - Module: `http_methods`
-- Target: `http://127.0.0.1:62566/members/`
+- Target: `http://127.0.0.1:56147/members/`
 
 **Description**
 
@@ -270,7 +276,7 @@ Disable unnecessary HTTP methods or enforce strict authorization before use.
 - ID: `METHOD-PUT-ADVERTISED`
 - Category: http-methods
 - Module: `http_methods`
-- Target: `http://127.0.0.1:62566/members/`
+- Target: `http://127.0.0.1:56147/members/`
 
 **Description**
 
@@ -290,7 +296,7 @@ Disable unnecessary HTTP methods or enforce strict authorization before use.
 - ID: `COOKIE-HTTPONLY-MISSING`
 - Category: cookies
 - Module: `cookies`
-- Target: `http://127.0.0.1:62566/members/`
+- Target: `http://127.0.0.1:56147/members/`
 
 **Description**
 
@@ -309,7 +315,7 @@ Set HttpOnly for session or sensitive cookies.
 - ID: `COOKIE-HTTPONLY-MISSING`
 - Category: cookies
 - Module: `cookies`
-- Target: `http://127.0.0.1:62566/members/`
+- Target: `http://127.0.0.1:56147/members/`
 
 **Description**
 
@@ -328,7 +334,7 @@ Set HttpOnly for session or sensitive cookies.
 - ID: `COOKIE-SAMESITE-MISSING`
 - Category: cookies
 - Module: `cookies`
-- Target: `http://127.0.0.1:62566/members/`
+- Target: `http://127.0.0.1:56147/members/`
 
 **Description**
 
@@ -347,7 +353,7 @@ Set SameSite=Lax or SameSite=Strict unless cross-site usage is required.
 - ID: `HEADER-CLICKJACKING-MISSING`
 - Category: security-headers
 - Module: `security_headers`
-- Target: `http://127.0.0.1:62566/members/`
+- Target: `http://127.0.0.1:56147/members/`
 
 **Description**
 
@@ -362,7 +368,7 @@ Set frame-ancestors in Content-Security-Policy or use X-Frame-Options where appr
 - ID: `HEADER-NOSNIFF-MISSING`
 - Category: security-headers
 - Module: `security_headers`
-- Target: `http://127.0.0.1:62566/members/`
+- Target: `http://127.0.0.1:56147/members/`
 
 **Description**
 
@@ -381,7 +387,7 @@ Set X-Content-Type-Options: nosniff.
 - ID: `HEADER-REFERRER_POLICY-MISSING`
 - Category: security-headers
 - Module: `security_headers`
-- Target: `http://127.0.0.1:62566/members/`
+- Target: `http://127.0.0.1:56147/members/`
 
 **Description**
 
@@ -396,7 +402,7 @@ Define an appropriate Referrer-Policy header for this application.
 - ID: `CRAWLER-OUT-OF-SCOPE-LINKS`
 - Category: crawler
 - Module: `crawler`
-- Target: `http://127.0.0.1:62566/members/`
+- Target: `http://127.0.0.1:56147/members/`
 
 **Description**
 
@@ -415,7 +421,7 @@ Review whether any external host should be added to the authorized scope before 
 - ID: `FINGERPRINT-GENERATOR-DISCLOSED`
 - Category: fingerprinting
 - Module: `fingerprinting`
-- Target: `http://127.0.0.1:62566/members/`
+- Target: `http://127.0.0.1:56147/members/`
 
 **Description**
 
@@ -434,7 +440,7 @@ Remove generator metadata if it is not required.
 - ID: `FINGERPRINT-POWERED-BY-DISCLOSED`
 - Category: fingerprinting
 - Module: `fingerprinting`
-- Target: `http://127.0.0.1:62566/members/`
+- Target: `http://127.0.0.1:56147/members/`
 
 **Description**
 
@@ -453,7 +459,7 @@ Remove or reduce technology-identifying response headers where practical.
 - ID: `FINGERPRINT-SERVER-VERSION-DISCLOSED`
 - Category: fingerprinting
 - Module: `fingerprinting`
-- Target: `http://127.0.0.1:62566/members/`
+- Target: `http://127.0.0.1:56147/members/`
 
 **Description**
 
@@ -465,14 +471,14 @@ Avoid exposing precise server versions unless there is an operational reason.
 
 **Evidence**
 
-- server: `AIWebAuditorLab/0.18`
+- server: `AIWebAuditorLab/0.19`
 
 ### INFO - Permissions-Policy header is missing
 
 - ID: `HEADER-PERMISSIONS_POLICY-MISSING`
 - Category: security-headers
 - Module: `security_headers`
-- Target: `http://127.0.0.1:62566/members/`
+- Target: `http://127.0.0.1:56147/members/`
 
 **Description**
 
@@ -499,13 +505,13 @@ Review whether each exposed service is expected, patched and covered by the auth
 
 **Evidence**
 
-- open_port: `62566`
+- open_port: `56147`
 
 ## Technology Fingerprinting
 
 | Technology | Category | Confidence | Signals |
 | --- | --- | --- | --- |
-| AIWebAuditorLab/0.18 | server | low | header:server |
+| AIWebAuditorLab/0.19 | server | low | header:server |
 | Django | framework | medium | cookie:sessionid |
 | PHP 5.6.40 | language | high | header:x-powered-by |
 | WordPress 4.7.0 | cms | high | html:meta-generator |
@@ -521,7 +527,7 @@ Review whether each exposed service is expected, patched and covered by the auth
 
 ## Crawler
 
-- Seed URL: `http://127.0.0.1:62566/members/`
+- Seed URL: `http://127.0.0.1:56147/members/`
 - Max depth: 1
 - Max pages: 20
 - Fetched URLs: 5
@@ -538,12 +544,12 @@ Review whether each exposed service is expected, patched and covered by the auth
 
 | URL | Types | Sources |
 | --- | --- | --- |
-| http://127.0.0.1:62566/api/users | api | crawler_fetched, sitemap |
-| http://127.0.0.1:62566/login | form, login | crawler_fetched, sitemap |
-| http://127.0.0.1:62566/members/ | account, form, login | crawler_fetched, html_link, robots_allow, seed, sitemap |
-| http://127.0.0.1:62566/oauth/authorize | callback, login | well_known_endpoint |
-| http://127.0.0.1:62566/oauth/token | callback | well_known_endpoint |
-| http://127.0.0.1:62566/reset-password | password_reset | crawler_fetched, sitemap |
+| http://127.0.0.1:56147/api/users | api | crawler_fetched, sitemap |
+| http://127.0.0.1:56147/login | form, login | crawler_fetched, sitemap |
+| http://127.0.0.1:56147/members/ | account, form, login | crawler_fetched, html_link, robots_allow, seed, sitemap |
+| http://127.0.0.1:56147/oauth/authorize | callback, login | well_known_endpoint |
+| http://127.0.0.1:56147/oauth/token | callback | well_known_endpoint |
+| http://127.0.0.1:56147/reset-password | password_reset | crawler_fetched, sitemap |
 
 ### Present .well-known Endpoints
 
@@ -554,15 +560,15 @@ Review whether each exposed service is expected, patched and covered by the auth
 
 ### Discovered URLs
 
-- `http://127.0.0.1:62566/`
-- `http://127.0.0.1:62566/.well-known/openid-configuration`
-- `http://127.0.0.1:62566/.well-known/security.txt`
-- `http://127.0.0.1:62566/api/users`
-- `http://127.0.0.1:62566/login`
-- `http://127.0.0.1:62566/members/`
-- `http://127.0.0.1:62566/oauth/authorize`
-- `http://127.0.0.1:62566/oauth/token`
-- `http://127.0.0.1:62566/reset-password`
+- `http://127.0.0.1:56147/`
+- `http://127.0.0.1:56147/.well-known/openid-configuration`
+- `http://127.0.0.1:56147/.well-known/security.txt`
+- `http://127.0.0.1:56147/api/users`
+- `http://127.0.0.1:56147/login`
+- `http://127.0.0.1:56147/members/`
+- `http://127.0.0.1:56147/oauth/authorize`
+- `http://127.0.0.1:56147/oauth/token`
+- `http://127.0.0.1:56147/reset-password`
 
 ### Out-of-Scope URLs
 
@@ -570,9 +576,9 @@ Review whether each exposed service is expected, patched and covered by the auth
 
 ### Excluded URLs
 
-- `http://127.0.0.1:62566/admin/`
-- `http://127.0.0.1:62566/private/`
-- `http://127.0.0.1:62566/private/report`
+- `http://127.0.0.1:56147/admin/`
+- `http://127.0.0.1:56147/private/`
+- `http://127.0.0.1:56147/private/report`
 
 ## Web Inventory
 
@@ -587,36 +593,99 @@ Review whether each exposed service is expected, patched and covered by the auth
 
 | URL | Status | Type | Forms | Interest |
 | --- | ---: | --- | ---: | --- |
-| http://127.0.0.1:62566/.well-known/change-password | 404 | unknown | 0 | password_reset, password_reset_path |
-| http://127.0.0.1:62566/.well-known/oauth-authorization-server | 404 | unknown | 0 | callback, callback_path |
-| http://127.0.0.1:62566/admin/ | unknown | unknown | 0 | admin, admin_path |
-| http://127.0.0.1:62566/api/users | 200 | application/json; charset=utf-8 | 0 | api, api_path |
-| http://127.0.0.1:62566/login | 200 | text/html; charset=utf-8 | 1 | form, login, login_path, form_detected |
-| http://127.0.0.1:62566/login/ | unknown | unknown | 0 | login, state_changing_candidate, login_path, post_method |
-| http://127.0.0.1:62566/members/ | 401 | text/html; charset=utf-8 | 1 | account, form, login, login_path, account_area, form_detected |
-| http://127.0.0.1:62566/oauth/authorize | unknown | unknown | 0 | callback, login, login_path, callback_path |
-| http://127.0.0.1:62566/oauth/token | unknown | unknown | 0 | callback, callback_path |
-| http://127.0.0.1:62566/private/ | unknown | unknown | 0 | account, account_area |
-| http://127.0.0.1:62566/private/report | unknown | unknown | 0 | account, account_area |
-| http://127.0.0.1:62566/reset-password | 200 | text/html; charset=utf-8 | 0 | password_reset, password_reset_path |
-| http://127.0.0.1:62566/session | unknown | unknown | 0 | login, state_changing_candidate, login_path, post_method |
-| http://127.0.0.1:62566/ | 200 | text/html; charset=utf-8 | 0 | unknown |
-| http://127.0.0.1:62566/.well-known/openid-configuration | 200 | unknown | 0 | unknown |
-| http://127.0.0.1:62566/.well-known/security.txt | 200 | unknown | 0 | unknown |
+| http://127.0.0.1:56147/.well-known/change-password | 404 | unknown | 0 | password_reset, password_reset_path |
+| http://127.0.0.1:56147/.well-known/oauth-authorization-server | 404 | unknown | 0 | callback, callback_path |
+| http://127.0.0.1:56147/admin/ | unknown | unknown | 0 | admin, admin_path |
+| http://127.0.0.1:56147/api/users | 200 | application/json; charset=utf-8 | 0 | api, api_path |
+| http://127.0.0.1:56147/login | 200 | text/html; charset=utf-8 | 1 | form, login, login_path, form_detected |
+| http://127.0.0.1:56147/login/ | unknown | unknown | 0 | login, state_changing_candidate, login_path, post_method |
+| http://127.0.0.1:56147/members/ | 401 | text/html; charset=utf-8 | 1 | account, form, login, login_path, account_area, form_detected |
+| http://127.0.0.1:56147/oauth/authorize | unknown | unknown | 0 | callback, login, login_path, callback_path |
+| http://127.0.0.1:56147/oauth/token | unknown | unknown | 0 | callback, callback_path |
+| http://127.0.0.1:56147/private/ | unknown | unknown | 0 | account, account_area |
+| http://127.0.0.1:56147/private/report | unknown | unknown | 0 | account, account_area |
+| http://127.0.0.1:56147/reset-password | 200 | text/html; charset=utf-8 | 0 | password_reset, password_reset_path |
+| http://127.0.0.1:56147/session | unknown | unknown | 0 | login, state_changing_candidate, login_path, post_method |
+| http://127.0.0.1:56147/ | 200 | text/html; charset=utf-8 | 0 | unknown |
+| http://127.0.0.1:56147/.well-known/openid-configuration | 200 | unknown | 0 | unknown |
+| http://127.0.0.1:56147/.well-known/security.txt | 200 | unknown | 0 | unknown |
 | https://example.org/external | unknown | unknown | 0 | unknown |
-| http://127.0.0.1:62566/.well-known/apple-app-site-association | 404 | unknown | 0 | unknown |
-| http://127.0.0.1:62566/.well-known/assetlinks.json | 404 | unknown | 0 | unknown |
-| http://127.0.0.1:62566/.well-known/webfinger | 404 | unknown | 0 | unknown |
-| http://127.0.0.1:62566/robots.txt | 200 | unknown | 0 | unknown |
-| http://127.0.0.1:62566/security.txt | 404 | unknown | 0 | unknown |
-| http://127.0.0.1:62566/sitemap.xml | 200 | unknown | 0 | unknown |
+| http://127.0.0.1:56147/.well-known/apple-app-site-association | 404 | unknown | 0 | unknown |
+| http://127.0.0.1:56147/.well-known/assetlinks.json | 404 | unknown | 0 | unknown |
+| http://127.0.0.1:56147/.well-known/webfinger | 404 | unknown | 0 | unknown |
+| http://127.0.0.1:56147/robots.txt | 200 | unknown | 0 | unknown |
+| http://127.0.0.1:56147/security.txt | 404 | unknown | 0 | unknown |
+| http://127.0.0.1:56147/sitemap.xml | 200 | unknown | 0 | unknown |
 
 ### Forms
 
 | Page | Action | Method | Inputs | Password Fields |
 | --- | --- | --- | ---: | ---: |
-| http://127.0.0.1:62566/login | http://127.0.0.1:62566/session | POST | 2 | 1 |
-| http://127.0.0.1:62566/members/ | http://127.0.0.1:62566/login/ | POST | 3 | 1 |
+| http://127.0.0.1:56147/login | http://127.0.0.1:56147/session | POST | 2 | 1 |
+| http://127.0.0.1:56147/members/ | http://127.0.0.1:56147/login/ | POST | 3 | 1 |
+
+## Entry Points
+
+- Endpoints: 23
+- Review candidates: 19
+- Forms: 2
+- Parameters: 4
+- State-changing endpoints: 3
+
+Only passive evidence was used: URLs, query strings, forms and advertised HTTP methods. No form submission was performed.
+
+### HTTP Methods Observed
+
+| Method | Endpoints | State-changing |
+| --- | ---: | --- |
+| DELETE | 1 | True |
+| GET | 15 | False |
+| OPTIONS | 1 | False |
+| POST | 3 | True |
+| PUT | 1 | True |
+| TRACE | 1 | False |
+
+### Endpoint Review List
+
+| URL | State | Methods | Parameters | Forms | Route types | Notes |
+| --- | --- | --- | --- | ---: | --- | --- |
+| http://127.0.0.1:56147/login/ | form_action | POST | csrf_token, password, username | 1 | login, state_changing_candidate | form_action, login_route, parameters_observed, sensitive_parameter_name, state_changing_method |
+| http://127.0.0.1:56147/session | form_action | POST | password, user | 1 | login, state_changing_candidate | form_action, login_route, parameters_observed, sensitive_parameter_name, state_changing_method |
+| http://127.0.0.1:56147/members/ | fetched | DELETE, GET, OPTIONS, POST, PUT, TRACE | unknown | 0 | account, form, login | login_route, state_changing_method |
+| http://127.0.0.1:56147/ | fetched | GET | unknown | 0 | unknown | unknown |
+| http://127.0.0.1:56147/.well-known/apple-app-site-association | fetched | GET | unknown | 0 | unknown | unknown |
+| http://127.0.0.1:56147/.well-known/assetlinks.json | fetched | GET | unknown | 0 | unknown | unknown |
+| http://127.0.0.1:56147/.well-known/change-password | fetched | GET | unknown | 0 | password_reset | password_reset_route |
+| http://127.0.0.1:56147/.well-known/oauth-authorization-server | fetched | GET | unknown | 0 | callback | callback_route |
+| http://127.0.0.1:56147/.well-known/openid-configuration | fetched | GET | unknown | 0 | unknown | unknown |
+| http://127.0.0.1:56147/.well-known/security.txt | fetched | GET | unknown | 0 | unknown | unknown |
+| http://127.0.0.1:56147/.well-known/webfinger | fetched | GET | unknown | 0 | unknown | unknown |
+| http://127.0.0.1:56147/api/users | fetched | GET | unknown | 0 | api | api_route |
+| http://127.0.0.1:56147/login | fetched | GET | unknown | 0 | form, login | login_route |
+| http://127.0.0.1:56147/oauth/authorize | metadata | unknown | unknown | 0 | callback, login | callback_route, login_route |
+| http://127.0.0.1:56147/oauth/token | metadata | unknown | unknown | 0 | callback | callback_route |
+| http://127.0.0.1:56147/reset-password | fetched | GET | unknown | 0 | password_reset | password_reset_route |
+| http://127.0.0.1:56147/robots.txt | fetched | GET | unknown | 0 | unknown | unknown |
+| http://127.0.0.1:56147/security.txt | fetched | GET | unknown | 0 | unknown | unknown |
+| http://127.0.0.1:56147/sitemap.xml | fetched | GET | unknown | 0 | unknown | unknown |
+| http://127.0.0.1:56147/admin/ | excluded | unknown | unknown | 0 | admin | admin_route |
+| http://127.0.0.1:56147/private/ | excluded | unknown | unknown | 0 | account | unknown |
+| http://127.0.0.1:56147/private/report | excluded | unknown | unknown | 0 | account | unknown |
+| https://example.org/external | out_of_scope | unknown | unknown | 0 | unknown | unknown |
+
+### Form Entry Points
+
+| Page | Action | Method | Inputs | Password fields | CSRF candidates |
+| --- | --- | --- | ---: | ---: | --- |
+| http://127.0.0.1:56147/login | http://127.0.0.1:56147/session | POST | 2 | 1 | unknown |
+| http://127.0.0.1:56147/members/ | http://127.0.0.1:56147/login/ | POST | 3 | 1 | csrf_token |
+
+### Sensitive-Looking Parameters
+
+| Parameter | Locations | Occurrences | Methods |
+| --- | --- | ---: | --- |
+| csrf_token | form | 1 | POST |
+| password | form | 2 | POST |
 
 ## TCP Port Check
 
@@ -629,9 +698,9 @@ Review whether each exposed service is expected, patched and covered by the auth
 
 | Port | Service | Status | Elapsed |
 | ---: | --- | --- | ---: |
-| 62566 | unknown | open | 0 ms |
-| 80 | http | filtered | 500 ms |
-| 443 | https | filtered | 515 ms |
+| 56147 | unknown | open | 0 ms |
+| 80 | http | filtered | 515 ms |
+| 443 | https | filtered | 500 ms |
 
 ## Limitations
 

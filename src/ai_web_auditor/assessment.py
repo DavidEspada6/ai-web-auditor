@@ -3,6 +3,7 @@ from __future__ import annotations
 from collections import Counter
 from typing import Any
 
+from .entrypoints import build_entry_points_from_scan
 from .inventory import build_inventory_from_scan
 
 
@@ -49,7 +50,8 @@ def build_assessment(scan_data: dict[str, Any]) -> dict[str, Any]:
     findings = _findings(scan_data)
     modules = _modules(scan_data)
     inventory = _inventory(scan_data)
-    coverage = _coverage(modules, inventory)
+    entry_points = _entry_points(scan_data)
+    coverage = _coverage(modules, inventory, entry_points)
     severity_counts = _severity_counts(findings)
     risk_score = _risk_score(findings, severity_counts, coverage, scan_data)
     risk_level = _risk_level(risk_score, severity_counts)
@@ -73,7 +75,7 @@ def build_assessment(scan_data: dict[str, Any]) -> dict[str, Any]:
         "priorities": priorities,
         "quick_wins": quick_wins,
         "remediation_plan": _remediation_plan(priorities, quick_wins, coverage),
-        "coverage_notes": _coverage_notes(modules, inventory, coverage),
+        "coverage_notes": _coverage_notes(modules, inventory, entry_points, coverage),
         "safety_notes": [
             "This assessment is generated from existing non-intrusive scan evidence only.",
             "No exploitation, brute force, fuzzing or destructive validation was performed.",
@@ -224,9 +226,10 @@ def _remediation_plan(
     ]
 
 
-def _coverage(modules: list[dict[str, Any]], inventory: dict[str, Any]) -> dict[str, Any]:
+def _coverage(modules: list[dict[str, Any]], inventory: dict[str, Any], entry_points: dict[str, Any]) -> dict[str, Any]:
     statuses = Counter(_clean(module.get("status"), "unknown") for module in modules)
     inventory_summary = inventory.get("summary") if isinstance(inventory.get("summary"), dict) else {}
+    entry_summary = entry_points.get("summary") if isinstance(entry_points.get("summary"), dict) else {}
     subdomains = _module_by_name(modules, "subdomains")
     subdomain_artifacts = subdomains.get("artifacts") if subdomains and isinstance(subdomains.get("artifacts"), dict) else {}
     ports = _module_by_name(modules, "ports")
@@ -242,6 +245,10 @@ def _coverage(modules: list[dict[str, Any]], inventory: dict[str, Any]) -> dict[
         "fetched_urls": _int(inventory_summary.get("fetched_urls"), 0),
         "forms": _int(inventory_summary.get("forms"), 0),
         "interesting_urls": _int(inventory_summary.get("interesting_urls"), 0),
+        "entry_points": _int(entry_summary.get("total_endpoints"), 0),
+        "entry_point_review_candidates": _int(entry_summary.get("review_candidates"), 0),
+        "entry_point_parameters": _int(entry_summary.get("parameters"), 0),
+        "state_changing_entry_points": _int(entry_summary.get("state_changing_endpoints"), 0),
         "subdomains": _int(subdomain_artifacts.get("resolved_count"), 0),
         "open_ports": _int(port_artifacts.get("open_count"), 0),
     }
@@ -250,6 +257,7 @@ def _coverage(modules: list[dict[str, Any]], inventory: dict[str, Any]) -> dict[
 def _coverage_notes(
     modules: list[dict[str, Any]],
     inventory: dict[str, Any],
+    entry_points: dict[str, Any],
     coverage: dict[str, Any],
 ) -> list[str]:
     notes: list[str] = []
@@ -260,6 +268,12 @@ def _coverage_notes(
 
     if _int(coverage.get("forms"), 0) > 0:
         notes.append("HTML forms were identified passively; no form submission was performed.")
+    if _int(coverage.get("entry_points"), 0) > 0:
+        notes.append("Entry points were derived from passive evidence: URLs, query strings, forms and advertised HTTP methods.")
+    if _int(coverage.get("state_changing_entry_points"), 0) > 0:
+        notes.append("State-changing entry points were inferred from methods or form actions; no request bodies were sent.")
+    if _entry_points_have_sensitive_parameters(entry_points):
+        notes.append("Some entry point parameters have sensitive-looking names and should be reviewed without exposing their values.")
     if _int(coverage.get("subdomains"), 0) > 0:
         notes.append("Resolved subdomains were recorded as evidence but not scanned automatically.")
     if _int(coverage.get("open_ports"), 0) > 0:
@@ -283,6 +297,15 @@ def _severity_counts(findings: list[dict[str, Any]]) -> dict[str, int]:
 def _inventory(scan_data: dict[str, Any]) -> dict[str, Any]:
     inventory = scan_data.get("inventory")
     return inventory if isinstance(inventory, dict) else build_inventory_from_scan(scan_data)
+
+
+def _entry_points(scan_data: dict[str, Any]) -> dict[str, Any]:
+    entry_points = scan_data.get("entry_points")
+    return entry_points if isinstance(entry_points, dict) else build_entry_points_from_scan(scan_data)
+
+
+def _entry_points_have_sensitive_parameters(entry_points: dict[str, Any]) -> bool:
+    return any(item.get("sensitive_hint") for item in _dict_list(entry_points.get("parameters")))
 
 
 def _findings(scan_data: dict[str, Any]) -> list[dict[str, Any]]:

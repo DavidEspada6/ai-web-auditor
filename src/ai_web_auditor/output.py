@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from .assessment import render_assessment_console
+from .entrypoints import build_entry_points_from_scan
 from .inventory import build_inventory_from_scan
 from .models import Finding, ScanResult
 
@@ -30,6 +31,19 @@ def render_console(result: ScanResult) -> None:
         f"Fetched: {summary.get('fetched_urls', 0)} | "
         f"Forms: {summary.get('forms', 0)} | "
         f"Interesting: {summary.get('interesting_urls', 0)}"
+    )
+
+    entry_points = build_entry_points_from_scan(result_data)
+    entry_summary = entry_points.get("summary", {}) if isinstance(entry_points.get("summary"), dict) else {}
+    print()
+    print("Entry Points")
+    print("------------")
+    print(
+        f"Endpoints: {entry_summary.get('total_endpoints', 0)} | "
+        f"Review: {entry_summary.get('review_candidates', 0)} | "
+        f"Forms: {entry_summary.get('forms', 0)} | "
+        f"Parameters: {entry_summary.get('parameters', 0)} | "
+        f"State-changing: {entry_summary.get('state_changing_endpoints', 0)}"
     )
 
     subdomain_module = next((module for module in result.modules if module.name == "subdomains"), None)

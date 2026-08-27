@@ -145,7 +145,7 @@ class WebConfigTests(unittest.TestCase):
         self.assertIn("workspace-body", html)
         self.assertIn("view-nav", html)
         self.assertIn("Auditorias recientes", html)
-        for table in ["modules", "inventory", "subdomains", "ports", "history"]:
+        for table in ["modules", "inventory", "entrypoints", "subdomains", "ports", "history"]:
             self.assertIn(f'data-table="{table}"', html)
 
         self.assertIn("table-layout: fixed;", css)
@@ -154,6 +154,18 @@ class WebConfigTests(unittest.TestCase):
         self.assertIn("overflow: auto;", css)
         self.assertIn("setupResizableTables();", javascript)
         self.assertIn("startColumnResize", javascript)
+
+    def test_gui_exposes_entry_points_view_and_download(self):
+        root = Path(__file__).resolve().parents[1]
+        html = (root / "src" / "ai_web_auditor" / "web" / "templates" / "index.html").read_text(encoding="utf-8")
+        javascript = (root / "src" / "ai_web_auditor" / "web" / "static" / "app.js").read_text(encoding="utf-8")
+
+        self.assertIn('id="download-entrypoints"', html)
+        self.assertIn('data-tab="entrypoints"', html)
+        self.assertIn('id="entrypoint-table"', html)
+        self.assertIn("renderEntryPoints(scan.entry_points", javascript)
+        self.assertIn("entryPointsToCsv", javascript)
+        self.assertIn("hasEntryPoints", javascript)
 
     def test_gui_exposes_evidence_download(self):
         root = Path(__file__).resolve().parents[1]

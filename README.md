@@ -12,7 +12,9 @@ CLI y GUI, informes Markdown/HTML/PDF, proyectos locales, historial separado por
 proyecto, inventario web exportable, descubrimiento DNS seguro de subdominios,
 chequeo TCP limitado de puertos, valoracion determinista de riesgo, plan de
 remediacion, laboratorio vulnerable local, comparacion de auditorias y paquetes
-de evidencias saneadas.
+de evidencias saneadas. Desde v0.19 tambien genera un modelo de entry points
+con endpoints, parametros, formularios y metodos observados para orientar la
+revision manual posterior.
 
 No implementa explotacion, fuerza bruta, fuzzing agresivo, crawling masivo,
 escaneo de puertos amplio, fuerza bruta DNS agresiva ni pruebas intrusivas.
@@ -31,7 +33,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.18 no necesita librerias externas en tiempo de ejecucion.
+La v0.19 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -48,6 +50,7 @@ lanzador incluido:
 .\ai-web-auditor.cmd scan --config audit.json
 .\ai-web-auditor.cmd analyze outputs/result.json --dry-run
 .\ai-web-auditor.cmd inventory outputs/result.json --output outputs/inventory.csv
+.\ai-web-auditor.cmd entrypoints outputs/result.json --output outputs/entry-points.csv
 .\ai-web-auditor.cmd assess outputs/result.json --output outputs/assessment.json
 .\ai-web-auditor.cmd evidence outputs/result.json --output outputs/evidence.zip
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.md
@@ -125,6 +128,12 @@ Exportar inventario de URLs a CSV:
 
 ```powershell
 ai-web-auditor inventory outputs/example.json --output outputs/inventory.csv
+```
+
+Exportar puntos de entrada pasivos a CSV:
+
+```powershell
+ai-web-auditor entrypoints outputs/example.json --output outputs/entry-points.csv
 ```
 
 Calcular valoracion de riesgo y plan de remediacion desde un JSON existente:
@@ -237,7 +246,7 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.18",
+    "user_agent": "AI-Web-Auditor/0.19",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -330,7 +339,7 @@ Ejemplo en `examples/audit.json`:
 - `fingerprinting`: identifica senales de servidor, CDN, framework, lenguaje,
   CMS y ficheros publicos como `robots.txt`, `security.txt` y `sitemap.xml`.
 - `crawler`: recorre enlaces internos sin enviar formularios, sin salir del
-  scope, con profundidad y numero de paginas limitados. Desde v0.18 tambien
+  scope, con profundidad y numero de paginas limitados. Tambien
   lee `robots.txt`, `sitemap.xml`, endpoints `.well-known` y clasifica rutas
   interesantes como login, admin, API, recovery, callbacks o uploads.
 
@@ -420,6 +429,7 @@ El informe incluye:
 - hallazgos y evidencias;
 - fingerprinting, crawler, metadatos publicos y rutas clasificadas si estan presentes;
 - inventario web con URLs, estados, tipos de contenido y formularios detectados;
+- puntos de entrada con endpoints, parametros, formularios y metodos observados;
 - descubrimiento de subdominios si se activa;
 - chequeo TCP limitado de puertos si se activa;
 - priorizacion IA si se aporta;
@@ -429,7 +439,7 @@ Hay ejemplos en `examples/report-example.md` y `examples/report-example.html`.
 
 ## Laboratorio local
 
-La v0.18 incluye un laboratorio vulnerable solo para pruebas locales. Sirve una
+La version actual incluye un laboratorio vulnerable solo para pruebas locales. Sirve una
 web de demo en `127.0.0.1` con problemas controlados:
 
 - HTTP sin TLS;
@@ -485,6 +495,7 @@ El paquete ZIP de evidencias contiene:
 - `findings/findings.json`;
 - `modules/modules.json`;
 - `inventory/inventory.json`;
+- `entry-points/entry-points.json`;
 - `assessment/assessment.json`;
 - `README.md` con notas de seguridad.
 
@@ -527,9 +538,32 @@ estado HTTP, tipo de contenido, fuente o motivo de interes. El boton
 
 Hay un ejemplo en `examples/inventory-example.csv`.
 
+## Puntos de entrada
+
+Cada escaneo nuevo incluye un bloque `entry_points` dentro del JSON. Este bloque
+deriva una lista de revision a partir de evidencias pasivas:
+
+- endpoints normalizados;
+- parametros de query y campos de formularios;
+- formularios HTML, metodo, action, campos password y posibles CSRF;
+- metodos HTTP observados o anunciados;
+- estado del endpoint: visitado, descubierto, metadatos, form action, excluido o fuera de scope;
+- notas como `state_changing_method`, `sensitive_parameter_name`, `api_route` o `login_route`.
+
+Exportar solo puntos de entrada:
+
+```powershell
+ai-web-auditor entrypoints outputs/result.json --format json
+ai-web-auditor entrypoints outputs/result.json --output outputs/entry-points.csv
+```
+
+En la interfaz grafica, la pestana `Entradas` permite filtrar por URL, metodo,
+parametro, tipo de ruta o nota. El boton `Entradas CSV` descarga la tabla para
+priorizar revision manual. No se envian formularios ni se prueban valores.
+
 ## Descubrimiento de subdominios
 
-La v0.18 mantiene un modulo DNS seguro para descubrir subdominios candidatos. Esta
+La version actual mantiene un modulo DNS seguro para descubrir subdominios candidatos. Esta
 desactivado por defecto porque amplia la fase de reconocimiento y conviene
 usarlo solo cuando el scope lo permita.
 
@@ -566,7 +600,7 @@ en la pestana `Subdominios`.
 
 ## Chequeo limitado de puertos
 
-La v0.18 mantiene un modulo `ports` para comprobar conectividad TCP contra el host
+La version actual mantiene un modulo `ports` para comprobar conectividad TCP contra el host
 objetivo. Esta desactivado por defecto porque, aunque es limitado, forma parte
 de la fase de reconocimiento y debe usarse solo con autorizacion.
 
@@ -686,14 +720,14 @@ Desde la interfaz se puede:
 - ver ayuda contextual dejando el raton sobre opciones, modulos y limites;
 - ejecutar una auditoria no intrusiva;
 - moverse por vistas agrupadas: auditoria, superficie, entregables e historial;
-- revisar resumen, riesgo, hallazgos, modulos, inventario, subdominios, puertos y JSON;
-- ajustar el ancho de columnas en tablas como inventario, subdominios, puertos e historial;
+- revisar resumen, riesgo, hallazgos, modulos, inventario, entradas, subdominios, puertos y JSON;
+- ajustar el ancho de columnas en tablas como inventario, entradas, subdominios, puertos e historial;
 - analizar la auditoria con IA en modo dry-run o con API;
 - guardar el analisis IA en el historial local;
 - guardar y abrir auditorias del historial local o del proyecto activo;
 - comparar dos auditorias guardadas;
 - generar informes Markdown, HTML y PDF;
-- descargar JSON, Evidencias ZIP, Inventario CSV, AI JSON, Markdown, HTML y PDF;
+- descargar JSON, Evidencias ZIP, Inventario CSV, Entradas CSV, AI JSON, Markdown, HTML y PDF;
 - anadir metadatos de auditoria al informe.
 
 ## Scope de auditoria
@@ -767,7 +801,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.18.0
+git tag v0.19.0
 git push
 git push --tags
 ```
@@ -780,7 +814,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.18.0",
+  "version": "0.19.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",
@@ -810,6 +844,23 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
       }
     ],
     "forms": []
+  },
+  "entry_points": {
+    "summary": {
+      "total_endpoints": 1,
+      "review_candidates": 1,
+      "forms": 0,
+      "parameters": 0
+    },
+    "endpoints": [
+      {
+        "url": "https://example.com/",
+        "state": "fetched",
+        "methods": ["GET"],
+        "parameters": [],
+        "forms": []
+      }
+    ]
   },
   "assessment": {
     "summary": {

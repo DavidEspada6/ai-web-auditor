@@ -10,6 +10,7 @@ from typing import Any
 
 from . import __version__
 from .assessment import build_assessment
+from .entrypoints import build_entry_points_from_scan
 from .inventory import build_inventory_from_scan
 from .models import utc_now
 
@@ -52,6 +53,7 @@ def generate_markdown_report(
     findings = _findings(scan_data)
     modules = _modules(scan_data)
     inventory = build_inventory_from_scan(scan_data)
+    entry_points = build_entry_points_from_scan(scan_data)
     assessment = build_assessment(scan_data)
     ai_analysis = ai_analysis or _embedded_ai_analysis(scan_data)
     ai_body = _analysis_body(ai_analysis)
@@ -88,6 +90,7 @@ def generate_markdown_report(
     lines.extend(_technology_section(modules))
     lines.extend(_crawler_section(modules))
     lines.extend(_inventory_section(inventory))
+    lines.extend(_entry_points_section(entry_points))
     lines.extend(_subdomain_section(modules))
     lines.extend(_ports_section(modules))
     lines.extend(_ai_section(ai_body))
@@ -137,6 +140,7 @@ def generate_html_report(
     findings = _findings(scan_data)
     modules = _modules(scan_data)
     inventory = build_inventory_from_scan(scan_data)
+    entry_points = build_entry_points_from_scan(scan_data)
     assessment = build_assessment(scan_data)
     ai_analysis = ai_analysis or _embedded_ai_analysis(scan_data)
     ai_body = _analysis_body(ai_analysis)
@@ -201,6 +205,7 @@ def generate_html_report(
             _technology_html_section(modules),
             _crawler_html_section(modules),
             _inventory_html_section(inventory),
+            _entry_points_html_section(entry_points),
             _subdomain_html_section(modules),
             _ports_html_section(modules),
             _ai_html_section(ai_body),
@@ -325,6 +330,9 @@ def _assessment_section(assessment: dict[str, Any]) -> list[str]:
         f"| Module errors | {_cell(coverage.get('modules_error', 0))} |",
         f"| URLs | {_cell(coverage.get('urls', 0))} |",
         f"| Forms | {_cell(coverage.get('forms', 0))} |",
+        f"| Entry points | {_cell(coverage.get('entry_points', 0))} |",
+        f"| Entry point parameters | {_cell(coverage.get('entry_point_parameters', 0))} |",
+        f"| State-changing entry points | {_cell(coverage.get('state_changing_entry_points', 0))} |",
         f"| Resolved subdomains | {_cell(coverage.get('subdomains', 0))} |",
         f"| Open TCP ports | {_cell(coverage.get('open_ports', 0))} |",
         "",
@@ -587,6 +595,87 @@ def _inventory_section(inventory: dict[str, Any]) -> list[str]:
     return lines
 
 
+def _entry_points_section(entry_points: dict[str, Any]) -> list[str]:
+    summary = entry_points.get("summary") if isinstance(entry_points.get("summary"), dict) else {}
+    endpoints = _dict_list(entry_points.get("endpoints"))
+    forms = _dict_list(entry_points.get("forms"))
+    parameters = _dict_list(entry_points.get("parameters"))
+    methods = _dict_list(entry_points.get("methods"))
+
+    lines = [
+        "## Entry Points",
+        "",
+        f"- Endpoints: {_text(summary.get('total_endpoints', len(endpoints)))}",
+        f"- Review candidates: {_text(summary.get('review_candidates', 0))}",
+        f"- Forms: {_text(summary.get('forms', len(forms)))}",
+        f"- Parameters: {_text(summary.get('parameters', len(parameters)))}",
+        f"- State-changing endpoints: {_text(summary.get('state_changing_endpoints', 0))}",
+        "",
+        "Only passive evidence was used: URLs, query strings, forms and advertised HTTP methods. No form submission was performed.",
+        "",
+    ]
+
+    if methods:
+        lines.extend(["### HTTP Methods Observed", "", "| Method | Endpoints | State-changing |", "| --- | ---: | --- |"])
+        for item in methods:
+            lines.append(
+                f"| {_cell(item.get('method'))} | {_cell(item.get('endpoint_count'))} | {_cell(item.get('state_changing'))} |"
+            )
+        lines.append("")
+
+    if endpoints:
+        lines.extend(
+            [
+                "### Endpoint Review List",
+                "",
+                "| URL | State | Methods | Parameters | Forms | Route types | Notes |",
+                "| --- | --- | --- | --- | ---: | --- | --- |",
+            ]
+        )
+        for item in endpoints[:50]:
+            parameter_names = _endpoint_parameter_names(item)
+            lines.append(
+                f"| {_cell(item.get('url'))} | {_cell(item.get('state'))} | "
+                f"{_cell(', '.join(_string_list(item.get('methods'))))} | "
+                f"{_cell(', '.join(parameter_names))} | {_cell(len(_string_list(item.get('forms'))))} | "
+                f"{_cell(', '.join(_string_list(item.get('route_types'))))} | "
+                f"{_cell(', '.join(_string_list(item.get('notes'))))} |"
+            )
+        if len(endpoints) > 50:
+            lines.append(f"| ... {len(endpoints) - 50} more |  |  |  |  |  |  |")
+        lines.append("")
+
+    if forms:
+        lines.extend(["### Form Entry Points", "", "| Page | Action | Method | Inputs | Password fields | CSRF candidates |", "| --- | --- | --- | ---: | ---: | --- |"])
+        for item in forms[:25]:
+            lines.append(
+                f"| {_cell(item.get('page_url'))} | {_cell(item.get('action'))} | {_cell(item.get('method'))} | "
+                f"{_cell(item.get('input_count'))} | {_cell(item.get('password_fields'))} | "
+                f"{_cell(', '.join(_string_list(item.get('csrf_candidates'))))} |"
+            )
+        if len(forms) > 25:
+            lines.append(f"| ... {len(forms) - 25} more |  |  |  |  |  |")
+        lines.append("")
+
+    sensitive_parameters = [item for item in parameters if item.get("sensitive_hint")]
+    parameter_rows = sensitive_parameters or parameters
+    if parameter_rows:
+        title = "Sensitive-Looking Parameters" if sensitive_parameters else "Observed Parameters"
+        lines.extend([f"### {title}", "", "| Parameter | Locations | Occurrences | Methods |", "| --- | --- | ---: | --- |"])
+        for item in parameter_rows[:50]:
+            lines.append(
+                f"| {_cell(item.get('name'))} | {_cell(', '.join(_string_list(item.get('locations'))))} | "
+                f"{_cell(item.get('occurrences'))} | {_cell(', '.join(_string_list(item.get('methods'))))} |"
+            )
+        if len(parameter_rows) > 50:
+            lines.append(f"| ... {len(parameter_rows) - 50} more |  |  |  |")
+        lines.append("")
+
+    if not endpoints:
+        lines.extend(["No entry point data was available.", ""])
+    return lines
+
+
 def _subdomain_section(modules: list[dict[str, Any]]) -> list[str]:
     subdomains = _module_by_name(modules, "subdomains")
     if not subdomains:
@@ -789,6 +878,9 @@ def _assessment_html_section(assessment: dict[str, Any]) -> str:
                 ["Module errors", coverage.get("modules_error", 0)],
                 ["URLs", coverage.get("urls", 0)],
                 ["Forms", coverage.get("forms", 0)],
+                ["Entry points", coverage.get("entry_points", 0)],
+                ["Entry point parameters", coverage.get("entry_point_parameters", 0)],
+                ["State-changing entry points", coverage.get("state_changing_entry_points", 0)],
                 ["Resolved subdomains", coverage.get("subdomains", 0)],
                 ["Open TCP ports", coverage.get("open_ports", 0)],
             ],
@@ -1023,6 +1115,86 @@ def _inventory_html_section(inventory: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def _entry_points_html_section(entry_points: dict[str, Any]) -> str:
+    summary = entry_points.get("summary") if isinstance(entry_points.get("summary"), dict) else {}
+    endpoints = _dict_list(entry_points.get("endpoints"))
+    forms = _dict_list(entry_points.get("forms"))
+    parameters = _dict_list(entry_points.get("parameters"))
+    methods = _dict_list(entry_points.get("methods"))
+    rows = [
+        ["Endpoints", summary.get("total_endpoints", len(endpoints))],
+        ["Review candidates", summary.get("review_candidates", 0)],
+        ["Forms", summary.get("forms", len(forms))],
+        ["Parameters", summary.get("parameters", len(parameters))],
+        ["State-changing endpoints", summary.get("state_changing_endpoints", 0)],
+    ]
+    lines = [
+        '<section class="section">',
+        "<h2>Entry Points</h2>",
+        _html_table(["Field", "Value"], rows),
+        "<p>Only passive evidence was used: URLs, query strings, forms and advertised HTTP methods. No form submission was performed.</p>",
+    ]
+
+    if methods:
+        method_rows = [[item.get("method"), item.get("endpoint_count"), item.get("state_changing")] for item in methods]
+        lines.extend(["<h3>HTTP Methods Observed</h3>", _html_table(["Method", "Endpoints", "State-changing"], method_rows)])
+
+    if endpoints:
+        endpoint_rows = []
+        for item in endpoints[:50]:
+            endpoint_rows.append(
+                [
+                    item.get("url"),
+                    item.get("state"),
+                    ", ".join(_string_list(item.get("methods"))),
+                    ", ".join(_endpoint_parameter_names(item)),
+                    len(_string_list(item.get("forms"))),
+                    ", ".join(_string_list(item.get("route_types"))),
+                    ", ".join(_string_list(item.get("notes"))),
+                ]
+            )
+        lines.extend(
+            [
+                "<h3>Endpoint Review List</h3>",
+                _html_table(["URL", "State", "Methods", "Parameters", "Forms", "Route types", "Notes"], endpoint_rows),
+            ]
+        )
+    else:
+        lines.append('<p class="empty">No entry point data was available.</p>')
+
+    if forms:
+        form_rows = [
+            [
+                item.get("page_url"),
+                item.get("action"),
+                item.get("method"),
+                item.get("input_count"),
+                item.get("password_fields"),
+                ", ".join(_string_list(item.get("csrf_candidates"))),
+            ]
+            for item in forms[:25]
+        ]
+        lines.extend(["<h3>Form Entry Points</h3>", _html_table(["Page", "Action", "Method", "Inputs", "Password fields", "CSRF candidates"], form_rows)])
+
+    sensitive_parameters = [item for item in parameters if item.get("sensitive_hint")]
+    parameter_rows = sensitive_parameters or parameters
+    if parameter_rows:
+        title = "Sensitive-Looking Parameters" if sensitive_parameters else "Observed Parameters"
+        rows = [
+            [
+                item.get("name"),
+                ", ".join(_string_list(item.get("locations"))),
+                item.get("occurrences"),
+                ", ".join(_string_list(item.get("methods"))),
+            ]
+            for item in parameter_rows[:50]
+        ]
+        lines.extend([f"<h3>{_html(title)}</h3>", _html_table(["Parameter", "Locations", "Occurrences", "Methods"], rows)])
+
+    lines.append("</section>")
+    return "\n".join(lines)
+
+
 def _subdomain_html_section(modules: list[dict[str, Any]]) -> str:
     subdomains = _module_by_name(modules, "subdomains")
     if not subdomains:
@@ -1204,6 +1376,13 @@ def _well_known_highlights(item: dict[str, Any]) -> str:
     if endpoints:
         highlights.append(f"endpoints: {len(endpoints)}")
     return "; ".join(highlights)
+
+
+def _endpoint_parameter_names(item: dict[str, Any]) -> list[str]:
+    names = _string_list(item.get("parameter_names"))
+    if names:
+        return names
+    return [str(parameter.get("name")) for parameter in _dict_list(item.get("parameters")) if parameter.get("name")]
 
 
 def _clean_metadata_value(value: Any) -> str:

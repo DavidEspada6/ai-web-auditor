@@ -385,7 +385,10 @@ class LocalEngineTests(unittest.TestCase):
         artifacts = crawler.artifacts
         metadata = artifacts["metadata"]
         classified = {item["url"]: item for item in artifacts["route_classifications"]}
-        inventory_urls = {item["url"]: item for item in result.to_dict()["inventory"]["urls"]}
+        result_data = result.to_dict()
+        inventory_urls = {item["url"]: item for item in result_data["inventory"]["urls"]}
+        entry_points = {item["url"]: item for item in result_data["entry_points"]["endpoints"]}
+        entry_parameters = {item["name"]: item for item in result_data["entry_points"]["parameters"]}
 
         self.assertTrue(metadata["robots"]["present"])
         self.assertTrue(any(item["present"] for item in metadata["sitemaps"]))
@@ -402,6 +405,10 @@ class LocalEngineTests(unittest.TestCase):
         self.assertIn("state_changing_candidate", inventory_urls[f"{base_url}/session"]["route_types"])
         self.assertIn("sitemap", inventory_urls[f"{base_url}/api/users"]["sources"])
         self.assertIn("robots_disallow", inventory_urls[f"{base_url}/admin/"]["sources"])
+        self.assertTrue(entry_points[f"{base_url}/session"]["state_changing"])
+        self.assertIn("password", entry_parameters)
+        self.assertTrue(entry_parameters["password"]["sensitive_hint"])
+        self.assertIn(f"{base_url}/api/users", entry_points)
 
     def test_fingerprinting_detects_technologies_and_public_files(self):
         server = HTTPServer(("127.0.0.1", 0), FingerprintHandler)

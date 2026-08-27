@@ -26,6 +26,10 @@ const inventoryCount = document.querySelector("#inventory-count");
 const inventorySearch = document.querySelector("#inventory-search");
 const inventorySummary = document.querySelector("#inventory-summary");
 const inventoryTable = document.querySelector("#inventory-table");
+const entrypointCount = document.querySelector("#entrypoint-count");
+const entrypointSearch = document.querySelector("#entrypoint-search");
+const entrypointSummary = document.querySelector("#entrypoint-summary");
+const entrypointTable = document.querySelector("#entrypoint-table");
 const subdomainCount = document.querySelector("#subdomain-count");
 const subdomainSummary = document.querySelector("#subdomain-summary");
 const subdomainTable = document.querySelector("#subdomain-table");
@@ -45,6 +49,7 @@ const generateReportButton = document.querySelector("#generate-report");
 const downloadJsonButton = document.querySelector("#download-json");
 const downloadEvidenceButton = document.querySelector("#download-evidence");
 const downloadInventoryButton = document.querySelector("#download-inventory");
+const downloadEntryPointsButton = document.querySelector("#download-entrypoints");
 const downloadAiButton = document.querySelector("#download-ai");
 const downloadMdButton = document.querySelector("#download-md");
 const downloadHtmlButton = document.querySelector("#download-html");
@@ -77,6 +82,10 @@ document.querySelectorAll(".tab").forEach((button) => {
 
 inventorySearch.addEventListener("input", () => {
   renderInventory(state.scan?.inventory || {});
+});
+
+entrypointSearch.addEventListener("input", () => {
+  renderEntryPoints(state.scan?.entry_points || {});
 });
 
 initialize();
@@ -178,6 +187,7 @@ form.addEventListener("submit", async (event) => {
     downloadJsonButton.disabled = false;
     downloadEvidenceButton.disabled = false;
     downloadInventoryButton.disabled = !hasInventory(state.scan);
+    downloadEntryPointsButton.disabled = !hasEntryPoints(state.scan);
     downloadAiButton.disabled = !state.aiAnalysis;
     downloadMdButton.disabled = true;
     downloadHtmlButton.disabled = true;
@@ -257,6 +267,7 @@ historyTable.addEventListener("click", async (event) => {
     downloadJsonButton.disabled = false;
     downloadEvidenceButton.disabled = false;
     downloadInventoryButton.disabled = !hasInventory(state.scan);
+    downloadEntryPointsButton.disabled = !hasEntryPoints(state.scan);
     downloadAiButton.disabled = !state.aiAnalysis;
     downloadMdButton.disabled = true;
     downloadHtmlButton.disabled = true;
@@ -347,6 +358,12 @@ downloadEvidenceButton.addEventListener("click", async () => {
 downloadInventoryButton.addEventListener("click", () => {
   if (state.scan?.inventory) {
     downloadText("web-inventory.csv", inventoryToCsv(state.scan.inventory), "text/csv");
+  }
+});
+
+downloadEntryPointsButton.addEventListener("click", () => {
+  if (state.scan?.entry_points) {
+    downloadText("entry-points.csv", entryPointsToCsv(state.scan.entry_points), "text/csv");
   }
 });
 
@@ -471,11 +488,13 @@ function renderScan(scan) {
   renderFindings(findings);
   renderModules(modules);
   renderInventory(scan.inventory || {});
+  renderEntryPoints(scan.entry_points || {});
   renderSubdomains(subdomains);
   renderPorts(ports);
   jsonOutput.textContent = JSON.stringify(scan, null, 2);
   downloadEvidenceButton.disabled = false;
   downloadInventoryButton.disabled = !hasInventory(scan);
+  downloadEntryPointsButton.disabled = !hasEntryPoints(scan);
   loadHistory();
 }
 
@@ -537,7 +556,7 @@ function applyLabDefaults(lab) {
     projectAuditorInput.value = "David";
   }
   if (!projectEngagementInput.value.trim()) {
-    projectEngagementInput.value = "Simulacion v0.18.0";
+    projectEngagementInput.value = "Simulacion v0.19.0";
   }
 
   document.querySelector("#target").value = defaults.target;
@@ -694,6 +713,7 @@ function renderSummary(scan, findings, modules, requests, subdomains, ports, ass
   summaryContent.hidden = false;
   summaryContent.innerHTML = "";
   const inventorySummaryData = scan.inventory?.summary || {};
+  const entryPointsSummaryData = scan.entry_points?.summary || {};
   const resolvedSubdomains = Array.isArray(subdomains.resolved) ? subdomains.resolved.length : 0;
   const openPorts = ports.open_count ?? 0;
   const assessmentSummaryData = assessment?.summary || {};
@@ -717,6 +737,8 @@ function renderSummary(scan, findings, modules, requests, subdomains, ports, ass
     ["URLs metadatos", metadataUrls],
     ["Rutas clave", classifiedRoutes],
     ["Forms", inventorySummaryData.forms || 0],
+    ["Entradas", entryPointsSummaryData.total_endpoints || 0],
+    ["Parametros", entryPointsSummaryData.parameters || 0],
     ["Subdominios", resolvedSubdomains],
     ["Puertos abiertos", openPorts],
   ];
@@ -748,6 +770,8 @@ function renderAssessment(assessment) {
     ["Quick wins", summary.quick_win_count ?? quickWins.length],
     ["URLs", coverage.urls ?? 0],
     ["Forms", coverage.forms ?? 0],
+    ["Entradas", coverage.entry_points ?? 0],
+    ["Parametros", coverage.entry_point_parameters ?? 0],
     ["Subdominios", coverage.subdomains ?? 0],
     ["Puertos abiertos", coverage.open_ports ?? 0],
   ].forEach(([label, value]) => {
@@ -961,6 +985,97 @@ function inventorySearchText(item) {
   ]
     .join(" ")
     .toLowerCase();
+}
+
+function renderEntryPoints(entryPoints) {
+  const summary = entryPoints?.summary || {};
+  const endpoints = Array.isArray(entryPoints?.endpoints) ? entryPoints.endpoints : [];
+  const query = entrypointSearch.value.trim().toLowerCase();
+  const filtered = query
+    ? endpoints.filter((item) => entryPointSearchText(item).includes(query))
+    : endpoints;
+
+  entrypointCount.textContent = query ? `${filtered.length} de ${endpoints.length} endpoints` : `${endpoints.length} endpoints`;
+  entrypointSummary.innerHTML = "";
+  [
+    ["Total", summary.total_endpoints ?? endpoints.length],
+    ["Revisar", summary.review_candidates ?? 0],
+    ["Forms", summary.forms ?? 0],
+    ["Parametros", summary.parameters ?? 0],
+    ["Cambio estado", summary.state_changing_endpoints ?? 0],
+    ["Sensibles", sensitiveParameterCount(entryPoints)],
+  ].forEach(([label, value]) => {
+    const item = document.createElement("div");
+    item.className = "metric";
+    item.innerHTML = `<span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong>`;
+    entrypointSummary.appendChild(item);
+  });
+
+  entrypointTable.innerHTML = "";
+  if (!endpoints.length) {
+    const row = document.createElement("tr");
+    row.innerHTML = '<td colspan="7">Sin puntos de entrada disponibles.</td>';
+    entrypointTable.appendChild(row);
+    return;
+  }
+  if (!filtered.length) {
+    const row = document.createElement("tr");
+    row.innerHTML = '<td colspan="7">Sin coincidencias.</td>';
+    entrypointTable.appendChild(row);
+    return;
+  }
+
+  filtered.forEach((item) => {
+    const methods = Array.isArray(item.methods) ? item.methods.join(", ") : "";
+    const parameters = endpointParameterNames(item).join(", ");
+    const forms = Array.isArray(item.forms) ? item.forms.length : 0;
+    const routes = Array.isArray(item.route_types) ? item.route_types.join(", ") : "";
+    const notes = Array.isArray(item.notes) ? item.notes.join(", ") : "";
+    const stateClass = item.state_changing ? "connected" : "disconnected";
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td><code>${escapeHtml(item.url || "")}</code></td>
+      <td><span class="status-chip ${stateClass}">${escapeHtml(item.state || "unknown")}</span></td>
+      <td>${escapeHtml(methods)}</td>
+      <td>${parameters ? `<span class="interest-chip">${escapeHtml(parameters)}</span>` : ""}</td>
+      <td>${escapeHtml(forms)}</td>
+      <td>${routes ? `<span class="interest-chip">${escapeHtml(routes)}</span>` : ""}</td>
+      <td>${escapeHtml(notes)}</td>
+    `;
+    entrypointTable.appendChild(row);
+  });
+}
+
+function entryPointSearchText(item) {
+  return [
+    item.id,
+    item.url,
+    item.state,
+    item.status_code,
+    item.content_type,
+    ...(Array.isArray(item.methods) ? item.methods : []),
+    ...(Array.isArray(item.route_types) ? item.route_types : []),
+    ...(Array.isArray(item.notes) ? item.notes : []),
+    ...(Array.isArray(item.sources) ? item.sources : []),
+    ...endpointParameterNames(item),
+  ]
+    .join(" ")
+    .toLowerCase();
+}
+
+function endpointParameterNames(item) {
+  if (Array.isArray(item.parameter_names)) {
+    return item.parameter_names;
+  }
+  if (!Array.isArray(item.parameters)) {
+    return [];
+  }
+  return item.parameters.map((parameter) => parameter.name).filter(Boolean);
+}
+
+function sensitiveParameterCount(entryPoints) {
+  const parameters = Array.isArray(entryPoints?.parameters) ? entryPoints.parameters : [];
+  return parameters.filter((item) => item.sensitive_hint).length;
 }
 
 function renderSubdomains(artifacts) {
@@ -1291,6 +1406,10 @@ function hasInventory(scan) {
   return Array.isArray(scan?.inventory?.urls) && scan.inventory.urls.length > 0;
 }
 
+function hasEntryPoints(scan) {
+  return Array.isArray(scan?.entry_points?.endpoints) && scan.entry_points.endpoints.length > 0;
+}
+
 function inventoryToCsv(inventory) {
   const fields = [
     "url",
@@ -1314,6 +1433,39 @@ function inventoryToCsv(inventory) {
     rows.push(fields.map((field) => csvCell(csvValue(item[field]))).join(","));
   });
   return `${rows.join("\n")}\n`;
+}
+
+function entryPointsToCsv(entryPoints) {
+  const fields = [
+    "id",
+    "url",
+    "state",
+    "review_candidate",
+    "methods",
+    "route_types",
+    "parameters",
+    "forms",
+    "sources",
+    "status_code",
+    "content_type",
+    "notes",
+  ];
+  const endpoints = Array.isArray(entryPoints?.endpoints) ? entryPoints.endpoints : [];
+  const rows = [fields.map(csvCell).join(",")];
+  endpoints.forEach((item) => {
+    rows.push(fields.map((field) => csvCell(csvValue(entryPointCsvValue(item, field)))).join(","));
+  });
+  return `${rows.join("\n")}\n`;
+}
+
+function entryPointCsvValue(item, field) {
+  if (field === "parameters") {
+    return endpointParameterNames(item).join("; ");
+  }
+  if (field === "forms") {
+    return Array.isArray(item.forms) ? item.forms.join("; ") : "";
+  }
+  return item[field];
 }
 
 function csvValue(value) {

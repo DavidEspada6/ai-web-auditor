@@ -80,6 +80,47 @@ class CliTests(unittest.TestCase):
         self.assertIn("url,status_code,content_type", content)
         self.assertIn("https://example.com/login", content)
 
+    def test_entrypoints_command_writes_csv(self):
+        scan_data = {
+            "target": {"normalized_url": "https://example.com/login?next=/home", "host": "example.com"},
+            "modules": [
+                {
+                    "name": "crawler",
+                    "artifacts": {
+                        "pages": [
+                            {
+                                "url": "https://example.com/login",
+                                "status_code": 200,
+                                "content_type": "text/html",
+                                "forms_found": 1,
+                                "forms": [
+                                    {
+                                        "action": "https://example.com/session",
+                                        "method": "post",
+                                        "fields": [{"name": "password", "type": "password"}],
+                                    }
+                                ],
+                            }
+                        ]
+                    },
+                }
+            ],
+        }
+        with tempfile.TemporaryDirectory() as tmpdir:
+            scan_path = Path(tmpdir) / "scan.json"
+            output = Path(tmpdir) / "entrypoints.csv"
+            scan_path.write_text(json.dumps(scan_data), encoding="utf-8")
+
+            with redirect_stdout(StringIO()):
+                exit_code = main(["entrypoints", str(scan_path), "--output", str(output)])
+
+            content = output.read_text(encoding="utf-8")
+
+        self.assertEqual(exit_code, 0)
+        self.assertIn("id,url,state,review_candidate", content)
+        self.assertIn("https://example.com/session", content)
+        self.assertIn("password", content)
+
     def test_assess_command_writes_assessment_json(self):
         scan_data = {
             "target": {"scheme": "http", "host": "example.com", "normalized_url": "http://example.com/"},

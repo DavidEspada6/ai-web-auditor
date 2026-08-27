@@ -14,7 +14,7 @@ from ai_web_auditor.reporting import generate_html_report, generate_markdown_rep
 
 SCAN_DATA = {
     "tool": "ai-web-auditor",
-    "version": "0.18.0",
+    "version": "0.19.0",
     "generated_at": "2026-08-16T00:00:00Z",
     "status": "completed",
     "target": {
@@ -60,6 +60,21 @@ SCAN_DATA = {
                 "discovered_urls": ["https://example.com/", "https://example.com/about"],
                 "out_of_scope_urls": ["https://outside.example/"],
                 "excluded_urls": ["https://example.com/admin"],
+                "pages": [
+                    {
+                        "url": "https://example.com/login",
+                        "status_code": 200,
+                        "content_type": "text/html",
+                        "forms_found": 1,
+                        "forms": [
+                            {
+                                "action": "https://example.com/session",
+                                "method": "post",
+                                "fields": [{"name": "password", "type": "password"}],
+                            }
+                        ],
+                    }
+                ],
             },
         },
         {
@@ -164,6 +179,9 @@ class ReportingTests(unittest.TestCase):
         self.assertIn("https://example.com/about", markdown)
         self.assertIn("## Web Inventory", markdown)
         self.assertIn("https://example.com/admin", markdown)
+        self.assertIn("## Entry Points", markdown)
+        self.assertIn("https://example.com/session", markdown)
+        self.assertIn("password", markdown)
         self.assertIn("## Subdomain Discovery", markdown)
         self.assertIn("api.example.com", markdown)
         self.assertIn("## TCP Port Check", markdown)
@@ -188,6 +206,8 @@ class ReportingTests(unittest.TestCase):
         self.assertIn("Risk Assessment", html)
         self.assertIn("Remediation Plan", html)
         self.assertIn("Web Inventory", html)
+        self.assertIn("Entry Points", html)
+        self.assertIn("https://example.com/session", html)
         self.assertIn("Subdomain Discovery", html)
         self.assertIn("TCP Port Check", html)
         self.assertIn("&lt;script&gt;alert(1)&lt;/script&gt;", html)
