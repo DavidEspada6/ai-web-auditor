@@ -90,6 +90,7 @@ class ScanResult:
         from .entrypoints import build_entry_points_from_scan
         from .evidence import sanitize_scan_data, sanitize_url
         from .inventory import build_inventory_from_scan
+        from .rules import build_rule_evaluation
 
         data = asdict(self)
         target = data.get("target") if isinstance(data.get("target"), dict) else {}
@@ -99,6 +100,7 @@ class ScanResult:
         data["findings"] = [asdict(finding) for finding in self.findings]
         data["inventory"] = build_inventory_from_scan(data)
         data["entry_points"] = build_entry_points_from_scan(data)
+        data["rule_evaluation"] = build_rule_evaluation(data)
         data["assessment"] = build_assessment(data)
         return sanitize_scan_data(data)
 

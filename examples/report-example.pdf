@@ -4,7 +4,7 @@
 << /Type /Catalog /Pages 2 0 R >>
 endobj
 2 0 obj
-<< /Type /Pages /Kids [4 0 R 6 0 R 8 0 R 10 0 R 12 0 R 14 0 R 16 0 R 18 0 R 20 0 R 22 0 R 24 0 R 26 0 R 28 0 R 30 0 R 32 0 R 34 0 R 36 0 R 38 0 R] /Count 18 >>
+<< /Type /Pages /Kids [4 0 R 6 0 R 8 0 R 10 0 R 12 0 R 14 0 R 16 0 R 18 0 R 20 0 R 22 0 R 24 0 R 26 0 R 28 0 R 30 0 R 32 0 R 34 0 R 36 0 R 38 0 R 40 0 R 42 0 R 44 0 R 46 0 R] /Count 22 >>
 endobj
 3 0 obj
 << /Length 1231 >>
@@ -16,11 +16,11 @@ BT
 (AI WEB AUDITOR LAB REPORT) Tj
 T*
 T*
-(- Generated: 2026-08-27T21:15:27Z) Tj
+(- Generated: 2026-08-30T18:22:52Z) Tj
 T*
-(- Report generator: ai-web-auditor 0.20.0) Tj
+(- Report generator: ai-web-auditor 0.21.0) Tj
 T*
-(- Scan version: 0.20.0) Tj
+(- Scan version: 0.21.0) Tj
 T*
 (- Scan status: completed) Tj
 T*
@@ -30,15 +30,15 @@ T*
 T*
 (Field  Value) Tj
 T*
-(Original URL  http://127.0.0.1:62685/members/) Tj
+(Original URL  http://127.0.0.1:56158/members/) Tj
 T*
-(Normalized URL  http://127.0.0.1:62685/members/) Tj
+(Normalized URL  http://127.0.0.1:56158/members/) Tj
 T*
 (Host  127.0.0.1) Tj
 T*
 (Scheme  http) Tj
 T*
-(Port  62685) Tj
+(Port  56158) Tj
 T*
 T*
 (ENGAGEMENT) Tj
@@ -50,9 +50,9 @@ T*
 T*
 (Auditor  David) Tj
 T*
-(Engagement  Demo v0.20.0) Tj
+(Engagement  Demo v0.21.0) Tj
 T*
-(Scope summary  http://127.0.0.1:62685/members/) Tj
+(Scope summary  http://127.0.0.1:56158/members/) Tj
 T*
 (Notes  Laboratorio local controlado en localhost.) Tj
 T*
@@ -110,7 +110,7 @@ endobj
 << /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 3 0 R >>
 endobj
 5 0 obj
-<< /Length 3258 >>
+<< /Length 3149 >>
 stream
 BT
 /F1 10 Tf
@@ -131,6 +131,12 @@ T*
 (Resolved subdomains  0) Tj
 T*
 (Open TCP ports  1) Tj
+T*
+(Passive rules matched  13) Tj
+T*
+(OWASP controls matched  34) Tj
+T*
+(Unmapped findings  0) Tj
 T*
 T*
 (PRIORITIES) Tj
@@ -209,12 +215,6 @@ T*
 (or use X-Frame-Options where appropriate.) Tj
 T*
 (- X-Content-Type-Options nosniff is missing: Set X-Content-Type-Options: nosniff.) Tj
-T*
-(- Referrer-Policy header is missing: Define an appropriate Referrer-Policy header for this) Tj
-T*
-(application.) Tj
-T*
-(- Cookie missing HttpOnly flag: Set HttpOnly for session or sensitive cookies.) Tj
 ET
 endstream
 endobj
@@ -222,12 +222,18 @@ endobj
 << /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 5 0 R >>
 endobj
 7 0 obj
-<< /Length 2515 >>
+<< /Length 2617 >>
 stream
 BT
 /F1 10 Tf
 48 800 Td
 14 TL
+(- Referrer-Policy header is missing: Define an appropriate Referrer-Policy header for this) Tj
+T*
+(application.) Tj
+T*
+(- Cookie missing HttpOnly flag: Set HttpOnly for session or sensitive cookies.) Tj
+T*
 (- Cookie missing SameSite attribute: Set SameSite=Lax or SameSite=Strict unless cross-site) Tj
 T*
 (usage is required.) Tj
@@ -310,7 +316,23 @@ T*
 T*
 (- Review JavaScript-discovered endpoints before selecting later validation tests.) Tj
 T*
+(- Review OWASP WSTG/ASVS rule mappings before finalizing audit scope and report) Tj
 T*
+(traceability.) Tj
+T*
+ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 7 0 R >>
+endobj
+9 0 obj
+<< /Length 2947 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
 (COVERAGE NOTES) Tj
 T*
 T*
@@ -319,19 +341,7 @@ T*
 (- security_headers: warning - Security headers checked.) Tj
 T*
 (- cookies: warning - Checked 2 cookie\(s\).) Tj
-ET
-endstream
-endobj
-8 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 7 0 R >>
-endobj
-9 0 obj
-<< /Length 2659 >>
-stream
-BT
-/F1 10 Tf
-48 800 Td
-14 TL
+T*
 (- basic_auth: warning - HTTP authentication challenge checked.) Tj
 T*
 (- http_methods: warning - HTTP methods advertised by OPTIONS checked.) Tj
@@ -362,6 +372,8 @@ T*
 T*
 (requested by this module.) Tj
 T*
+(- Passive rules mapped scan evidence to OWASP WSTG/ASVS references for audit traceability.) Tj
+T*
 (- Open TCP ports were detected using TCP connect checks only; no payloads or banners were) Tj
 T*
 (requested.) Tj
@@ -375,6 +387,370 @@ T*
 (- No exploitation, brute force, fuzzing or destructive validation was performed.) Tj
 T*
 (- Risk should be reviewed against the authorized scope and business context.) Tj
+T*
+T*
+(PASSIVE RULE MAPPING) Tj
+T*
+T*
+(Metric  Value) Tj
+T*
+(Rules matched  13) Tj
+T*
+(Rules total  15) Tj
+T*
+(Findings mapped  21) Tj
+T*
+(Findings unmapped  0) Tj
+T*
+(OWASP controls matched  34) Tj
+T*
+T*
+(MATCHED RULES) Tj
+T*
+T*
+(Severity  Rule  Evidence  Frameworks  Next review) Tj
+T*
+(HIGH  RULE-TRANSPORT-ENFORCE-TLS: Transport encryption and HTTPS enforcement  findings:) Tj
+T*
+(AUTH-BASIC-OVER-HTTP, HTTP-NO-HTTPS-REDIRECT  OWASP WSTG WSTG-CRYP-03, OWASP WSTG WSTG-) Tj
+T*
+(ATHN-01, OWASP ASVS 5.0 V12.2.1, OWASP ASVS 5.0 V14.2.1  Confirm HTTPS is enforced for every) Tj
+T*
+(entry point and that HTTP redirects safely before authentication or session exchange.) Tj
+T*
+(MEDIUM  RULE-SESSION-COOKIE-ATTRIBUTES: Cookie security attributes  findings: COOKIE-) Tj
+T*
+(HTTPONLY-MISSING, COOKIE-SAMESITE-MISSING, COOKIE-SAMESITE-NONE-WITHOUT-SECURE  OWASP WSTG) Tj
+T*
+(WSTG-SESS-02, OWASP ASVS 5.0 V3.3.1, OWASP ASVS 5.0 V3.3.2, OWASP ASVS 5.0 V3.3.4  Confirm) Tj
+T*
+(session cookies use Secure, HttpOnly and a deliberate SameSite value based on the) Tj
+T*
+(application flow.) Tj
+T*
+(MEDIUM  RULE-FRONTEND-BROWSER-SECURITY-HEADERS: Browser security mechanism headers) Tj
+ET
+endstream
+endobj
+10 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 9 0 R >>
+endobj
+11 0 obj
+<< /Length 4320 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
+(findings: HEADER-CLICKJACKING-MISSING, HEADER-CONTENT_SECURITY_POLICY-MISSING, HEADER-) Tj
+T*
+(NOSNIFF-MISSING, HEADER-PERMISSIONS_POLICY-MISSING, HEADER-REFERRER_POLICY-MISSING  OWASP) Tj
+T*
+(WSTG WSTG-CONF-12, OWASP WSTG WSTG-CLNT-09, OWASP WSTG WSTG-CONF-14, OWASP ASVS 5.0 V3.4) Tj
+T*
+(Review CSP, frame-ancestors/X-Frame-Options, X-Content-Type-Options, Referrer-Policy and) Tj
+T*
+(Permissions-Policy per route.) Tj
+T*
+(HIGH  RULE-CONFIG-HTTP-METHODS: Advertised HTTP methods  findings: METHOD-DELETE-ADVERTISED,) Tj
+T*
+(METHOD-PUT-ADVERTISED, METHOD-TRACE-ADVERTISED  OWASP WSTG WSTG-CONF-06, OWASP ASVS 5.0) Tj
+T*
+(V4.1.4, OWASP ASVS 5.0 V13.4.4  Verify that each advertised method is intentionally) Tj
+T*
+(supported and protected by route-level authorization.) Tj
+T*
+(INFO  RULE-INFO-TECH-FINGERPRINTING: Technology and version disclosure  findings:) Tj
+T*
+(FINGERPRINT-GENERATOR-DISCLOSED, FINGERPRINT-POWERED-BY-DISCLOSED, FINGERPRINT-SERVER-) Tj
+T*
+(VERSION-DISCLOSED; signals: technologies_identified  OWASP WSTG WSTG-INFO-02, OWASP WSTG) Tj
+T*
+(WSTG-INFO-08, OWASP WSTG WSTG-INFO-10, OWASP ASVS 5.0 V13.4  Keep useful technology) Tj
+T*
+(evidence, then remove precise version disclosure where it is not operationally required.) Tj
+T*
+(INFO  RULE-INFO-WEBSERVER-METAFILES: Public metadata files and declared paths  signals:) Tj
+T*
+(public_metadata  OWASP WSTG WSTG-INFO-03, OWASP WSTG WSTG-INFO-07, OWASP ASVS 5.0 V13.4) Tj
+T*
+(Review discovered metadata paths manually and decide what belongs in scope before following) Tj
+T*
+(sensitive paths.) Tj
+T*
+(INFO  RULE-INFO-ENTRY-POINTS: Application entry point inventory  signals:) Tj
+T*
+(entry_points_present, sensitive_parameters, state_changing_entry_points  OWASP WSTG WSTG-) Tj
+T*
+(INFO-06, OWASP WSTG WSTG-INFO-07, OWASP ASVS 5.0 V4.1.2  Prioritize state-changing) Tj
+T*
+(endpoints, sensitive parameters and authenticated flows for later authorized testing.) Tj
+T*
+(INFO  RULE-INFO-JAVASCRIPT-SURFACE: Client-side JavaScript exposed routes  findings: JS-) Tj
+T*
+(ENDPOINTS-DISCOVERED, JS-OUT-OF-SCOPE-ENDPOINTS, JS-SENSITIVE-PARAMETER-NAMES; signals:) Tj
+T*
+(javascript_endpoints  OWASP WSTG WSTG-INFO-05, OWASP WSTG WSTG-INFO-06, OWASP ASVS 5.0 V13.4) Tj
+T*
+(Review JavaScript-discovered endpoints before selecting any later validation or attack) Tj
+T*
+(simulation.) Tj
+T*
+(INFO  RULE-AUTH-AUTHENTICATION-SURFACE: Authentication and account-management surface) Tj
+T*
+(signals: auth_routes  OWASP WSTG WSTG-ATHN-01, OWASP WSTG WSTG-ATHN-09, OWASP ASVS 5.0) Tj
+T*
+(V6.1.3, OWASP ASVS 5.0 V6.4.3  Document every authentication path, recovery path and) Tj
+T*
+(callback before testing controls in a later authorized phase.) Tj
+T*
+(INFO  RULE-AUTHZ-ADMIN-SURFACE: Administrative and privileged route inventory  signals:) Tj
+T*
+(admin_routes  OWASP WSTG WSTG-CONF-05, OWASP ASVS 5.0 V8.4.2  Confirm ownership, required) Tj
+T*
+(roles and whether the route should remain in scope before any access-control testing.) Tj
+T*
+(INFO  RULE-FILE-UPLOAD-SURFACE: File upload route inventory  signals: upload_routes  OWASP) Tj
+T*
+(ASVS 5.0 V5.2.1, OWASP ASVS 5.0 V5.2.2  Confirm accepted file types, size limits, storage) Tj
+T*
+(location and authorization before any upload testing.) Tj
+T*
+(INFO  RULE-INFRA-DISCOVERY-SURFACE: Infrastructure surface from DNS and TCP checks) Tj
+T*
+(findings: PORTS-OPEN-TCP-PORTS; signals: ports_open  OWASP WSTG WSTG-INFO-04, OWASP WSTG) Tj
+T*
+(WSTG-INFO-10, OWASP ASVS 5.0 V13.1.1  Confirm every resolved host and open port with the) Tj
+T*
+(application owner before expanding testing beyond the main URL.) Tj
+T*
+(INFO  RULE-SCOPE-EXTERNAL-REFERENCES: External and out-of-scope references  findings:) Tj
+T*
+(CRAWLER-OUT-OF-SCOPE-LINKS, JS-OUT-OF-SCOPE-ENDPOINTS; signals: external_references  OWASP) Tj
+T*
+(WSTG WSTG-INFO-10, OWASP ASVS 5.0 V13.2.4  Classify each external host as third-party,) Tj
+T*
+(dependency, redirect target or candidate scope extension.) Tj
+T*
+T*
+(OWASP TRACEABILITY) Tj
+T*
+T*
+(Framework  Control  Severity  Rules  Evidence) Tj
+T*
+(OWASP ASVS 5.0  V12.2.1: TLS is used for client connectivity  HIGH  RULE-TRANSPORT-ENFORCE-) Tj
+T*
+(TLS  AUTH-BASIC-OVER-HTTP, HTTP-NO-HTTPS-REDIRECT) Tj
+T*
+(OWASP ASVS 5.0  V13.1.1: Application communication needs are documented  INFO  RULE-INFRA-) Tj
+ET
+endstream
+endobj
+12 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 11 0 R >>
+endobj
+13 0 obj
+<< /Length 4013 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
+(DISCOVERY-SURFACE  PORTS-OPEN-TCP-PORTS) Tj
+T*
+(OWASP ASVS 5.0  V13.2.4: External resource allowlists are defined  INFO  RULE-SCOPE-) Tj
+T*
+(EXTERNAL-REFERENCES  CRAWLER-OUT-OF-SCOPE-LINKS, JS-OUT-OF-SCOPE-ENDPOINTS) Tj
+T*
+(OWASP ASVS 5.0  V13.4: Unintended information leakage  INFO  RULE-INFO-JAVASCRIPT-SURFACE,) Tj
+T*
+(RULE-INFO-TECH-FINGERPRINTING, RULE-INFO-WEBSERVER-METAFILES  FINGERPRINT-GENERATOR-) Tj
+T*
+(DISCLOSED, FINGERPRINT-POWERED-BY-DISCLOSED, FINGERPRINT-SERVER-VERSION-DISCLOSED, JS-) Tj
+T*
+(ENDPOINTS-DISCOVERED, JS-OUT-OF-SCOPE-ENDPOINTS, JS-SENSITIVE-PARAMETER-NAMES) Tj
+T*
+(OWASP ASVS 5.0  V13.4.4: HTTP TRACE method is not supported in production  HIGH  RULE-) Tj
+T*
+(CONFIG-HTTP-METHODS  METHOD-DELETE-ADVERTISED, METHOD-PUT-ADVERTISED, METHOD-TRACE-) Tj
+T*
+(ADVERTISED) Tj
+T*
+(OWASP ASVS 5.0  V14.2.1: Sensitive data is sent through protected channels  HIGH  RULE-) Tj
+T*
+(TRANSPORT-ENFORCE-TLS  AUTH-BASIC-OVER-HTTP, HTTP-NO-HTTPS-REDIRECT) Tj
+T*
+(OWASP ASVS 5.0  V3.3.1: Cookies have Secure attributes  MEDIUM  RULE-SESSION-COOKIE-) Tj
+T*
+(ATTRIBUTES  COOKIE-HTTPONLY-MISSING, COOKIE-SAMESITE-MISSING, COOKIE-SAMESITE-NONE-WITHOUT-) Tj
+T*
+(SECURE) Tj
+T*
+(OWASP ASVS 5.0  V3.3.2: Cookies define a SameSite policy  MEDIUM  RULE-SESSION-COOKIE-) Tj
+T*
+(ATTRIBUTES  COOKIE-HTTPONLY-MISSING, COOKIE-SAMESITE-MISSING, COOKIE-SAMESITE-NONE-WITHOUT-) Tj
+T*
+(SECURE) Tj
+T*
+(OWASP ASVS 5.0  V3.3.4: Sensitive cookies use HttpOnly  MEDIUM  RULE-SESSION-COOKIE-) Tj
+T*
+(ATTRIBUTES  COOKIE-HTTPONLY-MISSING, COOKIE-SAMESITE-MISSING, COOKIE-SAMESITE-NONE-WITHOUT-) Tj
+T*
+(SECURE) Tj
+T*
+(OWASP ASVS 5.0  V3.4: Browser security mechanism headers  MEDIUM  RULE-FRONTEND-BROWSER-) Tj
+T*
+(SECURITY-HEADERS  HEADER-CLICKJACKING-MISSING, HEADER-CONTENT_SECURITY_POLICY-MISSING,) Tj
+T*
+(HEADER-NOSNIFF-MISSING, HEADER-PERMISSIONS_POLICY-MISSING, HEADER-REFERRER_POLICY-MISSING) Tj
+T*
+(OWASP ASVS 5.0  V4.1.2: Only intended user-facing endpoints are exposed  INFO  RULE-INFO-) Tj
+T*
+(ENTRY-POINTS  signals: entry_points_present, sensitive_parameters,) Tj
+T*
+(state_changing_entry_points) Tj
+T*
+(OWASP ASVS 5.0  V4.1.4: Only explicitly supported HTTP methods are accepted  HIGH  RULE-) Tj
+T*
+(CONFIG-HTTP-METHODS  METHOD-DELETE-ADVERTISED, METHOD-PUT-ADVERTISED, METHOD-TRACE-) Tj
+T*
+(ADVERTISED) Tj
+T*
+(OWASP ASVS 5.0  V5.2.1: Accepted files have safe size limits  INFO  RULE-FILE-UPLOAD-SURFACE) Tj
+T*
+(signals: upload_routes) Tj
+T*
+(OWASP ASVS 5.0  V5.2.2: Uploaded file extension and content are validated  INFO  RULE-FILE-) Tj
+T*
+(UPLOAD-SURFACE  signals: upload_routes) Tj
+T*
+(OWASP ASVS 5.0  V6.1.3: Multiple authentication pathways are documented  INFO  RULE-AUTH-) Tj
+T*
+(AUTHENTICATION-SURFACE  signals: auth_routes) Tj
+T*
+(OWASP ASVS 5.0  V6.4.3: Secure forgotten password reset process  INFO  RULE-AUTH-) Tj
+T*
+(AUTHENTICATION-SURFACE  signals: auth_routes) Tj
+T*
+(OWASP ASVS 5.0  V8.4.2: Administrative interfaces include stronger access controls  INFO) Tj
+T*
+(RULE-AUTHZ-ADMIN-SURFACE  signals: admin_routes) Tj
+T*
+(OWASP WSTG  WSTG-ATHN-01: Credentials transported over an encrypted channel  HIGH  RULE-) Tj
+T*
+(AUTH-AUTHENTICATION-SURFACE, RULE-TRANSPORT-ENFORCE-TLS  AUTH-BASIC-OVER-HTTP, HTTP-NO-) Tj
+T*
+(HTTPS-REDIRECT) Tj
+T*
+(OWASP WSTG  WSTG-ATHN-09: Weak password change or reset functionality  INFO  RULE-AUTH-) Tj
+T*
+(AUTHENTICATION-SURFACE  signals: auth_routes) Tj
+T*
+(OWASP WSTG  WSTG-CLNT-09: Clickjacking  MEDIUM  RULE-FRONTEND-BROWSER-SECURITY-HEADERS) Tj
+T*
+(HEADER-CLICKJACKING-MISSING, HEADER-CONTENT_SECURITY_POLICY-MISSING, HEADER-NOSNIFF-MISSING,) Tj
+T*
+(HEADER-PERMISSIONS_POLICY-MISSING, HEADER-REFERRER_POLICY-MISSING) Tj
+T*
+(OWASP WSTG  WSTG-CONF-05: Enumerate infrastructure and application admin interfaces  INFO) Tj
+T*
+(RULE-AUTHZ-ADMIN-SURFACE  signals: admin_routes) Tj
+T*
+(OWASP WSTG  WSTG-CONF-06: HTTP methods  HIGH  RULE-CONFIG-HTTP-METHODS  METHOD-DELETE-) Tj
+T*
+(ADVERTISED, METHOD-PUT-ADVERTISED, METHOD-TRACE-ADVERTISED) Tj
+ET
+endstream
+endobj
+14 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 13 0 R >>
+endobj
+15 0 obj
+<< /Length 3612 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
+(OWASP WSTG  WSTG-CONF-12: Content Security Policy  MEDIUM  RULE-FRONTEND-BROWSER-SECURITY-) Tj
+T*
+(HEADERS  HEADER-CLICKJACKING-MISSING, HEADER-CONTENT_SECURITY_POLICY-MISSING, HEADER-) Tj
+T*
+(NOSNIFF-MISSING, HEADER-PERMISSIONS_POLICY-MISSING, HEADER-REFERRER_POLICY-MISSING) Tj
+T*
+(OWASP WSTG  WSTG-CONF-14: Other HTTP security header misconfigurations  MEDIUM  RULE-) Tj
+T*
+(FRONTEND-BROWSER-SECURITY-HEADERS  HEADER-CLICKJACKING-MISSING, HEADER-) Tj
+T*
+(CONTENT_SECURITY_POLICY-MISSING, HEADER-NOSNIFF-MISSING, HEADER-PERMISSIONS_POLICY-MISSING,) Tj
+T*
+(HEADER-REFERRER_POLICY-MISSING) Tj
+T*
+(OWASP WSTG  WSTG-CRYP-03: Sensitive information sent via unencrypted channels  HIGH  RULE-) Tj
+T*
+(TRANSPORT-ENFORCE-TLS  AUTH-BASIC-OVER-HTTP, HTTP-NO-HTTPS-REDIRECT) Tj
+T*
+(OWASP WSTG  WSTG-INFO-02: Fingerprint web server  INFO  RULE-INFO-TECH-FINGERPRINTING) Tj
+T*
+(FINGERPRINT-GENERATOR-DISCLOSED, FINGERPRINT-POWERED-BY-DISCLOSED, FINGERPRINT-SERVER-) Tj
+T*
+(VERSION-DISCLOSED) Tj
+T*
+(OWASP WSTG  WSTG-INFO-03: Review webserver metafiles for information leakage  INFO  RULE-) Tj
+T*
+(INFO-WEBSERVER-METAFILES  signals: public_metadata) Tj
+T*
+(OWASP WSTG  WSTG-INFO-04: Enumerate applications on webserver  INFO  RULE-INFRA-DISCOVERY-) Tj
+T*
+(SURFACE  PORTS-OPEN-TCP-PORTS) Tj
+T*
+(OWASP WSTG  WSTG-INFO-05: Review web page content for information leakage  INFO  RULE-INFO-) Tj
+T*
+(JAVASCRIPT-SURFACE  JS-ENDPOINTS-DISCOVERED, JS-OUT-OF-SCOPE-ENDPOINTS, JS-SENSITIVE-) Tj
+T*
+(PARAMETER-NAMES) Tj
+T*
+(OWASP WSTG  WSTG-INFO-06: Identify application entry points  INFO  RULE-INFO-ENTRY-POINTS,) Tj
+T*
+(RULE-INFO-JAVASCRIPT-SURFACE  JS-ENDPOINTS-DISCOVERED, JS-OUT-OF-SCOPE-ENDPOINTS, JS-) Tj
+T*
+(SENSITIVE-PARAMETER-NAMES) Tj
+T*
+(OWASP WSTG  WSTG-INFO-07: Map execution paths through application  INFO  RULE-INFO-ENTRY-) Tj
+T*
+(POINTS, RULE-INFO-WEBSERVER-METAFILES  signals: entry_points_present, public_metadata,) Tj
+T*
+(sensitive_parameters, state_changing_entry_points) Tj
+T*
+(OWASP WSTG  WSTG-INFO-08: Fingerprint web application framework  INFO  RULE-INFO-TECH-) Tj
+T*
+(FINGERPRINTING  FINGERPRINT-GENERATOR-DISCLOSED, FINGERPRINT-POWERED-BY-DISCLOSED,) Tj
+T*
+(FINGERPRINT-SERVER-VERSION-DISCLOSED) Tj
+T*
+(OWASP WSTG  WSTG-INFO-10: Map application architecture  INFO  RULE-INFO-TECH-FINGERPRINTING,) Tj
+T*
+(RULE-INFRA-DISCOVERY-SURFACE, RULE-SCOPE-EXTERNAL-REFERENCES  CRAWLER-OUT-OF-SCOPE-LINKS,) Tj
+T*
+(FINGERPRINT-GENERATOR-DISCLOSED, FINGERPRINT-POWERED-BY-DISCLOSED, FINGERPRINT-SERVER-) Tj
+T*
+(VERSION-DISCLOSED, JS-OUT-OF-SCOPE-ENDPOINTS, PORTS-OPEN-TCP-PORTS) Tj
+T*
+(OWASP WSTG  WSTG-SESS-02: Cookie attributes  MEDIUM  RULE-SESSION-COOKIE-ATTRIBUTES  COOKIE-) Tj
+T*
+(HTTPONLY-MISSING, COOKIE-SAMESITE-MISSING, COOKIE-SAMESITE-NONE-WITHOUT-SECURE) Tj
+T*
+T*
+(RULE SAFETY NOTES) Tj
+T*
+T*
+(- Rules are evaluated from existing passive scan evidence only.) Tj
+T*
+(- A matched rule is review guidance, not proof of exploitability.) Tj
+T*
+(- Out-of-scope references are recorded but must not be scanned without explicit) Tj
+T*
+(authorization.) Tj
 T*
 T*
 (MODULE SUMMARY) Tj
@@ -395,7 +771,19 @@ T*
 (http_methods  warning  HTTP methods advertised by OPTIONS checked.) Tj
 T*
 (ports  warning  Checked 3 TCP port\(s\), found 1 open port\(s\).) Tj
-T*
+ET
+endstream
+endobj
+16 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 15 0 R >>
+endobj
+17 0 obj
+<< /Length 1589 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
 (fingerprinting  warning  Identified 4 technology signal\(s\) and checked 4 public metadata) Tj
 T*
 (path\(s\).) Tj
@@ -419,26 +807,14 @@ T*
 T*
 (- Module: basic_auth) Tj
 T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
 T*
 T*
 (The server requests Basic Authentication over unencrypted HTTP.) Tj
-ET
-endstream
-endobj
-10 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 9 0 R >>
-endobj
-11 0 obj
-<< /Length 1455 >>
-stream
-BT
-/F1 10 Tf
-48 800 Td
-14 TL
+T*
 T*
 (Recommendation) Tj
 T*
@@ -463,7 +839,7 @@ T*
 T*
 (- Module: http) Tj
 T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
@@ -481,9 +857,9 @@ T*
 (Evidence) Tj
 T*
 T*
-(- initial_url: http://127.0.0.1:62685/members/) Tj
+(- initial_url: http://127.0.0.1:56158/members/) Tj
 T*
-(- final_url: http://127.0.0.1:62685/members/) Tj
+(- final_url: http://127.0.0.1:56158/members/) Tj
 T*
 (- status_code: 401) Tj
 T*
@@ -492,12 +868,24 @@ T*
 T*
 T*
 (- ID: METHOD-TRACE-ADVERTISED) Tj
-T*
+ET
+endstream
+endobj
+18 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 17 0 R >>
+endobj
+19 0 obj
+<< /Length 1464 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
 (- Category: http-methods) Tj
 T*
 (- Module: http_methods) Tj
 T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
@@ -521,19 +909,7 @@ T*
 T*
 T*
 (MEDIUM - COOKIE USES SAMESITE=NONE WITHOUT SECURE) Tj
-ET
-endstream
-endobj
-12 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 11 0 R >>
-endobj
-13 0 obj
-<< /Length 1456 >>
-stream
-BT
-/F1 10 Tf
-48 800 Td
-14 TL
+T*
 T*
 (- ID: COOKIE-SAMESITE-NONE-WITHOUT-SECURE) Tj
 T*
@@ -541,7 +917,7 @@ T*
 T*
 (- Module: cookies) Tj
 T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
@@ -571,7 +947,7 @@ T*
 T*
 (- Module: security_headers) Tj
 T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
@@ -587,7 +963,19 @@ T*
 T*
 T*
 (MEDIUM - HTTP METHOD DELETE IS ADVERTISED) Tj
-T*
+ET
+endstream
+endobj
+20 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 19 0 R >>
+endobj
+21 0 obj
+<< /Length 1442 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
 T*
 (- ID: METHOD-DELETE-ADVERTISED) Tj
 T*
@@ -595,7 +983,7 @@ T*
 T*
 (- Module: http_methods) Tj
 T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
@@ -616,19 +1004,7 @@ T*
 (- allow: GET, POST, OPTIONS, PUT, DELETE, TRACE) Tj
 T*
 (- access-control-allow-methods: GET, POST, OPTIONS, PUT, DELETE, TRACE) Tj
-ET
-endstream
-endobj
-14 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 13 0 R >>
-endobj
-15 0 obj
-<< /Length 1345 >>
-stream
-BT
-/F1 10 Tf
-48 800 Td
-14 TL
+T*
 T*
 (MEDIUM - HTTP METHOD PUT IS ADVERTISED) Tj
 T*
@@ -639,7 +1015,7 @@ T*
 T*
 (- Module: http_methods) Tj
 T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
@@ -671,7 +1047,7 @@ T*
 T*
 (- Module: cookies) Tj
 T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
@@ -682,7 +1058,19 @@ T*
 T*
 (Recommendation) Tj
 T*
-T*
+ET
+endstream
+endobj
+22 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 21 0 R >>
+endobj
+23 0 obj
+<< /Length 1252 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
 (Set HttpOnly for session or sensitive cookies.) Tj
 T*
 T*
@@ -701,7 +1089,7 @@ T*
 T*
 (- Module: cookies) Tj
 T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
@@ -711,19 +1099,7 @@ T*
 T*
 T*
 (Recommendation) Tj
-ET
-endstream
-endobj
-16 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 15 0 R >>
-endobj
-17 0 obj
-<< /Length 1368 >>
-stream
-BT
-/F1 10 Tf
-48 800 Td
-14 TL
+T*
 T*
 (Set HttpOnly for session or sensitive cookies.) Tj
 T*
@@ -743,7 +1119,7 @@ T*
 T*
 (- Module: cookies) Tj
 T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
@@ -773,11 +1149,23 @@ T*
 T*
 (- Module: security_headers) Tj
 T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
-T*
+ET
+endstream
+endobj
+24 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 23 0 R >>
+endobj
+25 0 obj
+<< /Length 1464 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
 T*
 (The response does not include X-Frame-Options or a CSP frame-ancestors directive.) Tj
 T*
@@ -797,7 +1185,7 @@ T*
 T*
 (- Module: security_headers) Tj
 T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
@@ -805,19 +1193,7 @@ T*
 T*
 (The browser may try to infer content types when nosniff is absent.) Tj
 T*
-ET
-endstream
-endobj
-18 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 17 0 R >>
-endobj
-19 0 obj
-<< /Length 1370 >>
-stream
-BT
-/F1 10 Tf
-48 800 Td
-14 TL
+T*
 (Recommendation) Tj
 T*
 T*
@@ -839,7 +1215,7 @@ T*
 T*
 (- Module: security_headers) Tj
 T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
@@ -863,7 +1239,7 @@ T*
 T*
 (- Module: crawler) Tj
 T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
@@ -872,7 +1248,19 @@ T*
 (The crawler discovered links outside the configured scope. They were recorded but not) Tj
 T*
 (requested.) Tj
-T*
+ET
+endstream
+endobj
+26 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 25 0 R >>
+endobj
+27 0 obj
+<< /Length 1401 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
 T*
 (Recommendation) Tj
 T*
@@ -895,24 +1283,12 @@ T*
 T*
 (- Module: fingerprinting) Tj
 T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
 T*
-ET
-endstream
-endobj
-20 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 19 0 R >>
-endobj
-21 0 obj
-<< /Length 1421 >>
-stream
-BT
-/F1 10 Tf
-48 800 Td
-14 TL
+T*
 (The HTML generator metadata can disclose CMS or framework details.) Tj
 T*
 T*
@@ -937,7 +1313,7 @@ T*
 T*
 (- Module: fingerprinting) Tj
 T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
@@ -966,8 +1342,20 @@ T*
 (- Category: fingerprinting) Tj
 T*
 (- Module: fingerprinting) Tj
-T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+ET
+endstream
+endobj
+28 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 27 0 R >>
+endobj
+29 0 obj
+<< /Length 1647 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
@@ -985,7 +1373,7 @@ T*
 (Evidence) Tj
 T*
 T*
-(- server: AIWebAuditorLab/0.20) Tj
+(- server: AIWebAuditorLab/0.21) Tj
 T*
 T*
 (INFO - PERMISSIONS-POLICY HEADER IS MISSING) Tj
@@ -994,22 +1382,10 @@ T*
 (- ID: HEADER-PERMISSIONS_POLICY-MISSING) Tj
 T*
 (- Category: security-headers) Tj
-ET
-endstream
-endobj
-22 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 21 0 R >>
-endobj
-23 0 obj
-<< /Length 1688 >>
-stream
-BT
-/F1 10 Tf
-48 800 Td
-14 TL
+T*
 (- Module: security_headers) Tj
 T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
@@ -1033,7 +1409,7 @@ T*
 T*
 (- Module: javascript) Tj
 T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
@@ -1053,16 +1429,28 @@ T*
 (Evidence) Tj
 T*
 T*
-(- endpoint: http://127.0.0.1:62685/api) Tj
+(- endpoint: http://127.0.0.1:56158/api) Tj
 T*
-(- endpoint: POST http://127.0.0.1:62685/api/member-profile?csrf_token=[redacted]) Tj
+(- endpoint: POST http://127.0.0.1:56158/api/member-profile?csrf_token=[redacted]) Tj
 T*
-(- endpoint: POST http://127.0.0.1:62685/api/profile?session_id=[redacted]) Tj
+(- endpoint: POST http://127.0.0.1:56158/api/profile?session_id=[redacted]) Tj
 T*
-(- endpoint: POST http://127.0.0.1:62685/api/upload) Tj
+(- endpoint: POST http://127.0.0.1:56158/api/upload) Tj
 T*
-(- endpoint: GET http://127.0.0.1:62685/api/users?role=member) Tj
-T*
+(- endpoint: GET http://127.0.0.1:56158/api/users?role=member) Tj
+ET
+endstream
+endobj
+30 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 29 0 R >>
+endobj
+31 0 obj
+<< /Length 1657 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
 T*
 (INFO - JAVASCRIPT REFERENCES ENDPOINTS OUTSIDE SCOPE) Tj
 T*
@@ -1073,7 +1461,7 @@ T*
 T*
 (- Module: javascript) Tj
 T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
@@ -1091,19 +1479,7 @@ T*
 T*
 T*
 (Evidence) Tj
-ET
-endstream
-endobj
-24 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 23 0 R >>
-endobj
-25 0 obj
-<< /Length 1645 >>
-stream
-BT
-/F1 10 Tf
-48 800 Td
-14 TL
+T*
 T*
 (- endpoint: https://example.org/collect) Tj
 T*
@@ -1117,7 +1493,7 @@ T*
 T*
 (- Module: javascript) Tj
 T*
-(- Target: http://127.0.0.1:62685/members/) Tj
+(- Target: http://127.0.0.1:56158/members/) Tj
 T*
 T*
 (Description) Tj
@@ -1139,13 +1515,13 @@ T*
 (Evidence) Tj
 T*
 T*
-(- parameter_name \(http://127.0.0.1:62685/api/member-profile?csrf_token=[redacted]\):) Tj
+(- parameter_name \(http://127.0.0.1:56158/api/member-profile?csrf_token=[redacted]\):) Tj
 T*
 (csrf_token) Tj
 T*
-(- parameter_name \(http://127.0.0.1:62685/api/profile?session_id=[redacted]\): session_id) Tj
+(- parameter_name \(http://127.0.0.1:56158/api/profile?session_id=[redacted]\): session_id) Tj
 T*
-(- parameter_name \(http://127.0.0.1:62685/reset-password?token=[redacted]\): token) Tj
+(- parameter_name \(http://127.0.0.1:56158/reset-password?token=[redacted]\): token) Tj
 T*
 T*
 (INFO - OPEN TCP PORTS DETECTED) Tj
@@ -1159,7 +1535,19 @@ T*
 T*
 (- Target: 127.0.0.1) Tj
 T*
-T*
+ET
+endstream
+endobj
+32 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 31 0 R >>
+endobj
+33 0 obj
+<< /Length 1748 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
 (Description) Tj
 T*
 T*
@@ -1179,7 +1567,7 @@ T*
 (Evidence) Tj
 T*
 T*
-(- open_port: 62685) Tj
+(- open_port: 56158) Tj
 T*
 T*
 (TECHNOLOGY FINGERPRINTING) Tj
@@ -1187,20 +1575,8 @@ T*
 T*
 (Technology  Category  Confidence  Signals) Tj
 T*
-(AIWebAuditorLab/0.20  server  low  header:server) Tj
-ET
-endstream
-endobj
-26 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 25 0 R >>
-endobj
-27 0 obj
-<< /Length 2032 >>
-stream
-BT
-/F1 10 Tf
-48 800 Td
-14 TL
+(AIWebAuditorLab/0.21  server  low  header:server) Tj
+T*
 (Django  framework  medium  cookie:sessionid) Tj
 T*
 (PHP 5.6.40  language  high  header:x-powered-by) Tj
@@ -1225,7 +1601,7 @@ T*
 (CRAWLER) Tj
 T*
 T*
-(- Seed URL: http://127.0.0.1:62685/members/) Tj
+(- Seed URL: http://127.0.0.1:56158/members/) Tj
 T*
 (- Max depth: 1) Tj
 T*
@@ -1255,19 +1631,31 @@ T*
 T*
 (URL  Types  Sources) Tj
 T*
-(http://127.0.0.1:62685/api/users  api  crawler_fetched, sitemap) Tj
+(http://127.0.0.1:56158/api/users  api  crawler_fetched, sitemap) Tj
 T*
-(http://127.0.0.1:62685/login  form, login  crawler_fetched, sitemap) Tj
+(http://127.0.0.1:56158/login  form, login  crawler_fetched, sitemap) Tj
 T*
-(http://127.0.0.1:62685/members/  account, form, login  crawler_fetched, html_link,) Tj
+(http://127.0.0.1:56158/members/  account, form, login  crawler_fetched, html_link,) Tj
 T*
 (robots_allow, seed, sitemap) Tj
+ET
+endstream
+endobj
+34 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 33 0 R >>
+endobj
+35 0 obj
+<< /Length 2117 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
+(http://127.0.0.1:56158/oauth/authorize  callback, login  well_known_endpoint) Tj
 T*
-(http://127.0.0.1:62685/oauth/authorize  callback, login  well_known_endpoint) Tj
+(http://127.0.0.1:56158/oauth/token  callback  well_known_endpoint) Tj
 T*
-(http://127.0.0.1:62685/oauth/token  callback  well_known_endpoint) Tj
-T*
-(http://127.0.0.1:62685/reset-password  password_reset  crawler_fetched, sitemap) Tj
+(http://127.0.0.1:56158/reset-password  password_reset  crawler_fetched, sitemap) Tj
 T*
 T*
 (PRESENT .WELL-KNOWN ENDPOINTS) Tj
@@ -1285,35 +1673,23 @@ T*
 (DISCOVERED URLS) Tj
 T*
 T*
-(- http://127.0.0.1:62685/) Tj
+(- http://127.0.0.1:56158/) Tj
 T*
-(- http://127.0.0.1:62685/.well-known/openid-configuration) Tj
+(- http://127.0.0.1:56158/.well-known/openid-configuration) Tj
 T*
-(- http://127.0.0.1:62685/.well-known/security.txt) Tj
+(- http://127.0.0.1:56158/.well-known/security.txt) Tj
 T*
-(- http://127.0.0.1:62685/api/users) Tj
+(- http://127.0.0.1:56158/api/users) Tj
 T*
-(- http://127.0.0.1:62685/login) Tj
-ET
-endstream
-endobj
-28 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 27 0 R >>
-endobj
-29 0 obj
-<< /Length 2342 >>
-stream
-BT
-/F1 10 Tf
-48 800 Td
-14 TL
-(- http://127.0.0.1:62685/members/) Tj
+(- http://127.0.0.1:56158/login) Tj
 T*
-(- http://127.0.0.1:62685/oauth/authorize) Tj
+(- http://127.0.0.1:56158/members/) Tj
 T*
-(- http://127.0.0.1:62685/oauth/token) Tj
+(- http://127.0.0.1:56158/oauth/authorize) Tj
 T*
-(- http://127.0.0.1:62685/reset-password) Tj
+(- http://127.0.0.1:56158/oauth/token) Tj
+T*
+(- http://127.0.0.1:56158/reset-password) Tj
 T*
 T*
 (OUT-OF-SCOPE URLS) Tj
@@ -1325,11 +1701,11 @@ T*
 (EXCLUDED URLS) Tj
 T*
 T*
-(- http://127.0.0.1:62685/admin/) Tj
+(- http://127.0.0.1:56158/admin/) Tj
 T*
-(- http://127.0.0.1:62685/private/) Tj
+(- http://127.0.0.1:56158/private/) Tj
 T*
-(- http://127.0.0.1:62685/private/report) Tj
+(- http://127.0.0.1:56158/private/report) Tj
 T*
 T*
 (JAVASCRIPT ANALYSIS) Tj
@@ -1358,31 +1734,43 @@ T*
 T*
 (URL  Method  Parameters  Route types  Sources) Tj
 T*
-(http://127.0.0.1:62685/api  unknown  unknown  api  external_script) Tj
+(http://127.0.0.1:56158/api  unknown  unknown  api  external_script) Tj
 T*
-(http://127.0.0.1:62685/api/member-profile?csrf_token=%5Bredacted%5D  POST  csrf_token) Tj
+(http://127.0.0.1:56158/api/member-profile?csrf_token=%5Bredacted%5D  POST  csrf_token) Tj
 T*
 (account, api, state_changing_candidate  inline_script) Tj
 T*
-(http://127.0.0.1:62685/api/profile?session_id=%5Bredacted%5D  POST  session_id  account,) Tj
-T*
+(http://127.0.0.1:56158/api/profile?session_id=%5Bredacted%5D  POST  session_id  account,) Tj
+ET
+endstream
+endobj
+36 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 35 0 R >>
+endobj
+37 0 obj
+<< /Length 2507 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
 (api, state_changing_candidate  external_script, inline_script) Tj
 T*
-(http://127.0.0.1:62685/api/upload  POST  unknown  api, state_changing_candidate, upload) Tj
+(http://127.0.0.1:56158/api/upload  POST  unknown  api, state_changing_candidate, upload) Tj
 T*
 (external_script) Tj
 T*
-(http://127.0.0.1:62685/api/users?role=member  GET  role  api  external_script) Tj
+(http://127.0.0.1:56158/api/users?role=member  GET  role  api  external_script) Tj
 T*
-(http://127.0.0.1:62685/callback/oauth  unknown  unknown  callback  external_script) Tj
+(http://127.0.0.1:56158/callback/oauth  unknown  unknown  callback  external_script) Tj
 T*
-(http://127.0.0.1:62685/health  unknown  unknown  health  inline_script) Tj
+(http://127.0.0.1:56158/health  unknown  unknown  health  inline_script) Tj
 T*
-(http://127.0.0.1:62685/oauth/authorize?client_id=demo  unknown  client_id  callback, login) Tj
+(http://127.0.0.1:56158/oauth/authorize?client_id=demo  unknown  client_id  callback, login) Tj
 T*
 (external_script) Tj
 T*
-(http://127.0.0.1:62685/reset-password?token=%5Bredacted%5D  unknown  token  password_reset) Tj
+(http://127.0.0.1:56158/reset-password?token=%5Bredacted%5D  unknown  token  password_reset) Tj
 T*
 (inline_script) Tj
 T*
@@ -1392,26 +1780,14 @@ T*
 T*
 (Kind  URL/Page  Status  Type  Endpoints) Tj
 T*
-(external  http://127.0.0.1:62685/static/app.js  200  application/javascript; charset=utf-8) Tj
+(external  http://127.0.0.1:56158/static/app.js  200  application/javascript; charset=utf-8) Tj
 T*
 (6) Tj
 T*
-(inline  http://127.0.0.1:62685/members/  unknown  unknown  2) Tj
+(inline  http://127.0.0.1:56158/members/  unknown  unknown  2) Tj
 T*
-(inline  http://127.0.0.1:62685/  unknown  unknown  1) Tj
-ET
-endstream
-endobj
-30 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 29 0 R >>
-endobj
-31 0 obj
-<< /Length 2822 >>
-stream
-BT
-/F1 10 Tf
-48 800 Td
-14 TL
+(inline  http://127.0.0.1:56158/  unknown  unknown  1) Tj
+T*
 T*
 (OUT-OF-SCOPE JAVASCRIPT REFERENCES) Tj
 T*
@@ -1422,7 +1798,7 @@ T*
 (EXCLUDED JAVASCRIPT REFERENCES) Tj
 T*
 T*
-(- http://127.0.0.1:62685/admin/export?token=%5Bredacted%5D) Tj
+(- http://127.0.0.1:56158/admin/export?token=%5Bredacted%5D) Tj
 T*
 T*
 (WEB INVENTORY) Tj
@@ -1446,115 +1822,115 @@ T*
 T*
 (URL  Status  Type  Forms  Interest) Tj
 T*
-(http://127.0.0.1:62685/.well-known/change-password  404  unknown  0  password_reset,) Tj
+(http://127.0.0.1:56158/.well-known/change-password  404  unknown  0  password_reset,) Tj
 T*
 (password_reset_path) Tj
 T*
-(http://127.0.0.1:62685/.well-known/oauth-authorization-server  404  unknown  0  callback,) Tj
+(http://127.0.0.1:56158/.well-known/oauth-authorization-server  404  unknown  0  callback,) Tj
 T*
 (callback_path) Tj
 T*
-(http://127.0.0.1:62685/admin/  unknown  unknown  0  admin, admin_path) Tj
+(http://127.0.0.1:56158/admin/  unknown  unknown  0  admin, admin_path) Tj
 T*
-(http://127.0.0.1:62685/admin/export?token=%5Bredacted%5D  unknown  unknown  0  admin,) Tj
+(http://127.0.0.1:56158/admin/export?token=%5Bredacted%5D  unknown  unknown  0  admin,) Tj
 T*
 (admin_path) Tj
 T*
-(http://127.0.0.1:62685/api  unknown  unknown  0  api, api_path) Tj
+(http://127.0.0.1:56158/api  unknown  unknown  0  api, api_path) Tj
 T*
-(http://127.0.0.1:62685/api/member-profile?csrf_token=%5Bredacted%5D  unknown  unknown  0) Tj
+(http://127.0.0.1:56158/api/member-profile?csrf_token=%5Bredacted%5D  unknown  unknown  0) Tj
 T*
 (account, api, state_changing_candidate, account_area, api_path, post_method) Tj
 T*
-(http://127.0.0.1:62685/api/profile?session_id=%5Bredacted%5D  unknown  unknown  0  account,) Tj
+(http://127.0.0.1:56158/api/profile?session_id=%5Bredacted%5D  unknown  unknown  0  account,) Tj
 T*
 (api, state_changing_candidate, account_area, api_path, post_method) Tj
 T*
-(http://127.0.0.1:62685/api/upload  unknown  unknown  0  api, state_changing_candidate,) Tj
-T*
-(upload, api_path, upload_path, post_method) Tj
-T*
-(http://127.0.0.1:62685/api/users  200  application/json; charset=utf-8  0  api, api_path) Tj
-T*
-(http://127.0.0.1:62685/api/users?role=member  unknown  unknown  0  api, api_path) Tj
-T*
-(http://127.0.0.1:62685/callback/oauth  unknown  unknown  0  callback, callback_path) Tj
-T*
-(http://127.0.0.1:62685/health  unknown  unknown  0  health, health_status_path) Tj
-T*
-(http://127.0.0.1:62685/login  200  text/html; charset=utf-8  1  form, login, login_path,) Tj
-T*
-(form_detected) Tj
-T*
-(http://127.0.0.1:62685/login/  unknown  unknown  0  login, state_changing_candidate,) Tj
-T*
-(login_path, post_method) Tj
-T*
-(http://127.0.0.1:62685/members/  401  text/html; charset=utf-8  1  account, form, login,) Tj
-T*
-(login_path, account_area, form_detected) Tj
-T*
-(http://127.0.0.1:62685/oauth/authorize  unknown  unknown  0  callback, login, login_path,) Tj
-T*
-(callback_path) Tj
-T*
-(http://127.0.0.1:62685/oauth/authorize?client_id=demo  unknown  unknown  0  callback, login,) Tj
-T*
-(login_path, callback_path) Tj
-T*
-(http://127.0.0.1:62685/oauth/token  unknown  unknown  0  callback, callback_path) Tj
-T*
-(http://127.0.0.1:62685/private/  unknown  unknown  0  account, account_area) Tj
-T*
-(http://127.0.0.1:62685/private/report  unknown  unknown  0  account, account_area) Tj
+(http://127.0.0.1:56158/api/upload  unknown  unknown  0  api, state_changing_candidate,) Tj
 ET
 endstream
 endobj
-32 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 31 0 R >>
+38 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 37 0 R >>
 endobj
-33 0 obj
-<< /Length 2415 >>
+39 0 obj
+<< /Length 3099 >>
 stream
 BT
 /F1 10 Tf
 48 800 Td
 14 TL
-(http://127.0.0.1:62685/reset-password  200  text/html; charset=utf-8  0  password_reset,) Tj
+(upload, api_path, upload_path, post_method) Tj
 T*
-(password_reset_path) Tj
+(http://127.0.0.1:56158/api/users  200  application/json; charset=utf-8  0  api, api_path) Tj
 T*
-(http://127.0.0.1:62685/reset-password?token=%5Bredacted%5D  unknown  unknown  0) Tj
+(http://127.0.0.1:56158/api/users?role=member  unknown  unknown  0  api, api_path) Tj
 T*
-(password_reset, password_reset_path) Tj
+(http://127.0.0.1:56158/callback/oauth  unknown  unknown  0  callback, callback_path) Tj
 T*
-(http://127.0.0.1:62685/session  unknown  unknown  0  login, state_changing_candidate,) Tj
+(http://127.0.0.1:56158/health  unknown  unknown  0  health, health_status_path) Tj
+T*
+(http://127.0.0.1:56158/login  200  text/html; charset=utf-8  1  form, login, login_path,) Tj
+T*
+(form_detected) Tj
+T*
+(http://127.0.0.1:56158/login/  unknown  unknown  0  login, state_changing_candidate,) Tj
 T*
 (login_path, post_method) Tj
 T*
-(http://127.0.0.1:62685/  200  text/html; charset=utf-8  0  unknown) Tj
+(http://127.0.0.1:56158/members/  401  text/html; charset=utf-8  1  account, form, login,) Tj
 T*
-(http://127.0.0.1:62685/.well-known/openid-configuration  200  unknown  0  unknown) Tj
+(login_path, account_area, form_detected) Tj
 T*
-(http://127.0.0.1:62685/.well-known/security.txt  200  unknown  0  unknown) Tj
+(http://127.0.0.1:56158/oauth/authorize  unknown  unknown  0  callback, login, login_path,) Tj
+T*
+(callback_path) Tj
+T*
+(http://127.0.0.1:56158/oauth/authorize?client_id=demo  unknown  unknown  0  callback, login,) Tj
+T*
+(login_path, callback_path) Tj
+T*
+(http://127.0.0.1:56158/oauth/token  unknown  unknown  0  callback, callback_path) Tj
+T*
+(http://127.0.0.1:56158/private/  unknown  unknown  0  account, account_area) Tj
+T*
+(http://127.0.0.1:56158/private/report  unknown  unknown  0  account, account_area) Tj
+T*
+(http://127.0.0.1:56158/reset-password  200  text/html; charset=utf-8  0  password_reset,) Tj
+T*
+(password_reset_path) Tj
+T*
+(http://127.0.0.1:56158/reset-password?token=%5Bredacted%5D  unknown  unknown  0) Tj
+T*
+(password_reset, password_reset_path) Tj
+T*
+(http://127.0.0.1:56158/session  unknown  unknown  0  login, state_changing_candidate,) Tj
+T*
+(login_path, post_method) Tj
+T*
+(http://127.0.0.1:56158/  200  text/html; charset=utf-8  0  unknown) Tj
+T*
+(http://127.0.0.1:56158/.well-known/openid-configuration  200  unknown  0  unknown) Tj
+T*
+(http://127.0.0.1:56158/.well-known/security.txt  200  unknown  0  unknown) Tj
 T*
 (https://example.org/collect  unknown  unknown  0  unknown) Tj
 T*
 (https://example.org/external  unknown  unknown  0  unknown) Tj
 T*
-(http://127.0.0.1:62685/.well-known/apple-app-site-association  404  unknown  0  unknown) Tj
+(http://127.0.0.1:56158/.well-known/apple-app-site-association  404  unknown  0  unknown) Tj
 T*
-(http://127.0.0.1:62685/.well-known/assetlinks.json  404  unknown  0  unknown) Tj
+(http://127.0.0.1:56158/.well-known/assetlinks.json  404  unknown  0  unknown) Tj
 T*
-(http://127.0.0.1:62685/.well-known/webfinger  404  unknown  0  unknown) Tj
+(http://127.0.0.1:56158/.well-known/webfinger  404  unknown  0  unknown) Tj
 T*
-(http://127.0.0.1:62685/robots.txt  200  unknown  0  unknown) Tj
+(http://127.0.0.1:56158/robots.txt  200  unknown  0  unknown) Tj
 T*
-(http://127.0.0.1:62685/security.txt  404  unknown  0  unknown) Tj
+(http://127.0.0.1:56158/security.txt  404  unknown  0  unknown) Tj
 T*
-(http://127.0.0.1:62685/sitemap.xml  200  unknown  0  unknown) Tj
+(http://127.0.0.1:56158/sitemap.xml  200  unknown  0  unknown) Tj
 T*
-(http://127.0.0.1:62685/static/app.js  200  application/javascript; charset=utf-8  0) Tj
+(http://127.0.0.1:56158/static/app.js  200  application/javascript; charset=utf-8  0) Tj
 T*
 (static_asset) Tj
 T*
@@ -1564,9 +1940,9 @@ T*
 T*
 (Page  Action  Method  Inputs  Password Fields) Tj
 T*
-(http://127.0.0.1:62685/login  http://127.0.0.1:62685/session  POST  2  1) Tj
+(http://127.0.0.1:56158/login  http://127.0.0.1:56158/session  POST  2  1) Tj
 T*
-(http://127.0.0.1:62685/members/  http://127.0.0.1:62685/login/  POST  3  1) Tj
+(http://127.0.0.1:56158/members/  http://127.0.0.1:56158/login/  POST  3  1) Tj
 T*
 T*
 (ENTRY POINTS) Tj
@@ -1582,7 +1958,19 @@ T*
 T*
 (- State-changing endpoints: 6) Tj
 T*
-T*
+ET
+endstream
+endobj
+40 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 39 0 R >>
+endobj
+41 0 obj
+<< /Length 3208 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
 (Only passive evidence was used: URLs, query strings, forms and advertised HTTP methods. No) Tj
 T*
 (form submission was performed.) Tj
@@ -1611,139 +1999,127 @@ T*
 T*
 (URL  State  Methods  Parameters  Forms  Route types  Notes) Tj
 T*
-(http://127.0.0.1:62685/login/  form_action  POST  csrf_token, password, username  1  login,) Tj
-T*
-(state_changing_candidate  form_action, login_route, parameters_observed,) Tj
-ET
-endstream
-endobj
-34 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 33 0 R >>
-endobj
-35 0 obj
-<< /Length 3991 >>
-stream
-BT
-/F1 10 Tf
-48 800 Td
-14 TL
-(sensitive_parameter_name, state_changing_method) Tj
-T*
-(http://127.0.0.1:62685/session  form_action  POST  password, user  1  login,) Tj
+(http://127.0.0.1:56158/login/  form_action  POST  csrf_token, password, username  1  login,) Tj
 T*
 (state_changing_candidate  form_action, login_route, parameters_observed,) Tj
 T*
 (sensitive_parameter_name, state_changing_method) Tj
 T*
-(http://127.0.0.1:62685/api/member-profile?csrf_token=%5Bredacted%5D  discovered  POST) Tj
+(http://127.0.0.1:56158/session  form_action  POST  password, user  1  login,) Tj
+T*
+(state_changing_candidate  form_action, login_route, parameters_observed,) Tj
+T*
+(sensitive_parameter_name, state_changing_method) Tj
+T*
+(http://127.0.0.1:56158/api/member-profile?csrf_token=%5Bredacted%5D  discovered  POST) Tj
 T*
 (csrf_token  0  account, api, state_changing_candidate  api_route, parameters_observed,) Tj
 T*
 (sensitive_parameter_name, state_changing_method) Tj
 T*
-(http://127.0.0.1:62685/api/profile?session_id=%5Bredacted%5D  discovered  POST  session_id) Tj
+(http://127.0.0.1:56158/api/profile?session_id=%5Bredacted%5D  discovered  POST  session_id) Tj
 T*
 (0  account, api, state_changing_candidate  api_route, parameters_observed,) Tj
 T*
 (sensitive_parameter_name, state_changing_method) Tj
 T*
-(http://127.0.0.1:62685/api/upload  discovered  POST  unknown  0  api,) Tj
+(http://127.0.0.1:56158/api/upload  discovered  POST  unknown  0  api,) Tj
 T*
 (state_changing_candidate, upload  api_route, state_changing_method, upload_route) Tj
 T*
-(http://127.0.0.1:62685/members/  fetched  DELETE, GET, OPTIONS, POST, PUT, TRACE  unknown  0) Tj
+(http://127.0.0.1:56158/members/  fetched  DELETE, GET, OPTIONS, POST, PUT, TRACE  unknown  0) Tj
 T*
 (account, form, login  login_route, state_changing_method) Tj
 T*
-(http://127.0.0.1:62685/api/users?role=member  discovered  GET  role  0  api  api_route,) Tj
+(http://127.0.0.1:56158/api/users?role=member  discovered  GET  role  0  api  api_route,) Tj
 T*
 (parameters_observed) Tj
 T*
-(http://127.0.0.1:62685/oauth/authorize?client_id=demo  discovered  unknown  client_id  0) Tj
+(http://127.0.0.1:56158/oauth/authorize?client_id=demo  discovered  unknown  client_id  0) Tj
 T*
 (callback, login  callback_route, login_route, parameters_observed) Tj
 T*
-(http://127.0.0.1:62685/reset-password?token=%5Bredacted%5D  discovered  unknown  token  0) Tj
+(http://127.0.0.1:56158/reset-password?token=%5Bredacted%5D  discovered  unknown  token  0) Tj
 T*
 (password_reset  parameters_observed, password_reset_route, sensitive_parameter_name) Tj
 T*
-(http://127.0.0.1:62685/  fetched  GET  unknown  0  unknown  unknown) Tj
+(http://127.0.0.1:56158/  fetched  GET  unknown  0  unknown  unknown) Tj
 T*
-(http://127.0.0.1:62685/.well-known/apple-app-site-association  fetched  GET  unknown  0) Tj
+(http://127.0.0.1:56158/.well-known/apple-app-site-association  fetched  GET  unknown  0) Tj
 T*
 (unknown  unknown) Tj
 T*
-(http://127.0.0.1:62685/.well-known/assetlinks.json  fetched  GET  unknown  0  unknown) Tj
+(http://127.0.0.1:56158/.well-known/assetlinks.json  fetched  GET  unknown  0  unknown) Tj
 T*
 (unknown) Tj
 T*
-(http://127.0.0.1:62685/.well-known/change-password  fetched  GET  unknown  0  password_reset) Tj
+(http://127.0.0.1:56158/.well-known/change-password  fetched  GET  unknown  0  password_reset) Tj
 T*
 (password_reset_route) Tj
 T*
-(http://127.0.0.1:62685/.well-known/oauth-authorization-server  fetched  GET  unknown  0) Tj
+(http://127.0.0.1:56158/.well-known/oauth-authorization-server  fetched  GET  unknown  0) Tj
 T*
 (callback  callback_route) Tj
 T*
-(http://127.0.0.1:62685/.well-known/openid-configuration  fetched  GET  unknown  0  unknown) Tj
+(http://127.0.0.1:56158/.well-known/openid-configuration  fetched  GET  unknown  0  unknown) Tj
 T*
 (unknown) Tj
 T*
-(http://127.0.0.1:62685/.well-known/security.txt  fetched  GET  unknown  0  unknown  unknown) Tj
+(http://127.0.0.1:56158/.well-known/security.txt  fetched  GET  unknown  0  unknown  unknown) Tj
 T*
-(http://127.0.0.1:62685/.well-known/webfinger  fetched  GET  unknown  0  unknown  unknown) Tj
+(http://127.0.0.1:56158/.well-known/webfinger  fetched  GET  unknown  0  unknown  unknown) Tj
 T*
-(http://127.0.0.1:62685/api  discovered  unknown  unknown  0  api  api_route) Tj
-T*
-(http://127.0.0.1:62685/api/users  fetched  GET  unknown  0  api  api_route) Tj
-T*
-(http://127.0.0.1:62685/callback/oauth  discovered  unknown  unknown  0  callback) Tj
-T*
-(callback_route) Tj
-T*
-(http://127.0.0.1:62685/health  discovered  unknown  unknown  0  health  unknown) Tj
-T*
-(http://127.0.0.1:62685/login  fetched  GET  unknown  0  form, login  login_route) Tj
-T*
-(http://127.0.0.1:62685/oauth/authorize  metadata  unknown  unknown  0  callback, login) Tj
-T*
-(callback_route, login_route) Tj
-T*
-(http://127.0.0.1:62685/oauth/token  metadata  unknown  unknown  0  callback  callback_route) Tj
-T*
-(http://127.0.0.1:62685/reset-password  fetched  GET  unknown  0  password_reset) Tj
-T*
-(password_reset_route) Tj
-T*
-(http://127.0.0.1:62685/robots.txt  fetched  GET  unknown  0  unknown  unknown) Tj
-T*
-(http://127.0.0.1:62685/security.txt  fetched  GET  unknown  0  unknown  unknown) Tj
-T*
-(http://127.0.0.1:62685/sitemap.xml  fetched  GET  unknown  0  unknown  unknown) Tj
-T*
-(http://127.0.0.1:62685/admin/export?token=%5Bredacted%5D  excluded  unknown  token  0  admin) Tj
-T*
-(admin_route, parameters_observed, sensitive_parameter_name) Tj
-T*
-(http://127.0.0.1:62685/admin/  excluded  unknown  unknown  0  admin  admin_route) Tj
-T*
-(http://127.0.0.1:62685/private/  excluded  unknown  unknown  0  account  unknown) Tj
-T*
-(http://127.0.0.1:62685/private/report  excluded  unknown  unknown  0  account  unknown) Tj
+(http://127.0.0.1:56158/api  discovered  unknown  unknown  0  api  api_route) Tj
 ET
 endstream
 endobj
-36 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 35 0 R >>
+42 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 41 0 R >>
 endobj
-37 0 obj
-<< /Length 1499 >>
+43 0 obj
+<< /Length 2673 >>
 stream
 BT
 /F1 10 Tf
 48 800 Td
 14 TL
-(http://127.0.0.1:62685/static/app.js  fetched  GET  unknown  0  static_asset  unknown) Tj
+(http://127.0.0.1:56158/api/users  fetched  GET  unknown  0  api  api_route) Tj
+T*
+(http://127.0.0.1:56158/callback/oauth  discovered  unknown  unknown  0  callback) Tj
+T*
+(callback_route) Tj
+T*
+(http://127.0.0.1:56158/health  discovered  unknown  unknown  0  health  unknown) Tj
+T*
+(http://127.0.0.1:56158/login  fetched  GET  unknown  0  form, login  login_route) Tj
+T*
+(http://127.0.0.1:56158/oauth/authorize  metadata  unknown  unknown  0  callback, login) Tj
+T*
+(callback_route, login_route) Tj
+T*
+(http://127.0.0.1:56158/oauth/token  metadata  unknown  unknown  0  callback  callback_route) Tj
+T*
+(http://127.0.0.1:56158/reset-password  fetched  GET  unknown  0  password_reset) Tj
+T*
+(password_reset_route) Tj
+T*
+(http://127.0.0.1:56158/robots.txt  fetched  GET  unknown  0  unknown  unknown) Tj
+T*
+(http://127.0.0.1:56158/security.txt  fetched  GET  unknown  0  unknown  unknown) Tj
+T*
+(http://127.0.0.1:56158/sitemap.xml  fetched  GET  unknown  0  unknown  unknown) Tj
+T*
+(http://127.0.0.1:56158/admin/export?token=%5Bredacted%5D  excluded  unknown  token  0  admin) Tj
+T*
+(admin_route, parameters_observed, sensitive_parameter_name) Tj
+T*
+(http://127.0.0.1:56158/admin/  excluded  unknown  unknown  0  admin  admin_route) Tj
+T*
+(http://127.0.0.1:56158/private/  excluded  unknown  unknown  0  account  unknown) Tj
+T*
+(http://127.0.0.1:56158/private/report  excluded  unknown  unknown  0  account  unknown) Tj
+T*
+(http://127.0.0.1:56158/static/app.js  fetched  GET  unknown  0  static_asset  unknown) Tj
 T*
 (https://example.org/collect  out_of_scope  unknown  unknown  0  unknown  unknown) Tj
 T*
@@ -1755,9 +2131,9 @@ T*
 T*
 (Page  Action  Method  Inputs  Password fields  CSRF candidates) Tj
 T*
-(http://127.0.0.1:62685/login  http://127.0.0.1:62685/session  POST  2  1  unknown) Tj
+(http://127.0.0.1:56158/login  http://127.0.0.1:56158/session  POST  2  1  unknown) Tj
 T*
-(http://127.0.0.1:62685/members/  http://127.0.0.1:62685/login/  POST  3  1  csrf_token) Tj
+(http://127.0.0.1:56158/members/  http://127.0.0.1:56158/login/  POST  3  1  csrf_token) Tj
 T*
 T*
 (SENSITIVE-LOOKING PARAMETERS) Tj
@@ -1792,7 +2168,7 @@ T*
 T*
 (Port  Service  Status  Elapsed) Tj
 T*
-(62685  unknown  open  0 ms) Tj
+(56158  unknown  open  0 ms) Tj
 T*
 (80  http  filtered  500 ms) Tj
 T*
@@ -1801,7 +2177,19 @@ T*
 T*
 (LIMITATIONS) Tj
 T*
-T*
+ET
+endstream
+endobj
+44 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 43 0 R >>
+endobj
+45 0 obj
+<< /Length 276 >>
+stream
+BT
+/F1 10 Tf
+48 800 Td
+14 TL
 (- This report is based on non-intrusive checks only.) Tj
 T*
 (- No exploitation, brute force, aggressive fuzzing or destructive testing was performed.) Tj
@@ -1810,52 +2198,60 @@ T*
 ET
 endstream
 endobj
-38 0 obj
-<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 37 0 R >>
+46 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> >> >> /Contents 45 0 R >>
 endobj
 xref
-0 39
+0 47
 0000000000 65535 f 
 0000000015 00000 n 
 0000000064 00000 n 
-0000000239 00000 n 
-0000001522 00000 n 
-0000001697 00000 n 
-0000005007 00000 n 
-0000005182 00000 n 
-0000007749 00000 n 
-0000007924 00000 n 
-0000010635 00000 n 
-0000010811 00000 n 
-0000012319 00000 n 
-0000012496 00000 n 
-0000014005 00000 n 
-0000014182 00000 n 
-0000015580 00000 n 
-0000015757 00000 n 
-0000017178 00000 n 
-0000017355 00000 n 
-0000018778 00000 n 
-0000018955 00000 n 
-0000020429 00000 n 
-0000020606 00000 n 
-0000022347 00000 n 
-0000022524 00000 n 
-0000024222 00000 n 
-0000024399 00000 n 
-0000026484 00000 n 
-0000026661 00000 n 
-0000029056 00000 n 
-0000029233 00000 n 
-0000032108 00000 n 
-0000032285 00000 n 
-0000034753 00000 n 
-0000034930 00000 n 
-0000038974 00000 n 
-0000039151 00000 n 
-0000040703 00000 n 
+0000000267 00000 n 
+0000001550 00000 n 
+0000001725 00000 n 
+0000004926 00000 n 
+0000005101 00000 n 
+0000007770 00000 n 
+0000007945 00000 n 
+0000010944 00000 n 
+0000011120 00000 n 
+0000015493 00000 n 
+0000015670 00000 n 
+0000019736 00000 n 
+0000019913 00000 n 
+0000023578 00000 n 
+0000023755 00000 n 
+0000025397 00000 n 
+0000025574 00000 n 
+0000027091 00000 n 
+0000027268 00000 n 
+0000028763 00000 n 
+0000028940 00000 n 
+0000030245 00000 n 
+0000030422 00000 n 
+0000031939 00000 n 
+0000032116 00000 n 
+0000033570 00000 n 
+0000033747 00000 n 
+0000035447 00000 n 
+0000035624 00000 n 
+0000037334 00000 n 
+0000037511 00000 n 
+0000039312 00000 n 
+0000039489 00000 n 
+0000041659 00000 n 
+0000041836 00000 n 
+0000044396 00000 n 
+0000044573 00000 n 
+0000047725 00000 n 
+0000047902 00000 n 
+0000051163 00000 n 
+0000051340 00000 n 
+0000054066 00000 n 
+0000054243 00000 n 
+0000054571 00000 n 
 trailer
-<< /Size 39 /Root 1 0 R >>
+<< /Size 47 /Root 1 0 R >>
 startxref
-40880
+54748
 %%EOF

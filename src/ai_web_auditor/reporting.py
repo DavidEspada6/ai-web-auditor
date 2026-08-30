@@ -13,6 +13,7 @@ from .assessment import build_assessment
 from .entrypoints import build_entry_points_from_scan
 from .inventory import build_inventory_from_scan
 from .models import utc_now
+from .rules import build_rule_evaluation
 
 
 SEVERITY_ORDER = {
@@ -54,6 +55,7 @@ def generate_markdown_report(
     modules = _modules(scan_data)
     inventory = build_inventory_from_scan(scan_data)
     entry_points = build_entry_points_from_scan(scan_data)
+    rule_evaluation = _rule_evaluation(scan_data)
     assessment = build_assessment(scan_data)
     ai_analysis = ai_analysis or _embedded_ai_analysis(scan_data)
     ai_body = _analysis_body(ai_analysis)
@@ -85,6 +87,7 @@ def generate_markdown_report(
     lines.extend(_executive_summary_section(findings, ai_body))
     lines.extend(_severity_summary_section(findings))
     lines.extend(_assessment_section(assessment))
+    lines.extend(_rules_section(rule_evaluation))
     lines.extend(_module_summary_section(modules))
     lines.extend(_findings_section(findings))
     lines.extend(_technology_section(modules))
@@ -142,6 +145,7 @@ def generate_html_report(
     modules = _modules(scan_data)
     inventory = build_inventory_from_scan(scan_data)
     entry_points = build_entry_points_from_scan(scan_data)
+    rule_evaluation = _rule_evaluation(scan_data)
     assessment = build_assessment(scan_data)
     ai_analysis = ai_analysis or _embedded_ai_analysis(scan_data)
     ai_body = _analysis_body(ai_analysis)
@@ -201,6 +205,7 @@ def generate_html_report(
             "</section>",
             _severity_html_section(severity_counts),
             _assessment_html_section(assessment),
+            _rules_html_section(rule_evaluation),
             _module_html_section(modules),
             _findings_html_section(findings),
             _technology_html_section(modules),
@@ -339,6 +344,9 @@ def _assessment_section(assessment: dict[str, Any]) -> list[str]:
         f"| JavaScript scripts | {_cell(coverage.get('javascript_scripts', 0))} |",
         f"| Resolved subdomains | {_cell(coverage.get('subdomains', 0))} |",
         f"| Open TCP ports | {_cell(coverage.get('open_ports', 0))} |",
+        f"| Passive rules matched | {_cell(coverage.get('rules_matched', 0))} |",
+        f"| OWASP controls matched | {_cell(coverage.get('framework_controls_matched', 0))} |",
+        f"| Unmapped findings | {_cell(coverage.get('findings_unmapped', 0))} |",
         "",
     ]
 
@@ -377,6 +385,75 @@ def _assessment_section(assessment: dict[str, Any]) -> list[str]:
 
     if safety_notes:
         lines.extend(["### Safety Notes", ""])
+        lines.extend(f"- {_text(note)}" for note in safety_notes)
+        lines.append("")
+
+    return lines
+
+
+def _rules_section(rule_evaluation: dict[str, Any]) -> list[str]:
+    summary = rule_evaluation.get("summary") if isinstance(rule_evaluation.get("summary"), dict) else {}
+    matches = _dict_list(rule_evaluation.get("matches"))
+    framework_index = _dict_list(rule_evaluation.get("framework_index"))
+    unmapped_findings = _dict_list(rule_evaluation.get("unmapped_findings"))
+    safety_notes = _string_list(rule_evaluation.get("safety_notes"))
+
+    lines = [
+        "## Passive Rule Mapping",
+        "",
+        "| Metric | Value |",
+        "| --- | ---: |",
+        f"| Rules matched | {_cell(summary.get('rules_matched', len(matches)))} |",
+        f"| Rules total | {_cell(summary.get('rules_total', 0))} |",
+        f"| Findings mapped | {_cell(summary.get('findings_mapped', 0))} |",
+        f"| Findings unmapped | {_cell(summary.get('findings_unmapped', len(unmapped_findings)))} |",
+        f"| OWASP controls matched | {_cell(summary.get('framework_controls_matched', len(framework_index)))} |",
+        "",
+    ]
+
+    if matches:
+        lines.extend(
+            [
+                "### Matched Rules",
+                "",
+                "| Severity | Rule | Evidence | Frameworks | Next review |",
+                "| --- | --- | --- | --- | --- |",
+            ]
+        )
+        for item in matches[:25]:
+            frameworks = _framework_labels(item.get("frameworks"))
+            evidence = _rule_evidence_labels(item)
+            lines.append(
+                f"| {_cell(str(item.get('severity', 'info')).upper())} | "
+                f"{_cell(item.get('rule_id'))}: {_cell(item.get('title'))} | "
+                f"{_cell(evidence)} | {_cell(frameworks)} | {_cell(item.get('next_review'))} |"
+            )
+        lines.append("")
+    else:
+        lines.extend(["No passive rules matched the current evidence.", ""])
+
+    if framework_index:
+        lines.extend(["### OWASP Traceability", "", "| Framework | Control | Severity | Rules | Evidence |", "| --- | --- | --- | --- | --- |"])
+        for item in framework_index[:40]:
+            evidence = _framework_evidence_labels(item)
+            lines.append(
+                f"| {_cell(item.get('framework'))} | {_cell(item.get('control_id'))}: {_cell(item.get('title'))} | "
+                f"{_cell(str(item.get('highest_severity', 'info')).upper())} | "
+                f"{_cell(', '.join(_string_list(item.get('matched_rules'))))} | "
+                f"{_cell(evidence)} |"
+            )
+        lines.append("")
+
+    if unmapped_findings:
+        lines.extend(["### Unmapped Findings", ""])
+        lines.extend(
+            f"- `{_text(item.get('finding_id', 'unknown'))}` ({_text(item.get('severity', 'info'))}): {_text(item.get('title', 'Untitled'))}"
+            for item in unmapped_findings[:20]
+        )
+        lines.append("")
+
+    if safety_notes:
+        lines.extend(["### Rule Safety Notes", ""])
         lines.extend(f"- {_text(note)}" for note in safety_notes)
         lines.append("")
 
@@ -957,6 +1034,9 @@ def _assessment_html_section(assessment: dict[str, Any]) -> str:
                 ["JavaScript scripts", coverage.get("javascript_scripts", 0)],
                 ["Resolved subdomains", coverage.get("subdomains", 0)],
                 ["Open TCP ports", coverage.get("open_ports", 0)],
+                ["Passive rules matched", coverage.get("rules_matched", 0)],
+                ["OWASP controls matched", coverage.get("framework_controls_matched", 0)],
+                ["Unmapped findings", coverage.get("findings_unmapped", 0)],
             ],
         ),
     ]
@@ -1002,6 +1082,75 @@ def _assessment_html_section(assessment: dict[str, Any]) -> str:
         lines.extend(["<h3>Coverage Notes</h3>", _html_list(coverage_notes)])
     if safety_notes:
         lines.extend(["<h3>Safety Notes</h3>", _html_list(safety_notes)])
+
+    lines.append("</section>")
+    return "\n".join(lines)
+
+
+def _rules_html_section(rule_evaluation: dict[str, Any]) -> str:
+    summary = rule_evaluation.get("summary") if isinstance(rule_evaluation.get("summary"), dict) else {}
+    matches = _dict_list(rule_evaluation.get("matches"))
+    framework_index = _dict_list(rule_evaluation.get("framework_index"))
+    unmapped_findings = _dict_list(rule_evaluation.get("unmapped_findings"))
+    safety_notes = _string_list(rule_evaluation.get("safety_notes"))
+    lines = [
+        '<section class="section">',
+        "<h2>Passive Rule Mapping</h2>",
+        _html_table(
+            ["Metric", "Value"],
+            [
+                ["Rules matched", summary.get("rules_matched", len(matches))],
+                ["Rules total", summary.get("rules_total", 0)],
+                ["Findings mapped", summary.get("findings_mapped", 0)],
+                ["Findings unmapped", summary.get("findings_unmapped", len(unmapped_findings))],
+                ["OWASP controls matched", summary.get("framework_controls_matched", len(framework_index))],
+            ],
+        ),
+    ]
+
+    if matches:
+        match_rows = [
+            [
+                str(item.get("severity", "info")).upper(),
+                f"{item.get('rule_id')}: {item.get('title')}",
+                _rule_evidence_labels(item),
+                _framework_labels(item.get("frameworks")),
+                item.get("next_review"),
+            ]
+            for item in matches[:25]
+        ]
+        lines.extend(["<h3>Matched Rules</h3>", _html_table(["Severity", "Rule", "Evidence", "Frameworks", "Next review"], match_rows)])
+    else:
+        lines.append('<p class="empty">No passive rules matched the current evidence.</p>')
+
+    if framework_index:
+        framework_rows = [
+            [
+                item.get("framework"),
+                f"{item.get('control_id')}: {item.get('title')}",
+                str(item.get("highest_severity", "info")).upper(),
+                ", ".join(_string_list(item.get("matched_rules"))),
+                _framework_evidence_labels(item),
+            ]
+            for item in framework_index[:40]
+        ]
+        lines.extend(["<h3>OWASP Traceability</h3>", _html_table(["Framework", "Control", "Severity", "Rules", "Evidence"], framework_rows)])
+
+    if unmapped_findings:
+        lines.extend(
+            [
+                "<h3>Unmapped Findings</h3>",
+                _html_list(
+                    [
+                        f"{item.get('finding_id', 'unknown')} ({item.get('severity', 'info')}): {item.get('title', 'Untitled')}"
+                        for item in unmapped_findings[:20]
+                    ]
+                ),
+            ]
+        )
+
+    if safety_notes:
+        lines.extend(["<h3>Rule Safety Notes</h3>", _html_list(safety_notes)])
 
     lines.append("</section>")
     return "\n".join(lines)
@@ -1542,6 +1691,44 @@ def _analysis_body(ai_analysis: dict[str, Any] | None) -> dict[str, Any] | None:
 def _embedded_ai_analysis(scan_data: dict[str, Any]) -> dict[str, Any] | None:
     ai_analysis = scan_data.get("ai_analysis")
     return ai_analysis if isinstance(ai_analysis, dict) else None
+
+
+def _rule_evaluation(scan_data: dict[str, Any]) -> dict[str, Any]:
+    rule_evaluation = scan_data.get("rule_evaluation")
+    return rule_evaluation if isinstance(rule_evaluation, dict) else build_rule_evaluation(scan_data)
+
+
+def _framework_labels(value: Any) -> str:
+    labels = []
+    for item in _dict_list(value):
+        framework = _text(item.get("framework", "framework"))
+        control_id = _text(item.get("control_id", "control"))
+        labels.append(f"{framework} {control_id}")
+    return ", ".join(labels)
+
+
+def _rule_evidence_labels(match: dict[str, Any]) -> str:
+    finding_ids = _string_list(match.get("matched_findings"))
+    signal_ids = _string_list(match.get("matched_signals"))
+    parts = []
+    if finding_ids:
+        parts.append(f"findings: {', '.join(finding_ids[:5])}")
+    if signal_ids:
+        parts.append(f"signals: {', '.join(signal_ids[:5])}")
+    if not parts:
+        evidence = _dict_list(match.get("evidence"))
+        parts.extend(_text(item.get("label", "evidence")) for item in evidence[:5])
+    return "; ".join(parts) or "passive evidence"
+
+
+def _framework_evidence_labels(item: dict[str, Any]) -> str:
+    finding_ids = _string_list(item.get("matched_findings"))
+    signal_ids = _string_list(item.get("matched_signals"))
+    if finding_ids:
+        return ", ".join(finding_ids)
+    if signal_ids:
+        return f"signals: {', '.join(signal_ids)}"
+    return "passive evidence"
 
 
 def _findings(scan_data: dict[str, Any]) -> list[dict[str, Any]]:

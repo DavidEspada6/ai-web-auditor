@@ -231,6 +231,7 @@
               <h2>Auditar</h2>
               <button class="tab active" type="button" data-tab="summary">Resumen</button>
               <button class="tab" type="button" data-tab="assessment">Riesgo</button>
+              <button class="tab" type="button" data-tab="rules">Reglas</button>
               <button class="tab" type="button" data-tab="findings">Hallazgos</button>
               <button class="tab" type="button" data-tab="modules">Modulos</button>
             </section>
@@ -288,6 +289,34 @@
           <section class="assessment-block">
             <h2>Notas</h2>
             <div id="assessment-notes" class="list"></div>
+          </section>
+        </section>
+
+        <section id="rules-view" class="panel view">
+          <div class="section-toolbar">
+            <div>
+              <p class="eyebrow">Mapeo OWASP</p>
+              <strong id="rules-count">0 reglas</strong>
+            </div>
+          </div>
+          <div id="rules-summary" class="summary-grid compact-summary"></div>
+          <div class="table-wrap">
+            <table class="resizable-table" data-table="rules">
+              <thead>
+                <tr>
+                  <th>Regla</th>
+                  <th>Severidad</th>
+                  <th>Evidencia</th>
+                  <th>OWASP</th>
+                  <th>Siguiente revision</th>
+                </tr>
+              </thead>
+              <tbody id="rules-table"></tbody>
+            </table>
+          </div>
+          <section class="assessment-block">
+            <h2>Trazabilidad OWASP</h2>
+            <div id="rules-framework-list" class="framework-list"></div>
           </section>
         </section>
 

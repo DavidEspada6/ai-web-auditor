@@ -171,7 +171,7 @@ class WebConfigTests(unittest.TestCase):
         self.assertIn("workspace-body", html)
         self.assertIn("view-nav", html)
         self.assertIn("Auditorias recientes", html)
-        for table in ["modules", "inventory", "entrypoints", "javascript", "subdomains", "ports", "history"]:
+        for table in ["modules", "inventory", "entrypoints", "javascript", "rules", "subdomains", "ports", "history"]:
             self.assertIn(f'data-table="{table}"', html)
 
         self.assertIn("table-layout: fixed;", css)
@@ -232,6 +232,17 @@ class WebConfigTests(unittest.TestCase):
             self.assertIn(f'id="{element_id}"', html)
         self.assertIn("renderJavaScript(javascript", javascript)
         self.assertIn("javascriptArtifacts", javascript)
+
+    def test_gui_exposes_passive_rules_view(self):
+        root = Path(__file__).resolve().parents[1]
+        html = (root / "src" / "ai_web_auditor" / "web" / "templates" / "index.html").read_text(encoding="utf-8")
+        javascript = (root / "src" / "ai_web_auditor" / "web" / "static" / "app.js").read_text(encoding="utf-8")
+
+        self.assertIn('data-tab="rules"', html)
+        self.assertIn('id="rules-table"', html)
+        self.assertIn('id="rules-framework-list"', html)
+        self.assertIn("renderRules(ruleEvaluation)", javascript)
+        self.assertIn("scan.rule_evaluation", javascript)
 
 
 if __name__ == "__main__":

@@ -112,9 +112,13 @@ class EvidenceTests(unittest.TestCase):
         self.assertIn("entry-points/entry-points.json", names)
         self.assertIn("javascript/javascript.json", names)
         self.assertIn("javascript/endpoints.json", names)
+        self.assertIn("rules/rule-evaluation.json", names)
+        self.assertIn("rules/matches.json", names)
         self.assertEqual(manifest["counts"]["requests"], 1)
         self.assertEqual(manifest["counts"]["entry_points"], 1)
         self.assertEqual(manifest["counts"]["javascript_endpoints"], 1)
+        self.assertGreaterEqual(manifest["counts"]["rules_matched"], 1)
+        self.assertGreaterEqual(manifest["counts"]["framework_controls_matched"], 1)
         self.assertTrue(manifest["safety"]["sanitized"])
         self.assertEqual(request["id"], "req-0001")
 

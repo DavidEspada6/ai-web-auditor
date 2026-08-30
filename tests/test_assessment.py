@@ -54,6 +54,9 @@ class AssessmentTests(unittest.TestCase):
         self.assertGreaterEqual(assessment["summary"]["risk_score"], 80)
         self.assertEqual(assessment["summary"]["coverage"]["forms"], 1)
         self.assertEqual(assessment["summary"]["coverage"]["open_ports"], 1)
+        self.assertGreaterEqual(assessment["summary"]["coverage"]["rules_matched"], 2)
+        self.assertGreaterEqual(assessment["summary"]["coverage"]["framework_controls_matched"], 2)
+        self.assertEqual(assessment["summary"]["coverage"]["findings_unmapped"], 0)
         self.assertEqual(assessment["priorities"][0]["finding_id"], "AUTH-BASIC-OVER-HTTP")
         self.assertTrue(any(item["finding_id"].startswith("HEADER-") for item in assessment["quick_wins"]))
 

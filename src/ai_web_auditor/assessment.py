@@ -5,6 +5,7 @@ from typing import Any
 
 from .entrypoints import build_entry_points_from_scan
 from .inventory import build_inventory_from_scan
+from .rules import build_rule_evaluation
 
 
 SEVERITY_BASE = {
@@ -51,7 +52,8 @@ def build_assessment(scan_data: dict[str, Any]) -> dict[str, Any]:
     modules = _modules(scan_data)
     inventory = _inventory(scan_data)
     entry_points = _entry_points(scan_data)
-    coverage = _coverage(modules, inventory, entry_points)
+    rule_evaluation = _rule_evaluation(scan_data)
+    coverage = _coverage(modules, inventory, entry_points, rule_evaluation)
     severity_counts = _severity_counts(findings)
     risk_score = _risk_score(findings, severity_counts, coverage, scan_data)
     risk_level = _risk_level(risk_score, severity_counts)
@@ -75,7 +77,7 @@ def build_assessment(scan_data: dict[str, Any]) -> dict[str, Any]:
         "priorities": priorities,
         "quick_wins": quick_wins,
         "remediation_plan": _remediation_plan(priorities, quick_wins, coverage),
-        "coverage_notes": _coverage_notes(modules, inventory, entry_points, coverage),
+        "coverage_notes": _coverage_notes(modules, inventory, entry_points, coverage, rule_evaluation),
         "safety_notes": [
             "This assessment is generated from existing non-intrusive scan evidence only.",
             "No exploitation, brute force, fuzzing or destructive validation was performed.",
@@ -209,6 +211,8 @@ def _remediation_plan(
         _append_unique(immediate, "Review every open TCP port and confirm it is required for the approved scope.")
     if _int(coverage.get("javascript_endpoints"), 0) > 0:
         _append_unique(planned, "Review JavaScript-discovered endpoints before selecting later validation tests.")
+    if _int(coverage.get("rules_matched"), 0) > 0:
+        _append_unique(planned, "Review OWASP WSTG/ASVS rule mappings before finalizing audit scope and report traceability.")
     if _int(coverage.get("modules_error"), 0) > 0:
         _append_unique(planned, "Repeat modules that ended in error before closing the audit.")
     if _int(coverage.get("modules_skipped"), 0) > 0:
@@ -228,7 +232,12 @@ def _remediation_plan(
     ]
 
 
-def _coverage(modules: list[dict[str, Any]], inventory: dict[str, Any], entry_points: dict[str, Any]) -> dict[str, Any]:
+def _coverage(
+    modules: list[dict[str, Any]],
+    inventory: dict[str, Any],
+    entry_points: dict[str, Any],
+    rule_evaluation: dict[str, Any],
+) -> dict[str, Any]:
     statuses = Counter(_clean(module.get("status"), "unknown") for module in modules)
     inventory_summary = inventory.get("summary") if isinstance(inventory.get("summary"), dict) else {}
     entry_summary = entry_points.get("summary") if isinstance(entry_points.get("summary"), dict) else {}
@@ -238,6 +247,7 @@ def _coverage(modules: list[dict[str, Any]], inventory: dict[str, Any], entry_po
     port_artifacts = ports.get("artifacts") if ports and isinstance(ports.get("artifacts"), dict) else {}
     javascript = _module_by_name(modules, "javascript")
     javascript_artifacts = javascript.get("artifacts") if javascript and isinstance(javascript.get("artifacts"), dict) else {}
+    rule_summary = rule_evaluation.get("summary") if isinstance(rule_evaluation.get("summary"), dict) else {}
 
     return {
         "modules_run": len(modules),
@@ -257,6 +267,10 @@ def _coverage(modules: list[dict[str, Any]], inventory: dict[str, Any], entry_po
         "javascript_scripts": len(_dict_list(javascript_artifacts.get("scripts"))),
         "subdomains": _int(subdomain_artifacts.get("resolved_count"), 0),
         "open_ports": _int(port_artifacts.get("open_count"), 0),
+        "rules_total": _int(rule_summary.get("rules_total"), 0),
+        "rules_matched": _int(rule_summary.get("rules_matched"), 0),
+        "framework_controls_matched": _int(rule_summary.get("framework_controls_matched"), 0),
+        "findings_unmapped": _int(rule_summary.get("findings_unmapped"), 0),
     }
 
 
@@ -265,6 +279,7 @@ def _coverage_notes(
     inventory: dict[str, Any],
     entry_points: dict[str, Any],
     coverage: dict[str, Any],
+    rule_evaluation: dict[str, Any],
 ) -> list[str]:
     notes: list[str] = []
     for module in modules:
@@ -282,6 +297,10 @@ def _coverage_notes(
         notes.append("Some entry point parameters have sensitive-looking names and should be reviewed without exposing their values.")
     if _int(coverage.get("javascript_endpoints"), 0) > 0:
         notes.append("JavaScript endpoint references were extracted passively; discovered endpoints were not requested by this module.")
+    if _int(coverage.get("rules_matched"), 0) > 0:
+        notes.append("Passive rules mapped scan evidence to OWASP WSTG/ASVS references for audit traceability.")
+    if _int(coverage.get("findings_unmapped"), 0) > 0:
+        notes.append("Some findings do not yet have a passive rule mapping and should be reviewed before final reporting.")
     if _int(coverage.get("subdomains"), 0) > 0:
         notes.append("Resolved subdomains were recorded as evidence but not scanned automatically.")
     if _int(coverage.get("open_ports"), 0) > 0:
@@ -310,6 +329,11 @@ def _inventory(scan_data: dict[str, Any]) -> dict[str, Any]:
 def _entry_points(scan_data: dict[str, Any]) -> dict[str, Any]:
     entry_points = scan_data.get("entry_points")
     return entry_points if isinstance(entry_points, dict) else build_entry_points_from_scan(scan_data)
+
+
+def _rule_evaluation(scan_data: dict[str, Any]) -> dict[str, Any]:
+    rule_evaluation = scan_data.get("rule_evaluation")
+    return rule_evaluation if isinstance(rule_evaluation, dict) else build_rule_evaluation(scan_data)
 
 
 def _entry_points_have_sensitive_parameters(entry_points: dict[str, Any]) -> bool:

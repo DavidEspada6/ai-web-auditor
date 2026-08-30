@@ -1,0 +1,1972 @@
+{
+  "engine": "passive-rules",
+  "version": "1.0",
+  "source_frameworks": [
+    {
+      "name": "OWASP WSTG",
+      "version": "latest/stable references",
+      "url": "https://wstg.owasp.org/"
+    },
+    {
+      "name": "OWASP ASVS",
+      "version": "5.0",
+      "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0"
+    }
+  ],
+  "summary": {
+    "rules_total": 15,
+    "rules_matched": 13,
+    "rules_not_observed": 2,
+    "findings_mapped": 21,
+    "findings_unmapped": 0,
+    "framework_controls_matched": 34,
+    "critical": 0,
+    "high": 2,
+    "medium": 2,
+    "low": 0,
+    "info": 9,
+    "categories": {
+      "authentication": 1,
+      "authorization": 1,
+      "browser-hardening": 1,
+      "configuration": 1,
+      "file-handling": 1,
+      "information-gathering": 4,
+      "infrastructure": 1,
+      "scope-management": 1,
+      "session-management": 1,
+      "transport-security": 1
+    }
+  },
+  "matches": [
+    {
+      "rule_id": "RULE-TRANSPORT-ENFORCE-TLS",
+      "title": "Transport encryption and HTTPS enforcement",
+      "status": "matched",
+      "severity": "high",
+      "category": "transport-security",
+      "matched_findings": [
+        "AUTH-BASIC-OVER-HTTP",
+        "HTTP-NO-HTTPS-REDIRECT"
+      ],
+      "matched_signals": [],
+      "targets": [
+        "http://127.0.0.1:56158/members/"
+      ],
+      "evidence": [
+        {
+          "type": "finding",
+          "label": "HTTP-NO-HTTPS-REDIRECT",
+          "value": "HTTP is not redirected to HTTPS",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "initial_url",
+          "value": "http://127.0.0.1:56158/members/",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "final_url",
+          "value": "http://127.0.0.1:56158/members/",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "status_code",
+          "value": "401",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding",
+          "label": "AUTH-BASIC-OVER-HTTP",
+          "value": "HTTP Basic Authentication over HTTP",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "status_code",
+          "value": "401",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "www-authenticate",
+          "value": "Basic realm=\"AI Web Auditor Lab\"",
+          "location": "http://127.0.0.1:56158/members/"
+        }
+      ],
+      "why_it_matters": "Credentials, cookies and session tokens must not be exposed through clear-text HTTP or downgrade paths.",
+      "next_review": "Confirm HTTPS is enforced for every entry point and that HTTP redirects safely before authentication or session exchange.",
+      "frameworks": [
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-CRYP-03",
+          "title": "Sensitive information sent via unencrypted channels",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/09-Testing_for_Weak_Cryptography/03-Testing_for_Sensitive_Information_Sent_via_Unencrypted_Channels"
+        },
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-ATHN-01",
+          "title": "Credentials transported over an encrypted channel",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/04-Authentication_Testing/01-Testing_for_Credentials_Transported_over_an_Encrypted_Channel"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V12.2.1",
+          "title": "TLS is used for client connectivity",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/12-secure-communication/02-https-communication-with-external-facing-services"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V14.2.1",
+          "title": "Sensitive data is sent through protected channels",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/14-data-protection/02-general-data-protection"
+        }
+      ]
+    },
+    {
+      "rule_id": "RULE-SESSION-COOKIE-ATTRIBUTES",
+      "title": "Cookie security attributes",
+      "status": "matched",
+      "severity": "medium",
+      "category": "session-management",
+      "matched_findings": [
+        "COOKIE-HTTPONLY-MISSING",
+        "COOKIE-SAMESITE-MISSING",
+        "COOKIE-SAMESITE-NONE-WITHOUT-SECURE"
+      ],
+      "matched_signals": [],
+      "targets": [
+        "http://127.0.0.1:56158/members/"
+      ],
+      "evidence": [
+        {
+          "type": "finding",
+          "label": "COOKIE-HTTPONLY-MISSING",
+          "value": "Cookie missing HttpOnly flag",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "cookie",
+          "value": "sessionid",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding",
+          "label": "COOKIE-SAMESITE-MISSING",
+          "value": "Cookie missing SameSite attribute",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "cookie",
+          "value": "sessionid",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding",
+          "label": "COOKIE-HTTPONLY-MISSING",
+          "value": "Cookie missing HttpOnly flag",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "cookie",
+          "value": "tracking_id",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding",
+          "label": "COOKIE-SAMESITE-NONE-WITHOUT-SECURE",
+          "value": "Cookie uses SameSite=None without Secure",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "cookie",
+          "value": "tracking_id",
+          "location": "http://127.0.0.1:56158/members/"
+        }
+      ],
+      "why_it_matters": "Cookie flags constrain session token exposure across insecure transport, browser scripts and cross-site requests.",
+      "next_review": "Confirm session cookies use Secure, HttpOnly and a deliberate SameSite value based on the application flow.",
+      "frameworks": [
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-SESS-02",
+          "title": "Cookie attributes",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V3.3.1",
+          "title": "Cookies have Secure attributes",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/03-web-frontend-security/03-cookie-setup"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V3.3.2",
+          "title": "Cookies define a SameSite policy",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/03-web-frontend-security/03-cookie-setup"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V3.3.4",
+          "title": "Sensitive cookies use HttpOnly",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/03-web-frontend-security/03-cookie-setup"
+        }
+      ]
+    },
+    {
+      "rule_id": "RULE-FRONTEND-BROWSER-SECURITY-HEADERS",
+      "title": "Browser security mechanism headers",
+      "status": "matched",
+      "severity": "medium",
+      "category": "browser-hardening",
+      "matched_findings": [
+        "HEADER-CLICKJACKING-MISSING",
+        "HEADER-CONTENT_SECURITY_POLICY-MISSING",
+        "HEADER-NOSNIFF-MISSING",
+        "HEADER-PERMISSIONS_POLICY-MISSING",
+        "HEADER-REFERRER_POLICY-MISSING"
+      ],
+      "matched_signals": [],
+      "targets": [
+        "http://127.0.0.1:56158/members/"
+      ],
+      "evidence": [
+        {
+          "type": "finding",
+          "label": "HEADER-CONTENT_SECURITY_POLICY-MISSING",
+          "value": "Content-Security-Policy header is missing",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding",
+          "label": "HEADER-CLICKJACKING-MISSING",
+          "value": "Clickjacking protection header is missing",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding",
+          "label": "HEADER-NOSNIFF-MISSING",
+          "value": "X-Content-Type-Options nosniff is missing",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "x-content-type-options",
+          "value": "missing",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding",
+          "label": "HEADER-REFERRER_POLICY-MISSING",
+          "value": "Referrer-Policy header is missing",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding",
+          "label": "HEADER-PERMISSIONS_POLICY-MISSING",
+          "value": "Permissions-Policy header is missing",
+          "location": "http://127.0.0.1:56158/members/"
+        }
+      ],
+      "why_it_matters": "Security headers provide browser-enforced defense in depth against content injection, clickjacking and data leakage.",
+      "next_review": "Review CSP, frame-ancestors/X-Frame-Options, X-Content-Type-Options, Referrer-Policy and Permissions-Policy per route.",
+      "frameworks": [
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-CONF-12",
+          "title": "Content Security Policy",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/12-Test_for_Content_Security_Policy"
+        },
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-CLNT-09",
+          "title": "Clickjacking",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/11-Client-side_Testing/09-Testing_for_Clickjacking"
+        },
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-CONF-14",
+          "title": "Other HTTP security header misconfigurations",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/14-Test_Other_HTTP_Security_Header_Misconfigurations"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V3.4",
+          "title": "Browser security mechanism headers",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/03-web-frontend-security/04-browser-security-mechanism-headers"
+        }
+      ]
+    },
+    {
+      "rule_id": "RULE-CONFIG-HTTP-METHODS",
+      "title": "Advertised HTTP methods",
+      "status": "matched",
+      "severity": "high",
+      "category": "configuration",
+      "matched_findings": [
+        "METHOD-DELETE-ADVERTISED",
+        "METHOD-PUT-ADVERTISED",
+        "METHOD-TRACE-ADVERTISED"
+      ],
+      "matched_signals": [],
+      "targets": [
+        "http://127.0.0.1:56158/members/"
+      ],
+      "evidence": [
+        {
+          "type": "finding",
+          "label": "METHOD-DELETE-ADVERTISED",
+          "value": "HTTP method DELETE is advertised",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "allow",
+          "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "access-control-allow-methods",
+          "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding",
+          "label": "METHOD-PUT-ADVERTISED",
+          "value": "HTTP method PUT is advertised",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "allow",
+          "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "access-control-allow-methods",
+          "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding",
+          "label": "METHOD-TRACE-ADVERTISED",
+          "value": "HTTP method TRACE is advertised",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "allow",
+          "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "access-control-allow-methods",
+          "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+          "location": "http://127.0.0.1:56158/members/"
+        }
+      ],
+      "why_it_matters": "Unnecessary HTTP methods can expand the attack surface or expose method tampering paths.",
+      "next_review": "Verify that each advertised method is intentionally supported and protected by route-level authorization.",
+      "frameworks": [
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-CONF-06",
+          "title": "HTTP methods",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/06-Test_HTTP_Methods"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V4.1.4",
+          "title": "Only explicitly supported HTTP methods are accepted",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/04-api-and-web-service/01-generic-web-service-security"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V13.4.4",
+          "title": "HTTP TRACE method is not supported in production",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/13-configuration/04-unintended-information-leakage"
+        }
+      ]
+    },
+    {
+      "rule_id": "RULE-INFO-TECH-FINGERPRINTING",
+      "title": "Technology and version disclosure",
+      "status": "matched",
+      "severity": "info",
+      "category": "information-gathering",
+      "matched_findings": [
+        "FINGERPRINT-GENERATOR-DISCLOSED",
+        "FINGERPRINT-POWERED-BY-DISCLOSED",
+        "FINGERPRINT-SERVER-VERSION-DISCLOSED"
+      ],
+      "matched_signals": [
+        "technologies_identified"
+      ],
+      "targets": [
+        "http://127.0.0.1:56158/members/"
+      ],
+      "evidence": [
+        {
+          "type": "finding",
+          "label": "FINGERPRINT-SERVER-VERSION-DISCLOSED",
+          "value": "Server header discloses version information",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "server",
+          "value": "AIWebAuditorLab/0.21",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding",
+          "label": "FINGERPRINT-POWERED-BY-DISCLOSED",
+          "value": "X-Powered-By header discloses technology information",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "x-powered-by",
+          "value": "PHP/5.6.40",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding",
+          "label": "FINGERPRINT-GENERATOR-DISCLOSED",
+          "value": "HTML generator metadata is exposed",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "generator",
+          "value": "WordPress 4.7.0",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "technology",
+          "label": "server",
+          "value": "AIWebAuditorLab/0.21",
+          "location": "low"
+        },
+        {
+          "type": "technology",
+          "label": "framework",
+          "value": "Django",
+          "location": "medium"
+        },
+        {
+          "type": "technology",
+          "label": "language",
+          "value": "PHP 5.6.40",
+          "location": "high"
+        },
+        {
+          "type": "technology",
+          "label": "cms",
+          "value": "WordPress 4.7.0",
+          "location": "high"
+        }
+      ],
+      "why_it_matters": "Technology signals help focus later manual review and can expose unnecessary version details.",
+      "next_review": "Keep useful technology evidence, then remove precise version disclosure where it is not operationally required.",
+      "frameworks": [
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-INFO-02",
+          "title": "Fingerprint web server",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/02-Fingerprint_Web_Server"
+        },
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-INFO-08",
+          "title": "Fingerprint web application framework",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/08-Fingerprint_Web_Application_Framework"
+        },
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-INFO-10",
+          "title": "Map application architecture",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/10-Map_Application_Architecture"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V13.4",
+          "title": "Unintended information leakage",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/13-configuration/04-unintended-information-leakage"
+        }
+      ]
+    },
+    {
+      "rule_id": "RULE-INFO-WEBSERVER-METAFILES",
+      "title": "Public metadata files and declared paths",
+      "status": "matched",
+      "severity": "info",
+      "category": "information-gathering",
+      "matched_findings": [],
+      "matched_signals": [
+        "public_metadata"
+      ],
+      "targets": [
+        "http://127.0.0.1:56158/.well-known/openid-configuration",
+        "http://127.0.0.1:56158/.well-known/security.txt",
+        "http://127.0.0.1:56158/robots.txt",
+        "http://127.0.0.1:56158/sitemap.xml"
+      ],
+      "evidence": [
+        {
+          "type": "metadata",
+          "label": "robots.txt",
+          "value": "http://127.0.0.1:56158/robots.txt",
+          "location": "200"
+        },
+        {
+          "type": "metadata",
+          "label": "sitemap",
+          "value": "http://127.0.0.1:56158/sitemap.xml",
+          "location": "5"
+        },
+        {
+          "type": "metadata",
+          "label": "/.well-known/security.txt",
+          "value": "http://127.0.0.1:56158/.well-known/security.txt",
+          "location": "200"
+        },
+        {
+          "type": "metadata",
+          "label": "/.well-known/openid-configuration",
+          "value": "http://127.0.0.1:56158/.well-known/openid-configuration",
+          "location": "200"
+        },
+        {
+          "type": "metadata",
+          "label": "/robots.txt",
+          "value": "http://127.0.0.1:56158/robots.txt",
+          "location": "200"
+        },
+        {
+          "type": "metadata",
+          "label": "/.well-known/security.txt",
+          "value": "http://127.0.0.1:56158/.well-known/security.txt",
+          "location": "200"
+        },
+        {
+          "type": "metadata",
+          "label": "/sitemap.xml",
+          "value": "http://127.0.0.1:56158/sitemap.xml",
+          "location": "200"
+        }
+      ],
+      "why_it_matters": "robots.txt, sitemap.xml and well-known files can reveal intended routes, policies, identity metadata and hidden paths.",
+      "next_review": "Review discovered metadata paths manually and decide what belongs in scope before following sensitive paths.",
+      "frameworks": [
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-INFO-03",
+          "title": "Review webserver metafiles for information leakage",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/03-Review_Webserver_Metafiles_for_Information_Leakage"
+        },
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-INFO-07",
+          "title": "Map execution paths through application",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/07-Map_Execution_Paths_Through_Application"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V13.4",
+          "title": "Unintended information leakage",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/13-configuration/04-unintended-information-leakage"
+        }
+      ]
+    },
+    {
+      "rule_id": "RULE-INFO-ENTRY-POINTS",
+      "title": "Application entry point inventory",
+      "status": "matched",
+      "severity": "info",
+      "category": "information-gathering",
+      "matched_findings": [],
+      "matched_signals": [
+        "entry_points_present",
+        "sensitive_parameters",
+        "state_changing_entry_points"
+      ],
+      "targets": [
+        "http://127.0.0.1:56158/api/member-profile?csrf_token=%5Bredacted%5D",
+        "http://127.0.0.1:56158/api/profile?session_id=%5Bredacted%5D",
+        "http://127.0.0.1:56158/api/upload",
+        "http://127.0.0.1:56158/api/users?role=member",
+        "http://127.0.0.1:56158/login/",
+        "http://127.0.0.1:56158/members/",
+        "http://127.0.0.1:56158/oauth/authorize?client_id=demo",
+        "http://127.0.0.1:56158/session"
+      ],
+      "evidence": [
+        {
+          "type": "entry_point",
+          "label": "endpoint",
+          "value": "http://127.0.0.1:56158/login/",
+          "location": "form_action"
+        },
+        {
+          "type": "entry_point",
+          "label": "endpoint",
+          "value": "http://127.0.0.1:56158/session",
+          "location": "form_action"
+        },
+        {
+          "type": "entry_point",
+          "label": "endpoint",
+          "value": "http://127.0.0.1:56158/api/member-profile?csrf_token=%5Bredacted%5D",
+          "location": "discovered"
+        },
+        {
+          "type": "entry_point",
+          "label": "endpoint",
+          "value": "http://127.0.0.1:56158/api/profile?session_id=%5Bredacted%5D",
+          "location": "discovered"
+        },
+        {
+          "type": "entry_point",
+          "label": "endpoint",
+          "value": "http://127.0.0.1:56158/api/upload",
+          "location": "discovered"
+        },
+        {
+          "type": "entry_point",
+          "label": "endpoint",
+          "value": "http://127.0.0.1:56158/members/",
+          "location": "fetched"
+        },
+        {
+          "type": "entry_point",
+          "label": "endpoint",
+          "value": "http://127.0.0.1:56158/api/users?role=member",
+          "location": "discovered"
+        },
+        {
+          "type": "entry_point",
+          "label": "endpoint",
+          "value": "http://127.0.0.1:56158/oauth/authorize?client_id=demo",
+          "location": "discovered"
+        },
+        {
+          "type": "entry_point",
+          "label": "state_changing",
+          "value": "http://127.0.0.1:56158/login/",
+          "location": "POST"
+        },
+        {
+          "type": "entry_point",
+          "label": "state_changing",
+          "value": "http://127.0.0.1:56158/session",
+          "location": "POST"
+        },
+        {
+          "type": "entry_point",
+          "label": "state_changing",
+          "value": "http://127.0.0.1:56158/api/member-profile?csrf_token=%5Bredacted%5D",
+          "location": "POST"
+        },
+        {
+          "type": "entry_point",
+          "label": "state_changing",
+          "value": "http://127.0.0.1:56158/api/profile?session_id=%5Bredacted%5D",
+          "location": "POST"
+        },
+        {
+          "type": "entry_point",
+          "label": "state_changing",
+          "value": "http://127.0.0.1:56158/api/upload",
+          "location": "POST"
+        },
+        {
+          "type": "entry_point",
+          "label": "state_changing",
+          "value": "http://127.0.0.1:56158/members/",
+          "location": "DELETE, GET, OPTIONS, POST, PUT, TRACE"
+        },
+        {
+          "type": "parameter",
+          "label": "csrf_token",
+          "value": "2",
+          "location": "form, query"
+        },
+        {
+          "type": "parameter",
+          "label": "password",
+          "value": "2",
+          "location": "form"
+        },
+        {
+          "type": "parameter",
+          "label": "session_id",
+          "value": "1",
+          "location": "query"
+        },
+        {
+          "type": "parameter",
+          "label": "token",
+          "value": "2",
+          "location": "query"
+        }
+      ],
+      "why_it_matters": "A useful audit starts with a reliable inventory of URLs, forms, methods and parameters before any validation testing.",
+      "next_review": "Prioritize state-changing endpoints, sensitive parameters and authenticated flows for later authorized testing.",
+      "frameworks": [
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-INFO-06",
+          "title": "Identify application entry points",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/06-Identify_Application_Entry_Points"
+        },
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-INFO-07",
+          "title": "Map execution paths through application",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/07-Map_Execution_Paths_Through_Application"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V4.1.2",
+          "title": "Only intended user-facing endpoints are exposed",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/04-api-and-web-service/01-generic-web-service-security"
+        }
+      ]
+    },
+    {
+      "rule_id": "RULE-INFO-JAVASCRIPT-SURFACE",
+      "title": "Client-side JavaScript exposed routes",
+      "status": "matched",
+      "severity": "info",
+      "category": "information-gathering",
+      "matched_findings": [
+        "JS-ENDPOINTS-DISCOVERED",
+        "JS-OUT-OF-SCOPE-ENDPOINTS",
+        "JS-SENSITIVE-PARAMETER-NAMES"
+      ],
+      "matched_signals": [
+        "javascript_endpoints"
+      ],
+      "targets": [
+        "http://127.0.0.1:56158/api",
+        "http://127.0.0.1:56158/api/member-profile?csrf_token=%5Bredacted%5D",
+        "http://127.0.0.1:56158/api/profile?session_id=%5Bredacted%5D",
+        "http://127.0.0.1:56158/api/upload",
+        "http://127.0.0.1:56158/api/users?role=member",
+        "http://127.0.0.1:56158/callback/oauth",
+        "http://127.0.0.1:56158/health",
+        "http://127.0.0.1:56158/members/",
+        "http://127.0.0.1:56158/oauth/authorize?client_id=demo"
+      ],
+      "evidence": [
+        {
+          "type": "finding",
+          "label": "JS-ENDPOINTS-DISCOVERED",
+          "value": "JavaScript endpoint references discovered",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "endpoint",
+          "value": "http://127.0.0.1:56158/api",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "endpoint",
+          "value": "POST http://127.0.0.1:56158/api/member-profile?csrf_token=[redacted]",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "endpoint",
+          "value": "POST http://127.0.0.1:56158/api/profile?session_id=[redacted]",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding",
+          "label": "JS-SENSITIVE-PARAMETER-NAMES",
+          "value": "JavaScript references sensitive-looking parameter names",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "parameter_name",
+          "value": "csrf_token",
+          "location": "http://127.0.0.1:56158/api/member-profile?csrf_token=[redacted]"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "parameter_name",
+          "value": "session_id",
+          "location": "http://127.0.0.1:56158/api/profile?session_id=[redacted]"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "parameter_name",
+          "value": "token",
+          "location": "http://127.0.0.1:56158/reset-password?token=[redacted]"
+        },
+        {
+          "type": "finding",
+          "label": "JS-OUT-OF-SCOPE-ENDPOINTS",
+          "value": "JavaScript references endpoints outside scope",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "endpoint",
+          "value": "https://example.org/collect",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "javascript_endpoint",
+          "label": "endpoint",
+          "value": "http://127.0.0.1:56158/api",
+          "location": ""
+        },
+        {
+          "type": "javascript_endpoint",
+          "label": "endpoint",
+          "value": "http://127.0.0.1:56158/api/member-profile?csrf_token=%5Bredacted%5D",
+          "location": "POST"
+        },
+        {
+          "type": "javascript_endpoint",
+          "label": "endpoint",
+          "value": "http://127.0.0.1:56158/api/profile?session_id=%5Bredacted%5D",
+          "location": "POST"
+        },
+        {
+          "type": "javascript_endpoint",
+          "label": "endpoint",
+          "value": "http://127.0.0.1:56158/api/upload",
+          "location": "POST"
+        },
+        {
+          "type": "javascript_endpoint",
+          "label": "endpoint",
+          "value": "http://127.0.0.1:56158/api/users?role=member",
+          "location": "GET"
+        },
+        {
+          "type": "javascript_endpoint",
+          "label": "endpoint",
+          "value": "http://127.0.0.1:56158/callback/oauth",
+          "location": ""
+        },
+        {
+          "type": "javascript_endpoint",
+          "label": "endpoint",
+          "value": "http://127.0.0.1:56158/health",
+          "location": ""
+        },
+        {
+          "type": "javascript_endpoint",
+          "label": "endpoint",
+          "value": "http://127.0.0.1:56158/oauth/authorize?client_id=demo",
+          "location": ""
+        }
+      ],
+      "why_it_matters": "Client-side JavaScript often exposes API routes, identity flows and external integrations that are not visible as links.",
+      "next_review": "Review JavaScript-discovered endpoints before selecting any later validation or attack simulation.",
+      "frameworks": [
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-INFO-05",
+          "title": "Review web page content for information leakage",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/05-Review_Web_Page_Content_for_Information_Leakage"
+        },
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-INFO-06",
+          "title": "Identify application entry points",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/06-Identify_Application_Entry_Points"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V13.4",
+          "title": "Unintended information leakage",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/13-configuration/04-unintended-information-leakage"
+        }
+      ]
+    },
+    {
+      "rule_id": "RULE-AUTH-AUTHENTICATION-SURFACE",
+      "title": "Authentication and account-management surface",
+      "status": "matched",
+      "severity": "info",
+      "category": "authentication",
+      "matched_findings": [],
+      "matched_signals": [
+        "auth_routes"
+      ],
+      "targets": [
+        "http://127.0.0.1:56158/.well-known/change-password",
+        "http://127.0.0.1:56158/.well-known/oauth-authorization-server",
+        "http://127.0.0.1:56158/api/member-profile?csrf_token=%5Bredacted%5D",
+        "http://127.0.0.1:56158/api/profile?session_id=%5Bredacted%5D",
+        "http://127.0.0.1:56158/callback/oauth",
+        "http://127.0.0.1:56158/login/",
+        "http://127.0.0.1:56158/members/",
+        "http://127.0.0.1:56158/oauth/authorize?client_id=demo",
+        "http://127.0.0.1:56158/reset-password?token=%5Bredacted%5D",
+        "http://127.0.0.1:56158/session"
+      ],
+      "evidence": [
+        {
+          "type": "entry_point",
+          "label": "account,callback,login,password_reset",
+          "value": "http://127.0.0.1:56158/login/",
+          "location": "login, state_changing_candidate"
+        },
+        {
+          "type": "entry_point",
+          "label": "account,callback,login,password_reset",
+          "value": "http://127.0.0.1:56158/session",
+          "location": "login, state_changing_candidate"
+        },
+        {
+          "type": "entry_point",
+          "label": "account,callback,login,password_reset",
+          "value": "http://127.0.0.1:56158/api/member-profile?csrf_token=%5Bredacted%5D",
+          "location": "account, api, state_changing_candidate"
+        },
+        {
+          "type": "entry_point",
+          "label": "account,callback,login,password_reset",
+          "value": "http://127.0.0.1:56158/api/profile?session_id=%5Bredacted%5D",
+          "location": "account, api, state_changing_candidate"
+        },
+        {
+          "type": "entry_point",
+          "label": "account,callback,login,password_reset",
+          "value": "http://127.0.0.1:56158/members/",
+          "location": "account, form, login"
+        },
+        {
+          "type": "entry_point",
+          "label": "account,callback,login,password_reset",
+          "value": "http://127.0.0.1:56158/oauth/authorize?client_id=demo",
+          "location": "callback, login"
+        },
+        {
+          "type": "entry_point",
+          "label": "account,callback,login,password_reset",
+          "value": "http://127.0.0.1:56158/reset-password?token=%5Bredacted%5D",
+          "location": "password_reset"
+        },
+        {
+          "type": "entry_point",
+          "label": "account,callback,login,password_reset",
+          "value": "http://127.0.0.1:56158/.well-known/change-password",
+          "location": "password_reset"
+        }
+      ],
+      "why_it_matters": "Authentication, account and recovery flows usually define the highest-value manual review paths.",
+      "next_review": "Document every authentication path, recovery path and callback before testing controls in a later authorized phase.",
+      "frameworks": [
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-ATHN-01",
+          "title": "Credentials transported over an encrypted channel",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/04-Authentication_Testing/01-Testing_for_Credentials_Transported_over_an_Encrypted_Channel"
+        },
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-ATHN-09",
+          "title": "Weak password change or reset functionality",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/04-Authentication_Testing/09-Testing_for_Weak_Password_Change_or_Reset_Functionalities"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V6.1.3",
+          "title": "Multiple authentication pathways are documented",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/06-authentication/01-authentication-documentation"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V6.4.3",
+          "title": "Secure forgotten password reset process",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/06-authentication/04-authentication-factor-lifecycle-and-recovery"
+        }
+      ]
+    },
+    {
+      "rule_id": "RULE-AUTHZ-ADMIN-SURFACE",
+      "title": "Administrative and privileged route inventory",
+      "status": "matched",
+      "severity": "info",
+      "category": "authorization",
+      "matched_findings": [],
+      "matched_signals": [
+        "admin_routes"
+      ],
+      "targets": [
+        "http://127.0.0.1:56158/admin/",
+        "http://127.0.0.1:56158/admin/export?token=%5Bredacted%5D"
+      ],
+      "evidence": [
+        {
+          "type": "entry_point",
+          "label": "admin",
+          "value": "http://127.0.0.1:56158/admin/export?token=%5Bredacted%5D",
+          "location": "admin"
+        },
+        {
+          "type": "entry_point",
+          "label": "admin",
+          "value": "http://127.0.0.1:56158/admin/",
+          "location": "admin"
+        },
+        {
+          "type": "inventory_url",
+          "label": "admin",
+          "value": "http://127.0.0.1:56158/admin/",
+          "location": "admin"
+        },
+        {
+          "type": "inventory_url",
+          "label": "admin",
+          "value": "http://127.0.0.1:56158/admin/export?token=%5Bredacted%5D",
+          "location": "admin"
+        }
+      ],
+      "why_it_matters": "Administrative routes are high-value review targets even when they are only passively discovered.",
+      "next_review": "Confirm ownership, required roles and whether the route should remain in scope before any access-control testing.",
+      "frameworks": [
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-CONF-05",
+          "title": "Enumerate infrastructure and application admin interfaces",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/05-Enumerate_Infrastructure_and_Application_Admin_Interfaces"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V8.4.2",
+          "title": "Administrative interfaces include stronger access controls",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/08-authorization/04-other-authorization-considerations"
+        }
+      ]
+    },
+    {
+      "rule_id": "RULE-FILE-UPLOAD-SURFACE",
+      "title": "File upload route inventory",
+      "status": "matched",
+      "severity": "info",
+      "category": "file-handling",
+      "matched_findings": [],
+      "matched_signals": [
+        "upload_routes"
+      ],
+      "targets": [
+        "http://127.0.0.1:56158/api/upload"
+      ],
+      "evidence": [
+        {
+          "type": "entry_point",
+          "label": "upload",
+          "value": "http://127.0.0.1:56158/api/upload",
+          "location": "api, state_changing_candidate, upload"
+        },
+        {
+          "type": "inventory_url",
+          "label": "upload",
+          "value": "http://127.0.0.1:56158/api/upload",
+          "location": "api, state_changing_candidate, upload"
+        }
+      ],
+      "why_it_matters": "Upload endpoints commonly require extra validation, storage and authorization review.",
+      "next_review": "Confirm accepted file types, size limits, storage location and authorization before any upload testing.",
+      "frameworks": [
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V5.2.1",
+          "title": "Accepted files have safe size limits",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/05-file-handling/02-file-upload-and-content"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V5.2.2",
+          "title": "Uploaded file extension and content are validated",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/05-file-handling/02-file-upload-and-content"
+        }
+      ]
+    },
+    {
+      "rule_id": "RULE-INFRA-DISCOVERY-SURFACE",
+      "title": "Infrastructure surface from DNS and TCP checks",
+      "status": "matched",
+      "severity": "info",
+      "category": "infrastructure",
+      "matched_findings": [
+        "PORTS-OPEN-TCP-PORTS"
+      ],
+      "matched_signals": [
+        "ports_open"
+      ],
+      "targets": [
+        "127.0.0.1"
+      ],
+      "evidence": [
+        {
+          "type": "finding",
+          "label": "PORTS-OPEN-TCP-PORTS",
+          "value": "Open TCP ports detected",
+          "location": "127.0.0.1"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "open_port",
+          "value": "56158",
+          "location": "127.0.0.1"
+        },
+        {
+          "type": "tcp_port",
+          "label": "open",
+          "value": "127.0.0.1:56158",
+          "location": ""
+        }
+      ],
+      "why_it_matters": "Resolved hosts and open TCP ports help identify what infrastructure should be confirmed in or out of scope.",
+      "next_review": "Confirm every resolved host and open port with the application owner before expanding testing beyond the main URL.",
+      "frameworks": [
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-INFO-04",
+          "title": "Enumerate applications on webserver",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/04-Enumerate_Applications_on_Webserver"
+        },
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-INFO-10",
+          "title": "Map application architecture",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/10-Map_Application_Architecture"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V13.1.1",
+          "title": "Application communication needs are documented",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/13-configuration/01-configuration-documentation"
+        }
+      ]
+    },
+    {
+      "rule_id": "RULE-SCOPE-EXTERNAL-REFERENCES",
+      "title": "External and out-of-scope references",
+      "status": "matched",
+      "severity": "info",
+      "category": "scope-management",
+      "matched_findings": [
+        "CRAWLER-OUT-OF-SCOPE-LINKS",
+        "JS-OUT-OF-SCOPE-ENDPOINTS"
+      ],
+      "matched_signals": [
+        "external_references"
+      ],
+      "targets": [
+        "http://127.0.0.1:56158/members/",
+        "https://example.org/collect",
+        "https://example.org/external"
+      ],
+      "evidence": [
+        {
+          "type": "finding",
+          "label": "CRAWLER-OUT-OF-SCOPE-LINKS",
+          "value": "Crawler found links outside scope",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "sample_url",
+          "value": "https://example.org/external",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding",
+          "label": "JS-OUT-OF-SCOPE-ENDPOINTS",
+          "value": "JavaScript references endpoints outside scope",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "finding_evidence",
+          "label": "endpoint",
+          "value": "https://example.org/collect",
+          "location": "http://127.0.0.1:56158/members/"
+        },
+        {
+          "type": "scope",
+          "label": "out_of_scope",
+          "value": "https://example.org/external",
+          "location": "recorded_not_requested"
+        },
+        {
+          "type": "scope",
+          "label": "out_of_scope",
+          "value": "https://example.org/collect",
+          "location": "recorded_not_requested"
+        }
+      ],
+      "why_it_matters": "External references may be legitimate dependencies, third parties or missing scope items; they should not be scanned automatically.",
+      "next_review": "Classify each external host as third-party, dependency, redirect target or candidate scope extension.",
+      "frameworks": [
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-INFO-10",
+          "title": "Map application architecture",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/10-Map_Application_Architecture"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V13.2.4",
+          "title": "External resource allowlists are defined",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/13-configuration/02-backend-communication-configuration"
+        }
+      ]
+    }
+  ],
+  "not_observed": [
+    {
+      "rule_id": "RULE-TRANSPORT-HSTS",
+      "title": "HSTS response policy",
+      "category": "transport-security",
+      "severity": "medium",
+      "status": "not_observed",
+      "note": "No HSTS absence or low max-age finding was observed.",
+      "frameworks": [
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-CONF-07",
+          "title": "HTTP Strict Transport Security",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/07-Test_HTTP_Strict_Transport_Security"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V3.4.1",
+          "title": "Strict-Transport-Security header is included",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/03-web-frontend-security/04-browser-security-mechanism-headers"
+        }
+      ]
+    },
+    {
+      "rule_id": "RULE-TRANSPORT-TLS-BASIC",
+      "title": "TLS version and certificate baseline",
+      "category": "transport-security",
+      "severity": "high",
+      "status": "not_observed",
+      "note": "No TLS protocol or certificate finding was observed.",
+      "frameworks": [
+        {
+          "framework": "OWASP WSTG",
+          "control_id": "WSTG-CRYP-01",
+          "title": "Weak transport layer security",
+          "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/09-Testing_for_Weak_Cryptography/01-Testing_for_Weak_Transport_Layer_Security"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V12.1.1",
+          "title": "Recommended TLS versions are enabled",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/12-secure-communication/01-general-tls-security-guidance"
+        },
+        {
+          "framework": "OWASP ASVS 5.0",
+          "control_id": "V12.2.2",
+          "title": "External services use publicly trusted TLS certificates",
+          "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/12-secure-communication/02-https-communication-with-external-facing-services"
+        }
+      ]
+    }
+  ],
+  "unmapped_findings": [],
+  "framework_index": [
+    {
+      "framework": "OWASP ASVS 5.0",
+      "control_id": "V12.2.1",
+      "title": "TLS is used for client connectivity",
+      "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/12-secure-communication/02-https-communication-with-external-facing-services",
+      "matched_rules": [
+        "RULE-TRANSPORT-ENFORCE-TLS"
+      ],
+      "matched_findings": [
+        "AUTH-BASIC-OVER-HTTP",
+        "HTTP-NO-HTTPS-REDIRECT"
+      ],
+      "matched_signals": [],
+      "categories": [
+        "transport-security"
+      ],
+      "highest_severity": "high"
+    },
+    {
+      "framework": "OWASP ASVS 5.0",
+      "control_id": "V13.1.1",
+      "title": "Application communication needs are documented",
+      "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/13-configuration/01-configuration-documentation",
+      "matched_rules": [
+        "RULE-INFRA-DISCOVERY-SURFACE"
+      ],
+      "matched_findings": [
+        "PORTS-OPEN-TCP-PORTS"
+      ],
+      "matched_signals": [
+        "ports_open"
+      ],
+      "categories": [
+        "infrastructure"
+      ],
+      "highest_severity": "info"
+    },
+    {
+      "framework": "OWASP ASVS 5.0",
+      "control_id": "V13.2.4",
+      "title": "External resource allowlists are defined",
+      "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/13-configuration/02-backend-communication-configuration",
+      "matched_rules": [
+        "RULE-SCOPE-EXTERNAL-REFERENCES"
+      ],
+      "matched_findings": [
+        "CRAWLER-OUT-OF-SCOPE-LINKS",
+        "JS-OUT-OF-SCOPE-ENDPOINTS"
+      ],
+      "matched_signals": [
+        "external_references"
+      ],
+      "categories": [
+        "scope-management"
+      ],
+      "highest_severity": "info"
+    },
+    {
+      "framework": "OWASP ASVS 5.0",
+      "control_id": "V13.4",
+      "title": "Unintended information leakage",
+      "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/13-configuration/04-unintended-information-leakage",
+      "matched_rules": [
+        "RULE-INFO-JAVASCRIPT-SURFACE",
+        "RULE-INFO-TECH-FINGERPRINTING",
+        "RULE-INFO-WEBSERVER-METAFILES"
+      ],
+      "matched_findings": [
+        "FINGERPRINT-GENERATOR-DISCLOSED",
+        "FINGERPRINT-POWERED-BY-DISCLOSED",
+        "FINGERPRINT-SERVER-VERSION-DISCLOSED",
+        "JS-ENDPOINTS-DISCOVERED",
+        "JS-OUT-OF-SCOPE-ENDPOINTS",
+        "JS-SENSITIVE-PARAMETER-NAMES"
+      ],
+      "matched_signals": [
+        "javascript_endpoints",
+        "public_metadata",
+        "technologies_identified"
+      ],
+      "categories": [
+        "information-gathering"
+      ],
+      "highest_severity": "info"
+    },
+    {
+      "framework": "OWASP ASVS 5.0",
+      "control_id": "V13.4.4",
+      "title": "HTTP TRACE method is not supported in production",
+      "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/13-configuration/04-unintended-information-leakage",
+      "matched_rules": [
+        "RULE-CONFIG-HTTP-METHODS"
+      ],
+      "matched_findings": [
+        "METHOD-DELETE-ADVERTISED",
+        "METHOD-PUT-ADVERTISED",
+        "METHOD-TRACE-ADVERTISED"
+      ],
+      "matched_signals": [],
+      "categories": [
+        "configuration"
+      ],
+      "highest_severity": "high"
+    },
+    {
+      "framework": "OWASP ASVS 5.0",
+      "control_id": "V14.2.1",
+      "title": "Sensitive data is sent through protected channels",
+      "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/14-data-protection/02-general-data-protection",
+      "matched_rules": [
+        "RULE-TRANSPORT-ENFORCE-TLS"
+      ],
+      "matched_findings": [
+        "AUTH-BASIC-OVER-HTTP",
+        "HTTP-NO-HTTPS-REDIRECT"
+      ],
+      "matched_signals": [],
+      "categories": [
+        "transport-security"
+      ],
+      "highest_severity": "high"
+    },
+    {
+      "framework": "OWASP ASVS 5.0",
+      "control_id": "V3.3.1",
+      "title": "Cookies have Secure attributes",
+      "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/03-web-frontend-security/03-cookie-setup",
+      "matched_rules": [
+        "RULE-SESSION-COOKIE-ATTRIBUTES"
+      ],
+      "matched_findings": [
+        "COOKIE-HTTPONLY-MISSING",
+        "COOKIE-SAMESITE-MISSING",
+        "COOKIE-SAMESITE-NONE-WITHOUT-SECURE"
+      ],
+      "matched_signals": [],
+      "categories": [
+        "session-management"
+      ],
+      "highest_severity": "medium"
+    },
+    {
+      "framework": "OWASP ASVS 5.0",
+      "control_id": "V3.3.2",
+      "title": "Cookies define a SameSite policy",
+      "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/03-web-frontend-security/03-cookie-setup",
+      "matched_rules": [
+        "RULE-SESSION-COOKIE-ATTRIBUTES"
+      ],
+      "matched_findings": [
+        "COOKIE-HTTPONLY-MISSING",
+        "COOKIE-SAMESITE-MISSING",
+        "COOKIE-SAMESITE-NONE-WITHOUT-SECURE"
+      ],
+      "matched_signals": [],
+      "categories": [
+        "session-management"
+      ],
+      "highest_severity": "medium"
+    },
+    {
+      "framework": "OWASP ASVS 5.0",
+      "control_id": "V3.3.4",
+      "title": "Sensitive cookies use HttpOnly",
+      "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/03-web-frontend-security/03-cookie-setup",
+      "matched_rules": [
+        "RULE-SESSION-COOKIE-ATTRIBUTES"
+      ],
+      "matched_findings": [
+        "COOKIE-HTTPONLY-MISSING",
+        "COOKIE-SAMESITE-MISSING",
+        "COOKIE-SAMESITE-NONE-WITHOUT-SECURE"
+      ],
+      "matched_signals": [],
+      "categories": [
+        "session-management"
+      ],
+      "highest_severity": "medium"
+    },
+    {
+      "framework": "OWASP ASVS 5.0",
+      "control_id": "V3.4",
+      "title": "Browser security mechanism headers",
+      "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/03-web-frontend-security/04-browser-security-mechanism-headers",
+      "matched_rules": [
+        "RULE-FRONTEND-BROWSER-SECURITY-HEADERS"
+      ],
+      "matched_findings": [
+        "HEADER-CLICKJACKING-MISSING",
+        "HEADER-CONTENT_SECURITY_POLICY-MISSING",
+        "HEADER-NOSNIFF-MISSING",
+        "HEADER-PERMISSIONS_POLICY-MISSING",
+        "HEADER-REFERRER_POLICY-MISSING"
+      ],
+      "matched_signals": [],
+      "categories": [
+        "browser-hardening"
+      ],
+      "highest_severity": "medium"
+    },
+    {
+      "framework": "OWASP ASVS 5.0",
+      "control_id": "V4.1.2",
+      "title": "Only intended user-facing endpoints are exposed",
+      "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/04-api-and-web-service/01-generic-web-service-security",
+      "matched_rules": [
+        "RULE-INFO-ENTRY-POINTS"
+      ],
+      "matched_findings": [],
+      "matched_signals": [
+        "entry_points_present",
+        "sensitive_parameters",
+        "state_changing_entry_points"
+      ],
+      "categories": [
+        "information-gathering"
+      ],
+      "highest_severity": "info"
+    },
+    {
+      "framework": "OWASP ASVS 5.0",
+      "control_id": "V4.1.4",
+      "title": "Only explicitly supported HTTP methods are accepted",
+      "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/04-api-and-web-service/01-generic-web-service-security",
+      "matched_rules": [
+        "RULE-CONFIG-HTTP-METHODS"
+      ],
+      "matched_findings": [
+        "METHOD-DELETE-ADVERTISED",
+        "METHOD-PUT-ADVERTISED",
+        "METHOD-TRACE-ADVERTISED"
+      ],
+      "matched_signals": [],
+      "categories": [
+        "configuration"
+      ],
+      "highest_severity": "high"
+    },
+    {
+      "framework": "OWASP ASVS 5.0",
+      "control_id": "V5.2.1",
+      "title": "Accepted files have safe size limits",
+      "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/05-file-handling/02-file-upload-and-content",
+      "matched_rules": [
+        "RULE-FILE-UPLOAD-SURFACE"
+      ],
+      "matched_findings": [],
+      "matched_signals": [
+        "upload_routes"
+      ],
+      "categories": [
+        "file-handling"
+      ],
+      "highest_severity": "info"
+    },
+    {
+      "framework": "OWASP ASVS 5.0",
+      "control_id": "V5.2.2",
+      "title": "Uploaded file extension and content are validated",
+      "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/05-file-handling/02-file-upload-and-content",
+      "matched_rules": [
+        "RULE-FILE-UPLOAD-SURFACE"
+      ],
+      "matched_findings": [],
+      "matched_signals": [
+        "upload_routes"
+      ],
+      "categories": [
+        "file-handling"
+      ],
+      "highest_severity": "info"
+    },
+    {
+      "framework": "OWASP ASVS 5.0",
+      "control_id": "V6.1.3",
+      "title": "Multiple authentication pathways are documented",
+      "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/06-authentication/01-authentication-documentation",
+      "matched_rules": [
+        "RULE-AUTH-AUTHENTICATION-SURFACE"
+      ],
+      "matched_findings": [],
+      "matched_signals": [
+        "auth_routes"
+      ],
+      "categories": [
+        "authentication"
+      ],
+      "highest_severity": "info"
+    },
+    {
+      "framework": "OWASP ASVS 5.0",
+      "control_id": "V6.4.3",
+      "title": "Secure forgotten password reset process",
+      "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/06-authentication/04-authentication-factor-lifecycle-and-recovery",
+      "matched_rules": [
+        "RULE-AUTH-AUTHENTICATION-SURFACE"
+      ],
+      "matched_findings": [],
+      "matched_signals": [
+        "auth_routes"
+      ],
+      "categories": [
+        "authentication"
+      ],
+      "highest_severity": "info"
+    },
+    {
+      "framework": "OWASP ASVS 5.0",
+      "control_id": "V8.4.2",
+      "title": "Administrative interfaces include stronger access controls",
+      "url": "https://cornucopia.owasp.org/taxonomy/asvs-5.0/08-authorization/04-other-authorization-considerations",
+      "matched_rules": [
+        "RULE-AUTHZ-ADMIN-SURFACE"
+      ],
+      "matched_findings": [],
+      "matched_signals": [
+        "admin_routes"
+      ],
+      "categories": [
+        "authorization"
+      ],
+      "highest_severity": "info"
+    },
+    {
+      "framework": "OWASP WSTG",
+      "control_id": "WSTG-ATHN-01",
+      "title": "Credentials transported over an encrypted channel",
+      "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/04-Authentication_Testing/01-Testing_for_Credentials_Transported_over_an_Encrypted_Channel",
+      "matched_rules": [
+        "RULE-AUTH-AUTHENTICATION-SURFACE",
+        "RULE-TRANSPORT-ENFORCE-TLS"
+      ],
+      "matched_findings": [
+        "AUTH-BASIC-OVER-HTTP",
+        "HTTP-NO-HTTPS-REDIRECT"
+      ],
+      "matched_signals": [
+        "auth_routes"
+      ],
+      "categories": [
+        "authentication",
+        "transport-security"
+      ],
+      "highest_severity": "high"
+    },
+    {
+      "framework": "OWASP WSTG",
+      "control_id": "WSTG-ATHN-09",
+      "title": "Weak password change or reset functionality",
+      "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/04-Authentication_Testing/09-Testing_for_Weak_Password_Change_or_Reset_Functionalities",
+      "matched_rules": [
+        "RULE-AUTH-AUTHENTICATION-SURFACE"
+      ],
+      "matched_findings": [],
+      "matched_signals": [
+        "auth_routes"
+      ],
+      "categories": [
+        "authentication"
+      ],
+      "highest_severity": "info"
+    },
+    {
+      "framework": "OWASP WSTG",
+      "control_id": "WSTG-CLNT-09",
+      "title": "Clickjacking",
+      "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/11-Client-side_Testing/09-Testing_for_Clickjacking",
+      "matched_rules": [
+        "RULE-FRONTEND-BROWSER-SECURITY-HEADERS"
+      ],
+      "matched_findings": [
+        "HEADER-CLICKJACKING-MISSING",
+        "HEADER-CONTENT_SECURITY_POLICY-MISSING",
+        "HEADER-NOSNIFF-MISSING",
+        "HEADER-PERMISSIONS_POLICY-MISSING",
+        "HEADER-REFERRER_POLICY-MISSING"
+      ],
+      "matched_signals": [],
+      "categories": [
+        "browser-hardening"
+      ],
+      "highest_severity": "medium"
+    },
+    {
+      "framework": "OWASP WSTG",
+      "control_id": "WSTG-CONF-05",
+      "title": "Enumerate infrastructure and application admin interfaces",
+      "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/05-Enumerate_Infrastructure_and_Application_Admin_Interfaces",
+      "matched_rules": [
+        "RULE-AUTHZ-ADMIN-SURFACE"
+      ],
+      "matched_findings": [],
+      "matched_signals": [
+        "admin_routes"
+      ],
+      "categories": [
+        "authorization"
+      ],
+      "highest_severity": "info"
+    },
+    {
+      "framework": "OWASP WSTG",
+      "control_id": "WSTG-CONF-06",
+      "title": "HTTP methods",
+      "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/06-Test_HTTP_Methods",
+      "matched_rules": [
+        "RULE-CONFIG-HTTP-METHODS"
+      ],
+      "matched_findings": [
+        "METHOD-DELETE-ADVERTISED",
+        "METHOD-PUT-ADVERTISED",
+        "METHOD-TRACE-ADVERTISED"
+      ],
+      "matched_signals": [],
+      "categories": [
+        "configuration"
+      ],
+      "highest_severity": "high"
+    },
+    {
+      "framework": "OWASP WSTG",
+      "control_id": "WSTG-CONF-12",
+      "title": "Content Security Policy",
+      "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/12-Test_for_Content_Security_Policy",
+      "matched_rules": [
+        "RULE-FRONTEND-BROWSER-SECURITY-HEADERS"
+      ],
+      "matched_findings": [
+        "HEADER-CLICKJACKING-MISSING",
+        "HEADER-CONTENT_SECURITY_POLICY-MISSING",
+        "HEADER-NOSNIFF-MISSING",
+        "HEADER-PERMISSIONS_POLICY-MISSING",
+        "HEADER-REFERRER_POLICY-MISSING"
+      ],
+      "matched_signals": [],
+      "categories": [
+        "browser-hardening"
+      ],
+      "highest_severity": "medium"
+    },
+    {
+      "framework": "OWASP WSTG",
+      "control_id": "WSTG-CONF-14",
+      "title": "Other HTTP security header misconfigurations",
+      "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/02-Configuration_and_Deployment_Management_Testing/14-Test_Other_HTTP_Security_Header_Misconfigurations",
+      "matched_rules": [
+        "RULE-FRONTEND-BROWSER-SECURITY-HEADERS"
+      ],
+      "matched_findings": [
+        "HEADER-CLICKJACKING-MISSING",
+        "HEADER-CONTENT_SECURITY_POLICY-MISSING",
+        "HEADER-NOSNIFF-MISSING",
+        "HEADER-PERMISSIONS_POLICY-MISSING",
+        "HEADER-REFERRER_POLICY-MISSING"
+      ],
+      "matched_signals": [],
+      "categories": [
+        "browser-hardening"
+      ],
+      "highest_severity": "medium"
+    },
+    {
+      "framework": "OWASP WSTG",
+      "control_id": "WSTG-CRYP-03",
+      "title": "Sensitive information sent via unencrypted channels",
+      "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/09-Testing_for_Weak_Cryptography/03-Testing_for_Sensitive_Information_Sent_via_Unencrypted_Channels",
+      "matched_rules": [
+        "RULE-TRANSPORT-ENFORCE-TLS"
+      ],
+      "matched_findings": [
+        "AUTH-BASIC-OVER-HTTP",
+        "HTTP-NO-HTTPS-REDIRECT"
+      ],
+      "matched_signals": [],
+      "categories": [
+        "transport-security"
+      ],
+      "highest_severity": "high"
+    },
+    {
+      "framework": "OWASP WSTG",
+      "control_id": "WSTG-INFO-02",
+      "title": "Fingerprint web server",
+      "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/02-Fingerprint_Web_Server",
+      "matched_rules": [
+        "RULE-INFO-TECH-FINGERPRINTING"
+      ],
+      "matched_findings": [
+        "FINGERPRINT-GENERATOR-DISCLOSED",
+        "FINGERPRINT-POWERED-BY-DISCLOSED",
+        "FINGERPRINT-SERVER-VERSION-DISCLOSED"
+      ],
+      "matched_signals": [
+        "technologies_identified"
+      ],
+      "categories": [
+        "information-gathering"
+      ],
+      "highest_severity": "info"
+    },
+    {
+      "framework": "OWASP WSTG",
+      "control_id": "WSTG-INFO-03",
+      "title": "Review webserver metafiles for information leakage",
+      "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/03-Review_Webserver_Metafiles_for_Information_Leakage",
+      "matched_rules": [
+        "RULE-INFO-WEBSERVER-METAFILES"
+      ],
+      "matched_findings": [],
+      "matched_signals": [
+        "public_metadata"
+      ],
+      "categories": [
+        "information-gathering"
+      ],
+      "highest_severity": "info"
+    },
+    {
+      "framework": "OWASP WSTG",
+      "control_id": "WSTG-INFO-04",
+      "title": "Enumerate applications on webserver",
+      "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/04-Enumerate_Applications_on_Webserver",
+      "matched_rules": [
+        "RULE-INFRA-DISCOVERY-SURFACE"
+      ],
+      "matched_findings": [
+        "PORTS-OPEN-TCP-PORTS"
+      ],
+      "matched_signals": [
+        "ports_open"
+      ],
+      "categories": [
+        "infrastructure"
+      ],
+      "highest_severity": "info"
+    },
+    {
+      "framework": "OWASP WSTG",
+      "control_id": "WSTG-INFO-05",
+      "title": "Review web page content for information leakage",
+      "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/05-Review_Web_Page_Content_for_Information_Leakage",
+      "matched_rules": [
+        "RULE-INFO-JAVASCRIPT-SURFACE"
+      ],
+      "matched_findings": [
+        "JS-ENDPOINTS-DISCOVERED",
+        "JS-OUT-OF-SCOPE-ENDPOINTS",
+        "JS-SENSITIVE-PARAMETER-NAMES"
+      ],
+      "matched_signals": [
+        "javascript_endpoints"
+      ],
+      "categories": [
+        "information-gathering"
+      ],
+      "highest_severity": "info"
+    },
+    {
+      "framework": "OWASP WSTG",
+      "control_id": "WSTG-INFO-06",
+      "title": "Identify application entry points",
+      "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/06-Identify_Application_Entry_Points",
+      "matched_rules": [
+        "RULE-INFO-ENTRY-POINTS",
+        "RULE-INFO-JAVASCRIPT-SURFACE"
+      ],
+      "matched_findings": [
+        "JS-ENDPOINTS-DISCOVERED",
+        "JS-OUT-OF-SCOPE-ENDPOINTS",
+        "JS-SENSITIVE-PARAMETER-NAMES"
+      ],
+      "matched_signals": [
+        "entry_points_present",
+        "javascript_endpoints",
+        "sensitive_parameters",
+        "state_changing_entry_points"
+      ],
+      "categories": [
+        "information-gathering"
+      ],
+      "highest_severity": "info"
+    },
+    {
+      "framework": "OWASP WSTG",
+      "control_id": "WSTG-INFO-07",
+      "title": "Map execution paths through application",
+      "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/07-Map_Execution_Paths_Through_Application",
+      "matched_rules": [
+        "RULE-INFO-ENTRY-POINTS",
+        "RULE-INFO-WEBSERVER-METAFILES"
+      ],
+      "matched_findings": [],
+      "matched_signals": [
+        "entry_points_present",
+        "public_metadata",
+        "sensitive_parameters",
+        "state_changing_entry_points"
+      ],
+      "categories": [
+        "information-gathering"
+      ],
+      "highest_severity": "info"
+    },
+    {
+      "framework": "OWASP WSTG",
+      "control_id": "WSTG-INFO-08",
+      "title": "Fingerprint web application framework",
+      "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/08-Fingerprint_Web_Application_Framework",
+      "matched_rules": [
+        "RULE-INFO-TECH-FINGERPRINTING"
+      ],
+      "matched_findings": [
+        "FINGERPRINT-GENERATOR-DISCLOSED",
+        "FINGERPRINT-POWERED-BY-DISCLOSED",
+        "FINGERPRINT-SERVER-VERSION-DISCLOSED"
+      ],
+      "matched_signals": [
+        "technologies_identified"
+      ],
+      "categories": [
+        "information-gathering"
+      ],
+      "highest_severity": "info"
+    },
+    {
+      "framework": "OWASP WSTG",
+      "control_id": "WSTG-INFO-10",
+      "title": "Map application architecture",
+      "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/01-Information_Gathering/10-Map_Application_Architecture",
+      "matched_rules": [
+        "RULE-INFO-TECH-FINGERPRINTING",
+        "RULE-INFRA-DISCOVERY-SURFACE",
+        "RULE-SCOPE-EXTERNAL-REFERENCES"
+      ],
+      "matched_findings": [
+        "CRAWLER-OUT-OF-SCOPE-LINKS",
+        "FINGERPRINT-GENERATOR-DISCLOSED",
+        "FINGERPRINT-POWERED-BY-DISCLOSED",
+        "FINGERPRINT-SERVER-VERSION-DISCLOSED",
+        "JS-OUT-OF-SCOPE-ENDPOINTS",
+        "PORTS-OPEN-TCP-PORTS"
+      ],
+      "matched_signals": [
+        "external_references",
+        "ports_open",
+        "technologies_identified"
+      ],
+      "categories": [
+        "information-gathering",
+        "infrastructure",
+        "scope-management"
+      ],
+      "highest_severity": "info"
+    },
+    {
+      "framework": "OWASP WSTG",
+      "control_id": "WSTG-SESS-02",
+      "title": "Cookie attributes",
+      "url": "https://owasp.org/www-project-web-security-testing-guide/latest/4-Web_Application_Security_Testing/06-Session_Management_Testing/02-Testing_for_Cookies_Attributes",
+      "matched_rules": [
+        "RULE-SESSION-COOKIE-ATTRIBUTES"
+      ],
+      "matched_findings": [
+        "COOKIE-HTTPONLY-MISSING",
+        "COOKIE-SAMESITE-MISSING",
+        "COOKIE-SAMESITE-NONE-WITHOUT-SECURE"
+      ],
+      "matched_signals": [],
+      "categories": [
+        "session-management"
+      ],
+      "highest_severity": "medium"
+    }
+  ],
+  "safety_notes": [
+    "Rules are evaluated from existing passive scan evidence only.",
+    "A matched rule is review guidance, not proof of exploitability.",
+    "Out-of-scope references are recorded but must not be scanned without explicit authorization."
+  ]
+}

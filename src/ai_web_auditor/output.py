@@ -6,6 +6,7 @@ from .assessment import render_assessment_console
 from .entrypoints import build_entry_points_from_scan
 from .inventory import build_inventory_from_scan
 from .models import Finding, ScanResult
+from .rules import render_rules_console
 
 
 SEVERITY_RANK = {"critical": 0, "high": 1, "medium": 2, "low": 3, "info": 4}
@@ -71,6 +72,10 @@ def render_console(result: ScanResult) -> None:
     print("Risk Assessment")
     print("---------------")
     print(render_assessment_console(assessment))
+
+    rule_evaluation = result_data.get("rule_evaluation") if isinstance(result_data.get("rule_evaluation"), dict) else {}
+    if rule_evaluation:
+        print(render_rules_console(rule_evaluation))
 
     findings = sorted(result.findings, key=lambda item: SEVERITY_RANK.get(item.severity, 99))
     if not findings:

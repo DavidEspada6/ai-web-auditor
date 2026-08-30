@@ -11,6 +11,7 @@ from zipfile import ZIP_DEFLATED, ZipFile
 
 from .config import EvidenceCaptureConfig
 from .models import utc_now
+from .rules import build_rule_evaluation
 
 
 REDACTED = "[redacted]"
@@ -152,6 +153,12 @@ def build_evidence_package(scan_data: dict[str, Any]) -> bytes:
         assessment = safe_scan_data.get("assessment")
         if isinstance(assessment, dict):
             _write_json(archive, "assessment/assessment.json", assessment)
+
+        rule_evaluation = safe_scan_data.get("rule_evaluation")
+        if not isinstance(rule_evaluation, dict):
+            rule_evaluation = build_rule_evaluation(safe_scan_data)
+        _write_json(archive, "rules/rule-evaluation.json", rule_evaluation)
+        _write_json(archive, "rules/matches.json", _list_value(rule_evaluation.get("matches")))
     return buffer.getvalue()
 
 
@@ -165,6 +172,10 @@ def build_evidence_manifest(scan_data: dict[str, Any]) -> dict[str, Any]:
     endpoint_list = _list_value(entry_points.get("endpoints")) if entry_points else []
     javascript = _module_artifacts(scan_data, "javascript")
     javascript_endpoints = _list_value(javascript.get("discovered_endpoints")) if javascript else []
+    rule_evaluation = scan_data.get("rule_evaluation")
+    if not isinstance(rule_evaluation, dict):
+        rule_evaluation = build_rule_evaluation(scan_data)
+    rule_summary = rule_evaluation.get("summary") if isinstance(rule_evaluation.get("summary"), dict) else {}
     captured_bodies = [
         item
         for item in requests
@@ -188,6 +199,8 @@ def build_evidence_manifest(scan_data: dict[str, Any]) -> dict[str, Any]:
             "requests": len([item for item in requests if isinstance(item, dict)]),
             "entry_points": len([item for item in endpoint_list if isinstance(item, dict)]),
             "javascript_endpoints": len([item for item in javascript_endpoints if isinstance(item, dict)]),
+            "rules_matched": _int(rule_summary.get("rules_matched"), 0),
+            "framework_controls_matched": _int(rule_summary.get("framework_controls_matched"), 0),
             "captured_body_samples": len(captured_bodies),
         },
         "safety": {
@@ -210,6 +223,8 @@ def build_evidence_manifest(scan_data: dict[str, Any]) -> dict[str, Any]:
             "javascript/javascript.json",
             "javascript/endpoints.json",
             "assessment/assessment.json",
+            "rules/rule-evaluation.json",
+            "rules/matches.json",
         ],
     }
 
@@ -257,6 +272,7 @@ def _package_readme(manifest: dict[str, Any]) -> str:
         f"- Package generated at: {manifest.get('generated_at', 'unknown')}\n"
         f"- Requests: {counts.get('requests', 0)}\n"
         f"- Findings: {counts.get('findings', 0)}\n"
+        f"- Passive rule matches: {counts.get('rules_matched', 0)}\n"
         f"- Captured body samples: {counts.get('captured_body_samples', 0)}\n\n"
         "This package contains sanitized audit evidence. Sensitive headers, cookie values and sensitive query parameters are redacted. "
         "Response bodies are truncated text samples when available; full raw request bodies are not included.\n"
@@ -276,6 +292,15 @@ def _module_artifacts(scan_data: dict[str, Any], name: str) -> dict[str, Any]:
 
 def _list_value(value: Any) -> list[Any]:
     return value if isinstance(value, list) else []
+
+
+def _int(value: Any, default: int) -> int:
+    try:
+        if value is None or value == "":
+            return default
+        return int(value)
+    except (TypeError, ValueError):
+        return default
 
 
 def _safe_filename(value: str) -> str:

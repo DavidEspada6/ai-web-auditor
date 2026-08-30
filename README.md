@@ -15,7 +15,9 @@ remediacion, laboratorio vulnerable local, comparacion de auditorias y paquetes
 de evidencias saneadas. Desde v0.20 tambien analiza JavaScript de forma pasiva
 para descubrir endpoints citados en scripts, y genera un modelo de entry points
 con endpoints, parametros, formularios y metodos observados para orientar la
-revision manual posterior.
+revision manual posterior. Desde v0.21 incorpora un motor pasivo de reglas que
+mapea las evidencias observadas contra controles OWASP WSTG y OWASP ASVS para
+mejorar la trazabilidad de la auditoria.
 
 No implementa explotacion, fuerza bruta, fuzzing agresivo, crawling masivo,
 escaneo de puertos amplio, fuerza bruta DNS agresiva ni pruebas intrusivas.
@@ -34,7 +36,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.20 no necesita librerias externas en tiempo de ejecucion.
+La v0.21 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -53,6 +55,7 @@ lanzador incluido:
 .\ai-web-auditor.cmd inventory outputs/result.json --output outputs/inventory.csv
 .\ai-web-auditor.cmd entrypoints outputs/result.json --output outputs/entry-points.csv
 .\ai-web-auditor.cmd assess outputs/result.json --output outputs/assessment.json
+.\ai-web-auditor.cmd rules outputs/result.json --output outputs/rules.json
 .\ai-web-auditor.cmd evidence outputs/result.json --output outputs/evidence.zip
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.md
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.html
@@ -142,6 +145,13 @@ Calcular valoracion de riesgo y plan de remediacion desde un JSON existente:
 ```powershell
 ai-web-auditor assess outputs/example.json
 ai-web-auditor assess outputs/example.json --output outputs/assessment.json
+```
+
+Calcular el mapeo pasivo OWASP WSTG/ASVS desde un JSON existente:
+
+```powershell
+ai-web-auditor rules outputs/example.json
+ai-web-auditor rules outputs/example.json --output outputs/rules.json
 ```
 
 Guardar una auditoria en el historial local:
@@ -247,7 +257,7 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.20",
+    "user_agent": "AI-Web-Auditor/0.21",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -411,6 +421,35 @@ ai-web-auditor assess outputs/result.json --output outputs/assessment.json
 
 La interfaz grafica muestra esta informacion en la pestana `Riesgo`.
 
+## Motor pasivo de reglas OWASP
+
+Cada escaneo nuevo incluye un bloque `rule_evaluation` dentro del JSON. Este
+motor no contacta de nuevo con el objetivo: toma hallazgos, inventario, entry
+points, JavaScript, DNS y puertos ya observados y los relaciona con reglas
+pasivas.
+
+Para cada regla se guarda:
+
+- regla interna y severidad;
+- hallazgos o senales que la han activado;
+- controles OWASP WSTG y OWASP ASVS relacionados;
+- razon de auditoria;
+- siguiente revision manual recomendada;
+- hallazgos que aun no tienen mapeo.
+
+Recalcular el mapeo sobre una auditoria anterior:
+
+```powershell
+ai-web-auditor rules outputs/result.json --output outputs/rules.json
+```
+
+En la interfaz grafica se revisa desde la pestana `Reglas`. Sirve para preparar
+la fase manual posterior: por ejemplo, saber que un Basic Auth sobre HTTP toca
+revisiones de transporte seguro, o que endpoints detectados en JavaScript
+alimentan el inventario de puntos de entrada. Una regla activada no significa
+que exista una explotacion confirmada; significa que hay evidencia pasiva que
+merece revision trazable.
+
 ## Reporting
 
 La herramienta genera informes Markdown, HTML y PDF desde el JSON de escaneo.
@@ -515,6 +554,8 @@ El paquete ZIP de evidencias contiene:
 - `javascript/javascript.json`;
 - `javascript/endpoints.json`;
 - `assessment/assessment.json`;
+- `rules/rule-evaluation.json`;
+- `rules/matches.json`;
 - `README.md` con notas de seguridad.
 
 La herramienta redacta `Authorization`, `Cookie`, `Set-Cookie`, posibles tokens,
@@ -787,6 +828,7 @@ Desde la interfaz se puede:
 - ejecutar una auditoria no intrusiva;
 - moverse por vistas agrupadas: auditoria, superficie, entregables e historial;
 - revisar resumen, riesgo, hallazgos, modulos, inventario, entradas, subdominios, puertos y JSON;
+- revisar reglas pasivas y trazabilidad OWASP desde la pestana `Reglas`;
 - revisar endpoints detectados en JavaScript desde su pestana dedicada;
 - ajustar el ancho de columnas en tablas como inventario, entradas, JavaScript, subdominios, puertos e historial;
 - analizar la auditoria con IA en modo dry-run o con API;
@@ -869,7 +911,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.20.0
+git tag v0.21.0
 git push
 git push --tags
 ```
@@ -882,7 +924,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.20.0",
+  "version": "0.21.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",
@@ -941,6 +983,17 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
     "priorities": [],
     "quick_wins": [],
     "remediation_plan": []
+  },
+  "rule_evaluation": {
+    "engine": "passive-rules",
+    "summary": {
+      "rules_total": 15,
+      "rules_matched": 0,
+      "framework_controls_matched": 0,
+      "findings_unmapped": 0
+    },
+    "matches": [],
+    "framework_index": []
   }
 }
 ```

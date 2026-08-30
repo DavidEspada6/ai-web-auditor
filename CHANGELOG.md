@@ -2,6 +2,31 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.21.0] - 2026-08-30
+
+### Anade
+
+- Motor `passive-rules` para mapear evidencias ya observadas contra controles OWASP WSTG y OWASP ASVS.
+- Catalogo inicial de reglas para transporte seguro, HSTS, TLS, cookies, cabeceras de navegador, metodos HTTP, fingerprinting, metadatos publicos, entry points, JavaScript, autenticacion, rutas administrativas, uploads, DNS/puertos y referencias fuera de scope.
+- Bloque `rule_evaluation` dentro del JSON de auditoria con resumen, reglas activadas, controles relacionados, hallazgos sin mapeo y notas de seguridad.
+- Comando `rules` para recalcular el mapeo OWASP desde cualquier JSON de auditoria.
+- Pestana `Reglas` en la interfaz grafica con resumen, tabla redimensionable y trazabilidad OWASP.
+- Archivos `rules/rule-evaluation.json` y `rules/matches.json` dentro del paquete ZIP de evidencias.
+- Seccion `Passive Rule Mapping` en informes Markdown, HTML y PDF.
+
+### Cambia
+
+- La valoracion determinista de riesgo incluye contadores de reglas pasivas, controles OWASP y hallazgos sin mapeo.
+- El resumen principal de la GUI muestra reglas activadas y controles OWASP relacionados.
+- Los ejemplos generados incluyen salida de reglas para la demo local.
+
+### Seguridad
+
+- No se anaden explotacion, fuzzing, fuerza bruta ni pruebas intrusivas.
+- El motor de reglas trabaja solo con evidencias ya recogidas por modulos pasivos.
+- Una regla activada se presenta como guia de revision, no como prueba de explotabilidad.
+- Las referencias fuera de scope se registran para clasificacion manual, pero no se escanean automaticamente.
+
 ## [0.20.0] - 2026-08-27
 
 ### Anade

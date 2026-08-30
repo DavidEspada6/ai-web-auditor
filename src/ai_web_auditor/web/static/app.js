@@ -46,6 +46,10 @@ const assessmentPriorities = document.querySelector("#assessment-priorities");
 const assessmentQuickWins = document.querySelector("#assessment-quick-wins");
 const assessmentPlan = document.querySelector("#assessment-plan");
 const assessmentNotes = document.querySelector("#assessment-notes");
+const rulesCount = document.querySelector("#rules-count");
+const rulesSummary = document.querySelector("#rules-summary");
+const rulesTable = document.querySelector("#rules-table");
+const rulesFrameworkList = document.querySelector("#rules-framework-list");
 const jsonOutput = document.querySelector("#json-output");
 const reportOutput = document.querySelector("#report-output");
 const htmlPreview = document.querySelector("#html-preview");
@@ -495,12 +499,14 @@ function renderScan(scan) {
   const ports = portArtifacts(modules);
   const javascript = javascriptArtifacts(modules);
   const assessment = scan.assessment || {};
+  const ruleEvaluation = scan.rule_evaluation || {};
 
   statusText.textContent = scan.status || "completed";
   targetPill.textContent = scan.target?.normalized_url || scan.target?.host || "Sin objetivo";
   renderSeverityCounts(findings);
-  renderSummary(scan, findings, modules, requests, subdomains, ports, javascript, assessment);
+  renderSummary(scan, findings, modules, requests, subdomains, ports, javascript, assessment, ruleEvaluation);
   renderAssessment(assessment);
+  renderRules(ruleEvaluation);
   renderFindings(findings);
   renderModules(modules);
   renderInventory(scan.inventory || {});
@@ -573,7 +579,7 @@ function applyLabDefaults(lab) {
     projectAuditorInput.value = "David";
   }
   if (!projectEngagementInput.value.trim()) {
-    projectEngagementInput.value = "Simulacion v0.20.0";
+    projectEngagementInput.value = "Simulacion v0.21.0";
   }
 
   document.querySelector("#target").value = defaults.target;
@@ -739,7 +745,7 @@ function renderSeverityCounts(findings) {
   });
 }
 
-function renderSummary(scan, findings, modules, requests, subdomains, ports, javascript, assessment) {
+function renderSummary(scan, findings, modules, requests, subdomains, ports, javascript, assessment, ruleEvaluation) {
   summaryEmpty.hidden = true;
   summaryContent.hidden = false;
   summaryContent.innerHTML = "";
@@ -754,6 +760,7 @@ function renderSummary(scan, findings, modules, requests, subdomains, ports, jav
   const metadataUrls = Array.isArray(crawlerArtifacts.metadata_discovered_urls) ? crawlerArtifacts.metadata_discovered_urls.length : 0;
   const classifiedRoutes = Array.isArray(crawlerArtifacts.route_classifications) ? crawlerArtifacts.route_classifications.length : 0;
   const javascriptEndpoints = Array.isArray(javascript.discovered_endpoints) ? javascript.discovered_endpoints.length : 0;
+  const ruleSummaryData = ruleEvaluation?.summary || {};
 
   const values = [
     ["Objetivo", scan.target?.normalized_url || "unknown"],
@@ -772,6 +779,8 @@ function renderSummary(scan, findings, modules, requests, subdomains, ports, jav
     ["Entradas", entryPointsSummaryData.total_endpoints || 0],
     ["Parametros", entryPointsSummaryData.parameters || 0],
     ["Endpoints JS", javascriptEndpoints],
+    ["Reglas", `${ruleSummaryData.rules_matched ?? 0}/${ruleSummaryData.rules_total ?? 0}`],
+    ["Controles OWASP", ruleSummaryData.framework_controls_matched ?? 0],
     ["Subdominios", resolvedSubdomains],
     ["Puertos abiertos", openPorts],
   ];
@@ -806,6 +815,9 @@ function renderAssessment(assessment) {
     ["Entradas", coverage.entry_points ?? 0],
     ["Parametros", coverage.entry_point_parameters ?? 0],
     ["Endpoints JS", coverage.javascript_endpoints ?? 0],
+    ["Reglas", `${coverage.rules_matched ?? 0}/${coverage.rules_total ?? 0}`],
+    ["Controles OWASP", coverage.framework_controls_matched ?? 0],
+    ["Sin mapeo", coverage.findings_unmapped ?? 0],
     ["Subdominios", coverage.subdomains ?? 0],
     ["Puertos abiertos", coverage.open_ports ?? 0],
   ].forEach(([label, value]) => {
@@ -894,6 +906,102 @@ function renderAssessmentNotes(notes) {
     item.innerHTML = `<p>${escapeHtml(note)}</p>`;
     assessmentNotes.appendChild(item);
   });
+}
+
+function renderRules(ruleEvaluation) {
+  const summary = ruleEvaluation?.summary || {};
+  const matches = Array.isArray(ruleEvaluation?.matches) ? ruleEvaluation.matches : [];
+  const frameworkIndex = Array.isArray(ruleEvaluation?.framework_index) ? ruleEvaluation.framework_index : [];
+  const unmapped = Array.isArray(ruleEvaluation?.unmapped_findings) ? ruleEvaluation.unmapped_findings : [];
+  const total = summary.rules_total ?? 0;
+  const matched = summary.rules_matched ?? matches.length;
+
+  rulesCount.textContent = `${matched} de ${total} reglas`;
+  rulesSummary.innerHTML = "";
+  [
+    ["Reglas activas", `${matched}/${total}`],
+    ["Controles OWASP", summary.framework_controls_matched ?? frameworkIndex.length],
+    ["Hallazgos mapeados", summary.findings_mapped ?? 0],
+    ["Sin mapeo", summary.findings_unmapped ?? unmapped.length],
+    ["High", summary.high ?? 0],
+    ["Medium", summary.medium ?? 0],
+  ].forEach(([label, value]) => {
+    const item = document.createElement("div");
+    item.className = "metric";
+    item.innerHTML = `<span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong>`;
+    rulesSummary.appendChild(item);
+  });
+
+  rulesTable.innerHTML = "";
+  if (!Object.keys(ruleEvaluation || {}).length) {
+    const row = document.createElement("tr");
+    row.innerHTML = '<td colspan="5">Ejecuta una auditoria para calcular el mapeo OWASP.</td>';
+    rulesTable.appendChild(row);
+    renderRuleFrameworks([]);
+    return;
+  }
+  if (!matches.length) {
+    const row = document.createElement("tr");
+    row.innerHTML = '<td colspan="5">Sin reglas pasivas activadas por la evidencia actual.</td>';
+    rulesTable.appendChild(row);
+    renderRuleFrameworks(frameworkIndex);
+    return;
+  }
+
+  matches.forEach((item) => {
+    const severity = normalizeSeverity(item.severity);
+    const row = document.createElement("tr");
+    row.innerHTML = `
+      <td><code>${escapeHtml(item.rule_id || "RULE")}</code><br><strong>${escapeHtml(item.title || "Regla")}</strong><br><span>${escapeHtml(item.category || "general")}</span></td>
+      <td><span class="badge ${severity}">${escapeHtml(severity)}</span></td>
+      <td>${escapeHtml(ruleEvidenceLabel(item))}</td>
+      <td>${renderFrameworkChips(item.frameworks)}</td>
+      <td>${escapeHtml(item.next_review || "Revisar manualmente la evidencia relacionada.")}</td>
+    `;
+    rulesTable.appendChild(row);
+  });
+  renderRuleFrameworks(frameworkIndex);
+}
+
+function renderRuleFrameworks(items) {
+  rulesFrameworkList.innerHTML = "";
+  if (!items.length) {
+    rulesFrameworkList.innerHTML = '<div class="empty-inline">Sin controles OWASP relacionados todavia.</div>';
+    return;
+  }
+  items.slice(0, 40).forEach((item) => {
+    const pill = document.createElement("span");
+    pill.className = "framework-pill";
+    pill.innerHTML = `<strong>${escapeHtml(item.framework || "OWASP")}</strong> ${escapeHtml(item.control_id || "control")} <span>${escapeHtml(item.highest_severity || "info")}</span>`;
+    rulesFrameworkList.appendChild(pill);
+  });
+}
+
+function ruleEvidenceLabel(item) {
+  const findings = Array.isArray(item?.matched_findings) ? item.matched_findings : [];
+  const signals = Array.isArray(item?.matched_signals) ? item.matched_signals : [];
+  const parts = [];
+  if (findings.length) {
+    parts.push(`Hallazgos: ${findings.slice(0, 4).join(", ")}`);
+  }
+  if (signals.length) {
+    parts.push(`Senales: ${signals.slice(0, 4).join(", ")}`);
+  }
+  if (!parts.length && Array.isArray(item?.evidence)) {
+    parts.push(...item.evidence.slice(0, 3).map((evidence) => evidence.label || evidence.value).filter(Boolean));
+  }
+  return parts.join(" | ") || "Evidencia pasiva";
+}
+
+function renderFrameworkChips(frameworks) {
+  const items = Array.isArray(frameworks) ? frameworks : [];
+  if (!items.length) {
+    return "";
+  }
+  return items
+    .slice(0, 4)
+    .map((item) => `<span class="interest-chip">${escapeHtml(item.framework || "OWASP")} ${escapeHtml(item.control_id || "")}</span>`)
+    .join(" ");
 }
 
 function renderFindings(findings) {
