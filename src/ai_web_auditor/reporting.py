@@ -88,6 +88,7 @@ def generate_markdown_report(
     lines.extend(_severity_summary_section(findings))
     lines.extend(_assessment_section(assessment))
     lines.extend(_rules_section(rule_evaluation))
+    lines.extend(_external_imports_section(scan_data))
     lines.extend(_module_summary_section(modules))
     lines.extend(_findings_section(findings))
     lines.extend(_technology_section(modules))
@@ -206,6 +207,7 @@ def generate_html_report(
             _severity_html_section(severity_counts),
             _assessment_html_section(assessment),
             _rules_html_section(rule_evaluation),
+            _external_imports_html_section(scan_data),
             _module_html_section(modules),
             _findings_html_section(findings),
             _technology_html_section(modules),
@@ -457,6 +459,41 @@ def _rules_section(rule_evaluation: dict[str, Any]) -> list[str]:
         lines.extend(f"- {_text(note)}" for note in safety_notes)
         lines.append("")
 
+    return lines
+
+
+def _external_imports_section(scan_data: dict[str, Any]) -> list[str]:
+    external_sources = scan_data.get("external_sources") if isinstance(scan_data.get("external_sources"), dict) else {}
+    sources = _dict_list(external_sources.get("sources")) if external_sources else []
+    if not sources:
+        return []
+
+    summary = external_sources.get("summary") if isinstance(external_sources.get("summary"), dict) else {}
+    lines = [
+        "## External Imports",
+        "",
+        f"- Source files: {_text(summary.get('source_count', len(sources)))}",
+        f"- Imported findings: {_text(summary.get('finding_count', 0))}",
+        f"- Imported URLs: {_text(summary.get('url_count', 0))}",
+        f"- Imported port results: {_text(summary.get('port_count', 0))}",
+        "",
+        "| Tool | Format | File | Findings | URLs | Ports | Notes |",
+        "| --- | --- | --- | ---: | ---: | ---: | --- |",
+    ]
+    for source in sources:
+        lines.append(
+            f"| {_cell(source.get('source_tool'))} | {_cell(source.get('source_format'))} | "
+            f"{_cell(source.get('filename'))} | {_cell(source.get('finding_count', 0))} | "
+            f"{_cell(source.get('url_count', 0))} | {_cell(source.get('port_count', 0))} | "
+            f"{_cell('; '.join(_string_list(source.get('notes'))))} |"
+        )
+    lines.append("")
+
+    safety_notes = _string_list(external_sources.get("safety_notes"))
+    if safety_notes:
+        lines.extend(["### Import Safety Notes", ""])
+        lines.extend(f"- {_text(note)}" for note in safety_notes)
+        lines.append("")
     return lines
 
 
@@ -1152,6 +1189,43 @@ def _rules_html_section(rule_evaluation: dict[str, Any]) -> str:
     if safety_notes:
         lines.extend(["<h3>Rule Safety Notes</h3>", _html_list(safety_notes)])
 
+    lines.append("</section>")
+    return "\n".join(lines)
+
+
+def _external_imports_html_section(scan_data: dict[str, Any]) -> str:
+    external_sources = scan_data.get("external_sources") if isinstance(scan_data.get("external_sources"), dict) else {}
+    sources = _dict_list(external_sources.get("sources")) if external_sources else []
+    if not sources:
+        return ""
+
+    summary = external_sources.get("summary") if isinstance(external_sources.get("summary"), dict) else {}
+    rows = [
+        [
+            source.get("source_tool"),
+            source.get("source_format"),
+            source.get("filename"),
+            source.get("finding_count", 0),
+            source.get("url_count", 0),
+            source.get("port_count", 0),
+            "; ".join(_string_list(source.get("notes"))),
+        ]
+        for source in sources
+    ]
+    lines = [
+        '<section class="section">',
+        "<h2>External Imports</h2>",
+        '<div class="severity-grid">',
+        f'<div class="severity-card"><span>Source files</span><strong>{_html(summary.get("source_count", len(sources)))}</strong></div>',
+        f'<div class="severity-card"><span>Findings</span><strong>{_html(summary.get("finding_count", 0))}</strong></div>',
+        f'<div class="severity-card"><span>URLs</span><strong>{_html(summary.get("url_count", 0))}</strong></div>',
+        f'<div class="severity-card"><span>Port results</span><strong>{_html(summary.get("port_count", 0))}</strong></div>',
+        "</div>",
+        _html_table(["Tool", "Format", "File", "Findings", "URLs", "Ports", "Notes"], rows),
+    ]
+    safety_notes = _string_list(external_sources.get("safety_notes"))
+    if safety_notes:
+        lines.extend(["<h3>Import Safety Notes</h3>", _html_list(safety_notes)])
     lines.append("</section>")
     return "\n".join(lines)
 

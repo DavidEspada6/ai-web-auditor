@@ -244,6 +244,17 @@ class WebConfigTests(unittest.TestCase):
         self.assertIn("renderRules(ruleEvaluation)", javascript)
         self.assertIn("scan.rule_evaluation", javascript)
 
+    def test_gui_exposes_external_import_view(self):
+        root = Path(__file__).resolve().parents[1]
+        html = (root / "src" / "ai_web_auditor" / "web" / "templates" / "index.html").read_text(encoding="utf-8")
+        javascript = (root / "src" / "ai_web_auditor" / "web" / "static" / "app.js").read_text(encoding="utf-8")
+
+        self.assertIn('data-tab="import"', html)
+        for element_id in ["import-format", "import-target", "import-file", "import-merge", "run-import", "import-list"]:
+            self.assertIn(f'id="{element_id}"', html)
+        self.assertIn('postJson("/api/import"', javascript)
+        self.assertIn("renderImports(scan.external_sources", javascript)
+
 
 if __name__ == "__main__":
     unittest.main()

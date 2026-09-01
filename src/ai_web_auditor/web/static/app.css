@@ -562,6 +562,38 @@ label[data-help]:focus-within::after {
   gap: 12px;
 }
 
+.import-controls {
+  display: grid;
+  grid-template-columns: minmax(150px, 0.8fr) minmax(220px, 1.2fr) minmax(260px, 1.4fr) minmax(190px, 1fr) auto;
+  gap: 12px;
+  align-items: end;
+  margin-bottom: 16px;
+}
+
+.import-controls .field,
+.import-controls .toggles {
+  margin-bottom: 0;
+}
+
+.import-toggles {
+  grid-template-columns: 1fr;
+}
+
+.file-field input {
+  min-height: 40px;
+  padding: 8px 10px;
+}
+
+.import-card-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px 14px;
+}
+
+.import-card-grid p {
+  margin: 0;
+}
+
 .ai-toggles {
   margin-bottom: 14px;
 }
@@ -974,6 +1006,7 @@ body.is-resizing-column {
   .summary-grid,
   .compact-summary,
   .metadata-grid,
+  .import-controls,
   .ai-controls,
   .ai-summary,
   .compare-grid,
@@ -1011,6 +1044,8 @@ body.is-resizing-column {
   .summary-grid,
   .compact-summary,
   .metadata-grid,
+  .import-controls,
+  .import-card-grid,
   .ai-controls,
   .ai-summary,
   .compare-grid,

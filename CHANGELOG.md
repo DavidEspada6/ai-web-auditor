@@ -2,6 +2,30 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.22.0] - 2026-09-01
+
+### Anade
+
+- Modulo interno `importers` para normalizar resultados externos sin ejecutar herramientas contra el objetivo.
+- Importacion de OWASP ZAP JSON, Burp Suite XML, Nmap XML, CSV, listas de URLs y JSON generico.
+- Comando `import` para generar un JSON normalizado o enriquecer una auditoria existente con `--merge`.
+- Vista `Importar` en la interfaz grafica con seleccion de formato, archivo local, objetivo opcional y merge con la auditoria abierta.
+- Resumen de fuentes externas en JSON, consola, UI, informes Markdown/HTML/PDF y paquete ZIP de evidencias.
+- Ejemplos en `examples/` para probar importaciones de ZAP, Nmap, CSV y listas de URLs sin tocar dominios reales.
+
+### Cambia
+
+- El inventario, los entry points, la valoracion de riesgo y el mapeo OWASP se recalculan tras importar resultados externos.
+- Los hallazgos importados se deduplican y se mapean a IDs internos conocidos cuando coinciden con controles ya soportados.
+- El paquete de evidencias incluye `external/external-sources.json` y `external/sources.json` cuando hay importaciones.
+
+### Seguridad
+
+- La importacion solo lee archivos existentes y no contacta el objetivo.
+- No se anaden explotacion, fuzzing, fuerza bruta ni ejecucion automatica de ZAP, Burp, Nmap u otras herramientas.
+- Las URLs y evidencias importadas se sanean para reducir exposicion de tokens, cookies o parametros sensibles.
+- Los hallazgos externos quedan marcados como evidencia pendiente de validacion manual.
+
 ## [0.21.0] - 2026-08-30
 
 ### Anade

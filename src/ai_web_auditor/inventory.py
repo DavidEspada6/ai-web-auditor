@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import csv
+import re
 from collections import Counter
 from io import StringIO
 from typing import Any
@@ -45,6 +46,9 @@ def build_inventory_from_scan(scan_data: dict[str, Any]) -> dict[str, Any]:
         artifacts = module.get("artifacts") if isinstance(module.get("artifacts"), dict) else {}
         if module.get("name") == "javascript":
             _merge_javascript_artifacts(entries, source_index, method_index, artifacts)
+            continue
+        if module.get("name") == "external_import":
+            _merge_external_import_artifacts(entries, source_index, method_index, artifacts)
             continue
         if module.get("name") != "crawler":
             continue
@@ -145,6 +149,34 @@ def inventory_to_csv(inventory: dict[str, Any]) -> str:
     for row in _dict_list(inventory.get("urls")):
         writer.writerow({field: _csv_value(row.get(field)) for field in CSV_FIELDS})
     return output.getvalue()
+
+
+def _merge_external_import_artifacts(
+    entries: dict[str, dict[str, Any]],
+    source_index: dict[str, set[str]],
+    method_index: dict[str, set[str]],
+    artifacts: dict[str, Any],
+) -> None:
+    for item in _dict_list(artifacts.get("imported_urls")):
+        methods = _string_list(item.get("methods"))
+        method = _clean_text(item.get("method")).upper()
+        if method and not methods:
+            methods = [item.strip() for item in re.split(r"[,;]", method) if item.strip()]
+        if not methods:
+            methods = [None]
+        source = _clean_text(item.get("source")) or "external_import"
+        for method_value in methods:
+            _add_url(
+                entries,
+                source_index,
+                method_index,
+                _clean_text(item.get("url")),
+                source=source,
+                status_code=_optional_int(item.get("status_code")),
+                content_type=_clean_text(item.get("content_type")),
+                fetched=item.get("status_code") is not None,
+                method=method_value.upper() if isinstance(method_value, str) else None,
+            )
 
 
 def _merge_javascript_artifacts(

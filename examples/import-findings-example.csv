@@ -1,0 +1,3 @@
+url,severity,finding,description,recommendation
+http://127.0.0.1:8080/members/,High,Basic authentication over HTTP,Credentials may travel without TLS,Force HTTPS before authentication
+http://127.0.0.1:8080/,Medium,Content Security Policy Missing,The response does not include CSP,Define a strict Content-Security-Policy

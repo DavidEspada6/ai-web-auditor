@@ -159,6 +159,11 @@ def build_evidence_package(scan_data: dict[str, Any]) -> bytes:
             rule_evaluation = build_rule_evaluation(safe_scan_data)
         _write_json(archive, "rules/rule-evaluation.json", rule_evaluation)
         _write_json(archive, "rules/matches.json", _list_value(rule_evaluation.get("matches")))
+
+        external_sources = safe_scan_data.get("external_sources")
+        if isinstance(external_sources, dict):
+            _write_json(archive, "external/external-sources.json", external_sources)
+            _write_json(archive, "external/sources.json", _list_value(external_sources.get("sources")))
     return buffer.getvalue()
 
 
@@ -176,6 +181,8 @@ def build_evidence_manifest(scan_data: dict[str, Any]) -> dict[str, Any]:
     if not isinstance(rule_evaluation, dict):
         rule_evaluation = build_rule_evaluation(scan_data)
     rule_summary = rule_evaluation.get("summary") if isinstance(rule_evaluation.get("summary"), dict) else {}
+    external_sources = scan_data.get("external_sources") if isinstance(scan_data.get("external_sources"), dict) else {}
+    external_summary = external_sources.get("summary") if isinstance(external_sources.get("summary"), dict) else {}
     captured_bodies = [
         item
         for item in requests
@@ -201,6 +208,8 @@ def build_evidence_manifest(scan_data: dict[str, Any]) -> dict[str, Any]:
             "javascript_endpoints": len([item for item in javascript_endpoints if isinstance(item, dict)]),
             "rules_matched": _int(rule_summary.get("rules_matched"), 0),
             "framework_controls_matched": _int(rule_summary.get("framework_controls_matched"), 0),
+            "external_sources": _int(external_summary.get("source_count"), 0),
+            "external_findings": _int(external_summary.get("finding_count"), 0),
             "captured_body_samples": len(captured_bodies),
         },
         "safety": {
@@ -225,6 +234,8 @@ def build_evidence_manifest(scan_data: dict[str, Any]) -> dict[str, Any]:
             "assessment/assessment.json",
             "rules/rule-evaluation.json",
             "rules/matches.json",
+            "external/external-sources.json",
+            "external/sources.json",
         ],
     }
 
@@ -273,6 +284,7 @@ def _package_readme(manifest: dict[str, Any]) -> str:
         f"- Requests: {counts.get('requests', 0)}\n"
         f"- Findings: {counts.get('findings', 0)}\n"
         f"- Passive rule matches: {counts.get('rules_matched', 0)}\n"
+        f"- External sources: {counts.get('external_sources', 0)}\n"
         f"- Captured body samples: {counts.get('captured_body_samples', 0)}\n\n"
         "This package contains sanitized audit evidence. Sensitive headers, cookie values and sensitive query parameters are redacted. "
         "Response bodies are truncated text samples when available; full raw request bodies are not included.\n"

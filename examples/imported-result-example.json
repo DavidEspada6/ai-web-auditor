@@ -1916,6 +1916,68 @@
         "ignored_candidates_count": 0,
         "limit_reached": false
       }
+    },
+    {
+      "name": "external_import",
+      "status": "passed",
+      "summary": "Imported 1 finding(s), 1 URL(s) and 0 port result(s) from zap-json.",
+      "findings": [],
+      "artifacts": {
+        "sources": [
+          {
+            "filename": "example-zap.json",
+            "source_format": "zap-json",
+            "source_tool": "zap",
+            "imported_at": "2026-09-01T11:39:56Z",
+            "finding_count": 1,
+            "url_count": 1,
+            "port_count": 0,
+            "open_port_count": 0,
+            "notes": [
+              "Import reads an existing external file and does not contact the target.",
+              "Full raw HTTP requests and responses from external reports are intentionally not preserved."
+            ]
+          }
+        ],
+        "imported_urls": [
+          {
+            "url": "http://127.0.0.1:8080/",
+            "source": "zap_alert",
+            "method": "",
+            "status_code": null,
+            "content_type": ""
+          }
+        ],
+        "imported_findings": [
+          {
+            "id": "HEADER-CONTENT_SECURITY_POLICY-MISSING",
+            "title": "Content Security Policy Missing",
+            "severity": "medium",
+            "category": "external-zap",
+            "description": "Imported external finding. Review the original tool output before reporting.",
+            "recommendation": "Validate scope, confidence and remediation guidance before final reporting.",
+            "module": "external_import",
+            "target": "http://127.0.0.1:8080/",
+            "evidence": [
+              {
+                "label": "source_tool",
+                "value": "OWASP ZAP",
+                "location": ""
+              },
+              {
+                "label": "external_id",
+                "value": "unknown",
+                "location": ""
+              }
+            ],
+            "source": {
+              "type": "external_import",
+              "tool": "zap",
+              "validation_required": true
+            }
+          }
+        ]
+      }
     }
   ],
   "requests": [
@@ -2005,7 +2067,7 @@
         "sha256": "d5e10e58c83ee821e181a0a6993e816b95e634b8326791bdd4dff9babfb5618b",
         "bytes": 776,
         "truncated_by_probe": false,
-        "sample": "<!doctype html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"generator\" content=\"WordPress 4.7.0\">\n    <title>Miembros</title>\n    <script src=\"/static/app.js\"></script>\n  </head>\n  <body>\n    <h1>Miembros</h1>\n    <p>Esta ruta de laboratorio fuerza HTTP Basic Auth sobre HTTP para generar evidencia controlada.</p>\n    <form action=\"/login/\" method=\"post\">\n      <input type=\"hidden\" name=\"csrf_token\">\n      <input type=\"text\" name=\"username\">\n      <input type=\"password\" name=\"password\">\n      <button type=\"submit\">Entrar</button>\n    </form>\n    <script>\n      const passwordReset = \"[redacted]\"\"\";\n      fetch(\"/api/member-profile?csrf_token=[redacted]\", { method: \"POST\" });\n    </script>\n    <a href=\"/\">Inicio</a>\n  </body>\n</html>\n",
+        "sample": "<!doctype html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"generator\" content=\"WordPress 4.7.0\">\n    <title>Miembros</title>\n    <script src=\"/static/app.js\"></script>\n  </head>\n  <body>\n    <h1>Miembros</h1>\n    <p>Esta ruta de laboratorio fuerza HTTP Basic Auth sobre HTTP para generar evidencia controlada.</p>\n    <form action=\"/login/\" method=\"post\">\n      <input type=\"hidden\" name=\"csrf_token\">\n      <input type=\"text\" name=\"username\">\n      <input type=\"password\" name=\"password\">\n      <button type=\"submit\">Entrar</button>\n    </form>\n    <script>\n      const passwordReset = \"[redacted]\"\"\"\";\n      fetch(\"/api/member-profile?csrf_token=[redacted]\", { method: \"POST\" });\n    </script>\n    <a href=\"/\">Inicio</a>\n  </body>\n</html>\n",
         "sample_chars": 755,
         "sample_truncated": false
       }
@@ -2478,7 +2540,7 @@
         "sha256": "d5e10e58c83ee821e181a0a6993e816b95e634b8326791bdd4dff9babfb5618b",
         "bytes": 776,
         "truncated_by_probe": false,
-        "sample": "<!doctype html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"generator\" content=\"WordPress 4.7.0\">\n    <title>Miembros</title>\n    <script src=\"/static/app.js\"></script>\n  </head>\n  <body>\n    <h1>Miembros</h1>\n    <p>Esta ruta de laboratorio fuerza HTTP Basic Auth sobre HTTP para generar evidencia controlada.</p>\n    <form action=\"/login/\" method=\"post\">\n      <input type=\"hidden\" name=\"csrf_token\">\n      <input type=\"text\" name=\"username\">\n      <input type=\"password\" name=\"password\">\n      <button type=\"submit\">Entrar</button>\n    </form>\n    <script>\n      const passwordReset = \"[redacted]\"\"\";\n      fetch(\"/api/member-profile?csrf_token=[redacted]\", { method: \"POST\" });\n    </script>\n    <a href=\"/\">Inicio</a>\n  </body>\n</html>\n",
+        "sample": "<!doctype html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"generator\" content=\"WordPress 4.7.0\">\n    <title>Miembros</title>\n    <script src=\"/static/app.js\"></script>\n  </head>\n  <body>\n    <h1>Miembros</h1>\n    <p>Esta ruta de laboratorio fuerza HTTP Basic Auth sobre HTTP para generar evidencia controlada.</p>\n    <form action=\"/login/\" method=\"post\">\n      <input type=\"hidden\" name=\"csrf_token\">\n      <input type=\"text\" name=\"username\">\n      <input type=\"password\" name=\"password\">\n      <button type=\"submit\">Entrar</button>\n    </form>\n    <script>\n      const passwordReset = \"[redacted]\"\"\"\";\n      fetch(\"/api/member-profile?csrf_token=[redacted]\", { method: \"POST\" });\n    </script>\n    <a href=\"/\">Inicio</a>\n  </body>\n</html>\n",
         "sample_chars": 755,
         "sample_truncated": false
       }
@@ -2637,7 +2699,7 @@
         "sha256": "d5e10e58c83ee821e181a0a6993e816b95e634b8326791bdd4dff9babfb5618b",
         "bytes": 776,
         "truncated_by_probe": false,
-        "sample": "<!doctype html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"generator\" content=\"WordPress 4.7.0\">\n    <title>Miembros</title>\n    <script src=\"/static/app.js\"></script>\n  </head>\n  <body>\n    <h1>Miembros</h1>\n    <p>Esta ruta de laboratorio fuerza HTTP Basic Auth sobre HTTP para generar evidencia controlada.</p>\n    <form action=\"/login/\" method=\"post\">\n      <input type=\"hidden\" name=\"csrf_token\">\n      <input type=\"text\" name=\"username\">\n      <input type=\"password\" name=\"password\">\n      <button type=\"submit\">Entrar</button>\n    </form>\n    <script>\n      const passwordReset = \"[redacted]\"\"\";\n      fetch(\"/api/member-profile?csrf_token=[redacted]\", { method: \"POST\" });\n    </script>\n    <a href=\"/\">Inicio</a>\n  </body>\n</html>\n",
+        "sample": "<!doctype html>\n<html>\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"generator\" content=\"WordPress 4.7.0\">\n    <title>Miembros</title>\n    <script src=\"/static/app.js\"></script>\n  </head>\n  <body>\n    <h1>Miembros</h1>\n    <p>Esta ruta de laboratorio fuerza HTTP Basic Auth sobre HTTP para generar evidencia controlada.</p>\n    <form action=\"/login/\" method=\"post\">\n      <input type=\"hidden\" name=\"csrf_token\">\n      <input type=\"text\" name=\"username\">\n      <input type=\"password\" name=\"password\">\n      <button type=\"submit\">Entrar</button>\n    </form>\n    <script>\n      const passwordReset = \"[redacted]\"\"\"\";\n      fetch(\"/api/member-profile?csrf_token=[redacted]\", { method: \"POST\" });\n    </script>\n    <a href=\"/\">Inicio</a>\n  </body>\n</html>\n",
         "sample_chars": 755,
         "sample_truncated": false
       }
@@ -2925,23 +2987,6 @@
       ]
     },
     {
-      "id": "COOKIE-HTTPONLY-MISSING",
-      "title": "Cookie missing HttpOnly flag",
-      "severity": "low",
-      "category": "cookies",
-      "description": "A cookie is accessible to client-side scripts when HttpOnly is absent.",
-      "recommendation": "Set HttpOnly for session or sensitive cookies.",
-      "module": "cookies",
-      "target": "http://127.0.0.1:62011/members/",
-      "evidence": [
-        {
-          "label": "cookie",
-          "value": "tracking_id",
-          "location": null
-        }
-      ]
-    },
-    {
       "id": "COOKIE-SAMESITE-NONE-WITHOUT-SECURE",
       "title": "Cookie uses SameSite=None without Secure",
       "severity": "medium",
@@ -3211,11 +3256,74 @@
           "location": null
         }
       ]
+    },
+    {
+      "id": "HEADER-CONTENT_SECURITY_POLICY-MISSING",
+      "title": "Content Security Policy Missing",
+      "severity": "medium",
+      "category": "external-zap",
+      "description": "Imported external finding. Review the original tool output before reporting.",
+      "recommendation": "Validate scope, confidence and remediation guidance before final reporting.",
+      "module": "external_import",
+      "target": "http://127.0.0.1:8080/",
+      "evidence": [
+        {
+          "label": "source_tool",
+          "value": "OWASP ZAP",
+          "location": ""
+        },
+        {
+          "label": "external_id",
+          "value": "unknown",
+          "location": ""
+        }
+      ],
+      "source": {
+        "type": "external_import",
+        "tool": "zap",
+        "validation_required": true
+      }
     }
   ],
+  "external_sources": {
+    "summary": {
+      "source_count": 1,
+      "finding_count": 1,
+      "url_count": 1,
+      "port_count": 0,
+      "open_port_count": 0,
+      "formats": [
+        "zap-json"
+      ],
+      "tools": [
+        "zap"
+      ]
+    },
+    "sources": [
+      {
+        "filename": "example-zap.json",
+        "source_format": "zap-json",
+        "source_tool": "zap",
+        "imported_at": "2026-09-01T11:39:56Z",
+        "finding_count": 1,
+        "url_count": 1,
+        "port_count": 0,
+        "open_port_count": 0,
+        "notes": [
+          "Import reads an existing external file and does not contact the target.",
+          "Full raw HTTP requests and responses from external reports are intentionally not preserved."
+        ]
+      }
+    ],
+    "safety_notes": [
+      "Imported files are parsed locally; importing does not contact targets.",
+      "Raw external HTTP request/response bodies are not retained by the importer.",
+      "Imported scanner findings should be reviewed for scope, confidence and false positives."
+    ]
+  },
   "inventory": {
     "summary": {
-      "total_urls": 35,
+      "total_urls": 36,
       "fetched_urls": 16,
       "interesting_urls": 23,
       "forms": 2,
@@ -4430,6 +4538,26 @@
         "source": "javascript_script, request",
         "title": "",
         "error": ""
+      },
+      {
+        "url": "http://127.0.0.1:8080/",
+        "status_code": null,
+        "content_type": "",
+        "fetched": false,
+        "depth": null,
+        "methods": [],
+        "links_found": 0,
+        "forms_found": 0,
+        "interesting": false,
+        "reasons": [],
+        "route_types": [],
+        "route_classifications": [],
+        "sources": [
+          "zap_alert"
+        ],
+        "source": "zap_alert",
+        "title": "",
+        "error": ""
       }
     ],
     "forms": [
@@ -5391,8 +5519,8 @@
   },
   "entry_points": {
     "summary": {
-      "total_endpoints": 35,
-      "review_candidates": 28,
+      "total_endpoints": 36,
+      "review_candidates": 29,
       "fetched_endpoints": 16,
       "metadata_endpoints": 2,
       "excluded_endpoints": 4,
@@ -6371,6 +6499,28 @@
         "notes": []
       },
       {
+        "id": "ep_c17d493d4d9a",
+        "url": "http://127.0.0.1:8080/",
+        "path": "/",
+        "status_code": null,
+        "content_type": "",
+        "fetched": false,
+        "forms_found": 0,
+        "title": "",
+        "state": "discovered",
+        "review_candidate": true,
+        "state_changing": false,
+        "methods": [],
+        "route_types": [],
+        "parameters": [],
+        "parameter_names": [],
+        "forms": [],
+        "sources": [
+          "zap_alert"
+        ],
+        "notes": []
+      },
+      {
         "id": "ep_c03bf058b16d",
         "url": "http://127.0.0.1:62011/admin/export?token=%5Bredacted%5D",
         "path": "/admin/export",
@@ -7005,18 +7155,6 @@
           },
           {
             "type": "finding",
-            "label": "COOKIE-HTTPONLY-MISSING",
-            "value": "Cookie missing HttpOnly flag",
-            "location": "http://127.0.0.1:62011/members/"
-          },
-          {
-            "type": "finding_evidence",
-            "label": "cookie",
-            "value": "tracking_id",
-            "location": "http://127.0.0.1:62011/members/"
-          },
-          {
-            "type": "finding",
             "label": "COOKIE-SAMESITE-NONE-WITHOUT-SECURE",
             "value": "Cookie uses SameSite=None without Secure",
             "location": "http://127.0.0.1:62011/members/"
@@ -7072,7 +7210,8 @@
         ],
         "matched_signals": [],
         "targets": [
-          "http://127.0.0.1:62011/members/"
+          "http://127.0.0.1:62011/members/",
+          "http://127.0.0.1:8080/"
         ],
         "evidence": [
           {
@@ -7110,6 +7249,24 @@
             "label": "HEADER-PERMISSIONS_POLICY-MISSING",
             "value": "Permissions-Policy header is missing",
             "location": "http://127.0.0.1:62011/members/"
+          },
+          {
+            "type": "finding",
+            "label": "HEADER-CONTENT_SECURITY_POLICY-MISSING",
+            "value": "Content Security Policy Missing",
+            "location": "http://127.0.0.1:8080/"
+          },
+          {
+            "type": "finding_evidence",
+            "label": "source_tool",
+            "value": "OWASP ZAP",
+            "location": "http://127.0.0.1:8080/"
+          },
+          {
+            "type": "finding_evidence",
+            "label": "external_id",
+            "value": "unknown",
+            "location": "http://127.0.0.1:8080/"
           }
         ],
         "why_it_matters": "Security headers provide browser-enforced defense in depth against content injection, clickjacking and data leakage.",
@@ -8814,23 +8971,23 @@
       "finding_count": 22,
       "critical": 0,
       "high": 3,
-      "medium": 4,
-      "low": 6,
+      "medium": 5,
+      "low": 5,
       "info": 9,
       "priority_count": 10,
       "quick_win_count": 8,
       "coverage": {
-        "modules_run": 10,
-        "modules_passed": 2,
+        "modules_run": 11,
+        "modules_passed": 3,
         "modules_warning": 8,
         "modules_skipped": 0,
         "modules_error": 0,
-        "urls": 35,
+        "urls": 36,
         "fetched_urls": 16,
         "forms": 2,
         "interesting_urls": 23,
-        "entry_points": 35,
-        "entry_point_review_candidates": 28,
+        "entry_points": 36,
+        "entry_point_review_candidates": 29,
         "entry_point_parameters": 8,
         "state_changing_entry_points": 6,
         "javascript_endpoints": 9,
@@ -8879,6 +9036,17 @@
       },
       {
         "rank": 4,
+        "finding_id": "HEADER-CONTENT_SECURITY_POLICY-MISSING",
+        "title": "Content Security Policy Missing",
+        "severity": "medium",
+        "module": "external_import",
+        "target": "http://127.0.0.1:8080/",
+        "score": 57,
+        "reason": "medium finding reported by the external_import module",
+        "recommended_action": "Validate scope, confidence and remediation guidance before final reporting."
+      },
+      {
+        "rank": 5,
         "finding_id": "METHOD-DELETE-ADVERTISED",
         "title": "HTTP method DELETE is advertised",
         "severity": "medium",
@@ -8889,7 +9057,7 @@
         "recommended_action": "Disable unnecessary HTTP methods or enforce strict authorization before use."
       },
       {
-        "rank": 5,
+        "rank": 6,
         "finding_id": "METHOD-PUT-ADVERTISED",
         "title": "HTTP method PUT is advertised",
         "severity": "medium",
@@ -8900,7 +9068,7 @@
         "recommended_action": "Disable unnecessary HTTP methods or enforce strict authorization before use."
       },
       {
-        "rank": 6,
+        "rank": 7,
         "finding_id": "COOKIE-SAMESITE-NONE-WITHOUT-SECURE",
         "title": "Cookie uses SameSite=None without Secure",
         "severity": "medium",
@@ -8911,7 +9079,7 @@
         "recommended_action": "Set Secure or avoid SameSite=None if cross-site usage is not required."
       },
       {
-        "rank": 7,
+        "rank": 8,
         "finding_id": "HEADER-CONTENT_SECURITY_POLICY-MISSING",
         "title": "Content-Security-Policy header is missing",
         "severity": "medium",
@@ -8920,17 +9088,6 @@
         "score": 55,
         "reason": "medium finding reported by the security_headers module",
         "recommended_action": "Define an appropriate Content-Security-Policy header for this application."
-      },
-      {
-        "rank": 8,
-        "finding_id": "COOKIE-HTTPONLY-MISSING",
-        "title": "Cookie missing HttpOnly flag",
-        "severity": "low",
-        "module": "cookies",
-        "target": "http://127.0.0.1:62011/members/",
-        "score": 37,
-        "reason": "client-side scripts may access cookies without HttpOnly",
-        "recommended_action": "Set HttpOnly for session or sensitive cookies."
       },
       {
         "rank": 9,
@@ -9006,11 +9163,11 @@
         "recommended_action": "Set SameSite=Lax or SameSite=Strict unless cross-site usage is required."
       },
       {
-        "finding_id": "COOKIE-HTTPONLY-MISSING",
-        "title": "Cookie missing HttpOnly flag",
-        "severity": "low",
+        "finding_id": "COOKIE-SAMESITE-NONE-WITHOUT-SECURE",
+        "title": "Cookie uses SameSite=None without Secure",
+        "severity": "medium",
         "effort": "low",
-        "recommended_action": "Set HttpOnly for session or sensitive cookies."
+        "recommended_action": "Set Secure or avoid SameSite=None if cross-site usage is not required."
       }
     ],
     "remediation_plan": [
@@ -9029,14 +9186,14 @@
         "phase": "Short term",
         "objective": "Apply low-effort hardening and validation.",
         "items": [
+          "Content Security Policy Missing: Validate scope, confidence and remediation guidance before final reporting.",
           "HTTP method DELETE is advertised: Disable unnecessary HTTP methods or enforce strict authorization before use.",
           "HTTP method PUT is advertised: Disable unnecessary HTTP methods or enforce strict authorization before use.",
           "Cookie uses SameSite=None without Secure: Set Secure or avoid SameSite=None if cross-site usage is not required.",
           "Content-Security-Policy header is missing: Define an appropriate Content-Security-Policy header for this application.",
           "HTTP is not redirected to HTTPS: Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification.",
           "Clickjacking protection header is missing: Set frame-ancestors in Content-Security-Policy or use X-Frame-Options where appropriate.",
-          "X-Content-Type-Options nosniff is missing: Set X-Content-Type-Options: nosniff.",
-          "Referrer-Policy header is missing: Define an appropriate Referrer-Policy header for this application."
+          "X-Content-Type-Options nosniff is missing: Set X-Content-Type-Options: nosniff."
         ]
       },
       {

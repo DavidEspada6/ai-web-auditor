@@ -1,0 +1,41 @@
+{
+  "@programName": "OWASP ZAP",
+  "@version": "example",
+  "site": [
+    {
+      "@name": "http://127.0.0.1:8080/",
+      "alerts": [
+        {
+          "pluginid": "10021",
+          "alert": "X-Content-Type-Options Header Missing",
+          "riskdesc": "Medium (Medium)",
+          "confidence": "Medium",
+          "desc": "<p>The response does not include X-Content-Type-Options.</p>",
+          "solution": "<p>Set X-Content-Type-Options: nosniff.</p>",
+          "instances": [
+            {
+              "uri": "http://127.0.0.1:8080/members/",
+              "method": "GET",
+              "evidence": "missing header"
+            }
+          ]
+        },
+        {
+          "pluginid": "10020",
+          "alert": "X-Frame-Options Header Not Set",
+          "riskdesc": "Medium (Medium)",
+          "confidence": "Medium",
+          "desc": "<p>The response can potentially be framed by another site.</p>",
+          "solution": "<p>Use frame-ancestors in CSP or X-Frame-Options.</p>",
+          "instances": [
+            {
+              "uri": "http://127.0.0.1:8080/login",
+              "method": "GET",
+              "evidence": "missing header"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

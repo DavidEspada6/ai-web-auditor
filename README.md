@@ -17,10 +17,15 @@ para descubrir endpoints citados en scripts, y genera un modelo de entry points
 con endpoints, parametros, formularios y metodos observados para orientar la
 revision manual posterior. Desde v0.21 incorpora un motor pasivo de reglas que
 mapea las evidencias observadas contra controles OWASP WSTG y OWASP ASVS para
-mejorar la trazabilidad de la auditoria.
+mejorar la trazabilidad de la auditoria. Desde v0.22 puede importar resultados
+externos ya generados por herramientas como OWASP ZAP, Burp Suite, Nmap, CSV o
+listas de URLs para centralizarlos en el mismo inventario, mapeo de reglas,
+valoracion, evidencias e informes.
 
 No implementa explotacion, fuerza bruta, fuzzing agresivo, crawling masivo,
-escaneo de puertos amplio, fuerza bruta DNS agresiva ni pruebas intrusivas.
+escaneo de puertos amplio, fuerza bruta DNS agresiva ni pruebas intrusivas. La
+importacion de archivos externos solo lee resultados existentes y no ejecuta
+herramientas contra el objetivo.
 
 ## Instalacion
 
@@ -36,7 +41,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.21 no necesita librerias externas en tiempo de ejecucion.
+La v0.22 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -57,6 +62,7 @@ lanzador incluido:
 .\ai-web-auditor.cmd assess outputs/result.json --output outputs/assessment.json
 .\ai-web-auditor.cmd rules outputs/result.json --output outputs/rules.json
 .\ai-web-auditor.cmd evidence outputs/result.json --output outputs/evidence.zip
+.\ai-web-auditor.cmd import examples/import-zap-example.json --target http://127.0.0.1:8080/members/ --output outputs/imported.json
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.md
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.html
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.pdf
@@ -126,6 +132,21 @@ Generar un paquete de evidencias desde un JSON existente:
 
 ```powershell
 ai-web-auditor evidence outputs/example.json --output outputs/evidence.zip
+```
+
+Importar resultados externos ya generados:
+
+```powershell
+ai-web-auditor import examples/import-zap-example.json --target http://127.0.0.1:8080/members/ --output outputs/imported-zap.json
+ai-web-auditor import examples/import-nmap-example.xml --target http://127.0.0.1:8080/members/ --output outputs/imported-nmap.json
+ai-web-auditor import examples/import-findings-example.csv --target http://127.0.0.1:8080/members/ --output outputs/imported-csv.json
+ai-web-auditor import examples/import-urls-example.txt --target http://127.0.0.1:8080/members/ --output outputs/imported-urls.json
+```
+
+Unir una importacion externa con una auditoria propia:
+
+```powershell
+ai-web-auditor import examples/import-zap-example.json --merge outputs/example.json --output outputs/example-with-zap.json
 ```
 
 Exportar inventario de URLs a CSV:
@@ -257,7 +278,7 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.21",
+    "user_agent": "AI-Web-Auditor/0.22",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -865,6 +886,44 @@ Despues se puede repetir la auditoria de forma consistente:
 ai-web-auditor scan --config audit.json --json-output outputs/result.json
 ```
 
+## Importacion de herramientas externas
+
+La version actual puede importar archivos ya exportados por otras herramientas y
+convertirlos al modelo interno de AI Web Auditor. Formatos soportados:
+
+- `zap-json`: reporte JSON tradicional de OWASP ZAP;
+- `burp-xml`: reporte XML de Burp Suite;
+- `nmap-xml`: salida XML de Nmap;
+- `csv`: filas con columnas como `url`, `severity`, `finding`, `description` o `recommendation`;
+- `url-list`: una URL por linea;
+- `generic-json`: JSON sencillo con listas `findings`, `issues`, `alerts` o `items`.
+
+La deteccion automatica suele bastar:
+
+```powershell
+ai-web-auditor import examples/import-zap-example.json --target http://127.0.0.1:8080/members/ --output outputs/imported.json
+```
+
+Hay un ejemplo de resultado normalizado en `examples/imported-result-example.json`.
+
+Para enriquecer una auditoria ya realizada:
+
+```powershell
+ai-web-auditor import zap-report.json --merge outputs/result.json --output outputs/result-with-zap.json
+```
+
+En la interfaz grafica, abre la vista `Importar`, selecciona el formato o deja
+`Auto`, elige el archivo y deja activado `Unir con auditoria actual` si ya tienes
+un resultado abierto. La importacion recalcula inventario, puntos de entrada,
+reglas pasivas y valoracion de riesgo.
+
+Notas de seguridad:
+
+- no ejecuta ZAP, Burp, Nmap ni ningun comando externo;
+- no contacta el dominio objetivo durante la importacion;
+- sanea valores sensibles en URLs y evidencias;
+- marca los hallazgos importados como pendientes de validacion manual.
+
 ## Estructura para ampliar
 
 La carpeta `src/ai_web_auditor/modules` contiene modulos independientes. Para
@@ -911,7 +970,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.21.0
+git tag v0.22.0
 git push
 git push --tags
 ```
@@ -924,7 +983,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.21.0",
+  "version": "0.22.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",

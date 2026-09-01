@@ -222,6 +222,40 @@ class ReportingTests(unittest.TestCase):
         self.assertIn("| 80 | http | open | 1 ms |", markdown)
         self.assertIn("## AI Prioritization", markdown)
 
+    def test_reports_include_external_import_summary(self):
+        data = json.loads(json.dumps(SCAN_DATA))
+        data["external_sources"] = {
+            "summary": {
+                "source_count": 1,
+                "finding_count": 2,
+                "url_count": 3,
+                "port_count": 4,
+                "open_port_count": 1,
+            },
+            "sources": [
+                {
+                    "filename": "zap-report.json",
+                    "source_format": "zap-json",
+                    "source_tool": "zap",
+                    "imported_at": "2026-08-30T10:00:00Z",
+                    "finding_count": 2,
+                    "url_count": 3,
+                    "port_count": 4,
+                    "open_port_count": 1,
+                }
+            ],
+            "safety_notes": ["Imported files are parsed locally."],
+        }
+
+        markdown = generate_markdown_report(data)
+        html = generate_html_report(data)
+
+        self.assertIn("## External Imports", markdown)
+        self.assertIn("zap-report.json", markdown)
+        self.assertIn("Imported files are parsed locally.", markdown)
+        self.assertIn("External Imports", html)
+        self.assertIn("zap-report.json", html)
+
     def test_generate_html_report_escapes_content_and_includes_metadata(self):
         data = json.loads(json.dumps(SCAN_DATA))
         data["findings"][0]["title"] = "<script>alert(1)</script>"

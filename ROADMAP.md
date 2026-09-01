@@ -9,8 +9,8 @@ no se priorizaran funcionalidades fuera de estos bloques.
 - `v0.18.0`: crawler avanzado con `robots.txt`, `sitemap.xml`, `.well-known` y clasificacion de rutas.
 - `v0.19.0`: modelo de entry points: endpoints, parametros, formularios y metodos.
 - `v0.20.0`: analisis de JavaScript y descubrimiento de endpoints.
-- `v0.21.0`: motor pasivo de reglas con mapeo OWASP WSTG/ASVS. Completada en esta version.
-- `v0.22.0`: importadores/adaptadores para herramientas externas.
+- `v0.21.0`: motor pasivo de reglas con mapeo OWASP WSTG/ASVS.
+- `v0.22.0`: importadores/adaptadores para herramientas externas. Completada en esta version.
 - `v0.23.0`: perfiles autenticados y comparacion por roles.
 - `v0.24.0`: screenshots, fingerprint visual y agrupacion de pantallas.
 - `v0.25.0`: dashboard de auditoria real: cobertura, cambios, riesgos, pendientes y checklist.

@@ -98,6 +98,20 @@ class EvidenceTests(unittest.TestCase):
             "inventory": {"summary": {"total_urls": 1}, "urls": []},
             "entry_points": {"summary": {"total_endpoints": 1}, "endpoints": [{"id": "ep_1", "url": "https://example.com/"}]},
             "assessment": {"summary": {"risk_level": "informational"}},
+            "external_sources": {
+                "summary": {"source_count": 1, "finding_count": 1, "url_count": 1, "port_count": 0, "open_port_count": 0},
+                "sources": [
+                    {
+                        "filename": "zap-report.json",
+                        "source_format": "zap-json",
+                        "source_tool": "zap",
+                        "finding_count": 1,
+                        "url_count": 1,
+                        "port_count": 0,
+                        "open_port_count": 0,
+                    }
+                ],
+            },
         }
 
         package = build_evidence_package(scan_data)
@@ -114,11 +128,15 @@ class EvidenceTests(unittest.TestCase):
         self.assertIn("javascript/endpoints.json", names)
         self.assertIn("rules/rule-evaluation.json", names)
         self.assertIn("rules/matches.json", names)
+        self.assertIn("external/external-sources.json", names)
+        self.assertIn("external/sources.json", names)
         self.assertEqual(manifest["counts"]["requests"], 1)
         self.assertEqual(manifest["counts"]["entry_points"], 1)
         self.assertEqual(manifest["counts"]["javascript_endpoints"], 1)
         self.assertGreaterEqual(manifest["counts"]["rules_matched"], 1)
         self.assertGreaterEqual(manifest["counts"]["framework_controls_matched"], 1)
+        self.assertEqual(manifest["counts"]["external_sources"], 1)
+        self.assertEqual(manifest["counts"]["external_findings"], 1)
         self.assertTrue(manifest["safety"]["sanitized"])
         self.assertEqual(request["id"], "req-0001")
 

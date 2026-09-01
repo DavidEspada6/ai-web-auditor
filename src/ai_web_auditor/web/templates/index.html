@@ -242,6 +242,7 @@
               <button class="tab" type="button" data-tab="javascript">JavaScript</button>
               <button class="tab" type="button" data-tab="subdomains">Subdominios</button>
               <button class="tab" type="button" data-tab="ports">Puertos</button>
+              <button class="tab" type="button" data-tab="import">Importar</button>
               <button class="tab" type="button" data-tab="json">JSON</button>
             </section>
             <section class="nav-group">
@@ -472,6 +473,43 @@
               <tbody id="port-table"></tbody>
             </table>
           </div>
+        </section>
+
+        <section id="import-view" class="panel view">
+          <div class="section-toolbar">
+            <div>
+              <p class="eyebrow">Resultados externos</p>
+              <strong id="import-status">Sin importaciones</strong>
+            </div>
+          </div>
+          <div class="import-controls">
+            <label class="field" data-help="Formato del archivo externo. Auto intenta detectar ZAP JSON, Burp XML, Nmap XML, CSV o una lista simple de URLs.">
+              <span>Formato</span>
+              <select id="import-format">
+                <option value="auto">Auto</option>
+                <option value="zap-json">OWASP ZAP JSON</option>
+                <option value="burp-xml">Burp XML</option>
+                <option value="nmap-xml">Nmap XML</option>
+                <option value="csv">CSV</option>
+                <option value="url-list">Lista de URLs</option>
+                <option value="generic-json">JSON generico</option>
+              </select>
+            </label>
+            <label class="field" data-help="Objetivo base opcional. Usalo si el archivo no trae una URL clara o quieres asociar la importacion al objetivo actual.">
+              <span>Objetivo opcional</span>
+              <input id="import-target" type="url" placeholder="https://example.com">
+            </label>
+            <label class="field file-field" data-help="Archivo exportado por otra herramienta. Se lee localmente y no se envia a ningun servicio externo.">
+              <span>Archivo externo</span>
+              <input id="import-file" type="file" accept=".json,.xml,.csv,.txt,.log">
+            </label>
+            <div class="toggles import-toggles">
+              <label data-help="Une los datos importados con la auditoria que tienes abierta. Si lo desactivas, crea una vista normalizada solo con el archivo externo."><input id="import-merge" type="checkbox" checked><span>Unir con auditoria actual</span></label>
+            </div>
+            <button id="run-import" class="secondary" type="button">Importar resultados</button>
+          </div>
+          <div id="import-summary" class="summary-grid compact-summary"></div>
+          <div id="import-list" class="list"></div>
         </section>
 
         <section id="json-view" class="panel view">

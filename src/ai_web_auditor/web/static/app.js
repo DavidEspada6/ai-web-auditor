@@ -40,6 +40,14 @@ const subdomainTable = document.querySelector("#subdomain-table");
 const portCount = document.querySelector("#port-count");
 const portSummary = document.querySelector("#port-summary");
 const portTable = document.querySelector("#port-table");
+const importStatus = document.querySelector("#import-status");
+const importFormat = document.querySelector("#import-format");
+const importTarget = document.querySelector("#import-target");
+const importFile = document.querySelector("#import-file");
+const importMerge = document.querySelector("#import-merge");
+const importSummary = document.querySelector("#import-summary");
+const importList = document.querySelector("#import-list");
+const runImportButton = document.querySelector("#run-import");
 const assessmentRisk = document.querySelector("#assessment-risk");
 const assessmentSummary = document.querySelector("#assessment-summary");
 const assessmentPriorities = document.querySelector("#assessment-priorities");
@@ -102,6 +110,7 @@ javascriptSearch.addEventListener("input", () => {
 
 initialize();
 setupResizableTables();
+renderImports({});
 
 async function initialize() {
   await loadLabStatus();
@@ -175,6 +184,55 @@ stopLabButton.addEventListener("click", async () => {
 useLabButton.addEventListener("click", () => {
   if (state.lab) {
     applyLabDefaults(state.lab);
+  }
+});
+
+runImportButton.addEventListener("click", async () => {
+  clearMessage();
+  const file = importFile.files && importFile.files.length ? importFile.files[0] : null;
+  if (!file) {
+    showMessage("Selecciona un archivo externo para importarlo.");
+    return;
+  }
+
+  runImportButton.disabled = true;
+  runImportButton.textContent = "Importando...";
+  try {
+    const content = await file.text();
+    const target = importTarget.value.trim() || document.querySelector("#target").value.trim();
+    const response = await postJson("/api/import", {
+      filename: file.name,
+      format: importFormat.value,
+      target,
+      content,
+      merge_scan: importMerge.checked ? state.scan : null,
+    });
+    state.scan = response.scan;
+    state.markdown = "";
+    state.html = "";
+    state.pdfBase64 = "";
+    state.aiAnalysis = response.scan.ai_analysis || null;
+    renderScan(state.scan);
+    reportOutput.value = "";
+    renderAiAnalysis(state.aiAnalysis);
+    document.querySelector("#ai-analysis").value = state.aiAnalysis ? JSON.stringify(state.aiAnalysis, null, 2) : "";
+    htmlPreview.removeAttribute("srcdoc");
+    generateReportButton.disabled = false;
+    runAiButton.disabled = false;
+    downloadJsonButton.disabled = false;
+    downloadEvidenceButton.disabled = false;
+    downloadInventoryButton.disabled = !hasInventory(state.scan);
+    downloadEntryPointsButton.disabled = !hasEntryPoints(state.scan);
+    downloadAiButton.disabled = !state.aiAnalysis;
+    downloadMdButton.disabled = true;
+    downloadHtmlButton.disabled = true;
+    downloadPdfButton.disabled = true;
+    activateTab("import");
+  } catch (error) {
+    showMessage(error.message);
+  } finally {
+    runImportButton.disabled = false;
+    runImportButton.textContent = "Importar resultados";
   }
 });
 
@@ -514,6 +572,7 @@ function renderScan(scan) {
   renderJavaScript(javascript);
   renderSubdomains(subdomains);
   renderPorts(ports);
+  renderImports(scan.external_sources || {});
   jsonOutput.textContent = JSON.stringify(scan, null, 2);
   downloadEvidenceButton.disabled = false;
   downloadInventoryButton.disabled = !hasInventory(scan);
@@ -579,7 +638,7 @@ function applyLabDefaults(lab) {
     projectAuditorInput.value = "David";
   }
   if (!projectEngagementInput.value.trim()) {
-    projectEngagementInput.value = "Simulacion v0.21.0";
+    projectEngagementInput.value = "Simulacion v0.22.0";
   }
 
   document.querySelector("#target").value = defaults.target;
@@ -754,6 +813,7 @@ function renderSummary(scan, findings, modules, requests, subdomains, ports, jav
   const resolvedSubdomains = Array.isArray(subdomains.resolved) ? subdomains.resolved.length : 0;
   const openPorts = ports.open_count ?? 0;
   const assessmentSummaryData = assessment?.summary || {};
+  const externalSummaryData = scan.external_sources?.summary || {};
   const capturedSamples = requests.filter((request) => request?.response_body?.captured === true).length;
   const crawler = modules.find((item) => item.name === "crawler");
   const crawlerArtifacts = crawler?.artifacts && typeof crawler.artifacts === "object" ? crawler.artifacts : {};
@@ -781,6 +841,7 @@ function renderSummary(scan, findings, modules, requests, subdomains, ports, jav
     ["Endpoints JS", javascriptEndpoints],
     ["Reglas", `${ruleSummaryData.rules_matched ?? 0}/${ruleSummaryData.rules_total ?? 0}`],
     ["Controles OWASP", ruleSummaryData.framework_controls_matched ?? 0],
+    ["Importaciones", externalSummaryData.source_count ?? 0],
     ["Subdominios", resolvedSubdomains],
     ["Puertos abiertos", openPorts],
   ];
@@ -1418,6 +1479,64 @@ function renderPorts(artifacts) {
 function portArtifacts(modules) {
   const module = modules.find((item) => item.name === "ports");
   return module?.artifacts && typeof module.artifacts === "object" ? module.artifacts : {};
+}
+
+function renderImports(externalSources) {
+  const summary = externalSources?.summary || {};
+  const sources = Array.isArray(externalSources?.sources) ? externalSources.sources : [];
+
+  importStatus.textContent = sources.length ? `${sources.length} fuente${sources.length === 1 ? "" : "s"} importada${sources.length === 1 ? "" : "s"}` : "Sin importaciones";
+  importSummary.innerHTML = "";
+  [
+    ["Fuentes", summary.source_count ?? sources.length],
+    ["Hallazgos", summary.finding_count ?? 0],
+    ["URLs", summary.url_count ?? 0],
+    ["Puertos", summary.port_count ?? 0],
+    ["Puertos abiertos", summary.open_port_count ?? 0],
+    ["Herramientas", shortList(summary.tools, "N/A")],
+  ].forEach(([label, value]) => {
+    const item = document.createElement("div");
+    item.className = "metric";
+    item.innerHTML = `<span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong>`;
+    importSummary.appendChild(item);
+  });
+
+  importList.innerHTML = "";
+  if (!sources.length) {
+    importList.innerHTML = '<div class="empty-inline">Todavia no hay resultados externos importados.</div>';
+    return;
+  }
+
+  sources.forEach((source) => {
+    const notes = Array.isArray(source.notes) ? source.notes.slice(0, 3) : [];
+    const noteList = notes.map((note) => `<li>${escapeHtml(note)}</li>`).join("");
+    const card = document.createElement("article");
+    card.className = "finding-item import-card";
+    card.innerHTML = `
+      <span>${escapeHtml(source.source_tool || "external")}</span>
+      <h3>${escapeHtml(source.filename || "archivo importado")}</h3>
+      <div class="import-card-grid">
+        <p><strong>Formato:</strong> ${escapeHtml(source.source_format || "unknown")}</p>
+        <p><strong>Importado:</strong> ${escapeHtml(source.imported_at || "unknown")}</p>
+        <p><strong>Hallazgos:</strong> ${escapeHtml(source.finding_count ?? 0)}</p>
+        <p><strong>URLs:</strong> ${escapeHtml(source.url_count ?? 0)}</p>
+        <p><strong>Puertos:</strong> ${escapeHtml(source.port_count ?? 0)}</p>
+        <p><strong>Abiertos:</strong> ${escapeHtml(source.open_port_count ?? 0)}</p>
+      </div>
+      ${noteList ? `<ul>${noteList}</ul>` : ""}
+    `;
+    importList.appendChild(card);
+  });
+}
+
+function shortList(value, fallback = "") {
+  if (Array.isArray(value) && value.length) {
+    return value.join(", ");
+  }
+  if (value) {
+    return String(value);
+  }
+  return fallback;
 }
 
 function renderAiAnalysis(analysisResult) {

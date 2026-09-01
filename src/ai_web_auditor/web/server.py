@@ -17,6 +17,7 @@ from ..engine import run_scan
 from ..errors import AuditError
 from ..evidence import build_evidence_manifest, build_evidence_package, evidence_package_filename
 from ..history import DEFAULT_HISTORY_DIR, list_history, load_scan_reference, save_analysis_for_history, save_scan_history
+from ..importers import import_external_text
 from ..inventory import build_inventory_from_scan
 from ..lab import DEFAULT_LAB_HOST, DEFAULT_LAB_PORT, LabManager
 from ..projects import create_project, list_projects, load_project, load_project_config, project_report_metadata
@@ -24,12 +25,12 @@ from ..reporting import generate_html_report, generate_markdown_report, generate
 
 
 WEB_ROOT = Path(__file__).resolve().parent
-MAX_REQUEST_BYTES = 2_000_000
+MAX_REQUEST_BYTES = 10_000_000
 LAB_MANAGER = LabManager()
 
 
 class LocalAuditHandler(BaseHTTPRequestHandler):
-    server_version = "AIWebAuditorGUI/0.21"
+    server_version = "AIWebAuditorGUI/0.22"
 
     def do_GET(self) -> None:  # noqa: N802 - http.server uses this naming.
         parsed = urlparse(self.path)
@@ -68,6 +69,9 @@ class LocalAuditHandler(BaseHTTPRequestHandler):
                 return
             if path == "/api/evidence":
                 self._handle_evidence(payload)
+                return
+            if path == "/api/import":
+                self._handle_import(payload)
                 return
             if path == "/api/analyze":
                 self._handle_analyze(payload)
@@ -213,6 +217,21 @@ class LocalAuditHandler(BaseHTTPRequestHandler):
                 "zip_base64": b64encode(package).decode("ascii"),
             }
         )
+
+    def _handle_import(self, payload: dict[str, Any]) -> None:
+        content = payload.get("content")
+        if not isinstance(content, str) or not content.strip():
+            raise ValueError("Imported file content is required")
+        merge_scan = payload.get("merge_scan") if isinstance(payload.get("merge_scan"), dict) else None
+        scan = import_external_text(
+            content,
+            filename=_clean_text(payload.get("filename")) or "uploaded-content",
+            source_format=_clean_text(payload.get("format")) or "auto",
+            target=_clean_text(payload.get("target")),
+            merge_scan=merge_scan,
+        )
+        external_sources = scan.get("external_sources") if isinstance(scan.get("external_sources"), dict) else {}
+        self._send_json({"ok": True, "scan": scan, "import_summary": external_sources.get("summary", {})})
 
     def _handle_project_create(self, payload: dict[str, Any]) -> None:
         name = _clean_text(payload.get("name"))
