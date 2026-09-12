@@ -2,8 +2,8 @@
 <rect width="960" height="540" fill="#020617"/>
 <rect x="20" y="20" width="920" height="500" rx="18" fill="#0b1220" stroke="#1f3d34"/>
 <text x="44" y="72" fill="#22c55e" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="16" font-weight="800">AI Web Auditor</text>
-<text x="44" y="108" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="28" font-weight="800">http://127.0.0.1:54920/members/</text>
-<text x="44" y="140" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="600">http | 127.0.0.1:54920</text>
+<text x="44" y="108" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="28" font-weight="800">http://127.0.0.1:55917/members/</text>
+<text x="44" y="140" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="600">http | 127.0.0.1:55917</text>
 <rect x="720" y="56" width="178" height="44" rx="14" fill="#9a3412"/><text x="734" y="84" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800">HIGH 89/100</text>
 <rect x="44" y="182" width="156" height="108" rx="12" fill="#111827" stroke="#263244"/>
 <text x="62" y="216" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">Critical</text>

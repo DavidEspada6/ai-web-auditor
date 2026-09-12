@@ -1,12 +1,12 @@
 {
   "tool": "ai-web-auditor",
-  "version": "0.24.0",
-  "generated_at": "2026-09-12T02:26:12Z",
+  "version": "0.25.0",
+  "generated_at": "2026-09-12T03:02:28Z",
   "baseline": {
-    "generated_at": "2026-09-12T02:26:10Z",
+    "generated_at": "2026-09-12T03:02:25Z",
     "status": "completed",
-    "version": "0.24.0",
-    "target": "http://127.0.0.1:54920/members/",
+    "version": "0.25.0",
+    "target": "http://127.0.0.1:55917/members/",
     "host": "127.0.0.1",
     "auth_profile": {
       "id": "public",
@@ -16,10 +16,10 @@
     "risk_score": 89
   },
   "current": {
-    "generated_at": "2026-09-12T02:26:11Z",
+    "generated_at": "2026-09-12T03:02:26Z",
     "status": "completed",
-    "version": "0.24.0",
-    "target": "http://127.0.0.1:54920/members/",
+    "version": "0.25.0",
+    "target": "http://127.0.0.1:55917/members/",
     "host": "127.0.0.1",
     "auth_profile": {
       "id": "member",
@@ -39,7 +39,7 @@
   },
   "new_urls": [
     {
-      "url": "http://127.0.0.1:54920/api/profile",
+      "url": "http://127.0.0.1:55917/api/profile",
       "status_code": 200,
       "content_type": "application/json; charset=utf-8",
       "forms_found": 0,
@@ -57,7 +57,7 @@
       ]
     },
     {
-      "url": "http://127.0.0.1:54920/orders",
+      "url": "http://127.0.0.1:55917/orders",
       "status_code": 200,
       "content_type": "text/html; charset=utf-8",
       "forms_found": 0,
@@ -75,8 +75,8 @@
   "baseline_only_urls": [],
   "new_entry_points": [
     {
-      "id": "ep_1e8850b4405f",
-      "url": "http://127.0.0.1:54920/api/profile",
+      "id": "ep_03b870f581a1",
+      "url": "http://127.0.0.1:55917/api/profile",
       "state": "fetched",
       "status_code": 200,
       "methods": [
@@ -91,8 +91,8 @@
       "review_candidate": true
     },
     {
-      "id": "ep_c374dee3d2fc",
-      "url": "http://127.0.0.1:54920/orders",
+      "id": "ep_dc1cbe4ce01e",
+      "url": "http://127.0.0.1:55917/orders",
       "state": "fetched",
       "status_code": 200,
       "methods": [
@@ -107,7 +107,7 @@
   "baseline_only_entry_points": [],
   "status_code_changes": [
     {
-      "url": "http://127.0.0.1:54920/account",
+      "url": "http://127.0.0.1:55917/account",
       "baseline_status": 403,
       "current_status": 200,
       "baseline_sources": [
@@ -129,7 +129,7 @@
       ]
     },
     {
-      "url": "http://127.0.0.1:54920/members/",
+      "url": "http://127.0.0.1:55917/members/",
       "baseline_status": 401,
       "current_status": 200,
       "baseline_sources": [

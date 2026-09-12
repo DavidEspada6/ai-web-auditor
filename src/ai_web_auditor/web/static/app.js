@@ -18,6 +18,13 @@ const form = document.querySelector("#scan-form");
 const message = document.querySelector("#message");
 const statusText = document.querySelector("#status-text");
 const targetPill = document.querySelector("#target-pill");
+const dashboardReadiness = document.querySelector("#dashboard-readiness");
+const dashboardRisk = document.querySelector("#dashboard-risk");
+const dashboardSummary = document.querySelector("#dashboard-summary");
+const dashboardCoverage = document.querySelector("#dashboard-coverage");
+const dashboardChanges = document.querySelector("#dashboard-changes");
+const dashboardPending = document.querySelector("#dashboard-pending");
+const dashboardChecklist = document.querySelector("#dashboard-checklist");
 const summaryEmpty = document.querySelector("#summary-empty");
 const summaryContent = document.querySelector("#summary-content");
 const findingsList = document.querySelector("#findings-list");
@@ -371,6 +378,9 @@ runCompareButton.addEventListener("click", async () => {
     });
     state.comparison = response.comparison;
     renderComparison(state.comparison);
+    if (state.scan?.dashboard) {
+      renderDashboard(state.scan.dashboard, state.comparison);
+    }
   } catch (error) {
     showMessage(error.message);
   }
@@ -638,6 +648,7 @@ function renderScan(scan) {
   statusText.textContent = scan.status || "completed";
   targetPill.textContent = scan.target?.normalized_url || scan.target?.host || "Sin objetivo";
   renderSeverityCounts(findings);
+  renderDashboard(scan.dashboard || {}, state.comparison);
   renderSummary(scan, findings, modules, requests, subdomains, ports, javascript, assessment, ruleEvaluation);
   renderAssessment(assessment);
   renderRules(ruleEvaluation);
@@ -715,7 +726,7 @@ function applyLabDefaults(lab) {
     projectAuditorInput.value = "David";
   }
   if (!projectEngagementInput.value.trim()) {
-    projectEngagementInput.value = "Simulacion v0.24.0";
+    projectEngagementInput.value = "Simulacion v0.25.0";
   }
 
   document.querySelector("#target").value = defaults.target;
@@ -933,6 +944,185 @@ function renderSeverityCounts(findings) {
   severityOrder.forEach((severity) => {
     document.querySelector(`#count-${severity}`).textContent = String(counts[severity] || 0);
   });
+}
+
+function renderDashboard(dashboard, comparison = null) {
+  const summary = dashboard?.summary || {};
+  const coverage = dashboard?.coverage || {};
+  const risks = dashboard?.risks || {};
+  const pending = Array.isArray(dashboard?.pending) ? dashboard.pending : [];
+  const checklist = Array.isArray(dashboard?.checklist) ? dashboard.checklist : [];
+  const changes = comparison ? comparisonToDashboardChanges(comparison) : dashboard?.changes || {};
+  const severityCounts = risks.severity_counts || {};
+
+  dashboardReadiness.textContent = readinessLabel(summary.readiness || "Sin auditoria");
+  dashboardRisk.textContent = `${risks.risk_level || summary.risk_level || "sin datos"} (${risks.risk_score ?? summary.risk_score ?? 0}/100)`;
+  dashboardRisk.className = `pill risk-pill ${normalizeSeverity(risks.risk_level || summary.risk_level)}`;
+
+  dashboardSummary.innerHTML = "";
+  [
+    ["Cobertura", `${summary.coverage_score ?? coverage.score ?? 0}%`],
+    ["Pendientes", summary.pending_count ?? pending.length],
+    ["Checklist", `${summary.checklist_done ?? checklist.filter((item) => item.status === "done").length}/${summary.checklist_total ?? checklist.length}`],
+    ["Cambios", changeStatusLabel(changes.status)],
+    ["High+", (severityCounts.critical ?? 0) + (severityCounts.high ?? 0)],
+    ["Medium", severityCounts.medium ?? 0],
+  ].forEach(([label, value]) => {
+    const item = document.createElement("div");
+    item.className = "metric";
+    item.innerHTML = `<span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong>`;
+    dashboardSummary.appendChild(item);
+  });
+
+  renderDashboardCoverage(coverage);
+  renderDashboardChanges(changes);
+  renderDashboardPending(pending);
+  renderDashboardChecklist(checklist);
+}
+
+function renderDashboardCoverage(coverage) {
+  const metrics = Array.isArray(coverage?.metrics) ? coverage.metrics : [];
+  dashboardCoverage.innerHTML = "";
+  if (!metrics.length) {
+    dashboardCoverage.innerHTML = '<div class="empty-inline">Sin cobertura calculada.</div>';
+    return;
+  }
+  metrics.forEach((metric) => {
+    const item = document.createElement("article");
+    item.className = `dashboard-row ${dashboardStatusClass(metric.status)}`;
+    item.innerHTML = `
+      <div>
+        <strong>${escapeHtml(metric.label || metric.id || "Metrica")}</strong>
+        <span>${escapeHtml(String(metric.value ?? 0))}${metric.target ? ` / ${escapeHtml(String(metric.target))}` : ""}</span>
+      </div>
+      <span class="status-chip ${dashboardStatusClass(metric.status)}">${escapeHtml(dashboardStatusLabel(metric.status))}</span>
+    `;
+    dashboardCoverage.appendChild(item);
+  });
+}
+
+function renderDashboardChanges(changes) {
+  const summary = changes?.summary || {};
+  const notes = Array.isArray(changes?.notes) ? changes.notes : [];
+  dashboardChanges.innerHTML = `
+    <div class="dashboard-change-grid">
+      <div class="metric"><span>Nuevos</span><strong>${escapeHtml(String(summary.new ?? 0))}</strong></div>
+      <div class="metric"><span>Resueltos</span><strong>${escapeHtml(String(summary.resolved ?? 0))}</strong></div>
+      <div class="metric"><span>Persistentes</span><strong>${escapeHtml(String(summary.persistent ?? 0))}</strong></div>
+      <div class="metric"><span>Severidad</span><strong>${escapeHtml(String(summary.severity_changed ?? 0))}</strong></div>
+    </div>
+    <div class="dashboard-notes">${notes.map((note) => `<p>${escapeHtml(note)}</p>`).join("") || '<p>Sin comparacion disponible.</p>'}</div>
+  `;
+}
+
+function renderDashboardPending(items) {
+  dashboardPending.innerHTML = "";
+  if (!items.length) {
+    dashboardPending.innerHTML = '<div class="empty-inline">Sin pendientes relevantes.</div>';
+    return;
+  }
+  items.slice(0, 12).forEach((item) => {
+    const severity = normalizeSeverity(item.severity);
+    const card = document.createElement("article");
+    card.className = "dashboard-pending-card";
+    card.innerHTML = `
+      <span class="badge ${severity}">${escapeHtml(severity)}</span>
+      <h3>${escapeHtml(item.title || "Pendiente")}</h3>
+      <p>${escapeHtml(item.reason || "")}</p>
+      <p><strong>Siguiente paso:</strong> ${escapeHtml(item.next_step || "Revisar evidencia.")}</p>
+    `;
+    dashboardPending.appendChild(card);
+  });
+}
+
+function renderDashboardChecklist(items) {
+  dashboardChecklist.innerHTML = "";
+  if (!items.length) {
+    dashboardChecklist.innerHTML = '<div class="empty-inline">Sin checklist disponible.</div>';
+    return;
+  }
+  const groups = {};
+  items.forEach((item) => {
+    const group = item.group || "General";
+    groups[group] = groups[group] || [];
+    groups[group].push(item);
+  });
+  Object.entries(groups).forEach(([group, groupItems]) => {
+    const section = document.createElement("section");
+    section.className = "checklist-group";
+    section.innerHTML = `<h3>${escapeHtml(group)}</h3>`;
+    groupItems.forEach((item) => {
+      const row = document.createElement("div");
+      row.className = `checklist-row ${dashboardStatusClass(item.status)}`;
+      row.innerHTML = `
+        <span class="check-dot"></span>
+        <div>
+          <strong>${escapeHtml(item.label || item.id || "Checklist")}</strong>
+          <p>${escapeHtml(item.evidence || "")}</p>
+        </div>
+      `;
+      section.appendChild(row);
+    });
+    dashboardChecklist.appendChild(section);
+  });
+}
+
+function comparisonToDashboardChanges(comparison) {
+  const summary = comparison?.summary || {};
+  return {
+    status: "compared",
+    summary: {
+      new: summary.new ?? 0,
+      resolved: summary.resolved ?? 0,
+      persistent: summary.persistent ?? 0,
+      severity_changed: summary.severity_changed ?? 0,
+    },
+    notes: [
+      `Nuevos: ${summary.new ?? 0}`,
+      `Resueltos: ${summary.resolved ?? 0}`,
+      `Persistentes: ${summary.persistent ?? 0}`,
+      `Cambio de severidad: ${summary.severity_changed ?? 0}`,
+    ],
+  };
+}
+
+function readinessLabel(value) {
+  const labels = {
+    critical_review: "Revision critica",
+    needs_attention: "Necesita atencion",
+    in_progress: "En progreso",
+    ready_with_notes: "Lista con notas",
+    ready_for_report: "Lista para informe",
+  };
+  return labels[value] || value;
+}
+
+function changeStatusLabel(value) {
+  if (value === "compared") {
+    return "Comparado";
+  }
+  if (value === "baseline_required") {
+    return "Sin baseline";
+  }
+  return value || "Sin datos";
+}
+
+function dashboardStatusClass(value) {
+  const status = String(value || "pending").toLowerCase();
+  if (["done", "review", "pending", "optional"].includes(status)) {
+    return status;
+  }
+  return "pending";
+}
+
+function dashboardStatusLabel(value) {
+  const labels = {
+    done: "Hecho",
+    review: "Revisar",
+    pending: "Pendiente",
+    optional: "Opcional",
+  };
+  return labels[dashboardStatusClass(value)];
 }
 
 function renderSummary(scan, findings, modules, requests, subdomains, ports, javascript, assessment, ruleEvaluation) {

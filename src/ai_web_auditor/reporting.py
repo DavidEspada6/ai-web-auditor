@@ -10,6 +10,7 @@ from typing import Any
 
 from . import __version__
 from .assessment import build_assessment
+from .dashboard import build_audit_dashboard
 from .entrypoints import build_entry_points_from_scan
 from .inventory import build_inventory_from_scan
 from .models import utc_now
@@ -67,6 +68,15 @@ def generate_markdown_report(
             assessment=assessment,
         )
     )
+    dashboard = build_audit_dashboard(
+        _scan_with_derived_sections(
+            scan_data,
+            inventory=inventory,
+            entry_points=entry_points,
+            rule_evaluation=rule_evaluation,
+            assessment=assessment,
+        )
+    )
     ai_analysis = ai_analysis or _embedded_ai_analysis(scan_data)
     ai_body = _analysis_body(ai_analysis)
     report_metadata = normalize_report_metadata(metadata)
@@ -96,6 +106,7 @@ def generate_markdown_report(
     lines.extend(_auth_profile_markdown_section(scan_data))
     lines.extend(_metadata_markdown_section(report_metadata))
     lines.extend(_executive_summary_section(findings, ai_body))
+    lines.extend(_dashboard_section(dashboard))
     lines.extend(_severity_summary_section(findings))
     lines.extend(_assessment_section(assessment))
     lines.extend(_visual_evidence_section(visual_evidence))
@@ -185,6 +196,15 @@ def generate_html_report(
             assessment=assessment,
         )
     )
+    dashboard = build_audit_dashboard(
+        _scan_with_derived_sections(
+            scan_data,
+            inventory=inventory,
+            entry_points=entry_points,
+            rule_evaluation=rule_evaluation,
+            assessment=assessment,
+        )
+    )
     ai_analysis = ai_analysis or _embedded_ai_analysis(scan_data)
     ai_body = _analysis_body(ai_analysis)
     report_metadata = normalize_report_metadata(metadata)
@@ -244,6 +264,7 @@ def generate_html_report(
             f"<p>{_html(rationale)}</p>",
             "</section>",
             _severity_html_section(severity_counts),
+            _dashboard_html_section(dashboard),
             _assessment_html_section(assessment),
             _visual_evidence_html_section(visual_evidence),
             _rules_html_section(rule_evaluation),
@@ -358,6 +379,69 @@ def _severity_summary_section(findings: list[dict[str, Any]]) -> list[str]:
             count += counts.get("informational", 0)
         lines.append(f"| {severity.upper()} | {count} |")
     lines.append("")
+    return lines
+
+
+def _dashboard_section(dashboard: dict[str, Any]) -> list[str]:
+    summary = dashboard.get("summary") if isinstance(dashboard.get("summary"), dict) else {}
+    coverage = dashboard.get("coverage") if isinstance(dashboard.get("coverage"), dict) else {}
+    risks = dashboard.get("risks") if isinstance(dashboard.get("risks"), dict) else {}
+    changes = dashboard.get("changes") if isinstance(dashboard.get("changes"), dict) else {}
+    pending = _dict_list(dashboard.get("pending"))
+    checklist = _dict_list(dashboard.get("checklist"))
+    metrics = _dict_list(coverage.get("metrics")) if coverage else []
+    top_priorities = _dict_list(risks.get("top_priorities")) if risks else []
+
+    lines = [
+        "## Audit Dashboard",
+        "",
+        f"- Readiness: **{_text(summary.get('readiness', 'unknown'))}**",
+        f"- Risk: **{_text(summary.get('risk_level', risks.get('risk_level', 'unknown') if risks else 'unknown')).upper()}** ({_text(summary.get('risk_score', risks.get('risk_score', 0) if risks else 0))}/100)",
+        f"- Coverage: **{_text(summary.get('coverage_score', coverage.get('score', 0) if coverage else 0))}%**",
+        f"- Pending items: {_text(summary.get('pending_count', len(pending)))}",
+        f"- Checklist: {_text(summary.get('checklist_done', 0))}/{_text(summary.get('checklist_total', len(checklist)))}",
+        f"- Changes: {_text(changes.get('status', 'baseline_required'))}",
+        "",
+    ]
+
+    if metrics:
+        lines.extend(["### Coverage Metrics", "", "| Area | Value | Target | Status |", "| --- | ---: | ---: | --- |"])
+        for item in metrics:
+            lines.append(
+                f"| {_cell(item.get('label'))} | {_cell(item.get('value', 0))} | {_cell(item.get('target', 0))} | {_cell(item.get('status'))} |"
+            )
+        lines.append("")
+
+    if top_priorities:
+        lines.extend(["### Dashboard Priorities", ""])
+        for item in top_priorities:
+            lines.append(f"- **{_text(item.get('severity', 'info')).upper()}** {_text(item.get('title', 'Untitled'))}")
+        lines.append("")
+
+    if pending:
+        lines.extend(["### Pending Work", "", "| Severity | Item | Next step |", "| --- | --- | --- |"])
+        for item in pending[:12]:
+            lines.append(
+                f"| {_cell(str(item.get('severity', 'info')).upper())} | {_cell(item.get('title'))} | {_cell(item.get('next_step'))} |"
+            )
+        lines.append("")
+    else:
+        lines.extend(["### Pending Work", "", "No pending work was derived from the current evidence.", ""])
+
+    if checklist:
+        lines.extend(["### Audit Checklist", "", "| Group | Item | Status | Evidence |", "| --- | --- | --- | --- |"])
+        for item in checklist:
+            lines.append(
+                f"| {_cell(item.get('group'))} | {_cell(item.get('label'))} | {_cell(item.get('status'))} | {_cell(item.get('evidence'))} |"
+            )
+        lines.append("")
+
+    safety_notes = _string_list(dashboard.get("safety_notes"))
+    if safety_notes:
+        lines.extend(["### Dashboard Safety Notes", ""])
+        lines.extend(f"- {_text(note)}" for note in safety_notes)
+        lines.append("")
+
     return lines
 
 
@@ -1139,6 +1223,55 @@ def _severity_html_section(counts: dict[str, int]) -> str:
             "</section>",
         ]
     )
+
+
+def _dashboard_html_section(dashboard: dict[str, Any]) -> str:
+    summary = dashboard.get("summary") if isinstance(dashboard.get("summary"), dict) else {}
+    coverage = dashboard.get("coverage") if isinstance(dashboard.get("coverage"), dict) else {}
+    risks = dashboard.get("risks") if isinstance(dashboard.get("risks"), dict) else {}
+    changes = dashboard.get("changes") if isinstance(dashboard.get("changes"), dict) else {}
+    pending = _dict_list(dashboard.get("pending"))
+    checklist = _dict_list(dashboard.get("checklist"))
+    metrics = _dict_list(coverage.get("metrics")) if coverage else []
+    top_priorities = _dict_list(risks.get("top_priorities")) if risks else []
+    tiles = [
+        _meta_tile("Readiness", summary.get("readiness", "unknown")),
+        _meta_tile("Risk", f"{summary.get('risk_level', risks.get('risk_level', 'unknown') if risks else 'unknown')} ({summary.get('risk_score', risks.get('risk_score', 0) if risks else 0)}/100)"),
+        _meta_tile("Coverage", f"{summary.get('coverage_score', coverage.get('score', 0) if coverage else 0)}%"),
+        _meta_tile("Pending", summary.get("pending_count", len(pending))),
+        _meta_tile("Checklist", f"{summary.get('checklist_done', 0)}/{summary.get('checklist_total', len(checklist))}"),
+        _meta_tile("Changes", changes.get("status", "baseline_required")),
+    ]
+    lines = [
+        '<section class="section">',
+        "<h2>Audit Dashboard</h2>",
+        '<div class="cover-grid">',
+        *tiles,
+        "</div>",
+    ]
+    if metrics:
+        rows = [[item.get("label"), item.get("value", 0), item.get("target", 0), item.get("status")] for item in metrics]
+        lines.extend(["<h3>Coverage Metrics</h3>", _html_table(["Area", "Value", "Target", "Status"], rows)])
+    if top_priorities:
+        lines.extend(
+            [
+                "<h3>Dashboard Priorities</h3>",
+                _html_list([f"{str(item.get('severity') or 'info').upper()}: {item.get('title', 'Untitled')}" for item in top_priorities]),
+            ]
+        )
+    if pending:
+        rows = [[str(item.get("severity", "info")).upper(), item.get("title"), item.get("next_step")] for item in pending[:12]]
+        lines.extend(["<h3>Pending Work</h3>", _html_table(["Severity", "Item", "Next step"], rows)])
+    else:
+        lines.extend(["<h3>Pending Work</h3>", '<p class="empty">No pending work was derived from the current evidence.</p>'])
+    if checklist:
+        rows = [[item.get("group"), item.get("label"), item.get("status"), item.get("evidence")] for item in checklist]
+        lines.extend(["<h3>Audit Checklist</h3>", _html_table(["Group", "Item", "Status", "Evidence"], rows)])
+    safety_notes = _string_list(dashboard.get("safety_notes"))
+    if safety_notes:
+        lines.extend(["<h3>Dashboard Safety Notes</h3>", _html_list(safety_notes)])
+    lines.append("</section>")
+    return "\n".join(lines)
 
 
 def _assessment_html_section(assessment: dict[str, Any]) -> str:

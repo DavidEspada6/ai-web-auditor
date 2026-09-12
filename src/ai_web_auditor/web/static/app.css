@@ -622,6 +622,176 @@ label[data-help]:focus-within::after {
   margin: 14px 0;
 }
 
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 16px;
+}
+
+.dashboard-block {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fafbfc;
+}
+
+.dashboard-block h2 {
+  margin: 0 0 12px;
+  color: var(--ink);
+  font-size: 17px;
+  letter-spacing: 0;
+}
+
+.dashboard-list {
+  display: grid;
+  gap: 10px;
+}
+
+.dashboard-row,
+.checklist-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.dashboard-row strong,
+.checklist-row strong {
+  display: block;
+  overflow-wrap: anywhere;
+}
+
+.dashboard-row span,
+.checklist-row p,
+.dashboard-notes p {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.dashboard-change-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.dashboard-change-grid .metric {
+  padding: 10px;
+}
+
+.dashboard-pending-card {
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #ffffff;
+}
+
+.dashboard-pending-card h3 {
+  margin: 8px 0;
+  color: var(--ink);
+  font-size: 15px;
+  letter-spacing: 0;
+}
+
+.dashboard-pending-card p {
+  margin: 6px 0;
+  color: #334155;
+}
+
+.checklist-group {
+  display: grid;
+  gap: 8px;
+}
+
+.checklist-group h3 {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.checklist-row {
+  justify-content: flex-start;
+}
+
+.check-dot {
+  flex: 0 0 auto;
+  width: 12px;
+  height: 12px;
+  border-radius: 999px;
+  background: #94a3b8;
+}
+
+.done .check-dot,
+.status-chip.done {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.done .check-dot {
+  background: #16a34a;
+}
+
+.review .check-dot,
+.status-chip.review {
+  background: #fff7ed;
+  color: #9a3412;
+}
+
+.review .check-dot {
+  background: #f97316;
+}
+
+.pending .check-dot,
+.status-chip.pending {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.pending .check-dot {
+  background: #ef4444;
+}
+
+.optional .check-dot,
+.status-chip.optional {
+  background: #e0f2fe;
+  color: #075985;
+}
+
+.optional .check-dot {
+  background: #0ea5e9;
+}
+
+.risk-pill.critical,
+.risk-pill.high {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.risk-pill.medium {
+  background: #fff7ed;
+  color: #9a3412;
+}
+
+.risk-pill.low {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.risk-pill.info {
+  background: #e6f4f1;
+  color: var(--brand-dark);
+}
+
 .visual-gallery {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -1095,6 +1265,7 @@ body.is-resizing-column {
 
   .summary-grid,
   .compact-summary,
+  .dashboard-grid,
   .visual-gallery,
   .metadata-grid,
   .import-controls,
@@ -1132,6 +1303,8 @@ body.is-resizing-column {
   .grid-two,
   .toggles,
   .module-grid,
+  .dashboard-grid,
+  .dashboard-change-grid,
   .visual-gallery,
   .summary-grid,
   .compact-summary,

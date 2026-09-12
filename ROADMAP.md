@@ -13,7 +13,7 @@ no se priorizaran funcionalidades fuera de estos bloques.
 - `v0.22.0`: importadores/adaptadores para herramientas externas. Completada.
 - `v0.23.0`: perfiles autenticados y comparacion por roles. Completada en esta version.
 - `v0.24.0`: screenshots, fingerprint visual y agrupacion de pantallas. Completada en esta version.
-- `v0.25.0`: dashboard de auditoria real: cobertura, cambios, riesgos, pendientes y checklist.
+- `v0.25.0`: dashboard de auditoria real: cobertura, cambios, riesgos, pendientes y checklist. Completada en esta version.
 - `v0.26.0`: estabilizacion de primera version completa: presets de auditoria, revision de UX, documentacion operativa y regresion completa.
 - `v0.27.0`: preparacion de release funcional: empaquetado, instalador/lanzador pulido, ejemplos reproducibles y guia de uso en auditoria real.
 - `v0.28.0`: rediseno visual completo de la UI: tema oscuro negro/verde, navegacion lateral profesional, menus por flujo de trabajo, estados visuales mas claros y menos saturacion de botones.

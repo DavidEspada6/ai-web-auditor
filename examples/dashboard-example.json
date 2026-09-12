@@ -1,0 +1,469 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-09-12T03:02:28Z",
+  "summary": {
+    "readiness": "needs_attention",
+    "risk_level": "high",
+    "risk_score": 89,
+    "coverage_score": 89,
+    "pending_count": 14,
+    "checklist_done": 14,
+    "checklist_total": 19,
+    "change_status": "compared"
+  },
+  "coverage": {
+    "score": 89,
+    "metrics": [
+      {
+        "id": "modules",
+        "label": "Modulos ejecutados",
+        "value": 10,
+        "target": 10,
+        "status": "done",
+        "weight": 1
+      },
+      {
+        "id": "inventory",
+        "label": "URLs inventariadas",
+        "value": 36,
+        "target": 1,
+        "status": "done",
+        "weight": 1
+      },
+      {
+        "id": "entry_points",
+        "label": "Puntos de entrada",
+        "value": 36,
+        "target": 1,
+        "status": "done",
+        "weight": 1
+      },
+      {
+        "id": "javascript",
+        "label": "Endpoints JavaScript",
+        "value": 9,
+        "target": 1,
+        "status": "done",
+        "weight": 1
+      },
+      {
+        "id": "rules",
+        "label": "Reglas pasivas",
+        "value": 13,
+        "target": 15,
+        "status": "done",
+        "weight": 1
+      },
+      {
+        "id": "controls",
+        "label": "Controles OWASP",
+        "value": 34,
+        "target": 1,
+        "status": "done",
+        "weight": 1
+      },
+      {
+        "id": "visuals",
+        "label": "Capturas visuales",
+        "value": 3,
+        "target": 3,
+        "status": "done",
+        "weight": 1
+      },
+      {
+        "id": "subdomains",
+        "label": "Subdominios revisados",
+        "value": 0,
+        "target": 1,
+        "status": "pending",
+        "weight": 1
+      },
+      {
+        "id": "ports",
+        "label": "Puertos revisados",
+        "value": 1,
+        "target": 1,
+        "status": "done",
+        "weight": 1
+      }
+    ],
+    "notes": [
+      "Subdominios y puertos se consideran cubiertos si el modulo se ejecuto, aunque no encuentre resultados.",
+      "La cobertura mide enumeracion inicial, no profundidad de pruebas ofensivas."
+    ]
+  },
+  "risks": {
+    "risk_level": "high",
+    "risk_score": 89,
+    "severity_counts": {
+      "critical": 0,
+      "high": 3,
+      "medium": 4,
+      "low": 6,
+      "info": 9
+    },
+    "top_priorities": [
+      {
+        "rank": 1,
+        "finding_id": "AUTH-BASIC-OVER-HTTP",
+        "title": "HTTP Basic Authentication over HTTP",
+        "severity": "high",
+        "module": "basic_auth",
+        "target": "http://127.0.0.1:55917/members/",
+        "score": 96,
+        "reason": "credentials may be exposed before transport security is enforced",
+        "recommended_action": "Force HTTPS before authentication and enable HSTS after validation."
+      },
+      {
+        "rank": 2,
+        "finding_id": "HTTP-NO-HTTPS-REDIRECT",
+        "title": "HTTP is not redirected to HTTPS",
+        "severity": "high",
+        "module": "http",
+        "target": "http://127.0.0.1:55917/members/",
+        "score": 95,
+        "reason": "unencrypted HTTP remains reachable for the same service",
+        "recommended_action": "Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification."
+      },
+      {
+        "rank": 3,
+        "finding_id": "METHOD-TRACE-ADVERTISED",
+        "title": "HTTP method TRACE is advertised",
+        "severity": "high",
+        "module": "http_methods",
+        "target": "http://127.0.0.1:55917/members/",
+        "score": 91,
+        "reason": "an unnecessary HTTP method is advertised by the server",
+        "recommended_action": "Disable unnecessary HTTP methods or enforce strict authorization before use."
+      },
+      {
+        "rank": 4,
+        "finding_id": "METHOD-DELETE-ADVERTISED",
+        "title": "HTTP method DELETE is advertised",
+        "severity": "medium",
+        "module": "http_methods",
+        "target": "http://127.0.0.1:55917/members/",
+        "score": 57,
+        "reason": "medium finding reported by the http_methods module",
+        "recommended_action": "Disable unnecessary HTTP methods or enforce strict authorization before use."
+      },
+      {
+        "rank": 5,
+        "finding_id": "METHOD-PUT-ADVERTISED",
+        "title": "HTTP method PUT is advertised",
+        "severity": "medium",
+        "module": "http_methods",
+        "target": "http://127.0.0.1:55917/members/",
+        "score": 57,
+        "reason": "medium finding reported by the http_methods module",
+        "recommended_action": "Disable unnecessary HTTP methods or enforce strict authorization before use."
+      }
+    ],
+    "quick_wins": [
+      {
+        "finding_id": "HTTP-NO-HTTPS-REDIRECT",
+        "title": "HTTP is not redirected to HTTPS",
+        "severity": "high",
+        "effort": "low",
+        "recommended_action": "Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification."
+      },
+      {
+        "finding_id": "HEADER-CONTENT_SECURITY_POLICY-MISSING",
+        "title": "Content-Security-Policy header is missing",
+        "severity": "medium",
+        "effort": "low",
+        "recommended_action": "Define an appropriate Content-Security-Policy header for this application."
+      },
+      {
+        "finding_id": "HEADER-CLICKJACKING-MISSING",
+        "title": "Clickjacking protection header is missing",
+        "severity": "low",
+        "effort": "low",
+        "recommended_action": "Set frame-ancestors in Content-Security-Policy or use X-Frame-Options where appropriate."
+      },
+      {
+        "finding_id": "HEADER-NOSNIFF-MISSING",
+        "title": "X-Content-Type-Options nosniff is missing",
+        "severity": "low",
+        "effort": "low",
+        "recommended_action": "Set X-Content-Type-Options: nosniff."
+      },
+      {
+        "finding_id": "HEADER-REFERRER_POLICY-MISSING",
+        "title": "Referrer-Policy header is missing",
+        "severity": "low",
+        "effort": "low",
+        "recommended_action": "Define an appropriate Referrer-Policy header for this application."
+      }
+    ]
+  },
+  "pending": [
+    {
+      "id": "priority-AUTH-BASIC-OVER-HTTP",
+      "title": "HTTP Basic Authentication over HTTP",
+      "severity": "high",
+      "reason": "credentials may be exposed before transport security is enforced",
+      "next_step": "Force HTTPS before authentication and enable HSTS after validation.",
+      "source": "assessment"
+    },
+    {
+      "id": "priority-HTTP-NO-HTTPS-REDIRECT",
+      "title": "HTTP is not redirected to HTTPS",
+      "severity": "high",
+      "reason": "unencrypted HTTP remains reachable for the same service",
+      "next_step": "Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification.",
+      "source": "assessment"
+    },
+    {
+      "id": "priority-METHOD-TRACE-ADVERTISED",
+      "title": "HTTP method TRACE is advertised",
+      "severity": "high",
+      "reason": "an unnecessary HTTP method is advertised by the server",
+      "next_step": "Disable unnecessary HTTP methods or enforce strict authorization before use.",
+      "source": "assessment"
+    },
+    {
+      "id": "entry-points-review",
+      "title": "Priorizar puntos de entrada",
+      "severity": "medium",
+      "reason": "29 endpoint(s) necesitan revision manual.",
+      "next_step": "Abre la pestana Entradas y filtra login, admin, token, upload, POST o delete.",
+      "source": "entry_points"
+    },
+    {
+      "id": "module-basic_auth",
+      "title": "Revisar modulo basic_auth",
+      "severity": "medium",
+      "reason": "HTTP authentication challenge checked.",
+      "next_step": "Revisa la evidencia del modulo y decide si requiere validacion manual.",
+      "source": "modules"
+    },
+    {
+      "id": "module-cookies",
+      "title": "Revisar modulo cookies",
+      "severity": "medium",
+      "reason": "Checked 2 cookie(s).",
+      "next_step": "Revisa la evidencia del modulo y decide si requiere validacion manual.",
+      "source": "modules"
+    },
+    {
+      "id": "module-crawler",
+      "title": "Revisar modulo crawler",
+      "severity": "medium",
+      "reason": "Crawled 6 page(s), discovered 10 in-scope URL(s), 10 from metadata.",
+      "next_step": "Revisa la evidencia del modulo y decide si requiere validacion manual.",
+      "source": "modules"
+    },
+    {
+      "id": "module-fingerprinting",
+      "title": "Revisar modulo fingerprinting",
+      "severity": "medium",
+      "reason": "Identified 4 technology signal(s) and checked 4 public metadata path(s).",
+      "next_step": "Revisa la evidencia del modulo y decide si requiere validacion manual.",
+      "source": "modules"
+    },
+    {
+      "id": "module-http",
+      "title": "Revisar modulo http",
+      "severity": "medium",
+      "reason": "HTTP/HTTPS reachability and redirects checked.",
+      "next_step": "Revisa la evidencia del modulo y decide si requiere validacion manual.",
+      "source": "modules"
+    },
+    {
+      "id": "module-http_methods",
+      "title": "Revisar modulo http_methods",
+      "severity": "medium",
+      "reason": "HTTP methods advertised by OPTIONS checked.",
+      "next_step": "Revisa la evidencia del modulo y decide si requiere validacion manual.",
+      "source": "modules"
+    },
+    {
+      "id": "module-ports",
+      "title": "Revisar modulo ports",
+      "severity": "medium",
+      "reason": "Checked 3 TCP port(s), found 1 open port(s).",
+      "next_step": "Revisa la evidencia del modulo y decide si requiere validacion manual.",
+      "source": "modules"
+    },
+    {
+      "id": "module-security_headers",
+      "title": "Revisar modulo security_headers",
+      "severity": "medium",
+      "reason": "Security headers checked.",
+      "next_step": "Revisa la evidencia del modulo y decide si requiere validacion manual.",
+      "source": "modules"
+    },
+    {
+      "id": "sensitive-parameters",
+      "title": "Revisar parametros sensibles",
+      "severity": "medium",
+      "reason": "4 parametro(s) parecen sensibles por nombre.",
+      "next_step": "Confirma contexto y documenta si transportan tokens, sesiones, claves o datos personales.",
+      "source": "entry_points"
+    },
+    {
+      "id": "subdomains-not-run",
+      "title": "Decidir si entra reconocimiento de subdominios",
+      "severity": "low",
+      "reason": "El modulo de subdominios no se ejecuto.",
+      "next_step": "Activalo solo si el scope autoriza subdominios del dominio raiz.",
+      "source": "subdomains"
+    }
+  ],
+  "checklist": [
+    {
+      "id": "scope",
+      "group": "Alcance",
+      "label": "Scope validado",
+      "status": "done",
+      "evidence": "El objetivo entra en hosts/rutas autorizadas."
+    },
+    {
+      "id": "profile",
+      "group": "Alcance",
+      "label": "Perfil documentado",
+      "status": "done",
+      "evidence": "Perfil anonimo/autenticado incluido en JSON."
+    },
+    {
+      "id": "http",
+      "group": "Transporte",
+      "label": "HTTP y redirecciones revisadas",
+      "status": "done",
+      "evidence": "Estado, URL final y cadena de redireccion revisados."
+    },
+    {
+      "id": "tls",
+      "group": "Transporte",
+      "label": "TLS basico revisado",
+      "status": "review",
+      "evidence": "Certificado y datos basicos TLS si aplica."
+    },
+    {
+      "id": "headers",
+      "group": "Transporte",
+      "label": "Cabeceras defensivas revisadas",
+      "status": "done",
+      "evidence": "HSTS, CSP, X-Frame-Options y politicas de navegador."
+    },
+    {
+      "id": "cookies",
+      "group": "Transporte",
+      "label": "Cookies revisadas",
+      "status": "done",
+      "evidence": "Secure, HttpOnly y SameSite."
+    },
+    {
+      "id": "fingerprint",
+      "group": "Superficie",
+      "label": "Fingerprinting ejecutado",
+      "status": "done",
+      "evidence": "Tecnologias y ficheros publicos."
+    },
+    {
+      "id": "crawler",
+      "group": "Superficie",
+      "label": "Crawler seguro ejecutado",
+      "status": "done",
+      "evidence": "Enlaces, robots, sitemap y rutas relevantes."
+    },
+    {
+      "id": "inventory",
+      "group": "Superficie",
+      "label": "Inventario generado",
+      "status": "done",
+      "evidence": "URLs normalizadas y clasificadas."
+    },
+    {
+      "id": "entrypoints",
+      "group": "Superficie",
+      "label": "Puntos de entrada generados",
+      "status": "done",
+      "evidence": "Endpoints, parametros, formularios y metodos."
+    },
+    {
+      "id": "javascript",
+      "group": "Superficie",
+      "label": "JavaScript revisado",
+      "status": "done",
+      "evidence": "Scripts y referencias a endpoints."
+    },
+    {
+      "id": "subdomains",
+      "group": "Recon",
+      "label": "Subdominios considerados",
+      "status": "optional",
+      "evidence": "DNS seguro si el scope lo permite."
+    },
+    {
+      "id": "ports",
+      "group": "Recon",
+      "label": "Puertos considerados",
+      "status": "done",
+      "evidence": "TCP connect limitado si el scope lo permite."
+    },
+    {
+      "id": "rules",
+      "group": "Trazabilidad",
+      "label": "Reglas OWASP calculadas",
+      "status": "done",
+      "evidence": "Mapeo WSTG/ASVS."
+    },
+    {
+      "id": "assessment",
+      "group": "Trazabilidad",
+      "label": "Valoracion de riesgo generada",
+      "status": "done",
+      "evidence": "Riesgo, prioridades, quick wins y plan."
+    },
+    {
+      "id": "visuals",
+      "group": "Entregables",
+      "label": "Evidencia visual generada",
+      "status": "done",
+      "evidence": "Capturas SVG de resumen, fingerprint y cobertura."
+    },
+    {
+      "id": "report",
+      "group": "Entregables",
+      "label": "Informe preparado",
+      "status": "pending",
+      "evidence": "Genera Markdown/HTML/PDF desde la pestana Informe."
+    },
+    {
+      "id": "compare",
+      "group": "Seguimiento",
+      "label": "Comparacion realizada",
+      "status": "pending",
+      "evidence": "Compara contra baseline cuando exista una segunda ejecucion."
+    },
+    {
+      "id": "open-ports-review",
+      "group": "Seguimiento",
+      "label": "Puertos abiertos revisados",
+      "status": "review",
+      "evidence": "Si hay puertos abiertos, documenta si pertenecen al alcance."
+    }
+  ],
+  "changes": {
+    "status": "compared",
+    "summary": {
+      "new": 0,
+      "resolved": 2,
+      "persistent": 19,
+      "severity_changed": 0
+    },
+    "notes": [
+      "Nuevos: 0",
+      "Resueltos: 2",
+      "Persistentes: 19",
+      "Cambio de severidad: 0"
+    ]
+  },
+  "safety_notes": [
+    "Dashboard values are derived from passive evidence already present in the audit JSON.",
+    "Pending items are triage guidance; they are not proof of exploitability.",
+    "No additional requests, exploitation, fuzzing, brute force or form submission are performed to build this dashboard."
+  ]
+}

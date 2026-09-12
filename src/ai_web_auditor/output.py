@@ -3,6 +3,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from .assessment import render_assessment_console
+from .dashboard import render_dashboard_console
 from .entrypoints import build_entry_points_from_scan
 from .inventory import build_inventory_from_scan
 from .models import Finding, ScanResult
@@ -75,6 +76,11 @@ def render_console(result: ScanResult) -> None:
     visual_summary = visual_evidence.get("summary") if isinstance(visual_evidence.get("summary"), dict) else {}
     if visual_summary:
         print(f"Visual evidence: {visual_summary.get('screenshot_count', 0)} SVG snapshot(s)")
+
+    dashboard = result_data.get("dashboard") if isinstance(result_data.get("dashboard"), dict) else {}
+    if dashboard:
+        print()
+        print(render_dashboard_console(dashboard))
 
     assessment = result_data.get("assessment") if isinstance(result_data.get("assessment"), dict) else {}
     print()

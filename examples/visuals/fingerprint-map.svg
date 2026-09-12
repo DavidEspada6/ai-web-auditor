@@ -4,7 +4,7 @@
 <text x="44" y="72" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="26" font-weight="800">Fingerprint visual</text>
 <text x="44" y="104" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="600">Tecnologias, metadatos publicos y superficie observada</text>
 <text x="44" y="154" fill="#bbf7d0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">Tecnologias</text>
-<rect x="44" y="176" width="250" height="30" rx="14" fill="#134e4a"/><text x="58" y="204" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800">AIWebAuditorLab/0.24 | low</text>
+<rect x="44" y="176" width="250" height="30" rx="14" fill="#134e4a"/><text x="58" y="204" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800">AIWebAuditorLab/0.25 | low</text>
 <rect x="330" y="176" width="250" height="30" rx="14" fill="#134e4a"/><text x="344" y="204" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800">Django | medium</text>
 <rect x="616" y="176" width="250" height="30" rx="14" fill="#134e4a"/><text x="630" y="204" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800">PHP 5.6.40 | high</text>
 <rect x="44" y="218" width="250" height="30" rx="14" fill="#134e4a"/><text x="58" y="246" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800">WordPress 4.7.0 | high</text>

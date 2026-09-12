@@ -1,15 +1,15 @@
 {
   "tool": "ai-web-auditor",
-  "version": "0.24.0",
-  "generated_at": "2026-09-12T02:26:12Z",
+  "version": "0.25.0",
+  "generated_at": "2026-09-12T03:02:28Z",
   "status": "completed",
   "target": {
-    "original_url": "http://127.0.0.1:54920/members/",
-    "normalized_url": "http://127.0.0.1:54920/members/",
+    "original_url": "http://127.0.0.1:55917/members/",
+    "normalized_url": "http://127.0.0.1:55917/members/",
     "scheme": "http",
     "host": "127.0.0.1",
-    "port": 54920,
-    "base_url": "http://127.0.0.1:54920/",
+    "port": 55917,
+    "base_url": "http://127.0.0.1:55917/",
     "ip_addresses": [
       "127.0.0.1"
     ]
@@ -21,10 +21,10 @@
       "summary": "Target URL validated and inside configured scope.",
       "findings": [],
       "artifacts": {
-        "normalized_url": "http://127.0.0.1:54920/members/",
+        "normalized_url": "http://127.0.0.1:55917/members/",
         "host": "127.0.0.1",
         "scheme": "http",
-        "port": 54920,
+        "port": 55917,
         "ip_addresses": [
           "127.0.0.1"
         ],
@@ -48,16 +48,16 @@
           "description": "The requested HTTP URL remains available without being upgraded to HTTPS.",
           "recommendation": "Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification.",
           "module": "http",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": [
             {
               "label": "initial_url",
-              "value": "http://127.0.0.1:54920/members/",
+              "value": "http://127.0.0.1:55917/members/",
               "location": null
             },
             {
               "label": "final_url",
-              "value": "http://127.0.0.1:54920/members/",
+              "value": "http://127.0.0.1:55917/members/",
               "location": null
             },
             {
@@ -71,11 +71,11 @@
       "artifacts": {
         "initial_status_code": 401,
         "final_status_code": 401,
-        "final_url": "http://127.0.0.1:54920/members/",
+        "final_url": "http://127.0.0.1:55917/members/",
         "redirect_chain": [
           {
             "status_code": 401,
-            "url": "http://127.0.0.1:54920/members/",
+            "url": "http://127.0.0.1:55917/members/",
             "location": null
           }
         ]
@@ -94,7 +94,7 @@
           "description": "The response does not include the Content-Security-Policy header.",
           "recommendation": "Define an appropriate Content-Security-Policy header for this application.",
           "module": "security_headers",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": []
         },
         {
@@ -105,7 +105,7 @@
           "description": "The response does not include X-Frame-Options or a CSP frame-ancestors directive.",
           "recommendation": "Set frame-ancestors in Content-Security-Policy or use X-Frame-Options where appropriate.",
           "module": "security_headers",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": []
         },
         {
@@ -116,7 +116,7 @@
           "description": "The browser may try to infer content types when nosniff is absent.",
           "recommendation": "Set X-Content-Type-Options: nosniff.",
           "module": "security_headers",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": [
             {
               "label": "x-content-type-options",
@@ -133,7 +133,7 @@
           "description": "The response does not include the Referrer-Policy header.",
           "recommendation": "Define an appropriate Referrer-Policy header for this application.",
           "module": "security_headers",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": []
         },
         {
@@ -144,7 +144,7 @@
           "description": "The response does not include the Permissions-Policy header.",
           "recommendation": "Define an appropriate Permissions-Policy header for this application.",
           "module": "security_headers",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": []
         }
       ],
@@ -165,7 +165,7 @@
           "description": "A cookie is accessible to client-side scripts when HttpOnly is absent.",
           "recommendation": "Set HttpOnly for session or sensitive cookies.",
           "module": "cookies",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": [
             {
               "label": "cookie",
@@ -182,7 +182,7 @@
           "description": "A cookie does not declare a SameSite policy.",
           "recommendation": "Set SameSite=Lax or SameSite=Strict unless cross-site usage is required.",
           "module": "cookies",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": [
             {
               "label": "cookie",
@@ -199,7 +199,7 @@
           "description": "A cookie is accessible to client-side scripts when HttpOnly is absent.",
           "recommendation": "Set HttpOnly for session or sensitive cookies.",
           "module": "cookies",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": [
             {
               "label": "cookie",
@@ -216,7 +216,7 @@
           "description": "SameSite=None cookies should also use Secure.",
           "recommendation": "Set Secure or avoid SameSite=None if cross-site usage is not required.",
           "module": "cookies",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": [
             {
               "label": "cookie",
@@ -260,7 +260,7 @@
           "description": "The server requests Basic Authentication over unencrypted HTTP.",
           "recommendation": "Force HTTPS before authentication and enable HSTS after validation.",
           "module": "basic_auth",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": [
             {
               "label": "status_code",
@@ -278,7 +278,7 @@
       "artifacts": {
         "challenges": [
           {
-            "url": "http://127.0.0.1:54920/members/",
+            "url": "http://127.0.0.1:55917/members/",
             "status_code": 401,
             "www_authenticate": "Basic realm=\"AI Web Auditor Lab\""
           }
@@ -298,7 +298,7 @@
           "description": "DELETE may allow destructive actions if authorization is weak.",
           "recommendation": "Disable unnecessary HTTP methods or enforce strict authorization before use.",
           "module": "http_methods",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": [
             {
               "label": "allow",
@@ -320,7 +320,7 @@
           "description": "PUT may allow content upload if authorization is weak.",
           "recommendation": "Disable unnecessary HTTP methods or enforce strict authorization before use.",
           "module": "http_methods",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": [
             {
               "label": "allow",
@@ -342,7 +342,7 @@
           "description": "TRACE can expose request data and is rarely needed.",
           "recommendation": "Disable unnecessary HTTP methods or enforce strict authorization before use.",
           "module": "http_methods",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": [
             {
               "label": "allow",
@@ -388,7 +388,7 @@
           "evidence": [
             {
               "label": "open_port",
-              "value": "54920",
+              "value": "55917",
               "location": ""
             }
           ]
@@ -397,7 +397,7 @@
       "artifacts": {
         "host": "127.0.0.1",
         "ports_checked": [
-          54920,
+          55917,
           80,
           443
         ],
@@ -410,7 +410,7 @@
         "results": [
           {
             "host": "127.0.0.1",
-            "port": 54920,
+            "port": 55917,
             "status": "open",
             "service": "",
             "elapsed_ms": 0
@@ -420,7 +420,7 @@
             "port": 80,
             "status": "filtered",
             "service": "http",
-            "elapsed_ms": 514,
+            "elapsed_ms": 500,
             "error": "timeout"
           },
           {
@@ -448,11 +448,11 @@
           "description": "The Server header appears to include product version information.",
           "recommendation": "Avoid exposing precise server versions unless there is an operational reason.",
           "module": "fingerprinting",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": [
             {
               "label": "server",
-              "value": "AIWebAuditorLab/0.24 ",
+              "value": "AIWebAuditorLab/0.25 ",
               "location": null
             }
           ]
@@ -465,7 +465,7 @@
           "description": "The X-Powered-By header can reveal backend technology details to attackers.",
           "recommendation": "Remove or reduce technology-identifying response headers where practical.",
           "module": "fingerprinting",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": [
             {
               "label": "x-powered-by",
@@ -482,7 +482,7 @@
           "description": "The HTML generator metadata can disclose CMS or framework details.",
           "recommendation": "Remove generator metadata if it is not required.",
           "module": "fingerprinting",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": [
             {
               "label": "generator",
@@ -493,10 +493,10 @@
         }
       ],
       "artifacts": {
-        "url": "http://127.0.0.1:54920/members/",
+        "url": "http://127.0.0.1:55917/members/",
         "technologies": [
           {
-            "name": "AIWebAuditorLab/0.24",
+            "name": "AIWebAuditorLab/0.25",
             "category": "server",
             "confidence": "low",
             "signals": [
@@ -533,7 +533,7 @@
         "public_files": [
           {
             "path": "/robots.txt",
-            "url": "http://127.0.0.1:54920/robots.txt",
+            "url": "http://127.0.0.1:55917/robots.txt",
             "status_code": 200,
             "content_type": "text/plain; charset=utf-8",
             "present": true,
@@ -556,7 +556,7 @@
           },
           {
             "path": "/.well-known/security.txt",
-            "url": "http://127.0.0.1:54920/.well-known/security.txt",
+            "url": "http://127.0.0.1:55917/.well-known/security.txt",
             "status_code": 200,
             "content_type": "text/plain; charset=utf-8",
             "present": true,
@@ -572,7 +572,7 @@
           },
           {
             "path": "/security.txt",
-            "url": "http://127.0.0.1:54920/security.txt",
+            "url": "http://127.0.0.1:55917/security.txt",
             "status_code": 404,
             "content_type": "text/html; charset=utf-8",
             "present": false,
@@ -580,7 +580,7 @@
           },
           {
             "path": "/sitemap.xml",
-            "url": "http://127.0.0.1:54920/sitemap.xml",
+            "url": "http://127.0.0.1:55917/sitemap.xml",
             "status_code": 200,
             "content_type": "application/xml; charset=utf-8",
             "present": true,
@@ -589,7 +589,7 @@
           }
         ],
         "headers": {
-          "server": "AIWebAuditorLab/0.24 ",
+          "server": "AIWebAuditorLab/0.25 ",
           "x-powered-by": "PHP/5.6.40"
         }
       }
@@ -607,7 +607,7 @@
           "description": "The crawler discovered links outside the configured scope. They were recorded but not requested.",
           "recommendation": "Review whether any external host should be added to the authorized scope before scanning it.",
           "module": "crawler",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": [
             {
               "label": "sample_url",
@@ -618,44 +618,44 @@
         }
       ],
       "artifacts": {
-        "seed_url": "http://127.0.0.1:54920/members/",
+        "seed_url": "http://127.0.0.1:55917/members/",
         "max_depth": 1,
         "max_pages": 20,
         "fetched_urls": [
-          "http://127.0.0.1:54920/",
-          "http://127.0.0.1:54920/account",
-          "http://127.0.0.1:54920/api/users",
-          "http://127.0.0.1:54920/login",
-          "http://127.0.0.1:54920/members/",
-          "http://127.0.0.1:54920/reset-password"
+          "http://127.0.0.1:55917/",
+          "http://127.0.0.1:55917/account",
+          "http://127.0.0.1:55917/api/users",
+          "http://127.0.0.1:55917/login",
+          "http://127.0.0.1:55917/members/",
+          "http://127.0.0.1:55917/reset-password"
         ],
         "discovered_urls": [
-          "http://127.0.0.1:54920/",
-          "http://127.0.0.1:54920/.well-known/openid-configuration",
-          "http://127.0.0.1:54920/.well-known/security.txt",
-          "http://127.0.0.1:54920/account",
-          "http://127.0.0.1:54920/api/users",
-          "http://127.0.0.1:54920/login",
-          "http://127.0.0.1:54920/members/",
-          "http://127.0.0.1:54920/oauth/authorize",
-          "http://127.0.0.1:54920/oauth/token",
-          "http://127.0.0.1:54920/reset-password"
+          "http://127.0.0.1:55917/",
+          "http://127.0.0.1:55917/.well-known/openid-configuration",
+          "http://127.0.0.1:55917/.well-known/security.txt",
+          "http://127.0.0.1:55917/account",
+          "http://127.0.0.1:55917/api/users",
+          "http://127.0.0.1:55917/login",
+          "http://127.0.0.1:55917/members/",
+          "http://127.0.0.1:55917/oauth/authorize",
+          "http://127.0.0.1:55917/oauth/token",
+          "http://127.0.0.1:55917/reset-password"
         ],
         "metadata_discovered_urls": [
-          "http://127.0.0.1:54920/",
-          "http://127.0.0.1:54920/.well-known/openid-configuration",
-          "http://127.0.0.1:54920/.well-known/security.txt",
-          "http://127.0.0.1:54920/account",
-          "http://127.0.0.1:54920/api/users",
-          "http://127.0.0.1:54920/login",
-          "http://127.0.0.1:54920/members/",
-          "http://127.0.0.1:54920/oauth/authorize",
-          "http://127.0.0.1:54920/oauth/token",
-          "http://127.0.0.1:54920/reset-password"
+          "http://127.0.0.1:55917/",
+          "http://127.0.0.1:55917/.well-known/openid-configuration",
+          "http://127.0.0.1:55917/.well-known/security.txt",
+          "http://127.0.0.1:55917/account",
+          "http://127.0.0.1:55917/api/users",
+          "http://127.0.0.1:55917/login",
+          "http://127.0.0.1:55917/members/",
+          "http://127.0.0.1:55917/oauth/authorize",
+          "http://127.0.0.1:55917/oauth/token",
+          "http://127.0.0.1:55917/reset-password"
         ],
         "url_sources": [
           {
-            "url": "http://127.0.0.1:54920/",
+            "url": "http://127.0.0.1:55917/",
             "sources": [
               "crawler_fetched",
               "html_link",
@@ -663,70 +663,70 @@
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/.well-known/apple-app-site-association",
+            "url": "http://127.0.0.1:55917/.well-known/apple-app-site-association",
             "sources": [
               "well_known"
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/.well-known/assetlinks.json",
+            "url": "http://127.0.0.1:55917/.well-known/assetlinks.json",
             "sources": [
               "well_known"
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/.well-known/change-password",
+            "url": "http://127.0.0.1:55917/.well-known/change-password",
             "sources": [
               "well_known"
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/.well-known/oauth-authorization-server",
+            "url": "http://127.0.0.1:55917/.well-known/oauth-authorization-server",
             "sources": [
               "well_known"
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/.well-known/openid-configuration",
+            "url": "http://127.0.0.1:55917/.well-known/openid-configuration",
             "sources": [
               "well_known"
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/.well-known/security.txt",
+            "url": "http://127.0.0.1:55917/.well-known/security.txt",
             "sources": [
               "well_known"
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/.well-known/webfinger",
+            "url": "http://127.0.0.1:55917/.well-known/webfinger",
             "sources": [
               "well_known"
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/account",
+            "url": "http://127.0.0.1:55917/account",
             "sources": [
               "crawler_fetched",
               "sitemap"
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/api/users",
+            "url": "http://127.0.0.1:55917/api/users",
             "sources": [
               "crawler_fetched",
               "sitemap"
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/login",
+            "url": "http://127.0.0.1:55917/login",
             "sources": [
               "crawler_fetched",
               "sitemap"
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/members/",
+            "url": "http://127.0.0.1:55917/members/",
             "sources": [
               "crawler_fetched",
               "html_link",
@@ -736,26 +736,26 @@
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/oauth/authorize",
+            "url": "http://127.0.0.1:55917/oauth/authorize",
             "sources": [
               "well_known_endpoint"
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/oauth/token",
+            "url": "http://127.0.0.1:55917/oauth/token",
             "sources": [
               "well_known_endpoint"
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/reset-password",
+            "url": "http://127.0.0.1:55917/reset-password",
             "sources": [
               "crawler_fetched",
               "sitemap"
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/security.txt",
+            "url": "http://127.0.0.1:55917/security.txt",
             "sources": [
               "well_known"
             ]
@@ -763,7 +763,7 @@
         ],
         "route_classifications": [
           {
-            "url": "http://127.0.0.1:54920/account",
+            "url": "http://127.0.0.1:55917/account",
             "types": [
               "account"
             ],
@@ -782,7 +782,7 @@
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/api/users",
+            "url": "http://127.0.0.1:55917/api/users",
             "types": [
               "api"
             ],
@@ -801,7 +801,7 @@
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/login",
+            "url": "http://127.0.0.1:55917/login",
             "types": [
               "form",
               "login"
@@ -828,7 +828,7 @@
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/members/",
+            "url": "http://127.0.0.1:55917/members/",
             "types": [
               "account",
               "form",
@@ -866,7 +866,7 @@
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/oauth/authorize",
+            "url": "http://127.0.0.1:55917/oauth/authorize",
             "types": [
               "callback",
               "login"
@@ -892,7 +892,7 @@
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/oauth/token",
+            "url": "http://127.0.0.1:55917/oauth/token",
             "types": [
               "callback"
             ],
@@ -910,7 +910,7 @@
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/reset-password",
+            "url": "http://127.0.0.1:55917/reset-password",
             "types": [
               "password_reset"
             ],
@@ -933,15 +933,15 @@
           "https://example.org/external"
         ],
         "excluded_urls": [
-          "http://127.0.0.1:54920/admin/",
-          "http://127.0.0.1:54920/private/",
-          "http://127.0.0.1:54920/private/report"
+          "http://127.0.0.1:55917/admin/",
+          "http://127.0.0.1:55917/private/",
+          "http://127.0.0.1:55917/private/report"
         ],
         "ignored_urls_count": 0,
         "limit_reached": false,
         "metadata": {
           "robots": {
-            "url": "http://127.0.0.1:54920/robots.txt",
+            "url": "http://127.0.0.1:55917/robots.txt",
             "status_code": 200,
             "content_type": "text/plain; charset=utf-8",
             "present": true,
@@ -965,7 +965,7 @@
               {
                 "directive": "allow",
                 "value": "/members/",
-                "url": "http://127.0.0.1:54920/members/",
+                "url": "http://127.0.0.1:55917/members/",
                 "status": "in_scope",
                 "route_classifications": [
                   {
@@ -987,7 +987,7 @@
               {
                 "directive": "disallow",
                 "value": "/admin/",
-                "url": "http://127.0.0.1:54920/admin/",
+                "url": "http://127.0.0.1:55917/admin/",
                 "status": "excluded_path",
                 "route_classifications": [
                   {
@@ -1002,7 +1002,7 @@
               {
                 "directive": "disallow",
                 "value": "/private/",
-                "url": "http://127.0.0.1:54920/private/",
+                "url": "http://127.0.0.1:55917/private/",
                 "status": "excluded_path",
                 "route_classifications": [
                   {
@@ -1018,7 +1018,7 @@
           },
           "sitemaps": [
             {
-              "url": "http://127.0.0.1:54920/sitemap.xml",
+              "url": "http://127.0.0.1:55917/sitemap.xml",
               "source": "default",
               "status_code": 200,
               "content_type": "application/xml; charset=utf-8",
@@ -1027,12 +1027,12 @@
               "url_count": 6,
               "sitemap_count": 0,
               "sample_urls": [
-                "http://127.0.0.1:54920/",
-                "http://127.0.0.1:54920/members/",
-                "http://127.0.0.1:54920/login",
-                "http://127.0.0.1:54920/reset-password",
-                "http://127.0.0.1:54920/api/users",
-                "http://127.0.0.1:54920/account"
+                "http://127.0.0.1:55917/",
+                "http://127.0.0.1:55917/members/",
+                "http://127.0.0.1:55917/login",
+                "http://127.0.0.1:55917/reset-password",
+                "http://127.0.0.1:55917/api/users",
+                "http://127.0.0.1:55917/account"
               ],
               "nested_sitemaps": []
             }
@@ -1040,7 +1040,7 @@
           "well_known": [
             {
               "path": "/.well-known/security.txt",
-              "url": "http://127.0.0.1:54920/.well-known/security.txt",
+              "url": "http://127.0.0.1:55917/.well-known/security.txt",
               "status_code": 200,
               "content_type": "text/plain; charset=utf-8",
               "present": true,
@@ -1057,7 +1057,7 @@
             },
             {
               "path": "/security.txt",
-              "url": "http://127.0.0.1:54920/security.txt",
+              "url": "http://127.0.0.1:55917/security.txt",
               "status_code": 404,
               "content_type": "text/html; charset=utf-8",
               "present": false,
@@ -1066,7 +1066,7 @@
             },
             {
               "path": "/.well-known/change-password",
-              "url": "http://127.0.0.1:54920/.well-known/change-password",
+              "url": "http://127.0.0.1:55917/.well-known/change-password",
               "status_code": 404,
               "content_type": "text/html; charset=utf-8",
               "present": false,
@@ -1083,20 +1083,20 @@
             },
             {
               "path": "/.well-known/openid-configuration",
-              "url": "http://127.0.0.1:54920/.well-known/openid-configuration",
+              "url": "http://127.0.0.1:55917/.well-known/openid-configuration",
               "status_code": 200,
               "content_type": "application/json; charset=utf-8",
               "present": true,
               "body_truncated": false,
               "route_classifications": [],
               "endpoints": [
-                "http://127.0.0.1:54920/oauth/authorize",
-                "http://127.0.0.1:54920/oauth/token"
+                "http://127.0.0.1:55917/oauth/authorize",
+                "http://127.0.0.1:55917/oauth/token"
               ]
             },
             {
               "path": "/.well-known/oauth-authorization-server",
-              "url": "http://127.0.0.1:54920/.well-known/oauth-authorization-server",
+              "url": "http://127.0.0.1:55917/.well-known/oauth-authorization-server",
               "status_code": 404,
               "content_type": "text/html; charset=utf-8",
               "present": false,
@@ -1113,7 +1113,7 @@
             },
             {
               "path": "/.well-known/webfinger",
-              "url": "http://127.0.0.1:54920/.well-known/webfinger",
+              "url": "http://127.0.0.1:55917/.well-known/webfinger",
               "status_code": 404,
               "content_type": "text/html; charset=utf-8",
               "present": false,
@@ -1122,7 +1122,7 @@
             },
             {
               "path": "/.well-known/assetlinks.json",
-              "url": "http://127.0.0.1:54920/.well-known/assetlinks.json",
+              "url": "http://127.0.0.1:55917/.well-known/assetlinks.json",
               "status_code": 404,
               "content_type": "text/html; charset=utf-8",
               "present": false,
@@ -1131,7 +1131,7 @@
             },
             {
               "path": "/.well-known/apple-app-site-association",
-              "url": "http://127.0.0.1:54920/.well-known/apple-app-site-association",
+              "url": "http://127.0.0.1:55917/.well-known/apple-app-site-association",
               "status_code": 404,
               "content_type": "text/html; charset=utf-8",
               "present": false,
@@ -1142,7 +1142,7 @@
         },
         "pages": [
           {
-            "url": "http://127.0.0.1:54920/members/",
+            "url": "http://127.0.0.1:55917/members/",
             "depth": 0,
             "status_code": 401,
             "content_type": "text/html; charset=utf-8",
@@ -1176,7 +1176,7 @@
             ],
             "forms": [
               {
-                "action": "http://127.0.0.1:54920/login/",
+                "action": "http://127.0.0.1:55917/login/",
                 "method": "POST",
                 "input_count": 3,
                 "password_fields": 1,
@@ -1203,7 +1203,7 @@
             "title": "Miembros"
           },
           {
-            "url": "http://127.0.0.1:54920/",
+            "url": "http://127.0.0.1:55917/",
             "depth": 0,
             "status_code": 200,
             "content_type": "text/html; charset=utf-8",
@@ -1216,7 +1216,7 @@
             "title": "AI Web Auditor Lab"
           },
           {
-            "url": "http://127.0.0.1:54920/login",
+            "url": "http://127.0.0.1:55917/login",
             "depth": 0,
             "status_code": 200,
             "content_type": "text/html; charset=utf-8",
@@ -1243,7 +1243,7 @@
             ],
             "forms": [
               {
-                "action": "http://127.0.0.1:54920/session",
+                "action": "http://127.0.0.1:55917/session",
                 "method": "POST",
                 "input_count": 2,
                 "password_fields": 1,
@@ -1264,7 +1264,7 @@
             "title": "Login de laboratorio"
           },
           {
-            "url": "http://127.0.0.1:54920/reset-password",
+            "url": "http://127.0.0.1:55917/reset-password",
             "depth": 0,
             "status_code": 200,
             "content_type": "text/html; charset=utf-8",
@@ -1285,7 +1285,7 @@
             "title": "Recuperacion"
           },
           {
-            "url": "http://127.0.0.1:54920/api/users",
+            "url": "http://127.0.0.1:55917/api/users",
             "depth": 0,
             "status_code": 200,
             "content_type": "application/json; charset=utf-8",
@@ -1305,7 +1305,7 @@
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/account",
+            "url": "http://127.0.0.1:55917/account",
             "depth": 0,
             "status_code": 403,
             "content_type": "text/html; charset=utf-8",
@@ -1341,31 +1341,31 @@
           "description": "Client-side JavaScript contains URL references that expand the passive review surface.",
           "recommendation": "Review these endpoints against the authorized scope before deciding whether later validation is needed.",
           "module": "javascript",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": [
             {
               "label": "endpoint",
-              "value": "http://127.0.0.1:54920/api",
+              "value": "http://127.0.0.1:55917/api",
               "location": null
             },
             {
               "label": "endpoint",
-              "value": "POST http://127.0.0.1:54920/api/member-profile?csrf_token=[redacted]",
+              "value": "POST http://127.0.0.1:55917/api/member-profile?csrf_token=[redacted]",
               "location": null
             },
             {
               "label": "endpoint",
-              "value": "POST http://127.0.0.1:54920/api/profile?session_id=[redacted]",
+              "value": "POST http://127.0.0.1:55917/api/profile?session_id=[redacted]",
               "location": null
             },
             {
               "label": "endpoint",
-              "value": "POST http://127.0.0.1:54920/api/upload",
+              "value": "POST http://127.0.0.1:55917/api/upload",
               "location": null
             },
             {
               "label": "endpoint",
-              "value": "GET http://127.0.0.1:54920/api/users?role=member",
+              "value": "GET http://127.0.0.1:55917/api/users?role=member",
               "location": null
             }
           ]
@@ -1378,22 +1378,22 @@
           "description": "Some JavaScript-discovered URLs contain parameter names commonly associated with authentication, sessions or secrets. Values are redacted.",
           "recommendation": "Review how these parameters are generated, logged and exposed. Do not include raw secrets in reports.",
           "module": "javascript",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": [
             {
               "label": "parameter_name",
               "value": "csrf_token",
-              "location": "http://127.0.0.1:54920/api/member-profile?csrf_token=[redacted]"
+              "location": "http://127.0.0.1:55917/api/member-profile?csrf_token=[redacted]"
             },
             {
               "label": "parameter_name",
               "value": "session_id",
-              "location": "http://127.0.0.1:54920/api/profile?session_id=[redacted]"
+              "location": "http://127.0.0.1:55917/api/profile?session_id=[redacted]"
             },
             {
               "label": "parameter_name",
               "value": "token",
-              "location": "http://127.0.0.1:54920/reset-password?token=[redacted]"
+              "location": "http://127.0.0.1:55917/reset-password?token=[redacted]"
             }
           ]
         },
@@ -1405,7 +1405,7 @@
           "description": "Client-side JavaScript references hosts outside the configured scope. They were recorded but not requested.",
           "recommendation": "Confirm whether those hosts belong to the engagement before scanning them.",
           "module": "javascript",
-          "target": "http://127.0.0.1:54920/members/",
+          "target": "http://127.0.0.1:55917/members/",
           "evidence": [
             {
               "label": "endpoint",
@@ -1422,7 +1422,7 @@
         "fetch_external_scripts": true,
         "pages_checked": [
           {
-            "url": "http://127.0.0.1:54920/members/",
+            "url": "http://127.0.0.1:55917/members/",
             "status_code": 401,
             "content_type": "text/html; charset=utf-8",
             "body_truncated": false,
@@ -1431,7 +1431,7 @@
             "scripts_found": 2
           },
           {
-            "url": "http://127.0.0.1:54920/",
+            "url": "http://127.0.0.1:55917/",
             "status_code": 200,
             "content_type": "text/html; charset=utf-8",
             "body_truncated": false,
@@ -1440,7 +1440,7 @@
             "scripts_found": 2
           },
           {
-            "url": "http://127.0.0.1:54920/login",
+            "url": "http://127.0.0.1:55917/login",
             "status_code": 200,
             "content_type": "text/html; charset=utf-8",
             "body_truncated": false,
@@ -1449,7 +1449,7 @@
             "scripts_found": 1
           },
           {
-            "url": "http://127.0.0.1:54920/reset-password",
+            "url": "http://127.0.0.1:55917/reset-password",
             "status_code": 200,
             "content_type": "text/html; charset=utf-8",
             "body_truncated": false,
@@ -1458,7 +1458,7 @@
             "scripts_found": 1
           },
           {
-            "url": "http://127.0.0.1:54920/account",
+            "url": "http://127.0.0.1:55917/account",
             "status_code": 403,
             "content_type": "text/html; charset=utf-8",
             "body_truncated": false,
@@ -1467,7 +1467,7 @@
             "scripts_found": 1
           },
           {
-            "url": "http://127.0.0.1:54920/api/users",
+            "url": "http://127.0.0.1:55917/api/users",
             "status_code": 200,
             "content_type": "application/json; charset=utf-8",
             "body_truncated": false,
@@ -1478,37 +1478,37 @@
         ],
         "script_urls": [
           {
-            "url": "http://127.0.0.1:54920/static/app.js",
-            "page_url": "http://127.0.0.1:54920/members/",
+            "url": "http://127.0.0.1:55917/static/app.js",
+            "page_url": "http://127.0.0.1:55917/members/",
             "status": "in_scope"
           },
           {
-            "url": "http://127.0.0.1:54920/static/app.js",
-            "page_url": "http://127.0.0.1:54920/",
+            "url": "http://127.0.0.1:55917/static/app.js",
+            "page_url": "http://127.0.0.1:55917/",
             "status": "duplicate"
           },
           {
-            "url": "http://127.0.0.1:54920/static/app.js",
-            "page_url": "http://127.0.0.1:54920/login",
+            "url": "http://127.0.0.1:55917/static/app.js",
+            "page_url": "http://127.0.0.1:55917/login",
             "status": "duplicate"
           },
           {
-            "url": "http://127.0.0.1:54920/static/app.js",
-            "page_url": "http://127.0.0.1:54920/reset-password",
+            "url": "http://127.0.0.1:55917/static/app.js",
+            "page_url": "http://127.0.0.1:55917/reset-password",
             "status": "duplicate"
           },
           {
-            "url": "http://127.0.0.1:54920/static/app.js",
-            "page_url": "http://127.0.0.1:54920/account",
+            "url": "http://127.0.0.1:55917/static/app.js",
+            "page_url": "http://127.0.0.1:55917/account",
             "status": "duplicate"
           }
         ],
         "scripts": [
           {
-            "id": "js_27fbc3b401e7",
+            "id": "js_94fd41326185",
             "kind": "external",
-            "url": "http://127.0.0.1:54920/static/app.js",
-            "page_url": "http://127.0.0.1:54920/members/",
+            "url": "http://127.0.0.1:55917/static/app.js",
+            "page_url": "http://127.0.0.1:55917/members/",
             "status_code": 200,
             "content_type": "application/javascript; charset=utf-8",
             "sha256": "e2a94a83dd8d8b250f938e169dbb2b00c384233fe677d6bc7782adcf15300f7c",
@@ -1519,7 +1519,7 @@
           {
             "id": "inline-0002",
             "kind": "inline",
-            "page_url": "http://127.0.0.1:54920/members/",
+            "page_url": "http://127.0.0.1:55917/members/",
             "sha256": "f3d13d29ce028a1aac17f39686e976a5915792dbed2dfc441c159e926b944226",
             "bytes": 147,
             "endpoints_found": 2
@@ -1527,7 +1527,7 @@
           {
             "id": "inline-0003",
             "kind": "inline",
-            "page_url": "http://127.0.0.1:54920/",
+            "page_url": "http://127.0.0.1:55917/",
             "sha256": "317d870051cbd1b280bf83b59f61eb9210ae7d6570281c2f31afe7d324ef909a",
             "bytes": 146,
             "endpoints_found": 1
@@ -1535,7 +1535,7 @@
         ],
         "discovered_endpoints": [
           {
-            "url": "http://127.0.0.1:54920/api",
+            "url": "http://127.0.0.1:55917/api",
             "status": "in_scope",
             "route_classifications": [
               {
@@ -1555,10 +1555,10 @@
               "external_script"
             ],
             "script_urls": [
-              "http://127.0.0.1:54920/static/app.js"
+              "http://127.0.0.1:55917/static/app.js"
             ],
             "page_urls": [
-              "http://127.0.0.1:54920/members/"
+              "http://127.0.0.1:55917/members/"
             ],
             "line_numbers": [
               2
@@ -1570,7 +1570,7 @@
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/api/member-profile?csrf_token=%5Bredacted%5D",
+            "url": "http://127.0.0.1:55917/api/member-profile?csrf_token=%5Bredacted%5D",
             "status": "in_scope",
             "route_classifications": [
               {
@@ -1623,7 +1623,7 @@
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/api/profile?session_id=%5Bredacted%5D",
+            "url": "http://127.0.0.1:55917/api/profile?session_id=%5Bredacted%5D",
             "status": "in_scope",
             "route_classifications": [
               {
@@ -1653,10 +1653,10 @@
               "inline_script"
             ],
             "script_urls": [
-              "http://127.0.0.1:54920/static/app.js"
+              "http://127.0.0.1:55917/static/app.js"
             ],
             "page_urls": [
-              "http://127.0.0.1:54920/members/"
+              "http://127.0.0.1:55917/members/"
             ],
             "line_numbers": [
               2,
@@ -1677,7 +1677,7 @@
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/api/upload",
+            "url": "http://127.0.0.1:55917/api/upload",
             "status": "in_scope",
             "route_classifications": [
               {
@@ -1706,10 +1706,10 @@
               "external_script"
             ],
             "script_urls": [
-              "http://127.0.0.1:54920/static/app.js"
+              "http://127.0.0.1:55917/static/app.js"
             ],
             "page_urls": [
-              "http://127.0.0.1:54920/members/"
+              "http://127.0.0.1:55917/members/"
             ],
             "line_numbers": [
               6,
@@ -1724,7 +1724,7 @@
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/api/users?role=member",
+            "url": "http://127.0.0.1:55917/api/users?role=member",
             "status": "in_scope",
             "route_classifications": [
               {
@@ -1746,10 +1746,10 @@
               "external_script"
             ],
             "script_urls": [
-              "http://127.0.0.1:54920/static/app.js"
+              "http://127.0.0.1:55917/static/app.js"
             ],
             "page_urls": [
-              "http://127.0.0.1:54920/members/"
+              "http://127.0.0.1:55917/members/"
             ],
             "line_numbers": [
               4,
@@ -1764,7 +1764,7 @@
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/callback/oauth",
+            "url": "http://127.0.0.1:55917/callback/oauth",
             "status": "in_scope",
             "route_classifications": [
               {
@@ -1784,10 +1784,10 @@
               "external_script"
             ],
             "script_urls": [
-              "http://127.0.0.1:54920/static/app.js"
+              "http://127.0.0.1:55917/static/app.js"
             ],
             "page_urls": [
-              "http://127.0.0.1:54920/members/"
+              "http://127.0.0.1:55917/members/"
             ],
             "line_numbers": [
               16
@@ -1799,7 +1799,7 @@
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/health",
+            "url": "http://127.0.0.1:55917/health",
             "status": "in_scope",
             "route_classifications": [
               {
@@ -1830,7 +1830,7 @@
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/oauth/authorize?client_id=demo",
+            "url": "http://127.0.0.1:55917/oauth/authorize?client_id=demo",
             "status": "in_scope",
             "route_classifications": [
               {
@@ -1857,10 +1857,10 @@
               "external_script"
             ],
             "script_urls": [
-              "http://127.0.0.1:54920/static/app.js"
+              "http://127.0.0.1:55917/static/app.js"
             ],
             "page_urls": [
-              "http://127.0.0.1:54920/members/"
+              "http://127.0.0.1:55917/members/"
             ],
             "line_numbers": [
               15
@@ -1875,7 +1875,7 @@
             ]
           },
           {
-            "url": "http://127.0.0.1:54920/reset-password?token=%5Bredacted%5D",
+            "url": "http://127.0.0.1:55917/reset-password?token=%5Bredacted%5D",
             "status": "in_scope",
             "route_classifications": [
               {
@@ -1924,10 +1924,10 @@
               "external_script"
             ],
             "script_urls": [
-              "http://127.0.0.1:54920/static/app.js"
+              "http://127.0.0.1:55917/static/app.js"
             ],
             "page_urls": [
-              "http://127.0.0.1:54920/members/"
+              "http://127.0.0.1:55917/members/"
             ],
             "line_numbers": [
               8
@@ -1939,7 +1939,7 @@
         ],
         "excluded_endpoints": [
           {
-            "url": "http://127.0.0.1:54920/admin/export?token=%5Bredacted%5D",
+            "url": "http://127.0.0.1:55917/admin/export?token=%5Bredacted%5D",
             "status": "excluded_path",
             "route_classifications": [
               {
@@ -1959,10 +1959,10 @@
               "external_script"
             ],
             "script_urls": [
-              "http://127.0.0.1:54920/static/app.js"
+              "http://127.0.0.1:55917/static/app.js"
             ],
             "page_urls": [
-              "http://127.0.0.1:54920/members/"
+              "http://127.0.0.1:55917/members/"
             ],
             "line_numbers": [
               7
@@ -1993,7 +1993,7 @@
             "filename": "example-zap.json",
             "source_format": "zap-json",
             "source_tool": "zap",
-            "imported_at": "2026-09-12T02:26:12Z",
+            "imported_at": "2026-09-12T03:02:28Z",
             "finding_count": 1,
             "url_count": 1,
             "port_count": 0,
@@ -2057,19 +2057,19 @@
   "requests": [
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/members/",
+      "url": "http://127.0.0.1:55917/members/",
       "status_code": 401,
       "elapsed_ms": 0,
       "id": "req-0001",
-      "final_url": "http://127.0.0.1:54920/members/",
+      "final_url": "http://127.0.0.1:55917/members/",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:09 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:24 GMT",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "814",
         "WWW-Authenticate": "[redacted]",
@@ -2087,19 +2087,19 @@
     },
     {
       "method": "OPTIONS",
-      "url": "http://127.0.0.1:54920/members/",
+      "url": "http://127.0.0.1:55917/members/",
       "status_code": 204,
       "elapsed_ms": 0,
       "id": "req-0002",
-      "final_url": "http://127.0.0.1:54920/members/",
+      "final_url": "http://127.0.0.1:55917/members/",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:09 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:24 GMT",
         "Allow": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
         "Access-Control-Allow-Methods": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
         "X-Powered-By": "PHP/5.6.40",
@@ -2116,19 +2116,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/members/",
+      "url": "http://127.0.0.1:55917/members/",
       "status_code": 401,
       "elapsed_ms": 0,
       "id": "req-0003",
-      "final_url": "http://127.0.0.1:54920/members/",
+      "final_url": "http://127.0.0.1:55917/members/",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "814",
         "WWW-Authenticate": "[redacted]",
@@ -2148,19 +2148,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/robots.txt",
+      "url": "http://127.0.0.1:55917/robots.txt",
       "status_code": 200,
       "elapsed_ms": 0,
       "id": "req-0004",
-      "final_url": "http://127.0.0.1:54920/robots.txt",
+      "final_url": "http://127.0.0.1:55917/robots.txt",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/plain; charset=utf-8",
         "Content-Length": "91",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2179,19 +2179,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/.well-known/security.txt",
+      "url": "http://127.0.0.1:55917/.well-known/security.txt",
       "status_code": 200,
       "elapsed_ms": 0,
       "id": "req-0005",
-      "final_url": "http://127.0.0.1:54920/.well-known/security.txt",
+      "final_url": "http://127.0.0.1:55917/.well-known/security.txt",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/plain; charset=utf-8",
         "Content-Length": "79",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2210,19 +2210,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/security.txt",
+      "url": "http://127.0.0.1:55917/security.txt",
       "status_code": 404,
       "elapsed_ms": 0,
       "id": "req-0006",
-      "final_url": "http://127.0.0.1:54920/security.txt",
+      "final_url": "http://127.0.0.1:55917/security.txt",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "312",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2242,19 +2242,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/sitemap.xml",
+      "url": "http://127.0.0.1:55917/sitemap.xml",
       "status_code": 200,
       "elapsed_ms": 0,
       "id": "req-0007",
-      "final_url": "http://127.0.0.1:54920/sitemap.xml",
+      "final_url": "http://127.0.0.1:55917/sitemap.xml",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "application/xml; charset=utf-8",
         "Content-Length": "441",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2263,29 +2263,29 @@
       "response_body": {
         "captured": true,
         "content_type": "application/xml; charset=utf-8",
-        "sha256": "2cd0c2a1c772ad6b6aeeb712b6e3369ab06957f607368a4c2bb0ad54d0ec71fd",
+        "sha256": "d3c20f82c3aac889b907fd748979c52805b855cab2fca124e4c4989326d674a5",
         "bytes": 441,
         "truncated_by_probe": false,
-        "sample": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n  <url><loc>http://127.0.0.1:54920/</loc></url>\n  <url><loc>http://127.0.0.1:54920/members/</loc></url>\n  <url><loc>http://127.0.0.1:54920/login</loc></url>\n  <url><loc>http://127.0.0.1:54920/reset-password</loc></url>\n  <url><loc>http://127.0.0.1:54920/api/users</loc></url>\n  <url><loc>http://127.0.0.1:54920/account</loc></url>\n</urlset>\n",
+        "sample": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n  <url><loc>http://127.0.0.1:55917/</loc></url>\n  <url><loc>http://127.0.0.1:55917/members/</loc></url>\n  <url><loc>http://127.0.0.1:55917/login</loc></url>\n  <url><loc>http://127.0.0.1:55917/reset-password</loc></url>\n  <url><loc>http://127.0.0.1:55917/api/users</loc></url>\n  <url><loc>http://127.0.0.1:55917/account</loc></url>\n</urlset>\n",
         "sample_chars": 441,
         "sample_truncated": false
       }
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/robots.txt",
+      "url": "http://127.0.0.1:55917/robots.txt",
       "status_code": 200,
       "elapsed_ms": 0,
       "id": "req-0008",
-      "final_url": "http://127.0.0.1:54920/robots.txt",
+      "final_url": "http://127.0.0.1:55917/robots.txt",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/plain; charset=utf-8",
         "Content-Length": "91",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2304,19 +2304,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/sitemap.xml",
+      "url": "http://127.0.0.1:55917/sitemap.xml",
       "status_code": 200,
       "elapsed_ms": 0,
       "id": "req-0009",
-      "final_url": "http://127.0.0.1:54920/sitemap.xml",
+      "final_url": "http://127.0.0.1:55917/sitemap.xml",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "application/xml; charset=utf-8",
         "Content-Length": "441",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2325,29 +2325,29 @@
       "response_body": {
         "captured": true,
         "content_type": "application/xml; charset=utf-8",
-        "sha256": "2cd0c2a1c772ad6b6aeeb712b6e3369ab06957f607368a4c2bb0ad54d0ec71fd",
+        "sha256": "d3c20f82c3aac889b907fd748979c52805b855cab2fca124e4c4989326d674a5",
         "bytes": 441,
         "truncated_by_probe": false,
-        "sample": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n  <url><loc>http://127.0.0.1:54920/</loc></url>\n  <url><loc>http://127.0.0.1:54920/members/</loc></url>\n  <url><loc>http://127.0.0.1:54920/login</loc></url>\n  <url><loc>http://127.0.0.1:54920/reset-password</loc></url>\n  <url><loc>http://127.0.0.1:54920/api/users</loc></url>\n  <url><loc>http://127.0.0.1:54920/account</loc></url>\n</urlset>\n",
+        "sample": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n  <url><loc>http://127.0.0.1:55917/</loc></url>\n  <url><loc>http://127.0.0.1:55917/members/</loc></url>\n  <url><loc>http://127.0.0.1:55917/login</loc></url>\n  <url><loc>http://127.0.0.1:55917/reset-password</loc></url>\n  <url><loc>http://127.0.0.1:55917/api/users</loc></url>\n  <url><loc>http://127.0.0.1:55917/account</loc></url>\n</urlset>\n",
         "sample_chars": 441,
         "sample_truncated": false
       }
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/.well-known/security.txt",
+      "url": "http://127.0.0.1:55917/.well-known/security.txt",
       "status_code": 200,
       "elapsed_ms": 0,
       "id": "req-0010",
-      "final_url": "http://127.0.0.1:54920/.well-known/security.txt",
+      "final_url": "http://127.0.0.1:55917/.well-known/security.txt",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/plain; charset=utf-8",
         "Content-Length": "79",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2366,19 +2366,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/security.txt",
+      "url": "http://127.0.0.1:55917/security.txt",
       "status_code": 404,
       "elapsed_ms": 0,
       "id": "req-0011",
-      "final_url": "http://127.0.0.1:54920/security.txt",
+      "final_url": "http://127.0.0.1:55917/security.txt",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "312",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2398,19 +2398,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/.well-known/change-password",
+      "url": "http://127.0.0.1:55917/.well-known/change-password",
       "status_code": 404,
       "elapsed_ms": 0,
       "id": "req-0012",
-      "final_url": "http://127.0.0.1:54920/.well-known/change-password",
+      "final_url": "http://127.0.0.1:55917/.well-known/change-password",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "312",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2430,19 +2430,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/.well-known/openid-configuration",
+      "url": "http://127.0.0.1:55917/.well-known/openid-configuration",
       "status_code": 200,
       "elapsed_ms": 0,
       "id": "req-0013",
-      "final_url": "http://127.0.0.1:54920/.well-known/openid-configuration",
+      "final_url": "http://127.0.0.1:55917/.well-known/openid-configuration",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "application/json; charset=utf-8",
         "Content-Length": "160",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2451,29 +2451,29 @@
       "response_body": {
         "captured": true,
         "content_type": "application/json; charset=utf-8",
-        "sha256": "635c642be51d28dc5516f57ddcda481bee0b8aee06d48eb3588c280d4a62a9b6",
+        "sha256": "eb09e0ae5dff3f579f3fe47553a75a6b55f4ae3c174158e38a2ba10665b3c94f",
         "bytes": 160,
         "truncated_by_probe": false,
-        "sample": "{\"issuer\": \"http://127.0.0.1:54920\", \"authorization_endpoint\": \"http://127.0.0.1:54920/oauth/authorize\", \"token_endpoint\": \"http://127.0.0.1:54920/oauth/token\"}",
+        "sample": "{\"issuer\": \"http://127.0.0.1:55917\", \"authorization_endpoint\": \"http://127.0.0.1:55917/oauth/authorize\", \"token_endpoint\": \"http://127.0.0.1:55917/oauth/token\"}",
         "sample_chars": 160,
         "sample_truncated": false
       }
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/.well-known/oauth-authorization-server",
+      "url": "http://127.0.0.1:55917/.well-known/oauth-authorization-server",
       "status_code": 404,
       "elapsed_ms": 0,
       "id": "req-0014",
-      "final_url": "http://127.0.0.1:54920/.well-known/oauth-authorization-server",
+      "final_url": "http://127.0.0.1:55917/.well-known/oauth-authorization-server",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "312",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2493,19 +2493,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/.well-known/webfinger",
+      "url": "http://127.0.0.1:55917/.well-known/webfinger",
       "status_code": 404,
       "elapsed_ms": 0,
       "id": "req-0015",
-      "final_url": "http://127.0.0.1:54920/.well-known/webfinger",
+      "final_url": "http://127.0.0.1:55917/.well-known/webfinger",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "312",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2525,19 +2525,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/.well-known/assetlinks.json",
+      "url": "http://127.0.0.1:55917/.well-known/assetlinks.json",
       "status_code": 404,
       "elapsed_ms": 0,
       "id": "req-0016",
-      "final_url": "http://127.0.0.1:54920/.well-known/assetlinks.json",
+      "final_url": "http://127.0.0.1:55917/.well-known/assetlinks.json",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "312",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2557,19 +2557,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/.well-known/apple-app-site-association",
+      "url": "http://127.0.0.1:55917/.well-known/apple-app-site-association",
       "status_code": 404,
-      "elapsed_ms": 16,
+      "elapsed_ms": 14,
       "id": "req-0017",
-      "final_url": "http://127.0.0.1:54920/.well-known/apple-app-site-association",
+      "final_url": "http://127.0.0.1:55917/.well-known/apple-app-site-association",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "312",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2589,19 +2589,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/members/",
+      "url": "http://127.0.0.1:55917/members/",
       "status_code": 401,
       "elapsed_ms": 0,
       "id": "req-0018",
-      "final_url": "http://127.0.0.1:54920/members/",
+      "final_url": "http://127.0.0.1:55917/members/",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "814",
         "WWW-Authenticate": "[redacted]",
@@ -2621,19 +2621,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/",
+      "url": "http://127.0.0.1:55917/",
       "status_code": 200,
       "elapsed_ms": 0,
       "id": "req-0019",
-      "final_url": "http://127.0.0.1:54920/",
+      "final_url": "http://127.0.0.1:55917/",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "739",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2653,19 +2653,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/login",
+      "url": "http://127.0.0.1:55917/login",
       "status_code": 200,
       "elapsed_ms": 0,
       "id": "req-0020",
-      "final_url": "http://127.0.0.1:54920/login",
+      "final_url": "http://127.0.0.1:55917/login",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "409",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2685,19 +2685,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/reset-password",
+      "url": "http://127.0.0.1:55917/reset-password",
       "status_code": 200,
       "elapsed_ms": 0,
       "id": "req-0021",
-      "final_url": "http://127.0.0.1:54920/reset-password",
+      "final_url": "http://127.0.0.1:55917/reset-password",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "340",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2717,19 +2717,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/api/users",
+      "url": "http://127.0.0.1:55917/api/users",
       "status_code": 200,
       "elapsed_ms": 0,
       "id": "req-0022",
-      "final_url": "http://127.0.0.1:54920/api/users",
+      "final_url": "http://127.0.0.1:55917/api/users",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "application/json; charset=utf-8",
         "Content-Length": "13",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2748,19 +2748,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/account",
+      "url": "http://127.0.0.1:55917/account",
       "status_code": 403,
       "elapsed_ms": 0,
       "id": "req-0023",
-      "final_url": "http://127.0.0.1:54920/account",
+      "final_url": "http://127.0.0.1:55917/account",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "337",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2780,19 +2780,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/members/",
+      "url": "http://127.0.0.1:55917/members/",
       "status_code": 401,
       "elapsed_ms": 0,
       "id": "req-0024",
-      "final_url": "http://127.0.0.1:54920/members/",
+      "final_url": "http://127.0.0.1:55917/members/",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "814",
         "WWW-Authenticate": "[redacted]",
@@ -2812,19 +2812,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/static/app.js",
+      "url": "http://127.0.0.1:55917/static/app.js",
       "status_code": 200,
       "elapsed_ms": 0,
       "id": "req-0025",
-      "final_url": "http://127.0.0.1:54920/static/app.js",
+      "final_url": "http://127.0.0.1:55917/static/app.js",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "application/javascript; charset=utf-8",
         "Content-Length": "436",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2843,19 +2843,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/",
+      "url": "http://127.0.0.1:55917/",
       "status_code": 200,
       "elapsed_ms": 0,
       "id": "req-0026",
-      "final_url": "http://127.0.0.1:54920/",
+      "final_url": "http://127.0.0.1:55917/",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "739",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2875,19 +2875,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/login",
+      "url": "http://127.0.0.1:55917/login",
       "status_code": 200,
       "elapsed_ms": 0,
       "id": "req-0027",
-      "final_url": "http://127.0.0.1:54920/login",
+      "final_url": "http://127.0.0.1:55917/login",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "409",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2907,19 +2907,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/reset-password",
+      "url": "http://127.0.0.1:55917/reset-password",
       "status_code": 200,
       "elapsed_ms": 0,
       "id": "req-0028",
-      "final_url": "http://127.0.0.1:54920/reset-password",
+      "final_url": "http://127.0.0.1:55917/reset-password",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "340",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2939,19 +2939,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/account",
+      "url": "http://127.0.0.1:55917/account",
       "status_code": 403,
       "elapsed_ms": 0,
       "id": "req-0029",
-      "final_url": "http://127.0.0.1:54920/account",
+      "final_url": "http://127.0.0.1:55917/account",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "337",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -2971,19 +2971,19 @@
     },
     {
       "method": "GET",
-      "url": "http://127.0.0.1:54920/api/users",
+      "url": "http://127.0.0.1:55917/api/users",
       "status_code": 200,
-      "elapsed_ms": 14,
+      "elapsed_ms": 16,
       "id": "req-0030",
-      "final_url": "http://127.0.0.1:54920/api/users",
+      "final_url": "http://127.0.0.1:55917/api/users",
       "error": null,
       "request_headers": {
-        "User-Agent": "AI-Web-Auditor/0.24",
+        "User-Agent": "AI-Web-Auditor/0.25",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"
       },
       "response_headers": {
-        "Server": "AIWebAuditorLab/0.24 ",
-        "Date": "Sat, 12 Sep 2026 02:26:10 GMT",
+        "Server": "AIWebAuditorLab/0.25 ",
+        "Date": "Sat, 12 Sep 2026 03:02:25 GMT",
         "Content-Type": "application/json; charset=utf-8",
         "Content-Length": "13",
         "Set-Cookie": "sessionid=[redacted]; Path=/",
@@ -3010,16 +3010,16 @@
       "description": "The requested HTTP URL remains available without being upgraded to HTTPS.",
       "recommendation": "Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification.",
       "module": "http",
-      "target": "http://127.0.0.1:54920/members/",
+      "target": "http://127.0.0.1:55917/members/",
       "evidence": [
         {
           "label": "initial_url",
-          "value": "http://127.0.0.1:54920/members/",
+          "value": "http://127.0.0.1:55917/members/",
           "location": null
         },
         {
           "label": "final_url",
-          "value": "http://127.0.0.1:54920/members/",
+          "value": "http://127.0.0.1:55917/members/",
           "location": null
         },
         {
@@ -3037,7 +3037,7 @@
       "description": "The response does not include the Content-Security-Policy header.",
       "recommendation": "Define an appropriate Content-Security-Policy header for this application.",
       "module": "security_headers",
-      "target": "http://127.0.0.1:54920/members/",
+      "target": "http://127.0.0.1:55917/members/",
       "evidence": []
     },
     {
@@ -3048,7 +3048,7 @@
       "description": "The response does not include X-Frame-Options or a CSP frame-ancestors directive.",
       "recommendation": "Set frame-ancestors in Content-Security-Policy or use X-Frame-Options where appropriate.",
       "module": "security_headers",
-      "target": "http://127.0.0.1:54920/members/",
+      "target": "http://127.0.0.1:55917/members/",
       "evidence": []
     },
     {
@@ -3059,7 +3059,7 @@
       "description": "The browser may try to infer content types when nosniff is absent.",
       "recommendation": "Set X-Content-Type-Options: nosniff.",
       "module": "security_headers",
-      "target": "http://127.0.0.1:54920/members/",
+      "target": "http://127.0.0.1:55917/members/",
       "evidence": [
         {
           "label": "x-content-type-options",
@@ -3076,7 +3076,7 @@
       "description": "The response does not include the Referrer-Policy header.",
       "recommendation": "Define an appropriate Referrer-Policy header for this application.",
       "module": "security_headers",
-      "target": "http://127.0.0.1:54920/members/",
+      "target": "http://127.0.0.1:55917/members/",
       "evidence": []
     },
     {
@@ -3087,7 +3087,7 @@
       "description": "The response does not include the Permissions-Policy header.",
       "recommendation": "Define an appropriate Permissions-Policy header for this application.",
       "module": "security_headers",
-      "target": "http://127.0.0.1:54920/members/",
+      "target": "http://127.0.0.1:55917/members/",
       "evidence": []
     },
     {
@@ -3098,7 +3098,7 @@
       "description": "A cookie is accessible to client-side scripts when HttpOnly is absent.",
       "recommendation": "Set HttpOnly for session or sensitive cookies.",
       "module": "cookies",
-      "target": "http://127.0.0.1:54920/members/",
+      "target": "http://127.0.0.1:55917/members/",
       "evidence": [
         {
           "label": "cookie",
@@ -3115,7 +3115,7 @@
       "description": "A cookie does not declare a SameSite policy.",
       "recommendation": "Set SameSite=Lax or SameSite=Strict unless cross-site usage is required.",
       "module": "cookies",
-      "target": "http://127.0.0.1:54920/members/",
+      "target": "http://127.0.0.1:55917/members/",
       "evidence": [
         {
           "label": "cookie",
@@ -3132,7 +3132,7 @@
       "description": "SameSite=None cookies should also use Secure.",
       "recommendation": "Set Secure or avoid SameSite=None if cross-site usage is not required.",
       "module": "cookies",
-      "target": "http://127.0.0.1:54920/members/",
+      "target": "http://127.0.0.1:55917/members/",
       "evidence": [
         {
           "label": "cookie",
@@ -3149,7 +3149,7 @@
       "description": "The server requests Basic Authentication over unencrypted HTTP.",
       "recommendation": "Force HTTPS before authentication and enable HSTS after validation.",
       "module": "basic_auth",
-      "target": "http://127.0.0.1:54920/members/",
+      "target": "http://127.0.0.1:55917/members/",
       "evidence": [
         {
           "label": "status_code",
@@ -3171,7 +3171,7 @@
       "description": "DELETE may allow destructive actions if authorization is weak.",
       "recommendation": "Disable unnecessary HTTP methods or enforce strict authorization before use.",
       "module": "http_methods",
-      "target": "http://127.0.0.1:54920/members/",
+      "target": "http://127.0.0.1:55917/members/",
       "evidence": [
         {
           "label": "allow",
@@ -3193,7 +3193,7 @@
       "description": "PUT may allow content upload if authorization is weak.",
       "recommendation": "Disable unnecessary HTTP methods or enforce strict authorization before use.",
       "module": "http_methods",
-      "target": "http://127.0.0.1:54920/members/",
+      "target": "http://127.0.0.1:55917/members/",
       "evidence": [
         {
           "label": "allow",
@@ -3215,7 +3215,7 @@
       "description": "TRACE can expose request data and is rarely needed.",
       "recommendation": "Disable unnecessary HTTP methods or enforce strict authorization before use.",
       "module": "http_methods",
-      "target": "http://127.0.0.1:54920/members/",
+      "target": "http://127.0.0.1:55917/members/",
       "evidence": [
         {
           "label": "allow",
@@ -3241,7 +3241,7 @@
       "evidence": [
         {
           "label": "open_port",
-          "value": "54920",
+          "value": "55917",
           "location": ""
         }
       ]
@@ -3254,11 +3254,11 @@
       "description": "The Server header appears to include product version information.",
       "recommendation": "Avoid exposing precise server versions unless there is an operational reason.",
       "module": "fingerprinting",
-      "target": "http://127.0.0.1:54920/members/",
+      "target": "http://127.0.0.1:55917/members/",
       "evidence": [
         {
           "label": "server",
-          "value": "AIWebAuditorLab/0.24 ",
+          "value": "AIWebAuditorLab/0.25 ",
           "location": null
         }
       ]
@@ -3271,7 +3271,7 @@
       "description": "The X-Powered-By header can reveal backend technology details to attackers.",
       "recommendation": "Remove or reduce technology-identifying response headers where practical.",
       "module": "fingerprinting",
-      "target": "http://127.0.0.1:54920/members/",
+      "target": "http://127.0.0.1:55917/members/",
       "evidence": [
         {
           "label": "x-powered-by",
@@ -3288,7 +3288,7 @@
       "description": "The HTML generator metadata can disclose CMS or framework details.",
       "recommendation": "Remove generator metadata if it is not required.",
       "module": "fingerprinting",
-      "target": "http://127.0.0.1:54920/members/",
+      "target": "http://127.0.0.1:55917/members/",
       "evidence": [
         {
           "label": "generator",
@@ -3305,7 +3305,7 @@
       "description": "The crawler discovered links outside the configured scope. They were recorded but not requested.",
       "recommendation": "Review whether any external host should be added to the authorized scope before scanning it.",
       "module": "crawler",
-      "target": "http://127.0.0.1:54920/members/",
+      "target": "http://127.0.0.1:55917/members/",
       "evidence": [
         {
           "label": "sample_url",
@@ -3322,31 +3322,31 @@
       "description": "Client-side JavaScript contains URL references that expand the passive review surface.",
       "recommendation": "Review these endpoints against the authorized scope before deciding whether later validation is needed.",
       "module": "javascript",
-      "target": "http://127.0.0.1:54920/members/",
+      "target": "http://127.0.0.1:55917/members/",
       "evidence": [
         {
           "label": "endpoint",
-          "value": "http://127.0.0.1:54920/api",
+          "value": "http://127.0.0.1:55917/api",
           "location": null
         },
         {
           "label": "endpoint",
-          "value": "POST http://127.0.0.1:54920/api/member-profile?csrf_token=[redacted]",
+          "value": "POST http://127.0.0.1:55917/api/member-profile?csrf_token=[redacted]",
           "location": null
         },
         {
           "label": "endpoint",
-          "value": "POST http://127.0.0.1:54920/api/profile?session_id=[redacted]",
+          "value": "POST http://127.0.0.1:55917/api/profile?session_id=[redacted]",
           "location": null
         },
         {
           "label": "endpoint",
-          "value": "POST http://127.0.0.1:54920/api/upload",
+          "value": "POST http://127.0.0.1:55917/api/upload",
           "location": null
         },
         {
           "label": "endpoint",
-          "value": "GET http://127.0.0.1:54920/api/users?role=member",
+          "value": "GET http://127.0.0.1:55917/api/users?role=member",
           "location": null
         }
       ]
@@ -3359,22 +3359,22 @@
       "description": "Some JavaScript-discovered URLs contain parameter names commonly associated with authentication, sessions or secrets. Values are redacted.",
       "recommendation": "Review how these parameters are generated, logged and exposed. Do not include raw secrets in reports.",
       "module": "javascript",
-      "target": "http://127.0.0.1:54920/members/",
+      "target": "http://127.0.0.1:55917/members/",
       "evidence": [
         {
           "label": "parameter_name",
           "value": "csrf_token",
-          "location": "http://127.0.0.1:54920/api/member-profile?csrf_token=[redacted]"
+          "location": "http://127.0.0.1:55917/api/member-profile?csrf_token=[redacted]"
         },
         {
           "label": "parameter_name",
           "value": "session_id",
-          "location": "http://127.0.0.1:54920/api/profile?session_id=[redacted]"
+          "location": "http://127.0.0.1:55917/api/profile?session_id=[redacted]"
         },
         {
           "label": "parameter_name",
           "value": "token",
-          "location": "http://127.0.0.1:54920/reset-password?token=[redacted]"
+          "location": "http://127.0.0.1:55917/reset-password?token=[redacted]"
         }
       ]
     },
@@ -3386,7 +3386,7 @@
       "description": "Client-side JavaScript references hosts outside the configured scope. They were recorded but not requested.",
       "recommendation": "Confirm whether those hosts belong to the engagement before scanning them.",
       "module": "javascript",
-      "target": "http://127.0.0.1:54920/members/",
+      "target": "http://127.0.0.1:55917/members/",
       "evidence": [
         {
           "label": "endpoint",
@@ -3425,7 +3425,7 @@
   ],
   "visual_evidence": {
     "version": "1.0",
-    "generated_at": "2026-09-12T02:26:10Z",
+    "generated_at": "2026-09-12T03:02:25Z",
     "summary": {
       "screenshot_count": 3,
       "technology_count": 4,
@@ -3435,10 +3435,10 @@
     },
     "fingerprint": {
       "target": {
-        "url": "http://127.0.0.1:54920/members/",
+        "url": "http://127.0.0.1:55917/members/",
         "host": "127.0.0.1",
         "scheme": "http",
-        "port": 54920
+        "port": 55917
       },
       "auth_profile": {
         "id": "public",
@@ -3474,9 +3474,9 @@
       },
       "technologies": [
         {
-          "name": "AIWebAuditorLab/0.24",
+          "name": "AIWebAuditorLab/0.25",
           "version": "",
-          "label": "AIWebAuditorLab/0.24",
+          "label": "AIWebAuditorLab/0.25",
           "category": "server",
           "confidence": "low",
           "signals": [
@@ -3614,7 +3614,7 @@
         "kind": "svg",
         "filename": "visuals/audit-overview.svg",
         "description": "Resumen visual del objetivo, severidades, riesgo y cobertura principal de la auditoria.",
-        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"960\" height=\"540\" viewBox=\"0 0 960 540\" role=\"img\" aria-label=\"Audit overview\">\n<rect width=\"960\" height=\"540\" fill=\"#020617\"/>\n<rect x=\"20\" y=\"20\" width=\"920\" height=\"500\" rx=\"18\" fill=\"#0b1220\" stroke=\"#1f3d34\"/>\n<text x=\"44\" y=\"72\" fill=\"#22c55e\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"16\" font-weight=\"800\">AI Web Auditor</text>\n<text x=\"44\" y=\"108\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"28\" font-weight=\"800\">http://127.0.0.1:54920/members/</text>\n<text x=\"44\" y=\"140\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"15\" font-weight=\"600\">http | 127.0.0.1:54920</text>\n<rect x=\"720\" y=\"56\" width=\"178\" height=\"44\" rx=\"14\" fill=\"#9a3412\"/><text x=\"734\" y=\"84\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"800\">HIGH 89/100</text>\n<rect x=\"44\" y=\"182\" width=\"156\" height=\"108\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"62\" y=\"216\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"700\">Critical</text>\n<text x=\"62\" y=\"264\" fill=\"#ef4444\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"34\" font-weight=\"900\">0</text>\n<rect x=\"220\" y=\"182\" width=\"156\" height=\"108\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"238\" y=\"216\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"700\">High</text>\n<text x=\"238\" y=\"264\" fill=\"#f97316\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"34\" font-weight=\"900\">3</text>\n<rect x=\"396\" y=\"182\" width=\"156\" height=\"108\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"414\" y=\"216\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"700\">Medium</text>\n<text x=\"414\" y=\"264\" fill=\"#f59e0b\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"34\" font-weight=\"900\">4</text>\n<rect x=\"572\" y=\"182\" width=\"156\" height=\"108\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"590\" y=\"216\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"700\">Low</text>\n<text x=\"590\" y=\"264\" fill=\"#3b82f6\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"34\" font-weight=\"900\">6</text>\n<rect x=\"748\" y=\"182\" width=\"156\" height=\"108\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"766\" y=\"216\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"700\">Info</text>\n<text x=\"766\" y=\"264\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"34\" font-weight=\"900\">9</text>\n<rect x=\"44\" y=\"330\" width=\"260\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"58\" y=\"353\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">URLs</text>\n<text x=\"58\" y=\"376\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">36</text>\n<rect x=\"336\" y=\"330\" width=\"260\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"350\" y=\"353\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Forms</text>\n<text x=\"350\" y=\"376\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">2</text>\n<rect x=\"628\" y=\"330\" width=\"260\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"642\" y=\"353\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Entradas</text>\n<text x=\"642\" y=\"376\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">36</text>\n<rect x=\"44\" y=\"412\" width=\"260\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"58\" y=\"435\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Parametros</text>\n<text x=\"58\" y=\"458\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">8</text>\n<rect x=\"336\" y=\"412\" width=\"260\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"350\" y=\"435\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">JS endpoints</text>\n<text x=\"350\" y=\"458\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">9</text>\n<rect x=\"628\" y=\"412\" width=\"260\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"642\" y=\"435\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Reglas</text>\n<text x=\"642\" y=\"458\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">13</text>\n</svg>"
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"960\" height=\"540\" viewBox=\"0 0 960 540\" role=\"img\" aria-label=\"Audit overview\">\n<rect width=\"960\" height=\"540\" fill=\"#020617\"/>\n<rect x=\"20\" y=\"20\" width=\"920\" height=\"500\" rx=\"18\" fill=\"#0b1220\" stroke=\"#1f3d34\"/>\n<text x=\"44\" y=\"72\" fill=\"#22c55e\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"16\" font-weight=\"800\">AI Web Auditor</text>\n<text x=\"44\" y=\"108\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"28\" font-weight=\"800\">http://127.0.0.1:55917/members/</text>\n<text x=\"44\" y=\"140\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"15\" font-weight=\"600\">http | 127.0.0.1:55917</text>\n<rect x=\"720\" y=\"56\" width=\"178\" height=\"44\" rx=\"14\" fill=\"#9a3412\"/><text x=\"734\" y=\"84\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"800\">HIGH 89/100</text>\n<rect x=\"44\" y=\"182\" width=\"156\" height=\"108\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"62\" y=\"216\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"700\">Critical</text>\n<text x=\"62\" y=\"264\" fill=\"#ef4444\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"34\" font-weight=\"900\">0</text>\n<rect x=\"220\" y=\"182\" width=\"156\" height=\"108\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"238\" y=\"216\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"700\">High</text>\n<text x=\"238\" y=\"264\" fill=\"#f97316\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"34\" font-weight=\"900\">3</text>\n<rect x=\"396\" y=\"182\" width=\"156\" height=\"108\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"414\" y=\"216\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"700\">Medium</text>\n<text x=\"414\" y=\"264\" fill=\"#f59e0b\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"34\" font-weight=\"900\">4</text>\n<rect x=\"572\" y=\"182\" width=\"156\" height=\"108\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"590\" y=\"216\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"700\">Low</text>\n<text x=\"590\" y=\"264\" fill=\"#3b82f6\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"34\" font-weight=\"900\">6</text>\n<rect x=\"748\" y=\"182\" width=\"156\" height=\"108\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"766\" y=\"216\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"700\">Info</text>\n<text x=\"766\" y=\"264\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"34\" font-weight=\"900\">9</text>\n<rect x=\"44\" y=\"330\" width=\"260\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"58\" y=\"353\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">URLs</text>\n<text x=\"58\" y=\"376\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">36</text>\n<rect x=\"336\" y=\"330\" width=\"260\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"350\" y=\"353\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Forms</text>\n<text x=\"350\" y=\"376\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">2</text>\n<rect x=\"628\" y=\"330\" width=\"260\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"642\" y=\"353\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Entradas</text>\n<text x=\"642\" y=\"376\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">36</text>\n<rect x=\"44\" y=\"412\" width=\"260\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"58\" y=\"435\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Parametros</text>\n<text x=\"58\" y=\"458\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">8</text>\n<rect x=\"336\" y=\"412\" width=\"260\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"350\" y=\"435\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">JS endpoints</text>\n<text x=\"350\" y=\"458\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">9</text>\n<rect x=\"628\" y=\"412\" width=\"260\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"642\" y=\"435\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Reglas</text>\n<text x=\"642\" y=\"458\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">13</text>\n</svg>"
       },
       {
         "id": "fingerprint-map",
@@ -3622,7 +3622,7 @@
         "kind": "svg",
         "filename": "visuals/fingerprint-map.svg",
         "description": "Mapa visual de tecnologias, metadatos publicos y superficie descubierta de forma pasiva.",
-        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"960\" height=\"540\" viewBox=\"0 0 960 540\" role=\"img\" aria-label=\"Fingerprint map\">\n<rect width=\"960\" height=\"540\" fill=\"#020617\"/>\n<rect x=\"20\" y=\"20\" width=\"920\" height=\"500\" rx=\"18\" fill=\"#0b1220\" stroke=\"#1f3d34\"/>\n<text x=\"44\" y=\"72\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"26\" font-weight=\"800\">Fingerprint visual</text>\n<text x=\"44\" y=\"104\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"15\" font-weight=\"600\">Tecnologias, metadatos publicos y superficie observada</text>\n<text x=\"44\" y=\"154\" fill=\"#bbf7d0\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">Tecnologias</text>\n<rect x=\"44\" y=\"176\" width=\"250\" height=\"30\" rx=\"14\" fill=\"#134e4a\"/><text x=\"58\" y=\"204\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"800\">AIWebAuditorLab/0.24 | low</text>\n<rect x=\"330\" y=\"176\" width=\"250\" height=\"30\" rx=\"14\" fill=\"#134e4a\"/><text x=\"344\" y=\"204\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"800\">Django | medium</text>\n<rect x=\"616\" y=\"176\" width=\"250\" height=\"30\" rx=\"14\" fill=\"#134e4a\"/><text x=\"630\" y=\"204\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"800\">PHP 5.6.40 | high</text>\n<rect x=\"44\" y=\"218\" width=\"250\" height=\"30\" rx=\"14\" fill=\"#134e4a\"/><text x=\"58\" y=\"246\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"800\">WordPress 4.7.0 | high</text>\n<text x=\"44\" y=\"360\" fill=\"#bbf7d0\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">Superficie</text>\n<rect x=\"44\" y=\"384\" width=\"200\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"58\" y=\"407\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">URLs</text>\n<text x=\"58\" y=\"430\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">36</text>\n<rect x=\"260\" y=\"384\" width=\"200\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"274\" y=\"407\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Entradas</text>\n<text x=\"274\" y=\"430\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">36</text>\n<rect x=\"476\" y=\"384\" width=\"200\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"490\" y=\"407\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Subdominios</text>\n<text x=\"490\" y=\"430\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">0</text>\n<rect x=\"692\" y=\"384\" width=\"200\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"706\" y=\"407\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Puertos abiertos</text>\n<text x=\"706\" y=\"430\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">1</text>\n<text x=\"44\" y=\"474\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"15\" font-weight=\"700\">Metadatos publicos</text>\n<text x=\"44\" y=\"500\" fill=\"#e2e8f0\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"600\">/robots.txt, /.well-known/security.txt, /sitemap.xml</text>\n</svg>"
+        "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"960\" height=\"540\" viewBox=\"0 0 960 540\" role=\"img\" aria-label=\"Fingerprint map\">\n<rect width=\"960\" height=\"540\" fill=\"#020617\"/>\n<rect x=\"20\" y=\"20\" width=\"920\" height=\"500\" rx=\"18\" fill=\"#0b1220\" stroke=\"#1f3d34\"/>\n<text x=\"44\" y=\"72\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"26\" font-weight=\"800\">Fingerprint visual</text>\n<text x=\"44\" y=\"104\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"15\" font-weight=\"600\">Tecnologias, metadatos publicos y superficie observada</text>\n<text x=\"44\" y=\"154\" fill=\"#bbf7d0\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">Tecnologias</text>\n<rect x=\"44\" y=\"176\" width=\"250\" height=\"30\" rx=\"14\" fill=\"#134e4a\"/><text x=\"58\" y=\"204\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"800\">AIWebAuditorLab/0.25 | low</text>\n<rect x=\"330\" y=\"176\" width=\"250\" height=\"30\" rx=\"14\" fill=\"#134e4a\"/><text x=\"344\" y=\"204\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"800\">Django | medium</text>\n<rect x=\"616\" y=\"176\" width=\"250\" height=\"30\" rx=\"14\" fill=\"#134e4a\"/><text x=\"630\" y=\"204\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"800\">PHP 5.6.40 | high</text>\n<rect x=\"44\" y=\"218\" width=\"250\" height=\"30\" rx=\"14\" fill=\"#134e4a\"/><text x=\"58\" y=\"246\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"800\">WordPress 4.7.0 | high</text>\n<text x=\"44\" y=\"360\" fill=\"#bbf7d0\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">Superficie</text>\n<rect x=\"44\" y=\"384\" width=\"200\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"58\" y=\"407\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">URLs</text>\n<text x=\"58\" y=\"430\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">36</text>\n<rect x=\"260\" y=\"384\" width=\"200\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"274\" y=\"407\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Entradas</text>\n<text x=\"274\" y=\"430\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">36</text>\n<rect x=\"476\" y=\"384\" width=\"200\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"490\" y=\"407\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Subdominios</text>\n<text x=\"490\" y=\"430\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">0</text>\n<rect x=\"692\" y=\"384\" width=\"200\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"706\" y=\"407\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Puertos abiertos</text>\n<text x=\"706\" y=\"430\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">1</text>\n<text x=\"44\" y=\"474\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"15\" font-weight=\"700\">Metadatos publicos</text>\n<text x=\"44\" y=\"500\" fill=\"#e2e8f0\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"600\">/robots.txt, /.well-known/security.txt, /sitemap.xml</text>\n</svg>"
       },
       {
         "id": "coverage-matrix",
@@ -3637,6 +3637,480 @@
       "Visual snapshots are generated locally from passive scan evidence.",
       "No browser rendering, exploitation, brute force, fuzzing or form submission is performed to create these visuals.",
       "Sensitive values already redacted in the scan JSON remain redacted in visual evidence."
+    ]
+  },
+  "dashboard": {
+    "version": "1.0",
+    "generated_at": "2026-09-12T03:02:25Z",
+    "summary": {
+      "readiness": "needs_attention",
+      "risk_level": "high",
+      "risk_score": 89,
+      "coverage_score": 89,
+      "pending_count": 15,
+      "checklist_done": 14,
+      "checklist_total": 19,
+      "change_status": "baseline_required"
+    },
+    "coverage": {
+      "score": 89,
+      "metrics": [
+        {
+          "id": "modules",
+          "label": "Modulos ejecutados",
+          "value": 10,
+          "target": 10,
+          "status": "done",
+          "weight": 1
+        },
+        {
+          "id": "inventory",
+          "label": "URLs inventariadas",
+          "value": 36,
+          "target": 1,
+          "status": "done",
+          "weight": 1
+        },
+        {
+          "id": "entry_points",
+          "label": "Puntos de entrada",
+          "value": 36,
+          "target": 1,
+          "status": "done",
+          "weight": 1
+        },
+        {
+          "id": "javascript",
+          "label": "Endpoints JavaScript",
+          "value": 9,
+          "target": 1,
+          "status": "done",
+          "weight": 1
+        },
+        {
+          "id": "rules",
+          "label": "Reglas pasivas",
+          "value": 13,
+          "target": 15,
+          "status": "done",
+          "weight": 1
+        },
+        {
+          "id": "controls",
+          "label": "Controles OWASP",
+          "value": 34,
+          "target": 1,
+          "status": "done",
+          "weight": 1
+        },
+        {
+          "id": "visuals",
+          "label": "Capturas visuales",
+          "value": 3,
+          "target": 3,
+          "status": "done",
+          "weight": 1
+        },
+        {
+          "id": "subdomains",
+          "label": "Subdominios revisados",
+          "value": 0,
+          "target": 1,
+          "status": "pending",
+          "weight": 1
+        },
+        {
+          "id": "ports",
+          "label": "Puertos revisados",
+          "value": 1,
+          "target": 1,
+          "status": "done",
+          "weight": 1
+        }
+      ],
+      "notes": [
+        "Subdominios y puertos se consideran cubiertos si el modulo se ejecuto, aunque no encuentre resultados.",
+        "La cobertura mide enumeracion inicial, no profundidad de pruebas ofensivas."
+      ]
+    },
+    "risks": {
+      "risk_level": "high",
+      "risk_score": 89,
+      "severity_counts": {
+        "critical": 0,
+        "high": 3,
+        "medium": 4,
+        "low": 6,
+        "info": 9
+      },
+      "top_priorities": [
+        {
+          "rank": 1,
+          "finding_id": "AUTH-BASIC-OVER-HTTP",
+          "title": "HTTP Basic Authentication over HTTP",
+          "severity": "high",
+          "module": "basic_auth",
+          "target": "http://127.0.0.1:55917/members/",
+          "score": 96,
+          "reason": "credentials may be exposed before transport security is enforced",
+          "recommended_action": "Force HTTPS before authentication and enable HSTS after validation."
+        },
+        {
+          "rank": 2,
+          "finding_id": "HTTP-NO-HTTPS-REDIRECT",
+          "title": "HTTP is not redirected to HTTPS",
+          "severity": "high",
+          "module": "http",
+          "target": "http://127.0.0.1:55917/members/",
+          "score": 95,
+          "reason": "unencrypted HTTP remains reachable for the same service",
+          "recommended_action": "Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification."
+        },
+        {
+          "rank": 3,
+          "finding_id": "METHOD-TRACE-ADVERTISED",
+          "title": "HTTP method TRACE is advertised",
+          "severity": "high",
+          "module": "http_methods",
+          "target": "http://127.0.0.1:55917/members/",
+          "score": 91,
+          "reason": "an unnecessary HTTP method is advertised by the server",
+          "recommended_action": "Disable unnecessary HTTP methods or enforce strict authorization before use."
+        },
+        {
+          "rank": 4,
+          "finding_id": "METHOD-DELETE-ADVERTISED",
+          "title": "HTTP method DELETE is advertised",
+          "severity": "medium",
+          "module": "http_methods",
+          "target": "http://127.0.0.1:55917/members/",
+          "score": 57,
+          "reason": "medium finding reported by the http_methods module",
+          "recommended_action": "Disable unnecessary HTTP methods or enforce strict authorization before use."
+        },
+        {
+          "rank": 5,
+          "finding_id": "METHOD-PUT-ADVERTISED",
+          "title": "HTTP method PUT is advertised",
+          "severity": "medium",
+          "module": "http_methods",
+          "target": "http://127.0.0.1:55917/members/",
+          "score": 57,
+          "reason": "medium finding reported by the http_methods module",
+          "recommended_action": "Disable unnecessary HTTP methods or enforce strict authorization before use."
+        }
+      ],
+      "quick_wins": [
+        {
+          "finding_id": "HTTP-NO-HTTPS-REDIRECT",
+          "title": "HTTP is not redirected to HTTPS",
+          "severity": "high",
+          "effort": "low",
+          "recommended_action": "Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification."
+        },
+        {
+          "finding_id": "HEADER-CONTENT_SECURITY_POLICY-MISSING",
+          "title": "Content-Security-Policy header is missing",
+          "severity": "medium",
+          "effort": "low",
+          "recommended_action": "Define an appropriate Content-Security-Policy header for this application."
+        },
+        {
+          "finding_id": "HEADER-CLICKJACKING-MISSING",
+          "title": "Clickjacking protection header is missing",
+          "severity": "low",
+          "effort": "low",
+          "recommended_action": "Set frame-ancestors in Content-Security-Policy or use X-Frame-Options where appropriate."
+        },
+        {
+          "finding_id": "HEADER-NOSNIFF-MISSING",
+          "title": "X-Content-Type-Options nosniff is missing",
+          "severity": "low",
+          "effort": "low",
+          "recommended_action": "Set X-Content-Type-Options: nosniff."
+        },
+        {
+          "finding_id": "HEADER-REFERRER_POLICY-MISSING",
+          "title": "Referrer-Policy header is missing",
+          "severity": "low",
+          "effort": "low",
+          "recommended_action": "Define an appropriate Referrer-Policy header for this application."
+        }
+      ]
+    },
+    "pending": [
+      {
+        "id": "priority-AUTH-BASIC-OVER-HTTP",
+        "title": "HTTP Basic Authentication over HTTP",
+        "severity": "high",
+        "reason": "credentials may be exposed before transport security is enforced",
+        "next_step": "Force HTTPS before authentication and enable HSTS after validation.",
+        "source": "assessment"
+      },
+      {
+        "id": "priority-HTTP-NO-HTTPS-REDIRECT",
+        "title": "HTTP is not redirected to HTTPS",
+        "severity": "high",
+        "reason": "unencrypted HTTP remains reachable for the same service",
+        "next_step": "Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification.",
+        "source": "assessment"
+      },
+      {
+        "id": "priority-METHOD-TRACE-ADVERTISED",
+        "title": "HTTP method TRACE is advertised",
+        "severity": "high",
+        "reason": "an unnecessary HTTP method is advertised by the server",
+        "next_step": "Disable unnecessary HTTP methods or enforce strict authorization before use.",
+        "source": "assessment"
+      },
+      {
+        "id": "entry-points-review",
+        "title": "Priorizar puntos de entrada",
+        "severity": "medium",
+        "reason": "29 endpoint(s) necesitan revision manual.",
+        "next_step": "Abre la pestana Entradas y filtra login, admin, token, upload, POST o delete.",
+        "source": "entry_points"
+      },
+      {
+        "id": "module-basic_auth",
+        "title": "Revisar modulo basic_auth",
+        "severity": "medium",
+        "reason": "HTTP authentication challenge checked.",
+        "next_step": "Revisa la evidencia del modulo y decide si requiere validacion manual.",
+        "source": "modules"
+      },
+      {
+        "id": "module-cookies",
+        "title": "Revisar modulo cookies",
+        "severity": "medium",
+        "reason": "Checked 2 cookie(s).",
+        "next_step": "Revisa la evidencia del modulo y decide si requiere validacion manual.",
+        "source": "modules"
+      },
+      {
+        "id": "module-crawler",
+        "title": "Revisar modulo crawler",
+        "severity": "medium",
+        "reason": "Crawled 6 page(s), discovered 10 in-scope URL(s), 10 from metadata.",
+        "next_step": "Revisa la evidencia del modulo y decide si requiere validacion manual.",
+        "source": "modules"
+      },
+      {
+        "id": "module-fingerprinting",
+        "title": "Revisar modulo fingerprinting",
+        "severity": "medium",
+        "reason": "Identified 4 technology signal(s) and checked 4 public metadata path(s).",
+        "next_step": "Revisa la evidencia del modulo y decide si requiere validacion manual.",
+        "source": "modules"
+      },
+      {
+        "id": "module-http",
+        "title": "Revisar modulo http",
+        "severity": "medium",
+        "reason": "HTTP/HTTPS reachability and redirects checked.",
+        "next_step": "Revisa la evidencia del modulo y decide si requiere validacion manual.",
+        "source": "modules"
+      },
+      {
+        "id": "module-http_methods",
+        "title": "Revisar modulo http_methods",
+        "severity": "medium",
+        "reason": "HTTP methods advertised by OPTIONS checked.",
+        "next_step": "Revisa la evidencia del modulo y decide si requiere validacion manual.",
+        "source": "modules"
+      },
+      {
+        "id": "module-ports",
+        "title": "Revisar modulo ports",
+        "severity": "medium",
+        "reason": "Checked 3 TCP port(s), found 1 open port(s).",
+        "next_step": "Revisa la evidencia del modulo y decide si requiere validacion manual.",
+        "source": "modules"
+      },
+      {
+        "id": "module-security_headers",
+        "title": "Revisar modulo security_headers",
+        "severity": "medium",
+        "reason": "Security headers checked.",
+        "next_step": "Revisa la evidencia del modulo y decide si requiere validacion manual.",
+        "source": "modules"
+      },
+      {
+        "id": "sensitive-parameters",
+        "title": "Revisar parametros sensibles",
+        "severity": "medium",
+        "reason": "4 parametro(s) parecen sensibles por nombre.",
+        "next_step": "Confirma contexto y documenta si transportan tokens, sesiones, claves o datos personales.",
+        "source": "entry_points"
+      },
+      {
+        "id": "subdomains-not-run",
+        "title": "Decidir si entra reconocimiento de subdominios",
+        "severity": "low",
+        "reason": "El modulo de subdominios no se ejecuto.",
+        "next_step": "Activalo solo si el scope autoriza subdominios del dominio raiz.",
+        "source": "subdomains"
+      },
+      {
+        "id": "baseline-comparison",
+        "title": "Comparar contra baseline",
+        "severity": "info",
+        "reason": "No hay comparacion asociada al dashboard.",
+        "next_step": "Cuando tengas dos auditorias guardadas, usa Comparar para ver nuevos, resueltos y persistentes.",
+        "source": "compare"
+      }
+    ],
+    "checklist": [
+      {
+        "id": "scope",
+        "group": "Alcance",
+        "label": "Scope validado",
+        "status": "done",
+        "evidence": "El objetivo entra en hosts/rutas autorizadas."
+      },
+      {
+        "id": "profile",
+        "group": "Alcance",
+        "label": "Perfil documentado",
+        "status": "done",
+        "evidence": "Perfil anonimo/autenticado incluido en JSON."
+      },
+      {
+        "id": "http",
+        "group": "Transporte",
+        "label": "HTTP y redirecciones revisadas",
+        "status": "done",
+        "evidence": "Estado, URL final y cadena de redireccion revisados."
+      },
+      {
+        "id": "tls",
+        "group": "Transporte",
+        "label": "TLS basico revisado",
+        "status": "review",
+        "evidence": "Certificado y datos basicos TLS si aplica."
+      },
+      {
+        "id": "headers",
+        "group": "Transporte",
+        "label": "Cabeceras defensivas revisadas",
+        "status": "done",
+        "evidence": "HSTS, CSP, X-Frame-Options y politicas de navegador."
+      },
+      {
+        "id": "cookies",
+        "group": "Transporte",
+        "label": "Cookies revisadas",
+        "status": "done",
+        "evidence": "Secure, HttpOnly y SameSite."
+      },
+      {
+        "id": "fingerprint",
+        "group": "Superficie",
+        "label": "Fingerprinting ejecutado",
+        "status": "done",
+        "evidence": "Tecnologias y ficheros publicos."
+      },
+      {
+        "id": "crawler",
+        "group": "Superficie",
+        "label": "Crawler seguro ejecutado",
+        "status": "done",
+        "evidence": "Enlaces, robots, sitemap y rutas relevantes."
+      },
+      {
+        "id": "inventory",
+        "group": "Superficie",
+        "label": "Inventario generado",
+        "status": "done",
+        "evidence": "URLs normalizadas y clasificadas."
+      },
+      {
+        "id": "entrypoints",
+        "group": "Superficie",
+        "label": "Puntos de entrada generados",
+        "status": "done",
+        "evidence": "Endpoints, parametros, formularios y metodos."
+      },
+      {
+        "id": "javascript",
+        "group": "Superficie",
+        "label": "JavaScript revisado",
+        "status": "done",
+        "evidence": "Scripts y referencias a endpoints."
+      },
+      {
+        "id": "subdomains",
+        "group": "Recon",
+        "label": "Subdominios considerados",
+        "status": "optional",
+        "evidence": "DNS seguro si el scope lo permite."
+      },
+      {
+        "id": "ports",
+        "group": "Recon",
+        "label": "Puertos considerados",
+        "status": "done",
+        "evidence": "TCP connect limitado si el scope lo permite."
+      },
+      {
+        "id": "rules",
+        "group": "Trazabilidad",
+        "label": "Reglas OWASP calculadas",
+        "status": "done",
+        "evidence": "Mapeo WSTG/ASVS."
+      },
+      {
+        "id": "assessment",
+        "group": "Trazabilidad",
+        "label": "Valoracion de riesgo generada",
+        "status": "done",
+        "evidence": "Riesgo, prioridades, quick wins y plan."
+      },
+      {
+        "id": "visuals",
+        "group": "Entregables",
+        "label": "Evidencia visual generada",
+        "status": "done",
+        "evidence": "Capturas SVG de resumen, fingerprint y cobertura."
+      },
+      {
+        "id": "report",
+        "group": "Entregables",
+        "label": "Informe preparado",
+        "status": "pending",
+        "evidence": "Genera Markdown/HTML/PDF desde la pestana Informe."
+      },
+      {
+        "id": "compare",
+        "group": "Seguimiento",
+        "label": "Comparacion realizada",
+        "status": "pending",
+        "evidence": "Compara contra baseline cuando exista una segunda ejecucion."
+      },
+      {
+        "id": "open-ports-review",
+        "group": "Seguimiento",
+        "label": "Puertos abiertos revisados",
+        "status": "review",
+        "evidence": "Si hay puertos abiertos, documenta si pertenecen al alcance."
+      }
+    ],
+    "changes": {
+      "status": "baseline_required",
+      "summary": {
+        "new": 0,
+        "resolved": 0,
+        "persistent": 0,
+        "severity_changed": 0
+      },
+      "notes": [
+        "No hay comparacion asociada. Usa una auditoria anterior como baseline cuando exista."
+      ]
+    },
+    "safety_notes": [
+      "Dashboard values are derived from passive evidence already present in the audit JSON.",
+      "Pending items are triage guidance; they are not proof of exploitability.",
+      "No additional requests, exploitation, fuzzing, brute force or form submission are performed to build this dashboard."
     ]
   },
   "external_sources": {
@@ -3658,7 +4132,7 @@
         "filename": "example-zap.json",
         "source_format": "zap-json",
         "source_tool": "zap",
-        "imported_at": "2026-09-12T02:26:12Z",
+        "imported_at": "2026-09-12T03:02:28Z",
         "finding_count": 1,
         "url_count": 1,
         "port_count": 0,
@@ -3700,7 +4174,7 @@
     },
     "urls": [
       {
-        "url": "http://127.0.0.1:54920/.well-known/change-password",
+        "url": "http://127.0.0.1:55917/.well-known/change-password",
         "status_code": 404,
         "content_type": "",
         "fetched": true,
@@ -3735,7 +4209,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/.well-known/oauth-authorization-server",
+        "url": "http://127.0.0.1:55917/.well-known/oauth-authorization-server",
         "status_code": 404,
         "content_type": "",
         "fetched": true,
@@ -3770,7 +4244,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/account",
+        "url": "http://127.0.0.1:55917/account",
         "status_code": 403,
         "content_type": "text/html; charset=utf-8",
         "fetched": true,
@@ -3809,7 +4283,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/admin/",
+        "url": "http://127.0.0.1:55917/admin/",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -3841,7 +4315,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/admin/export?token=%5Bredacted%5D",
+        "url": "http://127.0.0.1:55917/admin/export?token=%5Bredacted%5D",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -3873,7 +4347,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/api",
+        "url": "http://127.0.0.1:55917/api",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -3905,7 +4379,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/api/member-profile?csrf_token=%5Bredacted%5D",
+        "url": "http://127.0.0.1:55917/api/member-profile?csrf_token=%5Bredacted%5D",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -3957,7 +4431,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/api/profile?session_id=%5Bredacted%5D",
+        "url": "http://127.0.0.1:55917/api/profile?session_id=%5Bredacted%5D",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -4009,7 +4483,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/api/upload",
+        "url": "http://127.0.0.1:55917/api/upload",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -4061,7 +4535,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/api/users",
+        "url": "http://127.0.0.1:55917/api/users",
         "status_code": 200,
         "content_type": "application/json; charset=utf-8",
         "fetched": true,
@@ -4100,7 +4574,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/api/users?role=member",
+        "url": "http://127.0.0.1:55917/api/users?role=member",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -4134,7 +4608,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/callback/oauth",
+        "url": "http://127.0.0.1:55917/callback/oauth",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -4166,7 +4640,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/health",
+        "url": "http://127.0.0.1:55917/health",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -4198,7 +4672,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/login",
+        "url": "http://127.0.0.1:55917/login",
         "status_code": 200,
         "content_type": "text/html; charset=utf-8",
         "fetched": true,
@@ -4246,7 +4720,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/login/",
+        "url": "http://127.0.0.1:55917/login/",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -4289,7 +4763,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/members/",
+        "url": "http://127.0.0.1:55917/members/",
         "status_code": 401,
         "content_type": "text/html; charset=utf-8",
         "fetched": true,
@@ -4351,7 +4825,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/oauth/authorize",
+        "url": "http://127.0.0.1:55917/oauth/authorize",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -4394,7 +4868,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/oauth/authorize?client_id=demo",
+        "url": "http://127.0.0.1:55917/oauth/authorize?client_id=demo",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -4435,7 +4909,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/oauth/token",
+        "url": "http://127.0.0.1:55917/oauth/token",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -4469,7 +4943,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/private/",
+        "url": "http://127.0.0.1:55917/private/",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -4501,7 +4975,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/private/report",
+        "url": "http://127.0.0.1:55917/private/report",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -4533,7 +5007,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/reset-password",
+        "url": "http://127.0.0.1:55917/reset-password",
         "status_code": 200,
         "content_type": "text/html; charset=utf-8",
         "fetched": true,
@@ -4572,7 +5046,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/reset-password?token=%5Bredacted%5D",
+        "url": "http://127.0.0.1:55917/reset-password?token=%5Bredacted%5D",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -4604,7 +5078,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/session",
+        "url": "http://127.0.0.1:55917/session",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -4647,7 +5121,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/",
+        "url": "http://127.0.0.1:55917/",
         "status_code": 200,
         "content_type": "text/html; charset=utf-8",
         "fetched": true,
@@ -4675,7 +5149,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/.well-known/openid-configuration",
+        "url": "http://127.0.0.1:55917/.well-known/openid-configuration",
         "status_code": 200,
         "content_type": "",
         "fetched": true,
@@ -4700,7 +5174,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/.well-known/security.txt",
+        "url": "http://127.0.0.1:55917/.well-known/security.txt",
         "status_code": 200,
         "content_type": "",
         "fetched": true,
@@ -4765,7 +5239,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/.well-known/apple-app-site-association",
+        "url": "http://127.0.0.1:55917/.well-known/apple-app-site-association",
         "status_code": 404,
         "content_type": "",
         "fetched": true,
@@ -4788,7 +5262,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/.well-known/assetlinks.json",
+        "url": "http://127.0.0.1:55917/.well-known/assetlinks.json",
         "status_code": 404,
         "content_type": "",
         "fetched": true,
@@ -4811,7 +5285,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/.well-known/webfinger",
+        "url": "http://127.0.0.1:55917/.well-known/webfinger",
         "status_code": 404,
         "content_type": "",
         "fetched": true,
@@ -4834,7 +5308,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/robots.txt",
+        "url": "http://127.0.0.1:55917/robots.txt",
         "status_code": 200,
         "content_type": "",
         "fetched": true,
@@ -4856,7 +5330,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/security.txt",
+        "url": "http://127.0.0.1:55917/security.txt",
         "status_code": 404,
         "content_type": "",
         "fetched": true,
@@ -4879,7 +5353,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/sitemap.xml",
+        "url": "http://127.0.0.1:55917/sitemap.xml",
         "status_code": 200,
         "content_type": "",
         "fetched": true,
@@ -4901,7 +5375,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/static/app.js",
+        "url": "http://127.0.0.1:55917/static/app.js",
         "status_code": 200,
         "content_type": "application/javascript; charset=utf-8",
         "fetched": true,
@@ -4956,8 +5430,8 @@
     ],
     "forms": [
       {
-        "page_url": "http://127.0.0.1:54920/login",
-        "action": "http://127.0.0.1:54920/session",
+        "page_url": "http://127.0.0.1:55917/login",
+        "action": "http://127.0.0.1:55917/session",
         "method": "POST",
         "input_count": 2,
         "password_fields": 1,
@@ -4975,8 +5449,8 @@
         ]
       },
       {
-        "page_url": "http://127.0.0.1:54920/members/",
-        "action": "http://127.0.0.1:54920/login/",
+        "page_url": "http://127.0.0.1:55917/members/",
+        "action": "http://127.0.0.1:55917/login/",
         "method": "POST",
         "input_count": 3,
         "password_fields": 1,
@@ -5002,7 +5476,7 @@
     ],
     "interesting_paths": [
       {
-        "url": "http://127.0.0.1:54920/.well-known/change-password",
+        "url": "http://127.0.0.1:55917/.well-known/change-password",
         "status_code": 404,
         "content_type": "",
         "fetched": true,
@@ -5037,7 +5511,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/.well-known/oauth-authorization-server",
+        "url": "http://127.0.0.1:55917/.well-known/oauth-authorization-server",
         "status_code": 404,
         "content_type": "",
         "fetched": true,
@@ -5072,7 +5546,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/account",
+        "url": "http://127.0.0.1:55917/account",
         "status_code": 403,
         "content_type": "text/html; charset=utf-8",
         "fetched": true,
@@ -5111,7 +5585,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/admin/",
+        "url": "http://127.0.0.1:55917/admin/",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -5143,7 +5617,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/admin/export?token=%5Bredacted%5D",
+        "url": "http://127.0.0.1:55917/admin/export?token=%5Bredacted%5D",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -5175,7 +5649,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/api",
+        "url": "http://127.0.0.1:55917/api",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -5207,7 +5681,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/api/member-profile?csrf_token=%5Bredacted%5D",
+        "url": "http://127.0.0.1:55917/api/member-profile?csrf_token=%5Bredacted%5D",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -5259,7 +5733,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/api/profile?session_id=%5Bredacted%5D",
+        "url": "http://127.0.0.1:55917/api/profile?session_id=%5Bredacted%5D",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -5311,7 +5785,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/api/upload",
+        "url": "http://127.0.0.1:55917/api/upload",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -5363,7 +5837,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/api/users",
+        "url": "http://127.0.0.1:55917/api/users",
         "status_code": 200,
         "content_type": "application/json; charset=utf-8",
         "fetched": true,
@@ -5402,7 +5876,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/api/users?role=member",
+        "url": "http://127.0.0.1:55917/api/users?role=member",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -5436,7 +5910,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/callback/oauth",
+        "url": "http://127.0.0.1:55917/callback/oauth",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -5468,7 +5942,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/health",
+        "url": "http://127.0.0.1:55917/health",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -5500,7 +5974,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/login",
+        "url": "http://127.0.0.1:55917/login",
         "status_code": 200,
         "content_type": "text/html; charset=utf-8",
         "fetched": true,
@@ -5548,7 +6022,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/login/",
+        "url": "http://127.0.0.1:55917/login/",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -5591,7 +6065,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/members/",
+        "url": "http://127.0.0.1:55917/members/",
         "status_code": 401,
         "content_type": "text/html; charset=utf-8",
         "fetched": true,
@@ -5653,7 +6127,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/oauth/authorize",
+        "url": "http://127.0.0.1:55917/oauth/authorize",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -5696,7 +6170,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/oauth/authorize?client_id=demo",
+        "url": "http://127.0.0.1:55917/oauth/authorize?client_id=demo",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -5737,7 +6211,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/oauth/token",
+        "url": "http://127.0.0.1:55917/oauth/token",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -5771,7 +6245,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/private/",
+        "url": "http://127.0.0.1:55917/private/",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -5803,7 +6277,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/private/report",
+        "url": "http://127.0.0.1:55917/private/report",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -5835,7 +6309,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/reset-password",
+        "url": "http://127.0.0.1:55917/reset-password",
         "status_code": 200,
         "content_type": "text/html; charset=utf-8",
         "fetched": true,
@@ -5874,7 +6348,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/reset-password?token=%5Bredacted%5D",
+        "url": "http://127.0.0.1:55917/reset-password?token=%5Bredacted%5D",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -5906,7 +6380,7 @@
         "error": ""
       },
       {
-        "url": "http://127.0.0.1:54920/session",
+        "url": "http://127.0.0.1:55917/session",
         "status_code": null,
         "content_type": "",
         "fetched": false,
@@ -5974,8 +6448,8 @@
     },
     "endpoints": [
       {
-        "id": "ep_62d8ca3c905a",
-        "url": "http://127.0.0.1:54920/login/",
+        "id": "ep_afae25505f41",
+        "url": "http://127.0.0.1:55917/login/",
         "path": "/login/",
         "status_code": null,
         "content_type": "",
@@ -6002,7 +6476,7 @@
               "hidden"
             ],
             "forms": [
-              "form_c1fdb6698074"
+              "form_5ecff38bc3ae"
             ],
             "sensitive_hint": true
           },
@@ -6015,7 +6489,7 @@
               "password"
             ],
             "forms": [
-              "form_c1fdb6698074"
+              "form_5ecff38bc3ae"
             ],
             "sensitive_hint": true
           },
@@ -6028,7 +6502,7 @@
               "text"
             ],
             "forms": [
-              "form_c1fdb6698074"
+              "form_5ecff38bc3ae"
             ],
             "sensitive_hint": false
           }
@@ -6039,7 +6513,7 @@
           "username"
         ],
         "forms": [
-          "form_c1fdb6698074"
+          "form_5ecff38bc3ae"
         ],
         "sources": [
           "form_action"
@@ -6053,8 +6527,8 @@
         ]
       },
       {
-        "id": "ep_e1533658b23a",
-        "url": "http://127.0.0.1:54920/session",
+        "id": "ep_e2831f3dec91",
+        "url": "http://127.0.0.1:55917/session",
         "path": "/session",
         "status_code": null,
         "content_type": "",
@@ -6081,7 +6555,7 @@
               "password"
             ],
             "forms": [
-              "form_eed8f5da746b"
+              "form_24baeb714afe"
             ],
             "sensitive_hint": true
           },
@@ -6094,7 +6568,7 @@
               "text"
             ],
             "forms": [
-              "form_eed8f5da746b"
+              "form_24baeb714afe"
             ],
             "sensitive_hint": false
           }
@@ -6104,7 +6578,7 @@
           "user"
         ],
         "forms": [
-          "form_eed8f5da746b"
+          "form_24baeb714afe"
         ],
         "sources": [
           "form_action"
@@ -6118,8 +6592,8 @@
         ]
       },
       {
-        "id": "ep_508da7988d6a",
-        "url": "http://127.0.0.1:54920/api/member-profile?csrf_token=%5Bredacted%5D",
+        "id": "ep_531d955a80cc",
+        "url": "http://127.0.0.1:55917/api/member-profile?csrf_token=%5Bredacted%5D",
         "path": "/api/member-profile",
         "status_code": null,
         "content_type": "",
@@ -6163,8 +6637,8 @@
         ]
       },
       {
-        "id": "ep_26d186c3560c",
-        "url": "http://127.0.0.1:54920/api/profile?session_id=%5Bredacted%5D",
+        "id": "ep_d08e1badbe63",
+        "url": "http://127.0.0.1:55917/api/profile?session_id=%5Bredacted%5D",
         "path": "/api/profile",
         "status_code": null,
         "content_type": "",
@@ -6208,8 +6682,8 @@
         ]
       },
       {
-        "id": "ep_a3803f14deb1",
-        "url": "http://127.0.0.1:54920/api/upload",
+        "id": "ep_9f414bcdda0b",
+        "url": "http://127.0.0.1:55917/api/upload",
         "path": "/api/upload",
         "status_code": null,
         "content_type": "",
@@ -6240,8 +6714,8 @@
         ]
       },
       {
-        "id": "ep_1cba6244909b",
-        "url": "http://127.0.0.1:54920/members/",
+        "id": "ep_7c7e1f65be54",
+        "url": "http://127.0.0.1:55917/members/",
         "path": "/members/",
         "status_code": 401,
         "content_type": "text/html; charset=utf-8",
@@ -6286,8 +6760,8 @@
         ]
       },
       {
-        "id": "ep_b6a8c5a97e8f",
-        "url": "http://127.0.0.1:54920/api/users?role=member",
+        "id": "ep_bd4f6c68bb53",
+        "url": "http://127.0.0.1:55917/api/users?role=member",
         "path": "/api/users",
         "status_code": null,
         "content_type": "",
@@ -6327,8 +6801,8 @@
         ]
       },
       {
-        "id": "ep_5f30b56902cc",
-        "url": "http://127.0.0.1:54920/oauth/authorize?client_id=demo",
+        "id": "ep_b2d6cdc85fbd",
+        "url": "http://127.0.0.1:55917/oauth/authorize?client_id=demo",
         "path": "/oauth/authorize",
         "status_code": null,
         "content_type": "",
@@ -6368,8 +6842,8 @@
         ]
       },
       {
-        "id": "ep_54e793405cc6",
-        "url": "http://127.0.0.1:54920/reset-password?token=%5Bredacted%5D",
+        "id": "ep_e4050eeb29be",
+        "url": "http://127.0.0.1:55917/reset-password?token=%5Bredacted%5D",
         "path": "/reset-password",
         "status_code": null,
         "content_type": "",
@@ -6408,8 +6882,8 @@
         ]
       },
       {
-        "id": "ep_299d08500b8a",
-        "url": "http://127.0.0.1:54920/",
+        "id": "ep_9c445ee855ed",
+        "url": "http://127.0.0.1:55917/",
         "path": "/",
         "status_code": 200,
         "content_type": "text/html; charset=utf-8",
@@ -6438,8 +6912,8 @@
         "notes": []
       },
       {
-        "id": "ep_31dce8591fcc",
-        "url": "http://127.0.0.1:54920/.well-known/apple-app-site-association",
+        "id": "ep_28523d11862c",
+        "url": "http://127.0.0.1:55917/.well-known/apple-app-site-association",
         "path": "/.well-known/apple-app-site-association",
         "status_code": 404,
         "content_type": "",
@@ -6463,8 +6937,8 @@
         "notes": []
       },
       {
-        "id": "ep_5a526766f207",
-        "url": "http://127.0.0.1:54920/.well-known/assetlinks.json",
+        "id": "ep_5bb08a814f0b",
+        "url": "http://127.0.0.1:55917/.well-known/assetlinks.json",
         "path": "/.well-known/assetlinks.json",
         "status_code": 404,
         "content_type": "",
@@ -6488,8 +6962,8 @@
         "notes": []
       },
       {
-        "id": "ep_771e0e05573f",
-        "url": "http://127.0.0.1:54920/.well-known/change-password",
+        "id": "ep_fa2fa380edc2",
+        "url": "http://127.0.0.1:55917/.well-known/change-password",
         "path": "/.well-known/change-password",
         "status_code": 404,
         "content_type": "",
@@ -6517,8 +6991,8 @@
         ]
       },
       {
-        "id": "ep_6c89aef82c8a",
-        "url": "http://127.0.0.1:54920/.well-known/oauth-authorization-server",
+        "id": "ep_b6ae036b9a9d",
+        "url": "http://127.0.0.1:55917/.well-known/oauth-authorization-server",
         "path": "/.well-known/oauth-authorization-server",
         "status_code": 404,
         "content_type": "",
@@ -6546,8 +7020,8 @@
         ]
       },
       {
-        "id": "ep_85c7d59d603e",
-        "url": "http://127.0.0.1:54920/.well-known/openid-configuration",
+        "id": "ep_38c5e95ea6e0",
+        "url": "http://127.0.0.1:55917/.well-known/openid-configuration",
         "path": "/.well-known/openid-configuration",
         "status_code": 200,
         "content_type": "",
@@ -6573,8 +7047,8 @@
         "notes": []
       },
       {
-        "id": "ep_c0b5f3232fe3",
-        "url": "http://127.0.0.1:54920/.well-known/security.txt",
+        "id": "ep_66588fca114c",
+        "url": "http://127.0.0.1:55917/.well-known/security.txt",
         "path": "/.well-known/security.txt",
         "status_code": 200,
         "content_type": "",
@@ -6600,8 +7074,8 @@
         "notes": []
       },
       {
-        "id": "ep_dabc13133c4a",
-        "url": "http://127.0.0.1:54920/.well-known/webfinger",
+        "id": "ep_f46104caca1d",
+        "url": "http://127.0.0.1:55917/.well-known/webfinger",
         "path": "/.well-known/webfinger",
         "status_code": 404,
         "content_type": "",
@@ -6625,8 +7099,8 @@
         "notes": []
       },
       {
-        "id": "ep_f6ff71efcae0",
-        "url": "http://127.0.0.1:54920/account",
+        "id": "ep_f0787ea64c66",
+        "url": "http://127.0.0.1:55917/account",
         "path": "/account",
         "status_code": 403,
         "content_type": "text/html; charset=utf-8",
@@ -6656,8 +7130,8 @@
         "notes": []
       },
       {
-        "id": "ep_179ba8884336",
-        "url": "http://127.0.0.1:54920/api",
+        "id": "ep_cb8b2ae9b495",
+        "url": "http://127.0.0.1:55917/api",
         "path": "/api",
         "status_code": null,
         "content_type": "",
@@ -6682,8 +7156,8 @@
         ]
       },
       {
-        "id": "ep_0e93ec316ce7",
-        "url": "http://127.0.0.1:54920/api/users",
+        "id": "ep_3234c95591ff",
+        "url": "http://127.0.0.1:55917/api/users",
         "path": "/api/users",
         "status_code": 200,
         "content_type": "application/json; charset=utf-8",
@@ -6715,8 +7189,8 @@
         ]
       },
       {
-        "id": "ep_c8e71b785d79",
-        "url": "http://127.0.0.1:54920/callback/oauth",
+        "id": "ep_03d457cf4a54",
+        "url": "http://127.0.0.1:55917/callback/oauth",
         "path": "/callback/oauth",
         "status_code": null,
         "content_type": "",
@@ -6741,8 +7215,8 @@
         ]
       },
       {
-        "id": "ep_d9a3234581a8",
-        "url": "http://127.0.0.1:54920/health",
+        "id": "ep_0f77cb0d9a84",
+        "url": "http://127.0.0.1:55917/health",
         "path": "/health",
         "status_code": null,
         "content_type": "",
@@ -6765,8 +7239,8 @@
         "notes": []
       },
       {
-        "id": "ep_a612c93f1e76",
-        "url": "http://127.0.0.1:54920/login",
+        "id": "ep_e100803adccb",
+        "url": "http://127.0.0.1:55917/login",
         "path": "/login",
         "status_code": 200,
         "content_type": "text/html; charset=utf-8",
@@ -6799,8 +7273,8 @@
         ]
       },
       {
-        "id": "ep_c76eb239eb2d",
-        "url": "http://127.0.0.1:54920/oauth/authorize",
+        "id": "ep_3076c67b4982",
+        "url": "http://127.0.0.1:55917/oauth/authorize",
         "path": "/oauth/authorize",
         "status_code": null,
         "content_type": "",
@@ -6829,8 +7303,8 @@
         ]
       },
       {
-        "id": "ep_ef4b75c6aff6",
-        "url": "http://127.0.0.1:54920/oauth/token",
+        "id": "ep_a80aaaf14e78",
+        "url": "http://127.0.0.1:55917/oauth/token",
         "path": "/oauth/token",
         "status_code": null,
         "content_type": "",
@@ -6857,8 +7331,8 @@
         ]
       },
       {
-        "id": "ep_f75dc0d90e0a",
-        "url": "http://127.0.0.1:54920/reset-password",
+        "id": "ep_6b0d6f97f2c2",
+        "url": "http://127.0.0.1:55917/reset-password",
         "path": "/reset-password",
         "status_code": 200,
         "content_type": "text/html; charset=utf-8",
@@ -6890,8 +7364,8 @@
         ]
       },
       {
-        "id": "ep_b110a9ce290d",
-        "url": "http://127.0.0.1:54920/robots.txt",
+        "id": "ep_4f6047f14939",
+        "url": "http://127.0.0.1:55917/robots.txt",
         "path": "/robots.txt",
         "status_code": 200,
         "content_type": "",
@@ -6914,8 +7388,8 @@
         "notes": []
       },
       {
-        "id": "ep_b5cb7fab2789",
-        "url": "http://127.0.0.1:54920/security.txt",
+        "id": "ep_f8e1f4f24d44",
+        "url": "http://127.0.0.1:55917/security.txt",
         "path": "/security.txt",
         "status_code": 404,
         "content_type": "",
@@ -6939,8 +7413,8 @@
         "notes": []
       },
       {
-        "id": "ep_252bce895d1f",
-        "url": "http://127.0.0.1:54920/sitemap.xml",
+        "id": "ep_78f2b321e0ed",
+        "url": "http://127.0.0.1:55917/sitemap.xml",
         "path": "/sitemap.xml",
         "status_code": 200,
         "content_type": "",
@@ -6985,8 +7459,8 @@
         "notes": []
       },
       {
-        "id": "ep_19f16dab3015",
-        "url": "http://127.0.0.1:54920/admin/export?token=%5Bredacted%5D",
+        "id": "ep_c932ed61b96d",
+        "url": "http://127.0.0.1:55917/admin/export?token=%5Bredacted%5D",
         "path": "/admin/export",
         "status_code": null,
         "content_type": "",
@@ -7025,8 +7499,8 @@
         ]
       },
       {
-        "id": "ep_97e54309b6a9",
-        "url": "http://127.0.0.1:54920/admin/",
+        "id": "ep_0f5dab5afc04",
+        "url": "http://127.0.0.1:55917/admin/",
         "path": "/admin/",
         "status_code": null,
         "content_type": "",
@@ -7051,8 +7525,8 @@
         ]
       },
       {
-        "id": "ep_9506da05ff82",
-        "url": "http://127.0.0.1:54920/private/",
+        "id": "ep_31659a902c74",
+        "url": "http://127.0.0.1:55917/private/",
         "path": "/private/",
         "status_code": null,
         "content_type": "",
@@ -7075,8 +7549,8 @@
         "notes": []
       },
       {
-        "id": "ep_1104f5316fbe",
-        "url": "http://127.0.0.1:54920/private/report",
+        "id": "ep_30d385a0846a",
+        "url": "http://127.0.0.1:55917/private/report",
         "path": "/private/report",
         "status_code": null,
         "content_type": "",
@@ -7099,8 +7573,8 @@
         "notes": []
       },
       {
-        "id": "ep_27fbc3b401e7",
-        "url": "http://127.0.0.1:54920/static/app.js",
+        "id": "ep_94fd41326185",
+        "url": "http://127.0.0.1:55917/static/app.js",
         "path": "/static/app.js",
         "status_code": 200,
         "content_type": "application/javascript; charset=utf-8",
@@ -7172,9 +7646,9 @@
     ],
     "forms": [
       {
-        "id": "form_eed8f5da746b",
-        "page_url": "http://127.0.0.1:54920/login",
-        "action": "http://127.0.0.1:54920/session",
+        "id": "form_24baeb714afe",
+        "page_url": "http://127.0.0.1:55917/login",
+        "action": "http://127.0.0.1:55917/session",
         "method": "POST",
         "input_count": 2,
         "password_fields": 1,
@@ -7200,9 +7674,9 @@
         "state_changing": true
       },
       {
-        "id": "form_c1fdb6698074",
-        "page_url": "http://127.0.0.1:54920/members/",
-        "action": "http://127.0.0.1:54920/login/",
+        "id": "form_5ecff38bc3ae",
+        "page_url": "http://127.0.0.1:55917/members/",
+        "action": "http://127.0.0.1:55917/login/",
         "method": "POST",
         "input_count": 3,
         "password_fields": 1,
@@ -7242,7 +7716,7 @@
           "query"
         ],
         "endpoints": [
-          "ep_5f30b56902cc"
+          "ep_b2d6cdc85fbd"
         ],
         "forms": [],
         "methods": [],
@@ -7257,11 +7731,11 @@
           "query"
         ],
         "endpoints": [
-          "ep_508da7988d6a",
-          "ep_62d8ca3c905a"
+          "ep_531d955a80cc",
+          "ep_afae25505f41"
         ],
         "forms": [
-          "form_c1fdb6698074"
+          "form_5ecff38bc3ae"
         ],
         "methods": [
           "POST"
@@ -7278,12 +7752,12 @@
           "form"
         ],
         "endpoints": [
-          "ep_62d8ca3c905a",
-          "ep_e1533658b23a"
+          "ep_afae25505f41",
+          "ep_e2831f3dec91"
         ],
         "forms": [
-          "form_c1fdb6698074",
-          "form_eed8f5da746b"
+          "form_24baeb714afe",
+          "form_5ecff38bc3ae"
         ],
         "methods": [
           "POST"
@@ -7300,7 +7774,7 @@
           "query"
         ],
         "endpoints": [
-          "ep_b6a8c5a97e8f"
+          "ep_bd4f6c68bb53"
         ],
         "forms": [],
         "methods": [],
@@ -7314,7 +7788,7 @@
           "query"
         ],
         "endpoints": [
-          "ep_26d186c3560c"
+          "ep_d08e1badbe63"
         ],
         "forms": [],
         "methods": [],
@@ -7328,8 +7802,8 @@
           "query"
         ],
         "endpoints": [
-          "ep_19f16dab3015",
-          "ep_54e793405cc6"
+          "ep_c932ed61b96d",
+          "ep_e4050eeb29be"
         ],
         "forms": [],
         "methods": [],
@@ -7343,10 +7817,10 @@
           "form"
         ],
         "endpoints": [
-          "ep_e1533658b23a"
+          "ep_e2831f3dec91"
         ],
         "forms": [
-          "form_eed8f5da746b"
+          "form_24baeb714afe"
         ],
         "methods": [
           "POST"
@@ -7363,10 +7837,10 @@
           "form"
         ],
         "endpoints": [
-          "ep_62d8ca3c905a"
+          "ep_afae25505f41"
         ],
         "forms": [
-          "form_c1fdb6698074"
+          "form_5ecff38bc3ae"
         ],
         "methods": [
           "POST"
@@ -7385,7 +7859,7 @@
         "state_changing": true,
         "state_changing_endpoint_count": 1,
         "sample_endpoint_ids": [
-          "ep_1cba6244909b"
+          "ep_7c7e1f65be54"
         ]
       },
       {
@@ -7394,16 +7868,16 @@
         "state_changing": false,
         "state_changing_endpoint_count": 0,
         "sample_endpoint_ids": [
-          "ep_1cba6244909b",
-          "ep_b6a8c5a97e8f",
-          "ep_299d08500b8a",
-          "ep_31dce8591fcc",
-          "ep_5a526766f207",
-          "ep_771e0e05573f",
-          "ep_6c89aef82c8a",
-          "ep_85c7d59d603e",
-          "ep_c0b5f3232fe3",
-          "ep_dabc13133c4a"
+          "ep_7c7e1f65be54",
+          "ep_bd4f6c68bb53",
+          "ep_9c445ee855ed",
+          "ep_28523d11862c",
+          "ep_5bb08a814f0b",
+          "ep_fa2fa380edc2",
+          "ep_b6ae036b9a9d",
+          "ep_38c5e95ea6e0",
+          "ep_66588fca114c",
+          "ep_f46104caca1d"
         ]
       },
       {
@@ -7412,7 +7886,7 @@
         "state_changing": false,
         "state_changing_endpoint_count": 0,
         "sample_endpoint_ids": [
-          "ep_1cba6244909b"
+          "ep_7c7e1f65be54"
         ]
       },
       {
@@ -7421,12 +7895,12 @@
         "state_changing": true,
         "state_changing_endpoint_count": 6,
         "sample_endpoint_ids": [
-          "ep_62d8ca3c905a",
-          "ep_e1533658b23a",
-          "ep_508da7988d6a",
-          "ep_26d186c3560c",
-          "ep_a3803f14deb1",
-          "ep_1cba6244909b"
+          "ep_afae25505f41",
+          "ep_e2831f3dec91",
+          "ep_531d955a80cc",
+          "ep_d08e1badbe63",
+          "ep_9f414bcdda0b",
+          "ep_7c7e1f65be54"
         ]
       },
       {
@@ -7435,7 +7909,7 @@
         "state_changing": true,
         "state_changing_endpoint_count": 1,
         "sample_endpoint_ids": [
-          "ep_1cba6244909b"
+          "ep_7c7e1f65be54"
         ]
       },
       {
@@ -7444,7 +7918,7 @@
         "state_changing": false,
         "state_changing_endpoint_count": 0,
         "sample_endpoint_ids": [
-          "ep_1cba6244909b"
+          "ep_7c7e1f65be54"
         ]
       }
     ]
@@ -7502,50 +7976,50 @@
         ],
         "matched_signals": [],
         "targets": [
-          "http://127.0.0.1:54920/members/"
+          "http://127.0.0.1:55917/members/"
         ],
         "evidence": [
           {
             "type": "finding",
             "label": "HTTP-NO-HTTPS-REDIRECT",
             "value": "HTTP is not redirected to HTTPS",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "initial_url",
-            "value": "http://127.0.0.1:54920/members/",
-            "location": "http://127.0.0.1:54920/members/"
+            "value": "http://127.0.0.1:55917/members/",
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "final_url",
-            "value": "http://127.0.0.1:54920/members/",
-            "location": "http://127.0.0.1:54920/members/"
+            "value": "http://127.0.0.1:55917/members/",
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "status_code",
             "value": "401",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding",
             "label": "AUTH-BASIC-OVER-HTTP",
             "value": "HTTP Basic Authentication over HTTP",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "status_code",
             "value": "401",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "www-authenticate",
             "value": "Basic realm=\"AI Web Auditor Lab\"",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           }
         ],
         "why_it_matters": "Credentials, cookies and session tokens must not be exposed through clear-text HTTP or downgrade paths.",
@@ -7590,44 +8064,44 @@
         ],
         "matched_signals": [],
         "targets": [
-          "http://127.0.0.1:54920/members/"
+          "http://127.0.0.1:55917/members/"
         ],
         "evidence": [
           {
             "type": "finding",
             "label": "COOKIE-HTTPONLY-MISSING",
             "value": "Cookie missing HttpOnly flag",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "cookie",
             "value": "sessionid",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding",
             "label": "COOKIE-SAMESITE-MISSING",
             "value": "Cookie missing SameSite attribute",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "cookie",
             "value": "sessionid",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding",
             "label": "COOKIE-SAMESITE-NONE-WITHOUT-SECURE",
             "value": "Cookie uses SameSite=None without Secure",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "cookie",
             "value": "tracking_id",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           }
         ],
         "why_it_matters": "Cookie flags constrain session token exposure across insecure transport, browser scripts and cross-site requests.",
@@ -7674,7 +8148,7 @@
         ],
         "matched_signals": [],
         "targets": [
-          "http://127.0.0.1:54920/members/",
+          "http://127.0.0.1:55917/members/",
           "http://127.0.0.1:8080/"
         ],
         "evidence": [
@@ -7682,37 +8156,37 @@
             "type": "finding",
             "label": "HEADER-CONTENT_SECURITY_POLICY-MISSING",
             "value": "Content-Security-Policy header is missing",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding",
             "label": "HEADER-CLICKJACKING-MISSING",
             "value": "Clickjacking protection header is missing",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding",
             "label": "HEADER-NOSNIFF-MISSING",
             "value": "X-Content-Type-Options nosniff is missing",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "x-content-type-options",
             "value": "missing",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding",
             "label": "HEADER-REFERRER_POLICY-MISSING",
             "value": "Referrer-Policy header is missing",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding",
             "label": "HEADER-PERMISSIONS_POLICY-MISSING",
             "value": "Permissions-Policy header is missing",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding",
@@ -7775,62 +8249,62 @@
         ],
         "matched_signals": [],
         "targets": [
-          "http://127.0.0.1:54920/members/"
+          "http://127.0.0.1:55917/members/"
         ],
         "evidence": [
           {
             "type": "finding",
             "label": "METHOD-DELETE-ADVERTISED",
             "value": "HTTP method DELETE is advertised",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "allow",
             "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "access-control-allow-methods",
             "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding",
             "label": "METHOD-PUT-ADVERTISED",
             "value": "HTTP method PUT is advertised",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "allow",
             "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "access-control-allow-methods",
             "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding",
             "label": "METHOD-TRACE-ADVERTISED",
             "value": "HTTP method TRACE is advertised",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "allow",
             "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "access-control-allow-methods",
             "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           }
         ],
         "why_it_matters": "Unnecessary HTTP methods can expand the attack surface or expose method tampering paths.",
@@ -7871,49 +8345,49 @@
           "technologies_identified"
         ],
         "targets": [
-          "http://127.0.0.1:54920/members/"
+          "http://127.0.0.1:55917/members/"
         ],
         "evidence": [
           {
             "type": "finding",
             "label": "FINGERPRINT-SERVER-VERSION-DISCLOSED",
             "value": "Server header discloses version information",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "server",
-            "value": "AIWebAuditorLab/0.24",
-            "location": "http://127.0.0.1:54920/members/"
+            "value": "AIWebAuditorLab/0.25",
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding",
             "label": "FINGERPRINT-POWERED-BY-DISCLOSED",
             "value": "X-Powered-By header discloses technology information",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "x-powered-by",
             "value": "PHP/5.6.40",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding",
             "label": "FINGERPRINT-GENERATOR-DISCLOSED",
             "value": "HTML generator metadata is exposed",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "generator",
             "value": "WordPress 4.7.0",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "technology",
             "label": "server",
-            "value": "AIWebAuditorLab/0.24",
+            "value": "AIWebAuditorLab/0.25",
             "location": "low"
           },
           {
@@ -7975,52 +8449,52 @@
           "public_metadata"
         ],
         "targets": [
-          "http://127.0.0.1:54920/.well-known/openid-configuration",
-          "http://127.0.0.1:54920/.well-known/security.txt",
-          "http://127.0.0.1:54920/robots.txt",
-          "http://127.0.0.1:54920/sitemap.xml"
+          "http://127.0.0.1:55917/.well-known/openid-configuration",
+          "http://127.0.0.1:55917/.well-known/security.txt",
+          "http://127.0.0.1:55917/robots.txt",
+          "http://127.0.0.1:55917/sitemap.xml"
         ],
         "evidence": [
           {
             "type": "metadata",
             "label": "robots.txt",
-            "value": "http://127.0.0.1:54920/robots.txt",
+            "value": "http://127.0.0.1:55917/robots.txt",
             "location": "200"
           },
           {
             "type": "metadata",
             "label": "sitemap",
-            "value": "http://127.0.0.1:54920/sitemap.xml",
+            "value": "http://127.0.0.1:55917/sitemap.xml",
             "location": "6"
           },
           {
             "type": "metadata",
             "label": "/.well-known/security.txt",
-            "value": "http://127.0.0.1:54920/.well-known/security.txt",
+            "value": "http://127.0.0.1:55917/.well-known/security.txt",
             "location": "200"
           },
           {
             "type": "metadata",
             "label": "/.well-known/openid-configuration",
-            "value": "http://127.0.0.1:54920/.well-known/openid-configuration",
+            "value": "http://127.0.0.1:55917/.well-known/openid-configuration",
             "location": "200"
           },
           {
             "type": "metadata",
             "label": "/robots.txt",
-            "value": "http://127.0.0.1:54920/robots.txt",
+            "value": "http://127.0.0.1:55917/robots.txt",
             "location": "200"
           },
           {
             "type": "metadata",
             "label": "/.well-known/security.txt",
-            "value": "http://127.0.0.1:54920/.well-known/security.txt",
+            "value": "http://127.0.0.1:55917/.well-known/security.txt",
             "location": "200"
           },
           {
             "type": "metadata",
             "label": "/sitemap.xml",
-            "value": "http://127.0.0.1:54920/sitemap.xml",
+            "value": "http://127.0.0.1:55917/sitemap.xml",
             "location": "200"
           }
         ],
@@ -8060,98 +8534,98 @@
           "state_changing_entry_points"
         ],
         "targets": [
-          "http://127.0.0.1:54920/api/member-profile?csrf_token=[redacted]",
-          "http://127.0.0.1:54920/api/profile?session_id=[redacted]",
-          "http://127.0.0.1:54920/api/upload",
-          "http://127.0.0.1:54920/api/users?role=member",
-          "http://127.0.0.1:54920/login/",
-          "http://127.0.0.1:54920/members/",
-          "http://127.0.0.1:54920/oauth/authorize?client_id=demo",
-          "http://127.0.0.1:54920/session"
+          "http://127.0.0.1:55917/api/member-profile?csrf_token=[redacted]",
+          "http://127.0.0.1:55917/api/profile?session_id=[redacted]",
+          "http://127.0.0.1:55917/api/upload",
+          "http://127.0.0.1:55917/api/users?role=member",
+          "http://127.0.0.1:55917/login/",
+          "http://127.0.0.1:55917/members/",
+          "http://127.0.0.1:55917/oauth/authorize?client_id=demo",
+          "http://127.0.0.1:55917/session"
         ],
         "evidence": [
           {
             "type": "entry_point",
             "label": "endpoint",
-            "value": "http://127.0.0.1:54920/login/",
+            "value": "http://127.0.0.1:55917/login/",
             "location": "form_action"
           },
           {
             "type": "entry_point",
             "label": "endpoint",
-            "value": "http://127.0.0.1:54920/session",
+            "value": "http://127.0.0.1:55917/session",
             "location": "form_action"
           },
           {
             "type": "entry_point",
             "label": "endpoint",
-            "value": "http://127.0.0.1:54920/api/member-profile?csrf_token=[redacted]",
+            "value": "http://127.0.0.1:55917/api/member-profile?csrf_token=[redacted]",
             "location": "discovered"
           },
           {
             "type": "entry_point",
             "label": "endpoint",
-            "value": "http://127.0.0.1:54920/api/profile?session_id=[redacted]",
+            "value": "http://127.0.0.1:55917/api/profile?session_id=[redacted]",
             "location": "discovered"
           },
           {
             "type": "entry_point",
             "label": "endpoint",
-            "value": "http://127.0.0.1:54920/api/upload",
+            "value": "http://127.0.0.1:55917/api/upload",
             "location": "discovered"
           },
           {
             "type": "entry_point",
             "label": "endpoint",
-            "value": "http://127.0.0.1:54920/members/",
+            "value": "http://127.0.0.1:55917/members/",
             "location": "fetched"
           },
           {
             "type": "entry_point",
             "label": "endpoint",
-            "value": "http://127.0.0.1:54920/api/users?role=member",
+            "value": "http://127.0.0.1:55917/api/users?role=member",
             "location": "discovered"
           },
           {
             "type": "entry_point",
             "label": "endpoint",
-            "value": "http://127.0.0.1:54920/oauth/authorize?client_id=demo",
+            "value": "http://127.0.0.1:55917/oauth/authorize?client_id=demo",
             "location": "discovered"
           },
           {
             "type": "entry_point",
             "label": "state_changing",
-            "value": "http://127.0.0.1:54920/login/",
+            "value": "http://127.0.0.1:55917/login/",
             "location": "POST"
           },
           {
             "type": "entry_point",
             "label": "state_changing",
-            "value": "http://127.0.0.1:54920/session",
+            "value": "http://127.0.0.1:55917/session",
             "location": "POST"
           },
           {
             "type": "entry_point",
             "label": "state_changing",
-            "value": "http://127.0.0.1:54920/api/member-profile?csrf_token=[redacted]",
+            "value": "http://127.0.0.1:55917/api/member-profile?csrf_token=[redacted]",
             "location": "POST"
           },
           {
             "type": "entry_point",
             "label": "state_changing",
-            "value": "http://127.0.0.1:54920/api/profile?session_id=[redacted]",
+            "value": "http://127.0.0.1:55917/api/profile?session_id=[redacted]",
             "location": "POST"
           },
           {
             "type": "entry_point",
             "label": "state_changing",
-            "value": "http://127.0.0.1:54920/api/upload",
+            "value": "http://127.0.0.1:55917/api/upload",
             "location": "POST"
           },
           {
             "type": "entry_point",
             "label": "state_changing",
-            "value": "http://127.0.0.1:54920/members/",
+            "value": "http://127.0.0.1:55917/members/",
             "location": "DELETE, GET, OPTIONS, POST, PUT, TRACE"
           },
           {
@@ -8217,123 +8691,123 @@
           "javascript_endpoints"
         ],
         "targets": [
-          "http://127.0.0.1:54920/api",
-          "http://127.0.0.1:54920/api/member-profile?csrf_token=[redacted]",
-          "http://127.0.0.1:54920/api/profile?session_id=[redacted]",
-          "http://127.0.0.1:54920/api/upload",
-          "http://127.0.0.1:54920/api/users?role=member",
-          "http://127.0.0.1:54920/callback/oauth",
-          "http://127.0.0.1:54920/health",
-          "http://127.0.0.1:54920/members/",
-          "http://127.0.0.1:54920/oauth/authorize?client_id=demo"
+          "http://127.0.0.1:55917/api",
+          "http://127.0.0.1:55917/api/member-profile?csrf_token=[redacted]",
+          "http://127.0.0.1:55917/api/profile?session_id=[redacted]",
+          "http://127.0.0.1:55917/api/upload",
+          "http://127.0.0.1:55917/api/users?role=member",
+          "http://127.0.0.1:55917/callback/oauth",
+          "http://127.0.0.1:55917/health",
+          "http://127.0.0.1:55917/members/",
+          "http://127.0.0.1:55917/oauth/authorize?client_id=demo"
         ],
         "evidence": [
           {
             "type": "finding",
             "label": "JS-ENDPOINTS-DISCOVERED",
             "value": "JavaScript endpoint references discovered",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "endpoint",
-            "value": "http://127.0.0.1:54920/api",
-            "location": "http://127.0.0.1:54920/members/"
+            "value": "http://127.0.0.1:55917/api",
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "endpoint",
-            "value": "POST http://127.0.0.1:54920/api/member-profile?csrf_token=[redacted]",
-            "location": "http://127.0.0.1:54920/members/"
+            "value": "POST http://127.0.0.1:55917/api/member-profile?csrf_token=[redacted]",
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "endpoint",
-            "value": "POST http://127.0.0.1:54920/api/profile?session_id=[redacted]",
-            "location": "http://127.0.0.1:54920/members/"
+            "value": "POST http://127.0.0.1:55917/api/profile?session_id=[redacted]",
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding",
             "label": "JS-SENSITIVE-PARAMETER-NAMES",
             "value": "JavaScript references sensitive-looking parameter names",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "parameter_name",
             "value": "csrf_token",
-            "location": "http://127.0.0.1:54920/api/member-profile?csrf_token=[redacted]"
+            "location": "http://127.0.0.1:55917/api/member-profile?csrf_token=[redacted]"
           },
           {
             "type": "finding_evidence",
             "label": "parameter_name",
             "value": "session_id",
-            "location": "http://127.0.0.1:54920/api/profile?session_id=[redacted]"
+            "location": "http://127.0.0.1:55917/api/profile?session_id=[redacted]"
           },
           {
             "type": "finding_evidence",
             "label": "parameter_name",
             "value": "token",
-            "location": "http://127.0.0.1:54920/reset-password?token=[redacted]"
+            "location": "http://127.0.0.1:55917/reset-password?token=[redacted]"
           },
           {
             "type": "finding",
             "label": "JS-OUT-OF-SCOPE-ENDPOINTS",
             "value": "JavaScript references endpoints outside scope",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "endpoint",
             "value": "https://example.org/collect",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "javascript_endpoint",
             "label": "endpoint",
-            "value": "http://127.0.0.1:54920/api",
+            "value": "http://127.0.0.1:55917/api",
             "location": ""
           },
           {
             "type": "javascript_endpoint",
             "label": "endpoint",
-            "value": "http://127.0.0.1:54920/api/member-profile?csrf_token=[redacted]",
+            "value": "http://127.0.0.1:55917/api/member-profile?csrf_token=[redacted]",
             "location": "POST"
           },
           {
             "type": "javascript_endpoint",
             "label": "endpoint",
-            "value": "http://127.0.0.1:54920/api/profile?session_id=[redacted]",
+            "value": "http://127.0.0.1:55917/api/profile?session_id=[redacted]",
             "location": "POST"
           },
           {
             "type": "javascript_endpoint",
             "label": "endpoint",
-            "value": "http://127.0.0.1:54920/api/upload",
+            "value": "http://127.0.0.1:55917/api/upload",
             "location": "POST"
           },
           {
             "type": "javascript_endpoint",
             "label": "endpoint",
-            "value": "http://127.0.0.1:54920/api/users?role=member",
+            "value": "http://127.0.0.1:55917/api/users?role=member",
             "location": "GET"
           },
           {
             "type": "javascript_endpoint",
             "label": "endpoint",
-            "value": "http://127.0.0.1:54920/callback/oauth",
+            "value": "http://127.0.0.1:55917/callback/oauth",
             "location": ""
           },
           {
             "type": "javascript_endpoint",
             "label": "endpoint",
-            "value": "http://127.0.0.1:54920/health",
+            "value": "http://127.0.0.1:55917/health",
             "location": ""
           },
           {
             "type": "javascript_endpoint",
             "label": "endpoint",
-            "value": "http://127.0.0.1:54920/oauth/authorize?client_id=demo",
+            "value": "http://127.0.0.1:55917/oauth/authorize?client_id=demo",
             "location": ""
           }
         ],
@@ -8371,64 +8845,64 @@
           "auth_routes"
         ],
         "targets": [
-          "http://127.0.0.1:54920/.well-known/change-password",
-          "http://127.0.0.1:54920/.well-known/oauth-authorization-server",
-          "http://127.0.0.1:54920/account",
-          "http://127.0.0.1:54920/api/member-profile?csrf_token=[redacted]",
-          "http://127.0.0.1:54920/api/profile?session_id=[redacted]",
-          "http://127.0.0.1:54920/login/",
-          "http://127.0.0.1:54920/members/",
-          "http://127.0.0.1:54920/oauth/authorize?client_id=demo",
-          "http://127.0.0.1:54920/reset-password?token=[redacted]",
-          "http://127.0.0.1:54920/session"
+          "http://127.0.0.1:55917/.well-known/change-password",
+          "http://127.0.0.1:55917/.well-known/oauth-authorization-server",
+          "http://127.0.0.1:55917/account",
+          "http://127.0.0.1:55917/api/member-profile?csrf_token=[redacted]",
+          "http://127.0.0.1:55917/api/profile?session_id=[redacted]",
+          "http://127.0.0.1:55917/login/",
+          "http://127.0.0.1:55917/members/",
+          "http://127.0.0.1:55917/oauth/authorize?client_id=demo",
+          "http://127.0.0.1:55917/reset-password?token=[redacted]",
+          "http://127.0.0.1:55917/session"
         ],
         "evidence": [
           {
             "type": "entry_point",
             "label": "account,callback,login,password_reset",
-            "value": "http://127.0.0.1:54920/login/",
+            "value": "http://127.0.0.1:55917/login/",
             "location": "login, state_changing_candidate"
           },
           {
             "type": "entry_point",
             "label": "account,callback,login,password_reset",
-            "value": "http://127.0.0.1:54920/session",
+            "value": "http://127.0.0.1:55917/session",
             "location": "login, state_changing_candidate"
           },
           {
             "type": "entry_point",
             "label": "account,callback,login,password_reset",
-            "value": "http://127.0.0.1:54920/api/member-profile?csrf_token=[redacted]",
+            "value": "http://127.0.0.1:55917/api/member-profile?csrf_token=[redacted]",
             "location": "account, api, state_changing_candidate"
           },
           {
             "type": "entry_point",
             "label": "account,callback,login,password_reset",
-            "value": "http://127.0.0.1:54920/api/profile?session_id=[redacted]",
+            "value": "http://127.0.0.1:55917/api/profile?session_id=[redacted]",
             "location": "account, api, state_changing_candidate"
           },
           {
             "type": "entry_point",
             "label": "account,callback,login,password_reset",
-            "value": "http://127.0.0.1:54920/members/",
+            "value": "http://127.0.0.1:55917/members/",
             "location": "account, form, login"
           },
           {
             "type": "entry_point",
             "label": "account,callback,login,password_reset",
-            "value": "http://127.0.0.1:54920/oauth/authorize?client_id=demo",
+            "value": "http://127.0.0.1:55917/oauth/authorize?client_id=demo",
             "location": "callback, login"
           },
           {
             "type": "entry_point",
             "label": "account,callback,login,password_reset",
-            "value": "http://127.0.0.1:54920/reset-password?token=[redacted]",
+            "value": "http://127.0.0.1:55917/reset-password?token=[redacted]",
             "location": "password_reset"
           },
           {
             "type": "entry_point",
             "label": "account,callback,login,password_reset",
-            "value": "http://127.0.0.1:54920/.well-known/change-password",
+            "value": "http://127.0.0.1:55917/.well-known/change-password",
             "location": "password_reset"
           }
         ],
@@ -8472,32 +8946,32 @@
           "admin_routes"
         ],
         "targets": [
-          "http://127.0.0.1:54920/admin/",
-          "http://127.0.0.1:54920/admin/export?token=[redacted]"
+          "http://127.0.0.1:55917/admin/",
+          "http://127.0.0.1:55917/admin/export?token=[redacted]"
         ],
         "evidence": [
           {
             "type": "entry_point",
             "label": "admin",
-            "value": "http://127.0.0.1:54920/admin/export?token=[redacted]",
+            "value": "http://127.0.0.1:55917/admin/export?token=[redacted]",
             "location": "admin"
           },
           {
             "type": "entry_point",
             "label": "admin",
-            "value": "http://127.0.0.1:54920/admin/",
+            "value": "http://127.0.0.1:55917/admin/",
             "location": "admin"
           },
           {
             "type": "inventory_url",
             "label": "admin",
-            "value": "http://127.0.0.1:54920/admin/",
+            "value": "http://127.0.0.1:55917/admin/",
             "location": "admin"
           },
           {
             "type": "inventory_url",
             "label": "admin",
-            "value": "http://127.0.0.1:54920/admin/export?token=[redacted]",
+            "value": "http://127.0.0.1:55917/admin/export?token=[redacted]",
             "location": "admin"
           }
         ],
@@ -8529,19 +9003,19 @@
           "upload_routes"
         ],
         "targets": [
-          "http://127.0.0.1:54920/api/upload"
+          "http://127.0.0.1:55917/api/upload"
         ],
         "evidence": [
           {
             "type": "entry_point",
             "label": "upload",
-            "value": "http://127.0.0.1:54920/api/upload",
+            "value": "http://127.0.0.1:55917/api/upload",
             "location": "api, state_changing_candidate, upload"
           },
           {
             "type": "inventory_url",
             "label": "upload",
-            "value": "http://127.0.0.1:54920/api/upload",
+            "value": "http://127.0.0.1:55917/api/upload",
             "location": "api, state_changing_candidate, upload"
           }
         ],
@@ -8587,13 +9061,13 @@
           {
             "type": "finding_evidence",
             "label": "open_port",
-            "value": "54920",
+            "value": "55917",
             "location": "127.0.0.1"
           },
           {
             "type": "tcp_port",
             "label": "open",
-            "value": "127.0.0.1:54920",
+            "value": "127.0.0.1:55917",
             "location": ""
           }
         ],
@@ -8634,7 +9108,7 @@
           "external_references"
         ],
         "targets": [
-          "http://127.0.0.1:54920/members/",
+          "http://127.0.0.1:55917/members/",
           "https://example.org/collect",
           "https://example.org/external"
         ],
@@ -8643,25 +9117,25 @@
             "type": "finding",
             "label": "CRAWLER-OUT-OF-SCOPE-LINKS",
             "value": "Crawler found links outside scope",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "sample_url",
             "value": "https://example.org/external",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding",
             "label": "JS-OUT-OF-SCOPE-ENDPOINTS",
             "value": "JavaScript references endpoints outside scope",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "finding_evidence",
             "label": "endpoint",
             "value": "https://example.org/collect",
-            "location": "http://127.0.0.1:54920/members/"
+            "location": "http://127.0.0.1:55917/members/"
           },
           {
             "type": "scope",
@@ -9471,7 +9945,7 @@
         "title": "HTTP Basic Authentication over HTTP",
         "severity": "high",
         "module": "basic_auth",
-        "target": "http://127.0.0.1:54920/members/",
+        "target": "http://127.0.0.1:55917/members/",
         "score": 96,
         "reason": "credentials may be exposed before transport security is enforced",
         "recommended_action": "Force HTTPS before authentication and enable HSTS after validation."
@@ -9482,7 +9956,7 @@
         "title": "HTTP is not redirected to HTTPS",
         "severity": "high",
         "module": "http",
-        "target": "http://127.0.0.1:54920/members/",
+        "target": "http://127.0.0.1:55917/members/",
         "score": 95,
         "reason": "unencrypted HTTP remains reachable for the same service",
         "recommended_action": "Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification."
@@ -9493,7 +9967,7 @@
         "title": "HTTP method TRACE is advertised",
         "severity": "high",
         "module": "http_methods",
-        "target": "http://127.0.0.1:54920/members/",
+        "target": "http://127.0.0.1:55917/members/",
         "score": 91,
         "reason": "an unnecessary HTTP method is advertised by the server",
         "recommended_action": "Disable unnecessary HTTP methods or enforce strict authorization before use."
@@ -9515,7 +9989,7 @@
         "title": "HTTP method DELETE is advertised",
         "severity": "medium",
         "module": "http_methods",
-        "target": "http://127.0.0.1:54920/members/",
+        "target": "http://127.0.0.1:55917/members/",
         "score": 57,
         "reason": "medium finding reported by the http_methods module",
         "recommended_action": "Disable unnecessary HTTP methods or enforce strict authorization before use."
@@ -9526,7 +10000,7 @@
         "title": "HTTP method PUT is advertised",
         "severity": "medium",
         "module": "http_methods",
-        "target": "http://127.0.0.1:54920/members/",
+        "target": "http://127.0.0.1:55917/members/",
         "score": 57,
         "reason": "medium finding reported by the http_methods module",
         "recommended_action": "Disable unnecessary HTTP methods or enforce strict authorization before use."
@@ -9537,7 +10011,7 @@
         "title": "Cookie uses SameSite=None without Secure",
         "severity": "medium",
         "module": "cookies",
-        "target": "http://127.0.0.1:54920/members/",
+        "target": "http://127.0.0.1:55917/members/",
         "score": 56,
         "reason": "medium finding reported by the cookies module",
         "recommended_action": "Set Secure or avoid SameSite=None if cross-site usage is not required."
@@ -9548,7 +10022,7 @@
         "title": "Content-Security-Policy header is missing",
         "severity": "medium",
         "module": "security_headers",
-        "target": "http://127.0.0.1:54920/members/",
+        "target": "http://127.0.0.1:55917/members/",
         "score": 55,
         "reason": "medium finding reported by the security_headers module",
         "recommended_action": "Define an appropriate Content-Security-Policy header for this application."
@@ -9559,7 +10033,7 @@
         "title": "Cookie missing HttpOnly flag",
         "severity": "low",
         "module": "cookies",
-        "target": "http://127.0.0.1:54920/members/",
+        "target": "http://127.0.0.1:55917/members/",
         "score": 37,
         "reason": "client-side scripts may access cookies without HttpOnly",
         "recommended_action": "Set HttpOnly for session or sensitive cookies."
@@ -9570,7 +10044,7 @@
         "title": "Cookie missing SameSite attribute",
         "severity": "low",
         "module": "cookies",
-        "target": "http://127.0.0.1:54920/members/",
+        "target": "http://127.0.0.1:55917/members/",
         "score": 31,
         "reason": "low finding reported by the cookies module",
         "recommended_action": "Set SameSite=Lax or SameSite=Strict unless cross-site usage is required."

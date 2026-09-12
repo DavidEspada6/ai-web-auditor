@@ -285,6 +285,19 @@ class WebConfigTests(unittest.TestCase):
         self.assertIn("role_comparison", javascript)
         self.assertIn(".role-compare", css)
 
+    def test_gui_exposes_audit_dashboard_and_valid_port_timeout_step(self):
+        root = Path(__file__).resolve().parents[1]
+        html = (root / "src" / "ai_web_auditor" / "web" / "templates" / "index.html").read_text(encoding="utf-8")
+        javascript = (root / "src" / "ai_web_auditor" / "web" / "static" / "app.js").read_text(encoding="utf-8")
+        css = (root / "src" / "ai_web_auditor" / "web" / "static" / "app.css").read_text(encoding="utf-8")
+
+        self.assertIn('data-tab="dashboard"', html)
+        self.assertIn('id="dashboard-checklist"', html)
+        self.assertIn('id="port-timeout" type="number" min="0.2" max="10" step="0.1"', html)
+        self.assertIn("renderDashboard(scan.dashboard", javascript)
+        self.assertIn("comparisonToDashboardChanges", javascript)
+        self.assertIn(".dashboard-grid", css)
+
     def test_gui_exposes_visual_evidence_view(self):
         root = Path(__file__).resolve().parents[1]
         html = (root / "src" / "ai_web_auditor" / "web" / "templates" / "index.html").read_text(encoding="utf-8")

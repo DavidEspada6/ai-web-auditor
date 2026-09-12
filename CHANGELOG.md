@@ -2,6 +2,30 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.25.0] - 2026-09-12
+
+### Anade
+
+- Modulo `dashboard` para construir un panel operativo desde cualquier JSON de auditoria.
+- Comando `dashboard` con salida de consola, JSON opcional, comparacion contra baseline y escritura a fichero.
+- Bloque `dashboard` dentro del JSON principal de auditoria con cobertura, cambios, prioridades, pendientes y checklist.
+- Pestana `Dashboard` en la interfaz grafica con estado de preparacion, riesgo, cobertura, cambios, pendientes y checklist agrupado.
+- Inclusion de `dashboard/dashboard.json` dentro del paquete ZIP de evidencias.
+- Seccion `Audit Dashboard` en informes Markdown, HTML y PDF.
+- Ejemplo `examples/dashboard-example.json` para validar el formato sin tocar dominios reales.
+- Tests de dashboard, CLI, informes, evidencias y UI.
+
+### Cambia
+
+- La salida de consola incluye un resumen operativo de dashboard al finalizar una auditoria.
+- Los informes incorporan una vista de control previa a la valoracion detallada.
+- El campo `Timeout puertos` de la UI acepta incrementos de `0.1`, por lo que el valor por defecto `0.5` ya es valido en navegadores configurados en espanol.
+
+### Seguridad
+
+- El dashboard se genera solo desde evidencias ya presentes; no realiza nuevas peticiones al objetivo.
+- No se anaden explotacion, fuerza bruta, fuzzing, envio de formularios ni pruebas intrusivas.
+
 ## [0.24.0] - 2026-09-12
 
 ### Anade

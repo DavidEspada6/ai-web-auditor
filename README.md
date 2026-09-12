@@ -24,7 +24,9 @@ valoracion, evidencias e informes. Desde v0.23 permite ejecutar enumeraciones
 con perfiles anonimos o autenticados y comparar la superficie visible entre
 roles sin guardar secretos en los resultados. Desde v0.24 genera evidencias
 visuales SVG desde el JSON de auditoria para resumir riesgo, fingerprinting y
-cobertura de modulos sin ejecutar acciones adicionales contra el objetivo.
+cobertura de modulos sin ejecutar acciones adicionales contra el objetivo. Desde
+v0.25 incorpora un dashboard operativo con cobertura, cambios, riesgos,
+pendientes y checklist para decidir si una enumeracion esta lista para informe.
 
 No implementa explotacion, fuerza bruta, fuzzing agresivo, crawling masivo,
 escaneo de puertos amplio, fuerza bruta DNS agresiva ni pruebas intrusivas. La
@@ -45,7 +47,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.24 no necesita librerias externas en tiempo de ejecucion.
+La v0.25 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -65,6 +67,7 @@ lanzador incluido:
 .\ai-web-auditor.cmd entrypoints outputs/result.json --output outputs/entry-points.csv
 .\ai-web-auditor.cmd assess outputs/result.json --output outputs/assessment.json
 .\ai-web-auditor.cmd rules outputs/result.json --output outputs/rules.json
+.\ai-web-auditor.cmd dashboard outputs/result.json --output outputs/dashboard.json
 .\ai-web-auditor.cmd evidence outputs/result.json --output outputs/evidence.zip
 .\ai-web-auditor.cmd visuals outputs/result.json --output outputs/visual-evidence.json --svg-dir outputs/visuals
 .\ai-web-auditor.cmd import examples/import-zap-example.json --target http://127.0.0.1:8080/members/ --output outputs/imported.json
@@ -193,6 +196,13 @@ ai-web-auditor rules outputs/example.json
 ai-web-auditor rules outputs/example.json --output outputs/rules.json
 ```
 
+Generar el dashboard operativo desde un JSON existente:
+
+```powershell
+ai-web-auditor dashboard outputs/example.json
+ai-web-auditor dashboard outputs/example.json --output outputs/dashboard.json
+```
+
 Guardar una auditoria en el historial local:
 
 ```powershell
@@ -296,7 +306,7 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.24",
+    "user_agent": "AI-Web-Auditor/0.25",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -527,6 +537,7 @@ El informe incluye:
 - objetivo y estado del escaneo;
 - resumen ejecutivo;
 - resumen por severidad;
+- dashboard operativo con cobertura, cambios, pendientes y checklist;
 - valoracion determinista de riesgo, prioridades y plan de remediacion;
 - resumen por modulo;
 - hallazgos y evidencias;
@@ -611,6 +622,7 @@ El paquete ZIP de evidencias contiene:
 - `assessment/assessment.json`;
 - `rules/rule-evaluation.json`;
 - `rules/matches.json`;
+- `dashboard/dashboard.json`;
 - `README.md` con notas de seguridad.
 
 La herramienta redacta `Authorization`, `Cookie`, `Set-Cookie`, posibles tokens,
@@ -648,6 +660,37 @@ ai-web-auditor visuals outputs/result.json --output outputs/visual-evidence.json
 Tambien quedan incluidas en el ZIP de evidencias y en los informes HTML.
 
 Hay ejemplos en `examples/visual-evidence-example.json` y `examples/visuals/`.
+
+## Dashboard operativo
+
+La v0.25 anade un bloque `dashboard` al JSON de auditoria y una pestana
+`Dashboard` en la interfaz. El dashboard no ejecuta nuevas comprobaciones:
+resume las evidencias pasivas ya recogidas y ayuda a decidir si la enumeracion
+esta lista para informe.
+
+Incluye:
+
+- cobertura de modulos y evidencias;
+- estado de cambios frente a una auditoria baseline, si existe;
+- prioridades de riesgo derivadas de la valoracion;
+- pendientes de revision manual;
+- checklist operativo de alcance, transporte, superficie, trazabilidad,
+  entregables y seguimiento.
+
+Generar solo el dashboard:
+
+```powershell
+ai-web-auditor dashboard outputs/result.json --output outputs/dashboard.json
+```
+
+Generarlo usando una comparacion previa:
+
+```powershell
+ai-web-auditor dashboard outputs/result.json --comparison outputs/comparison.json --output outputs/dashboard.json
+```
+
+Tambien queda incluido en el ZIP de evidencias, en los informes Markdown/HTML/PDF
+y en `examples/dashboard-example.json`.
 
 ## Inventario web
 
@@ -1039,7 +1082,7 @@ priorizaran funcionalidades fuera de estos bloques:
 - v0.22: importadores/adaptadores para herramientas externas;
 - v0.23: perfiles autenticados y comparacion por roles;
 - v0.24: screenshots, fingerprint visual y agrupacion de pantallas;
-- v0.25: dashboard de auditoria real con cobertura, cambios, riesgos, pendientes y checklist;
+- v0.25: dashboard de auditoria real con cobertura, cambios, riesgos, pendientes y checklist. Completada;
 - v0.26: estabilizacion de primera version completa, presets, UX y regresion;
 - v0.27: preparacion de release funcional con empaquetado y guia operativa;
 - v0.28: rediseno visual completo de la UI con tema oscuro negro/verde, navegacion lateral y menus por flujo;
@@ -1068,7 +1111,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.24.0
+git tag v0.25.0
 git push
 git push --tags
 ```
@@ -1081,7 +1124,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.24.0",
+  "version": "0.25.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",

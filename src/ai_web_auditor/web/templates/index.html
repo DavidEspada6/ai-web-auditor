@@ -184,7 +184,7 @@
               </label>
               <label class="field" data-help="Tiempo maximo de espera para cada conexion TCP basica del modulo Puertos.">
                 <span>Timeout puertos</span>
-                <input id="port-timeout" type="number" min="0.2" max="10" step="0.2" value="1">
+                <input id="port-timeout" type="number" min="0.2" max="10" step="0.1" value="1">
               </label>
             </div>
             <label class="field" data-help="Lista de puertos TCP separados por comas. Solo se comprueba conectividad, sin banners ni payloads.">
@@ -259,6 +259,7 @@
           <nav class="tabs view-nav" aria-label="Vistas">
             <section class="nav-group">
               <h2>Auditar</h2>
+              <button class="tab" type="button" data-tab="dashboard">Dashboard</button>
               <button class="tab active" type="button" data-tab="summary">Resumen</button>
               <button class="tab" type="button" data-tab="assessment">Riesgo</button>
               <button class="tab" type="button" data-tab="rules">Reglas</button>
@@ -290,6 +291,35 @@
 
           <div class="view-stage">
             <section id="message" class="message" hidden></section>
+
+        <section id="dashboard-view" class="panel view">
+          <div class="section-toolbar">
+            <div>
+              <p class="eyebrow">Panel operativo</p>
+              <strong id="dashboard-readiness">Sin auditoria</strong>
+            </div>
+            <div id="dashboard-risk" class="pill">Sin datos</div>
+          </div>
+          <div id="dashboard-summary" class="summary-grid compact-summary"></div>
+          <div class="dashboard-grid">
+            <section class="dashboard-block">
+              <h2>Cobertura</h2>
+              <div id="dashboard-coverage" class="dashboard-list"></div>
+            </section>
+            <section class="dashboard-block">
+              <h2>Cambios</h2>
+              <div id="dashboard-changes" class="dashboard-list"></div>
+            </section>
+            <section class="dashboard-block">
+              <h2>Pendientes</h2>
+              <div id="dashboard-pending" class="dashboard-list"></div>
+            </section>
+            <section class="dashboard-block">
+              <h2>Checklist</h2>
+              <div id="dashboard-checklist" class="dashboard-list"></div>
+            </section>
+          </div>
+        </section>
 
         <section id="summary-view" class="panel view active">
           <div id="summary-empty" class="empty">Ejecuta una auditoria para ver resultados.</div>

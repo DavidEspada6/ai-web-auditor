@@ -88,6 +88,7 @@ class ScanResult:
 
     def to_dict(self) -> dict[str, Any]:
         from .assessment import build_assessment
+        from .dashboard import build_audit_dashboard
         from .entrypoints import build_entry_points_from_scan
         from .evidence import sanitize_scan_data, sanitize_url
         from .inventory import build_inventory_from_scan
@@ -105,6 +106,7 @@ class ScanResult:
         data["rule_evaluation"] = build_rule_evaluation(data)
         data["assessment"] = build_assessment(data)
         data["visual_evidence"] = build_visual_evidence(data)
+        data["dashboard"] = build_audit_dashboard(data)
         return sanitize_scan_data(data)
 
     def to_json(self, indent: int = 2) -> str:
