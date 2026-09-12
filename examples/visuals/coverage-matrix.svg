@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Coverage matrix">
+<rect width="960" height="540" fill="#020617"/>
+<rect x="20" y="20" width="920" height="500" rx="18" fill="#0b1220" stroke="#1f3d34"/>
+<text x="44" y="72" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="26" font-weight="800">Cobertura de enumeracion</text>
+<text x="44" y="104" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="600">Modulos agrupados por flujo de trabajo y estado observado</text>
+<rect x="44" y="146" width="394" height="138" rx="12" fill="#111827" stroke="#274236"/>
+<text x="62" y="178" fill="#bbf7d0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">Alcance</text>
+<circle cx="66" cy="200" r="5" fill="#22c55e"/>
+<text x="80" y="204" fill="#e5edf5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">scope</text>
+<text x="294" y="204" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">passed</text>
+<rect x="482" y="146" width="394" height="138" rx="12" fill="#111827" stroke="#274236"/>
+<text x="500" y="178" fill="#bbf7d0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">Transporte y plataforma</text>
+<circle cx="504" cy="200" r="5" fill="#f59e0b"/>
+<text x="518" y="204" fill="#e5edf5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">http</text>
+<text x="732" y="204" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">warning</text>
+<circle cx="504" cy="220" r="5" fill="#f59e0b"/>
+<text x="518" y="224" fill="#e5edf5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">security_headers</text>
+<text x="732" y="224" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">warning</text>
+<circle cx="504" cy="240" r="5" fill="#f59e0b"/>
+<text x="518" y="244" fill="#e5edf5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">cookies</text>
+<text x="732" y="244" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">warning</text>
+<circle cx="504" cy="260" r="5" fill="#f59e0b"/>
+<text x="518" y="264" fill="#e5edf5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">basic_auth</text>
+<text x="732" y="264" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">warning</text>
+<text x="518" y="286" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="600">+1 mas</text>
+<rect x="44" y="322" width="394" height="138" rx="12" fill="#111827" stroke="#274236"/>
+<text x="62" y="354" fill="#bbf7d0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">Superficie web</text>
+<circle cx="66" cy="376" r="5" fill="#f59e0b"/>
+<text x="80" y="380" fill="#e5edf5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">fingerprinting</text>
+<text x="294" y="380" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">warning</text>
+<circle cx="66" cy="396" r="5" fill="#f59e0b"/>
+<text x="80" y="400" fill="#e5edf5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">crawler</text>
+<text x="294" y="400" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">warning</text>
+<circle cx="66" cy="416" r="5" fill="#22c55e"/>
+<text x="80" y="420" fill="#e5edf5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">javascript</text>
+<text x="294" y="420" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">passed</text>
+<circle cx="66" cy="436" r="5" fill="#f59e0b"/>
+<text x="80" y="440" fill="#e5edf5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">ports</text>
+<text x="294" y="440" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">warning</text>
+<rect x="482" y="322" width="394" height="138" rx="12" fill="#111827" stroke="#274236"/>
+<text x="500" y="354" fill="#bbf7d0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">Evidencias y trazabilidad</text>
+<text x="44" y="500" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">Modulos ejecutados: 10 | Reglas OWASP: 13 | Controles: 34</text>
+</svg>

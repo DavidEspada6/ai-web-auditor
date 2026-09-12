@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Fingerprint map">
+<rect width="960" height="540" fill="#020617"/>
+<rect x="20" y="20" width="920" height="500" rx="18" fill="#0b1220" stroke="#1f3d34"/>
+<text x="44" y="72" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="26" font-weight="800">Fingerprint visual</text>
+<text x="44" y="104" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="600">Tecnologias, metadatos publicos y superficie observada</text>
+<text x="44" y="154" fill="#bbf7d0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">Tecnologias</text>
+<rect x="44" y="176" width="250" height="30" rx="14" fill="#134e4a"/><text x="58" y="204" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800">AIWebAuditorLab/0.24 | low</text>
+<rect x="330" y="176" width="250" height="30" rx="14" fill="#134e4a"/><text x="344" y="204" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800">Django | medium</text>
+<rect x="616" y="176" width="250" height="30" rx="14" fill="#134e4a"/><text x="630" y="204" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800">PHP 5.6.40 | high</text>
+<rect x="44" y="218" width="250" height="30" rx="14" fill="#134e4a"/><text x="58" y="246" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800">WordPress 4.7.0 | high</text>
+<text x="44" y="360" fill="#bbf7d0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">Superficie</text>
+<rect x="44" y="384" width="200" height="56" rx="12" fill="#111827" stroke="#263244"/>
+<text x="58" y="407" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">URLs</text>
+<text x="58" y="430" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">36</text>
+<rect x="260" y="384" width="200" height="56" rx="12" fill="#111827" stroke="#263244"/>
+<text x="274" y="407" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">Entradas</text>
+<text x="274" y="430" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">36</text>
+<rect x="476" y="384" width="200" height="56" rx="12" fill="#111827" stroke="#263244"/>
+<text x="490" y="407" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">Subdominios</text>
+<text x="490" y="430" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">0</text>
+<rect x="692" y="384" width="200" height="56" rx="12" fill="#111827" stroke="#263244"/>
+<text x="706" y="407" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">Puertos abiertos</text>
+<text x="706" y="430" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">1</text>
+<text x="44" y="474" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="700">Metadatos publicos</text>
+<text x="44" y="500" fill="#e2e8f0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="600">/robots.txt, /.well-known/security.txt, /sitemap.xml</text>
+</svg>

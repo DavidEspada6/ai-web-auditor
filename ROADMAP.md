@@ -12,7 +12,7 @@ no se priorizaran funcionalidades fuera de estos bloques.
 - `v0.21.0`: motor pasivo de reglas con mapeo OWASP WSTG/ASVS.
 - `v0.22.0`: importadores/adaptadores para herramientas externas. Completada.
 - `v0.23.0`: perfiles autenticados y comparacion por roles. Completada en esta version.
-- `v0.24.0`: screenshots, fingerprint visual y agrupacion de pantallas.
+- `v0.24.0`: screenshots, fingerprint visual y agrupacion de pantallas. Completada en esta version.
 - `v0.25.0`: dashboard de auditoria real: cobertura, cambios, riesgos, pendientes y checklist.
 - `v0.26.0`: estabilizacion de primera version completa: presets de auditoria, revision de UX, documentacion operativa y regresion completa.
 - `v0.27.0`: preparacion de release funcional: empaquetado, instalador/lanzador pulido, ejemplos reproducibles y guia de uso en auditoria real.

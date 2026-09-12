@@ -123,6 +123,10 @@ class EvidenceTests(unittest.TestCase):
         self.assertIn("scan-result.json", names)
         self.assertIn("http/requests.json", names)
         self.assertIn("findings/findings.json", names)
+        self.assertIn("visuals/visual-evidence.json", names)
+        self.assertIn("visuals/audit-overview.svg", names)
+        self.assertIn("visuals/fingerprint-map.svg", names)
+        self.assertIn("visuals/coverage-matrix.svg", names)
         self.assertIn("entry-points/entry-points.json", names)
         self.assertIn("javascript/javascript.json", names)
         self.assertIn("javascript/endpoints.json", names)
@@ -137,6 +141,7 @@ class EvidenceTests(unittest.TestCase):
         self.assertGreaterEqual(manifest["counts"]["framework_controls_matched"], 1)
         self.assertEqual(manifest["counts"]["external_sources"], 1)
         self.assertEqual(manifest["counts"]["external_findings"], 1)
+        self.assertEqual(manifest["counts"]["visual_snapshots"], 3)
         self.assertTrue(manifest["safety"]["sanitized"])
         self.assertEqual(request["id"], "req-0001")
 

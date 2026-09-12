@@ -14,6 +14,7 @@ from .entrypoints import build_entry_points_from_scan
 from .inventory import build_inventory_from_scan
 from .models import utc_now
 from .rules import build_rule_evaluation
+from .visuals import build_visual_evidence
 
 
 SEVERITY_ORDER = {
@@ -57,6 +58,15 @@ def generate_markdown_report(
     entry_points = build_entry_points_from_scan(scan_data)
     rule_evaluation = _rule_evaluation(scan_data)
     assessment = build_assessment(scan_data)
+    visual_evidence = build_visual_evidence(
+        _scan_with_derived_sections(
+            scan_data,
+            inventory=inventory,
+            entry_points=entry_points,
+            rule_evaluation=rule_evaluation,
+            assessment=assessment,
+        )
+    )
     ai_analysis = ai_analysis or _embedded_ai_analysis(scan_data)
     ai_body = _analysis_body(ai_analysis)
     report_metadata = normalize_report_metadata(metadata)
@@ -88,6 +98,7 @@ def generate_markdown_report(
     lines.extend(_executive_summary_section(findings, ai_body))
     lines.extend(_severity_summary_section(findings))
     lines.extend(_assessment_section(assessment))
+    lines.extend(_visual_evidence_section(visual_evidence))
     lines.extend(_rules_section(rule_evaluation))
     lines.extend(_external_imports_section(scan_data))
     lines.extend(_module_summary_section(modules))
@@ -135,6 +146,22 @@ def normalize_report_metadata(metadata: ReportMetadata | dict[str, Any] | None =
     )
 
 
+def _scan_with_derived_sections(
+    scan_data: dict[str, Any],
+    *,
+    inventory: dict[str, Any],
+    entry_points: dict[str, Any],
+    rule_evaluation: dict[str, Any],
+    assessment: dict[str, Any],
+) -> dict[str, Any]:
+    enriched = dict(scan_data)
+    enriched["inventory"] = inventory
+    enriched["entry_points"] = entry_points
+    enriched["rule_evaluation"] = rule_evaluation
+    enriched["assessment"] = assessment
+    return enriched
+
+
 def generate_html_report(
     scan_data: dict[str, Any],
     *,
@@ -149,6 +176,15 @@ def generate_html_report(
     entry_points = build_entry_points_from_scan(scan_data)
     rule_evaluation = _rule_evaluation(scan_data)
     assessment = build_assessment(scan_data)
+    visual_evidence = build_visual_evidence(
+        _scan_with_derived_sections(
+            scan_data,
+            inventory=inventory,
+            entry_points=entry_points,
+            rule_evaluation=rule_evaluation,
+            assessment=assessment,
+        )
+    )
     ai_analysis = ai_analysis or _embedded_ai_analysis(scan_data)
     ai_body = _analysis_body(ai_analysis)
     report_metadata = normalize_report_metadata(metadata)
@@ -209,6 +245,7 @@ def generate_html_report(
             "</section>",
             _severity_html_section(severity_counts),
             _assessment_html_section(assessment),
+            _visual_evidence_html_section(visual_evidence),
             _rules_html_section(rule_evaluation),
             _external_imports_html_section(scan_data),
             _module_html_section(modules),
@@ -398,6 +435,51 @@ def _assessment_section(assessment: dict[str, Any]) -> list[str]:
 
     if safety_notes:
         lines.extend(["### Safety Notes", ""])
+        lines.extend(f"- {_text(note)}" for note in safety_notes)
+        lines.append("")
+
+    return lines
+
+
+def _visual_evidence_section(visual_evidence: dict[str, Any]) -> list[str]:
+    summary = visual_evidence.get("summary") if isinstance(visual_evidence.get("summary"), dict) else {}
+    fingerprint = visual_evidence.get("fingerprint") if isinstance(visual_evidence.get("fingerprint"), dict) else {}
+    risk = fingerprint.get("risk") if isinstance(fingerprint.get("risk"), dict) else {}
+    surface = fingerprint.get("surface") if isinstance(fingerprint.get("surface"), dict) else {}
+    screenshots = _dict_list(visual_evidence.get("screenshots"))
+    technologies = _dict_list(fingerprint.get("technologies"))
+    ui_groups = _dict_list(visual_evidence.get("ui_groups"))
+
+    lines = [
+        "## Visual Evidence",
+        "",
+        "Estas capturas son visuales SVG generados localmente a partir del JSON de auditoria. No son screenshots de navegador ni ejecutan acciones adicionales contra el objetivo.",
+        "",
+        "| Metric | Value |",
+        "| --- | ---: |",
+        f"| Visual snapshots | {_cell(summary.get('screenshot_count', len(screenshots)))} |",
+        f"| Risk level | {_cell(str(risk.get('level', 'informational')).upper())} |",
+        f"| Risk score | {_cell(risk.get('score', 0))}/100 |",
+        f"| Technologies | {_cell(len(technologies))} |",
+        f"| URLs | {_cell(surface.get('urls', 0))} |",
+        f"| Entry points | {_cell(surface.get('entry_points', 0))} |",
+        f"| Module groups | {_cell(len(ui_groups))} |",
+        "",
+    ]
+
+    if screenshots:
+        lines.extend(["### Generated Visuals", "", "| File | Description |", "| --- | --- |"])
+        for item in screenshots:
+            lines.append(f"| `{_cell(item.get('filename'))}` | {_cell(item.get('description'))} |")
+        lines.append("")
+
+    if technologies:
+        visible = ", ".join(_text(item.get("label") or item.get("name")) for item in technologies[:12])
+        lines.extend(["### Fingerprint Highlights", "", visible or "No technology signals were identified.", ""])
+
+    safety_notes = _string_list(visual_evidence.get("safety_notes"))
+    if safety_notes:
+        lines.extend(["### Visual Evidence Safety Notes", ""])
         lines.extend(f"- {_text(note)}" for note in safety_notes)
         lines.append("")
 
@@ -1142,6 +1224,53 @@ def _assessment_html_section(assessment: dict[str, Any]) -> str:
     if safety_notes:
         lines.extend(["<h3>Safety Notes</h3>", _html_list(safety_notes)])
 
+    lines.append("</section>")
+    return "\n".join(lines)
+
+
+def _visual_evidence_html_section(visual_evidence: dict[str, Any]) -> str:
+    summary = visual_evidence.get("summary") if isinstance(visual_evidence.get("summary"), dict) else {}
+    fingerprint = visual_evidence.get("fingerprint") if isinstance(visual_evidence.get("fingerprint"), dict) else {}
+    risk = fingerprint.get("risk") if isinstance(fingerprint.get("risk"), dict) else {}
+    surface = fingerprint.get("surface") if isinstance(fingerprint.get("surface"), dict) else {}
+    screenshots = _dict_list(visual_evidence.get("screenshots"))
+    rows = [
+        ["Visual snapshots", summary.get("screenshot_count", len(screenshots))],
+        ["Risk level", str(risk.get("level", "informational")).upper()],
+        ["Risk score", f"{risk.get('score', 0)}/100"],
+        ["Technologies", len(_dict_list(fingerprint.get("technologies")))],
+        ["URLs", surface.get("urls", 0)],
+        ["Entry points", surface.get("entry_points", 0)],
+        ["Module groups", len(_dict_list(visual_evidence.get("ui_groups")))],
+    ]
+    lines = [
+        '<section class="section">',
+        "<h2>Visual Evidence</h2>",
+        "<p>These SVG snapshots are generated locally from the structured audit JSON. They are not browser screenshots and do not execute additional actions against the target.</p>",
+        _html_table(["Metric", "Value"], rows),
+    ]
+
+    if screenshots:
+        lines.append('<div class="visual-grid">')
+        for item in screenshots:
+            svg = str(item.get("svg") or "")
+            title = item.get("title") or item.get("id") or "Visual"
+            description = item.get("description") or ""
+            lines.extend(
+                [
+                    '<article class="visual-card">',
+                    f"<h3>{_html(title)}</h3>",
+                    f"<p>{_html(description)}</p>",
+                    svg,
+                    f'<p class="visual-file">{_html(item.get("filename", ""))}</p>',
+                    "</article>",
+                ]
+            )
+        lines.append("</div>")
+
+    safety_notes = _string_list(visual_evidence.get("safety_notes"))
+    if safety_notes:
+        lines.extend(["<h3>Visual Evidence Safety Notes</h3>", _html_list(safety_notes)])
     lines.append("</section>")
     return "\n".join(lines)
 
@@ -2081,6 +2210,33 @@ dt {
 .severity-card.medium strong { color: var(--medium); }
 .severity-card.low strong { color: var(--low); }
 .severity-card.info strong { color: var(--info); }
+.visual-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+.visual-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  background: #fafbfc;
+  break-inside: avoid;
+}
+.visual-card svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+  border-radius: 8px;
+  background: #020617;
+}
+.visual-file {
+  color: var(--muted);
+  font-family: Consolas, monospace;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
 table {
   width: 100%;
   border-collapse: collapse;

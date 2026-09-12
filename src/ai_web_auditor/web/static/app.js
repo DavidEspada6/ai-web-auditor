@@ -40,6 +40,9 @@ const subdomainTable = document.querySelector("#subdomain-table");
 const portCount = document.querySelector("#port-count");
 const portSummary = document.querySelector("#port-summary");
 const portTable = document.querySelector("#port-table");
+const visualCount = document.querySelector("#visual-count");
+const visualSummary = document.querySelector("#visual-summary");
+const visualGallery = document.querySelector("#visual-gallery");
 const importStatus = document.querySelector("#import-status");
 const importFormat = document.querySelector("#import-format");
 const importTarget = document.querySelector("#import-target");
@@ -645,6 +648,7 @@ function renderScan(scan) {
   renderJavaScript(javascript);
   renderSubdomains(subdomains);
   renderPorts(ports);
+  renderVisualEvidence(scan.visual_evidence || {});
   renderImports(scan.external_sources || {});
   jsonOutput.textContent = JSON.stringify(scan, null, 2);
   downloadEvidenceButton.disabled = false;
@@ -711,7 +715,7 @@ function applyLabDefaults(lab) {
     projectAuditorInput.value = "David";
   }
   if (!projectEngagementInput.value.trim()) {
-    projectEngagementInput.value = "Simulacion v0.23.0";
+    projectEngagementInput.value = "Simulacion v0.24.0";
   }
 
   document.querySelector("#target").value = defaults.target;
@@ -1609,6 +1613,64 @@ function renderPorts(artifacts) {
 function portArtifacts(modules) {
   const module = modules.find((item) => item.name === "ports");
   return module?.artifacts && typeof module.artifacts === "object" ? module.artifacts : {};
+}
+
+function renderVisualEvidence(visualEvidence) {
+  const summary = visualEvidence?.summary || {};
+  const fingerprint = visualEvidence?.fingerprint || {};
+  const risk = fingerprint.risk || {};
+  const surface = fingerprint.surface || {};
+  const technologies = Array.isArray(fingerprint.technologies) ? fingerprint.technologies : [];
+  const groups = Array.isArray(visualEvidence?.ui_groups) ? visualEvidence.ui_groups : [];
+  const screenshots = Array.isArray(visualEvidence?.screenshots) ? visualEvidence.screenshots : [];
+
+  visualCount.textContent = `${screenshots.length} captura${screenshots.length === 1 ? "" : "s"}`;
+  visualSummary.innerHTML = "";
+  [
+    ["Riesgo", `${risk.level || summary.risk_level || "informational"} (${risk.score ?? summary.risk_score ?? 0}/100)`],
+    ["Tecnologias", technologies.length],
+    ["URLs", surface.urls ?? 0],
+    ["Entradas", surface.entry_points ?? 0],
+    ["Subdominios", surface.resolved_subdomains ?? 0],
+    ["Grupos", groups.length],
+  ].forEach(([label, value]) => {
+    const item = document.createElement("div");
+    item.className = "metric";
+    item.innerHTML = `<span>${escapeHtml(label)}</span><strong>${escapeHtml(String(value))}</strong>`;
+    visualSummary.appendChild(item);
+  });
+
+  visualGallery.innerHTML = "";
+  if (!screenshots.length) {
+    visualGallery.innerHTML = '<div class="empty-inline">Sin evidencia visual disponible.</div>';
+    return;
+  }
+
+  screenshots.forEach((screenshot) => {
+    const card = document.createElement("article");
+    card.className = "visual-card";
+    const svg = safeSvgMarkup(screenshot.svg || "");
+    card.innerHTML = `
+      <div class="visual-card-copy">
+        <h3>${escapeHtml(screenshot.title || screenshot.id || "Visual")}</h3>
+        <p>${escapeHtml(screenshot.description || "")}</p>
+      </div>
+      <div class="visual-frame">${svg || '<span>SVG no disponible.</span>'}</div>
+      <p class="visual-file">${escapeHtml(screenshot.filename || "")}</p>
+    `;
+    visualGallery.appendChild(card);
+  });
+}
+
+function safeSvgMarkup(value) {
+  const svg = String(value || "").trim();
+  if (!svg.startsWith("<svg") || !svg.includes("</svg>")) {
+    return "";
+  }
+  if (/<script|<foreignObject|\son[a-z]+\s*=|javascript:/i.test(svg)) {
+    return "";
+  }
+  return svg;
 }
 
 function renderImports(externalSources) {

@@ -41,7 +41,7 @@
       "title": "HTTP Basic Authentication over HTTP",
       "severity": "high",
       "module": "basic_auth",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "score": 96,
       "reason": "credentials may be exposed before transport security is enforced",
       "recommended_action": "Force HTTPS before authentication and enable HSTS after validation."
@@ -52,7 +52,7 @@
       "title": "HTTP is not redirected to HTTPS",
       "severity": "high",
       "module": "http",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "score": 95,
       "reason": "unencrypted HTTP remains reachable for the same service",
       "recommended_action": "Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification."
@@ -63,7 +63,7 @@
       "title": "HTTP method TRACE is advertised",
       "severity": "high",
       "module": "http_methods",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "score": 91,
       "reason": "an unnecessary HTTP method is advertised by the server",
       "recommended_action": "Disable unnecessary HTTP methods or enforce strict authorization before use."
@@ -74,7 +74,7 @@
       "title": "HTTP method DELETE is advertised",
       "severity": "medium",
       "module": "http_methods",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "score": 57,
       "reason": "medium finding reported by the http_methods module",
       "recommended_action": "Disable unnecessary HTTP methods or enforce strict authorization before use."
@@ -85,7 +85,7 @@
       "title": "HTTP method PUT is advertised",
       "severity": "medium",
       "module": "http_methods",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "score": 57,
       "reason": "medium finding reported by the http_methods module",
       "recommended_action": "Disable unnecessary HTTP methods or enforce strict authorization before use."
@@ -96,7 +96,7 @@
       "title": "Cookie uses SameSite=None without Secure",
       "severity": "medium",
       "module": "cookies",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "score": 56,
       "reason": "medium finding reported by the cookies module",
       "recommended_action": "Set Secure or avoid SameSite=None if cross-site usage is not required."
@@ -107,7 +107,7 @@
       "title": "Content-Security-Policy header is missing",
       "severity": "medium",
       "module": "security_headers",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "score": 55,
       "reason": "medium finding reported by the security_headers module",
       "recommended_action": "Define an appropriate Content-Security-Policy header for this application."
@@ -118,7 +118,7 @@
       "title": "Cookie missing HttpOnly flag",
       "severity": "low",
       "module": "cookies",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "score": 37,
       "reason": "client-side scripts may access cookies without HttpOnly",
       "recommended_action": "Set HttpOnly for session or sensitive cookies."
@@ -129,7 +129,7 @@
       "title": "Cookie missing HttpOnly flag",
       "severity": "low",
       "module": "cookies",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "score": 37,
       "reason": "client-side scripts may access cookies without HttpOnly",
       "recommended_action": "Set HttpOnly for session or sensitive cookies."
@@ -140,7 +140,7 @@
       "title": "Cookie missing SameSite attribute",
       "severity": "low",
       "module": "cookies",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "score": 31,
       "reason": "low finding reported by the cookies module",
       "recommended_action": "Set SameSite=Lax or SameSite=Strict unless cross-site usage is required."

@@ -22,7 +22,9 @@ externos ya generados por herramientas como OWASP ZAP, Burp Suite, Nmap, CSV o
 listas de URLs para centralizarlos en el mismo inventario, mapeo de reglas,
 valoracion, evidencias e informes. Desde v0.23 permite ejecutar enumeraciones
 con perfiles anonimos o autenticados y comparar la superficie visible entre
-roles sin guardar secretos en los resultados.
+roles sin guardar secretos en los resultados. Desde v0.24 genera evidencias
+visuales SVG desde el JSON de auditoria para resumir riesgo, fingerprinting y
+cobertura de modulos sin ejecutar acciones adicionales contra el objetivo.
 
 No implementa explotacion, fuerza bruta, fuzzing agresivo, crawling masivo,
 escaneo de puertos amplio, fuerza bruta DNS agresiva ni pruebas intrusivas. La
@@ -43,7 +45,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.23 no necesita librerias externas en tiempo de ejecucion.
+La v0.24 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -64,6 +66,7 @@ lanzador incluido:
 .\ai-web-auditor.cmd assess outputs/result.json --output outputs/assessment.json
 .\ai-web-auditor.cmd rules outputs/result.json --output outputs/rules.json
 .\ai-web-auditor.cmd evidence outputs/result.json --output outputs/evidence.zip
+.\ai-web-auditor.cmd visuals outputs/result.json --output outputs/visual-evidence.json --svg-dir outputs/visuals
 .\ai-web-auditor.cmd import examples/import-zap-example.json --target http://127.0.0.1:8080/members/ --output outputs/imported.json
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.md
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.html
@@ -141,6 +144,12 @@ Generar un paquete de evidencias desde un JSON existente:
 
 ```powershell
 ai-web-auditor evidence outputs/example.json --output outputs/evidence.zip
+```
+
+Generar evidencias visuales desde un JSON existente:
+
+```powershell
+ai-web-auditor visuals outputs/example.json --output outputs/visual-evidence.json --svg-dir outputs/visuals
 ```
 
 Importar resultados externos ya generados:
@@ -287,7 +296,7 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.23",
+    "user_agent": "AI-Web-Auditor/0.24",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -591,6 +600,10 @@ El paquete ZIP de evidencias contiene:
 - un JSON individual por peticion en `http/`;
 - `findings/findings.json`;
 - `modules/modules.json`;
+- `visuals/visual-evidence.json`;
+- `visuals/audit-overview.svg`;
+- `visuals/fingerprint-map.svg`;
+- `visuals/coverage-matrix.svg`;
 - `inventory/inventory.json`;
 - `entry-points/entry-points.json`;
 - `javascript/javascript.json`;
@@ -612,6 +625,29 @@ ai-web-auditor evidence outputs/result.json --output outputs/evidence.zip
 
 Desde la interfaz grafica usa el boton `Evidencias ZIP` despues de ejecutar o
 abrir una auditoria.
+
+## Evidencia visual
+
+La v0.24 anade un bloque `visual_evidence` al JSON y una pestana `Visual` en la
+interfaz. Genera tres capturas SVG locales:
+
+- `audit-overview.svg`: objetivo, severidad, riesgo y metricas principales;
+- `fingerprint-map.svg`: tecnologias, ficheros publicos y superficie observada;
+- `coverage-matrix.svg`: modulos agrupados por fase y estado.
+
+Estas capturas no son screenshots de navegador. Se crean a partir de las
+evidencias ya recogidas por la auditoria, por lo que no hacen crawling extra,
+no renderizan paginas con navegador y no ejecutan endpoints descubiertos.
+
+Exportar solo la evidencia visual:
+
+```powershell
+ai-web-auditor visuals outputs/result.json --output outputs/visual-evidence.json --svg-dir outputs/visuals
+```
+
+Tambien quedan incluidas en el ZIP de evidencias y en los informes HTML.
+
+Hay ejemplos en `examples/visual-evidence-example.json` y `examples/visuals/`.
 
 ## Inventario web
 
@@ -1032,7 +1068,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.23.0
+git tag v0.24.0
 git push
 git push --tags
 ```
@@ -1045,7 +1081,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.23.0",
+  "version": "0.24.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",

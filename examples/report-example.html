@@ -107,6 +107,33 @@ dt {
 .severity-card.medium strong { color: var(--medium); }
 .severity-card.low strong { color: var(--low); }
 .severity-card.info strong { color: var(--info); }
+.visual-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+.visual-card {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 14px;
+  background: #fafbfc;
+  break-inside: avoid;
+}
+.visual-card svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin-top: 10px;
+  border-radius: 8px;
+  background: #020617;
+}
+.visual-file {
+  color: var(--muted);
+  font-family: Consolas, monospace;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
 table {
   width: 100%;
   border-collapse: collapse;
@@ -191,23 +218,23 @@ dd {
 <h1>AI Web Auditor Lab Report</h1>
 <p>The scan generated 22 finding(s): 0 critical, 3 high, 4 medium, 6 low and 9 informational.</p>
 <div class="cover-grid">
-<div><span>Generated</span><strong>2026-09-01T22:08:34Z</strong></div>
-<div><span>Report generator</span><strong>ai-web-auditor 0.23.0</strong></div>
-<div><span>Scan version</span><strong>0.23.0</strong></div>
+<div><span>Generated</span><strong>2026-09-12T02:26:12Z</strong></div>
+<div><span>Report generator</span><strong>ai-web-auditor 0.24.0</strong></div>
+<div><span>Scan version</span><strong>0.24.0</strong></div>
 <div><span>Scan status</span><strong>completed</strong></div>
 <div><span>Overall risk</span><strong>high</strong></div>
 <div><span>Risk score</span><strong>89/100</strong></div>
-<div><span>Target</span><strong>http://127.0.0.1:64808/members/</strong></div>
+<div><span>Target</span><strong>http://127.0.0.1:54920/members/</strong></div>
 <div><span>Audit profile</span><strong>Publico</strong></div>
 </div>
 </section>
 <section class="section">
 <h2>Engagement</h2>
-<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Client</td><td>Practica Evolve</td></tr><tr><td>Auditor</td><td>David</td></tr><tr><td>Engagement</td><td>Demo v0.23.0</td></tr><tr><td>Scope summary</td><td>http://127.0.0.1:64808/members/</td></tr><tr><td>Notes</td><td>Laboratorio local controlado en localhost.</td></tr></tbody></table>
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Client</td><td>Practica Evolve</td></tr><tr><td>Auditor</td><td>David</td></tr><tr><td>Engagement</td><td>Demo v0.24.0</td></tr><tr><td>Scope summary</td><td>http://127.0.0.1:54920/members/</td></tr><tr><td>Notes</td><td>Laboratorio local controlado en localhost.</td></tr></tbody></table>
 </section>
 <section class="section">
 <h2>Target</h2>
-<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Original URL</td><td>http://127.0.0.1:64808/members/</td></tr><tr><td>Normalized URL</td><td>http://127.0.0.1:64808/members/</td></tr><tr><td>Host</td><td>127.0.0.1</td></tr><tr><td>Scheme</td><td>http</td></tr><tr><td>Port</td><td>64808</td></tr></tbody></table>
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Original URL</td><td>http://127.0.0.1:54920/members/</td></tr><tr><td>Normalized URL</td><td>http://127.0.0.1:54920/members/</td></tr><tr><td>Host</td><td>127.0.0.1</td></tr><tr><td>Scheme</td><td>http</td></tr><tr><td>Port</td><td>54920</td></tr></tbody></table>
 </section>
 <section class="section">
 <h2>Audit Profile</h2>
@@ -266,6 +293,140 @@ dd {
 <ul><li>This assessment is generated from existing non-intrusive scan evidence only.</li><li>No exploitation, brute force, fuzzing or destructive validation was performed.</li><li>Risk should be reviewed against the authorized scope and business context.</li></ul>
 </section>
 <section class="section">
+<h2>Visual Evidence</h2>
+<p>These SVG snapshots are generated locally from the structured audit JSON. They are not browser screenshots and do not execute additional actions against the target.</p>
+<table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody><tr><td>Visual snapshots</td><td>3</td></tr><tr><td>Risk level</td><td>HIGH</td></tr><tr><td>Risk score</td><td>89/100</td></tr><tr><td>Technologies</td><td>4</td></tr><tr><td>URLs</td><td>36</td></tr><tr><td>Entry points</td><td>36</td></tr><tr><td>Module groups</td><td>4</td></tr></tbody></table>
+<div class="visual-grid">
+<article class="visual-card">
+<h3>Audit overview</h3>
+<p>Resumen visual del objetivo, severidades, riesgo y cobertura principal de la auditoria.</p>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Audit overview">
+<rect width="960" height="540" fill="#020617"/>
+<rect x="20" y="20" width="920" height="500" rx="18" fill="#0b1220" stroke="#1f3d34"/>
+<text x="44" y="72" fill="#22c55e" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="16" font-weight="800">AI Web Auditor</text>
+<text x="44" y="108" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="28" font-weight="800">http://127.0.0.1:54920/members/</text>
+<text x="44" y="140" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="600">http | 127.0.0.1:54920</text>
+<rect x="720" y="56" width="178" height="44" rx="14" fill="#9a3412"/><text x="734" y="84" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800">HIGH 89/100</text>
+<rect x="44" y="182" width="156" height="108" rx="12" fill="#111827" stroke="#263244"/>
+<text x="62" y="216" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">Critical</text>
+<text x="62" y="264" fill="#ef4444" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="34" font-weight="900">0</text>
+<rect x="220" y="182" width="156" height="108" rx="12" fill="#111827" stroke="#263244"/>
+<text x="238" y="216" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">High</text>
+<text x="238" y="264" fill="#f97316" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="34" font-weight="900">3</text>
+<rect x="396" y="182" width="156" height="108" rx="12" fill="#111827" stroke="#263244"/>
+<text x="414" y="216" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">Medium</text>
+<text x="414" y="264" fill="#f59e0b" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="34" font-weight="900">4</text>
+<rect x="572" y="182" width="156" height="108" rx="12" fill="#111827" stroke="#263244"/>
+<text x="590" y="216" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">Low</text>
+<text x="590" y="264" fill="#3b82f6" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="34" font-weight="900">6</text>
+<rect x="748" y="182" width="156" height="108" rx="12" fill="#111827" stroke="#263244"/>
+<text x="766" y="216" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">Info</text>
+<text x="766" y="264" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="34" font-weight="900">9</text>
+<rect x="44" y="330" width="260" height="56" rx="12" fill="#111827" stroke="#263244"/>
+<text x="58" y="353" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">URLs</text>
+<text x="58" y="376" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">36</text>
+<rect x="336" y="330" width="260" height="56" rx="12" fill="#111827" stroke="#263244"/>
+<text x="350" y="353" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">Forms</text>
+<text x="350" y="376" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">2</text>
+<rect x="628" y="330" width="260" height="56" rx="12" fill="#111827" stroke="#263244"/>
+<text x="642" y="353" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">Entradas</text>
+<text x="642" y="376" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">36</text>
+<rect x="44" y="412" width="260" height="56" rx="12" fill="#111827" stroke="#263244"/>
+<text x="58" y="435" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">Parametros</text>
+<text x="58" y="458" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">8</text>
+<rect x="336" y="412" width="260" height="56" rx="12" fill="#111827" stroke="#263244"/>
+<text x="350" y="435" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">JS endpoints</text>
+<text x="350" y="458" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">9</text>
+<rect x="628" y="412" width="260" height="56" rx="12" fill="#111827" stroke="#263244"/>
+<text x="642" y="435" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">Reglas</text>
+<text x="642" y="458" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">13</text>
+</svg>
+<p class="visual-file">visuals/audit-overview.svg</p>
+</article>
+<article class="visual-card">
+<h3>Fingerprint map</h3>
+<p>Mapa visual de tecnologias, metadatos publicos y superficie descubierta de forma pasiva.</p>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Fingerprint map">
+<rect width="960" height="540" fill="#020617"/>
+<rect x="20" y="20" width="920" height="500" rx="18" fill="#0b1220" stroke="#1f3d34"/>
+<text x="44" y="72" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="26" font-weight="800">Fingerprint visual</text>
+<text x="44" y="104" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="600">Tecnologias, metadatos publicos y superficie observada</text>
+<text x="44" y="154" fill="#bbf7d0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">Tecnologias</text>
+<rect x="44" y="176" width="250" height="30" rx="14" fill="#134e4a"/><text x="58" y="204" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800">AIWebAuditorLab/0.24 | low</text>
+<rect x="330" y="176" width="250" height="30" rx="14" fill="#134e4a"/><text x="344" y="204" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800">Django | medium</text>
+<rect x="616" y="176" width="250" height="30" rx="14" fill="#134e4a"/><text x="630" y="204" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800">PHP 5.6.40 | high</text>
+<rect x="44" y="218" width="250" height="30" rx="14" fill="#134e4a"/><text x="58" y="246" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800">WordPress 4.7.0 | high</text>
+<text x="44" y="360" fill="#bbf7d0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">Superficie</text>
+<rect x="44" y="384" width="200" height="56" rx="12" fill="#111827" stroke="#263244"/>
+<text x="58" y="407" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">URLs</text>
+<text x="58" y="430" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">36</text>
+<rect x="260" y="384" width="200" height="56" rx="12" fill="#111827" stroke="#263244"/>
+<text x="274" y="407" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">Entradas</text>
+<text x="274" y="430" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">36</text>
+<rect x="476" y="384" width="200" height="56" rx="12" fill="#111827" stroke="#263244"/>
+<text x="490" y="407" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">Subdominios</text>
+<text x="490" y="430" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">0</text>
+<rect x="692" y="384" width="200" height="56" rx="12" fill="#111827" stroke="#263244"/>
+<text x="706" y="407" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">Puertos abiertos</text>
+<text x="706" y="430" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">1</text>
+<text x="44" y="474" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="700">Metadatos publicos</text>
+<text x="44" y="500" fill="#e2e8f0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="600">/robots.txt, /.well-known/security.txt, /sitemap.xml</text>
+</svg>
+<p class="visual-file">visuals/fingerprint-map.svg</p>
+</article>
+<article class="visual-card">
+<h3>Coverage matrix</h3>
+<p>Matriz visual de modulos agrupados por fase para comprobar cobertura y estados.</p>
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Coverage matrix">
+<rect width="960" height="540" fill="#020617"/>
+<rect x="20" y="20" width="920" height="500" rx="18" fill="#0b1220" stroke="#1f3d34"/>
+<text x="44" y="72" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="26" font-weight="800">Cobertura de enumeracion</text>
+<text x="44" y="104" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="600">Modulos agrupados por flujo de trabajo y estado observado</text>
+<rect x="44" y="146" width="394" height="138" rx="12" fill="#111827" stroke="#274236"/>
+<text x="62" y="178" fill="#bbf7d0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">Alcance</text>
+<circle cx="66" cy="200" r="5" fill="#22c55e"/>
+<text x="80" y="204" fill="#e5edf5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">scope</text>
+<text x="294" y="204" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">passed</text>
+<rect x="482" y="146" width="394" height="138" rx="12" fill="#111827" stroke="#274236"/>
+<text x="500" y="178" fill="#bbf7d0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">Transporte y plataforma</text>
+<circle cx="504" cy="200" r="5" fill="#f59e0b"/>
+<text x="518" y="204" fill="#e5edf5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">http</text>
+<text x="732" y="204" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">warning</text>
+<circle cx="504" cy="220" r="5" fill="#f59e0b"/>
+<text x="518" y="224" fill="#e5edf5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">security_headers</text>
+<text x="732" y="224" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">warning</text>
+<circle cx="504" cy="240" r="5" fill="#f59e0b"/>
+<text x="518" y="244" fill="#e5edf5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">cookies</text>
+<text x="732" y="244" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">warning</text>
+<circle cx="504" cy="260" r="5" fill="#f59e0b"/>
+<text x="518" y="264" fill="#e5edf5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">basic_auth</text>
+<text x="732" y="264" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">warning</text>
+<text x="518" y="286" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="600">+1 mas</text>
+<rect x="44" y="322" width="394" height="138" rx="12" fill="#111827" stroke="#274236"/>
+<text x="62" y="354" fill="#bbf7d0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">Superficie web</text>
+<circle cx="66" cy="376" r="5" fill="#f59e0b"/>
+<text x="80" y="380" fill="#e5edf5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">fingerprinting</text>
+<text x="294" y="380" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">warning</text>
+<circle cx="66" cy="396" r="5" fill="#f59e0b"/>
+<text x="80" y="400" fill="#e5edf5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">crawler</text>
+<text x="294" y="400" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">warning</text>
+<circle cx="66" cy="416" r="5" fill="#22c55e"/>
+<text x="80" y="420" fill="#e5edf5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">javascript</text>
+<text x="294" y="420" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">passed</text>
+<circle cx="66" cy="436" r="5" fill="#f59e0b"/>
+<text x="80" y="440" fill="#e5edf5" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="700">ports</text>
+<text x="294" y="440" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="13" font-weight="600">warning</text>
+<rect x="482" y="322" width="394" height="138" rx="12" fill="#111827" stroke="#274236"/>
+<text x="500" y="354" fill="#bbf7d0" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">Evidencias y trazabilidad</text>
+<text x="44" y="500" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">Modulos ejecutados: 10 | Reglas OWASP: 13 | Controles: 34</text>
+</svg>
+<p class="visual-file">visuals/coverage-matrix.svg</p>
+</article>
+</div>
+<h3>Visual Evidence Safety Notes</h3>
+<ul><li>Visual snapshots are generated locally from passive scan evidence.</li><li>No browser rendering, exploitation, brute force, fuzzing or form submission is performed to create these visuals.</li><li>Sensitive values already redacted in the scan JSON remain redacted in visual evidence.</li></ul>
+</section>
+<section class="section">
 <h2>Passive Rule Mapping</h2>
 <table><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody><tr><td>Rules matched</td><td>13</td></tr><tr><td>Rules total</td><td>15</td></tr><tr><td>Findings mapped</td><td>21</td></tr><tr><td>Findings unmapped</td><td>0</td></tr><tr><td>OWASP controls matched</td><td>34</td></tr></tbody></table>
 <h3>Matched Rules</h3>
@@ -290,7 +451,7 @@ dd {
 <div><dt>ID</dt><dd>AUTH-BASIC-OVER-HTTP</dd></div>
 <div><dt>Module</dt><dd>basic_auth</dd></div>
 <div><dt>Category</dt><dd>authentication</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>The server requests Basic Authentication over unencrypted HTTP.</p>
 <p><strong>Recommendation:</strong> Force HTTPS before authentication and enable HSTS after validation.</p>
@@ -304,12 +465,12 @@ dd {
 <div><dt>ID</dt><dd>HTTP-NO-HTTPS-REDIRECT</dd></div>
 <div><dt>Module</dt><dd>http</dd></div>
 <div><dt>Category</dt><dd>transport-security</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>The requested HTTP URL remains available without being upgraded to HTTPS.</p>
 <p><strong>Recommendation:</strong> Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification.</p>
 <h4>Evidence</h4>
-<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>initial_url</td><td>http://127.0.0.1:64808/members/</td><td>unknown</td></tr><tr><td>final_url</td><td>http://127.0.0.1:64808/members/</td><td>unknown</td></tr><tr><td>status_code</td><td>401</td><td>unknown</td></tr></tbody></table>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>initial_url</td><td>http://127.0.0.1:54920/members/</td><td>unknown</td></tr><tr><td>final_url</td><td>http://127.0.0.1:54920/members/</td><td>unknown</td></tr><tr><td>status_code</td><td>401</td><td>unknown</td></tr></tbody></table>
 </article>
 <article class="finding-card">
 <span class="badge high">HIGH</span>
@@ -318,7 +479,7 @@ dd {
 <div><dt>ID</dt><dd>METHOD-TRACE-ADVERTISED</dd></div>
 <div><dt>Module</dt><dd>http_methods</dd></div>
 <div><dt>Category</dt><dd>http-methods</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>TRACE can expose request data and is rarely needed.</p>
 <p><strong>Recommendation:</strong> Disable unnecessary HTTP methods or enforce strict authorization before use.</p>
@@ -332,7 +493,7 @@ dd {
 <div><dt>ID</dt><dd>COOKIE-SAMESITE-NONE-WITHOUT-SECURE</dd></div>
 <div><dt>Module</dt><dd>cookies</dd></div>
 <div><dt>Category</dt><dd>cookies</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>SameSite=None cookies should also use Secure.</p>
 <p><strong>Recommendation:</strong> Set Secure or avoid SameSite=None if cross-site usage is not required.</p>
@@ -346,7 +507,7 @@ dd {
 <div><dt>ID</dt><dd>HEADER-CONTENT_SECURITY_POLICY-MISSING</dd></div>
 <div><dt>Module</dt><dd>security_headers</dd></div>
 <div><dt>Category</dt><dd>security-headers</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>The response does not include the Content-Security-Policy header.</p>
 <p><strong>Recommendation:</strong> Define an appropriate Content-Security-Policy header for this application.</p>
@@ -359,7 +520,7 @@ dd {
 <div><dt>ID</dt><dd>METHOD-DELETE-ADVERTISED</dd></div>
 <div><dt>Module</dt><dd>http_methods</dd></div>
 <div><dt>Category</dt><dd>http-methods</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>DELETE may allow destructive actions if authorization is weak.</p>
 <p><strong>Recommendation:</strong> Disable unnecessary HTTP methods or enforce strict authorization before use.</p>
@@ -373,7 +534,7 @@ dd {
 <div><dt>ID</dt><dd>METHOD-PUT-ADVERTISED</dd></div>
 <div><dt>Module</dt><dd>http_methods</dd></div>
 <div><dt>Category</dt><dd>http-methods</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>PUT may allow content upload if authorization is weak.</p>
 <p><strong>Recommendation:</strong> Disable unnecessary HTTP methods or enforce strict authorization before use.</p>
@@ -387,7 +548,7 @@ dd {
 <div><dt>ID</dt><dd>COOKIE-HTTPONLY-MISSING</dd></div>
 <div><dt>Module</dt><dd>cookies</dd></div>
 <div><dt>Category</dt><dd>cookies</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>A cookie is accessible to client-side scripts when HttpOnly is absent.</p>
 <p><strong>Recommendation:</strong> Set HttpOnly for session or sensitive cookies.</p>
@@ -401,7 +562,7 @@ dd {
 <div><dt>ID</dt><dd>COOKIE-HTTPONLY-MISSING</dd></div>
 <div><dt>Module</dt><dd>cookies</dd></div>
 <div><dt>Category</dt><dd>cookies</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>A cookie is accessible to client-side scripts when HttpOnly is absent.</p>
 <p><strong>Recommendation:</strong> Set HttpOnly for session or sensitive cookies.</p>
@@ -415,7 +576,7 @@ dd {
 <div><dt>ID</dt><dd>COOKIE-SAMESITE-MISSING</dd></div>
 <div><dt>Module</dt><dd>cookies</dd></div>
 <div><dt>Category</dt><dd>cookies</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>A cookie does not declare a SameSite policy.</p>
 <p><strong>Recommendation:</strong> Set SameSite=Lax or SameSite=Strict unless cross-site usage is required.</p>
@@ -429,7 +590,7 @@ dd {
 <div><dt>ID</dt><dd>HEADER-CLICKJACKING-MISSING</dd></div>
 <div><dt>Module</dt><dd>security_headers</dd></div>
 <div><dt>Category</dt><dd>security-headers</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>The response does not include X-Frame-Options or a CSP frame-ancestors directive.</p>
 <p><strong>Recommendation:</strong> Set frame-ancestors in Content-Security-Policy or use X-Frame-Options where appropriate.</p>
@@ -442,7 +603,7 @@ dd {
 <div><dt>ID</dt><dd>HEADER-NOSNIFF-MISSING</dd></div>
 <div><dt>Module</dt><dd>security_headers</dd></div>
 <div><dt>Category</dt><dd>security-headers</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>The browser may try to infer content types when nosniff is absent.</p>
 <p><strong>Recommendation:</strong> Set X-Content-Type-Options: nosniff.</p>
@@ -456,7 +617,7 @@ dd {
 <div><dt>ID</dt><dd>HEADER-REFERRER_POLICY-MISSING</dd></div>
 <div><dt>Module</dt><dd>security_headers</dd></div>
 <div><dt>Category</dt><dd>security-headers</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>The response does not include the Referrer-Policy header.</p>
 <p><strong>Recommendation:</strong> Define an appropriate Referrer-Policy header for this application.</p>
@@ -469,7 +630,7 @@ dd {
 <div><dt>ID</dt><dd>CRAWLER-OUT-OF-SCOPE-LINKS</dd></div>
 <div><dt>Module</dt><dd>crawler</dd></div>
 <div><dt>Category</dt><dd>crawler</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>The crawler discovered links outside the configured scope. They were recorded but not requested.</p>
 <p><strong>Recommendation:</strong> Review whether any external host should be added to the authorized scope before scanning it.</p>
@@ -483,7 +644,7 @@ dd {
 <div><dt>ID</dt><dd>FINGERPRINT-GENERATOR-DISCLOSED</dd></div>
 <div><dt>Module</dt><dd>fingerprinting</dd></div>
 <div><dt>Category</dt><dd>fingerprinting</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>The HTML generator metadata can disclose CMS or framework details.</p>
 <p><strong>Recommendation:</strong> Remove generator metadata if it is not required.</p>
@@ -497,7 +658,7 @@ dd {
 <div><dt>ID</dt><dd>FINGERPRINT-POWERED-BY-DISCLOSED</dd></div>
 <div><dt>Module</dt><dd>fingerprinting</dd></div>
 <div><dt>Category</dt><dd>fingerprinting</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>The X-Powered-By header can reveal backend technology details to attackers.</p>
 <p><strong>Recommendation:</strong> Remove or reduce technology-identifying response headers where practical.</p>
@@ -511,12 +672,12 @@ dd {
 <div><dt>ID</dt><dd>FINGERPRINT-SERVER-VERSION-DISCLOSED</dd></div>
 <div><dt>Module</dt><dd>fingerprinting</dd></div>
 <div><dt>Category</dt><dd>fingerprinting</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>The Server header appears to include product version information.</p>
 <p><strong>Recommendation:</strong> Avoid exposing precise server versions unless there is an operational reason.</p>
 <h4>Evidence</h4>
-<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>server</td><td>AIWebAuditorLab/0.23</td><td>unknown</td></tr></tbody></table>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>server</td><td>AIWebAuditorLab/0.24</td><td>unknown</td></tr></tbody></table>
 </article>
 <article class="finding-card">
 <span class="badge info">INFO</span>
@@ -525,7 +686,7 @@ dd {
 <div><dt>ID</dt><dd>HEADER-PERMISSIONS_POLICY-MISSING</dd></div>
 <div><dt>Module</dt><dd>security_headers</dd></div>
 <div><dt>Category</dt><dd>security-headers</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>The response does not include the Permissions-Policy header.</p>
 <p><strong>Recommendation:</strong> Define an appropriate Permissions-Policy header for this application.</p>
@@ -538,12 +699,12 @@ dd {
 <div><dt>ID</dt><dd>JS-ENDPOINTS-DISCOVERED</dd></div>
 <div><dt>Module</dt><dd>javascript</dd></div>
 <div><dt>Category</dt><dd>javascript-enumeration</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>Client-side JavaScript contains URL references that expand the passive review surface.</p>
 <p><strong>Recommendation:</strong> Review these endpoints against the authorized scope before deciding whether later validation is needed.</p>
 <h4>Evidence</h4>
-<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>endpoint</td><td>http://127.0.0.1:64808/api</td><td>unknown</td></tr><tr><td>endpoint</td><td>POST http://127.0.0.1:64808/api/member-profile?csrf_token=[redacted]</td><td>unknown</td></tr><tr><td>endpoint</td><td>POST http://127.0.0.1:64808/api/profile?session_id=[redacted]</td><td>unknown</td></tr><tr><td>endpoint</td><td>POST http://127.0.0.1:64808/api/upload</td><td>unknown</td></tr><tr><td>endpoint</td><td>GET http://127.0.0.1:64808/api/users?role=member</td><td>unknown</td></tr></tbody></table>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>endpoint</td><td>http://127.0.0.1:54920/api</td><td>unknown</td></tr><tr><td>endpoint</td><td>POST http://127.0.0.1:54920/api/member-profile?csrf_token=[redacted]</td><td>unknown</td></tr><tr><td>endpoint</td><td>POST http://127.0.0.1:54920/api/profile?session_id=[redacted]</td><td>unknown</td></tr><tr><td>endpoint</td><td>POST http://127.0.0.1:54920/api/upload</td><td>unknown</td></tr><tr><td>endpoint</td><td>GET http://127.0.0.1:54920/api/users?role=member</td><td>unknown</td></tr></tbody></table>
 </article>
 <article class="finding-card">
 <span class="badge info">INFO</span>
@@ -552,7 +713,7 @@ dd {
 <div><dt>ID</dt><dd>JS-OUT-OF-SCOPE-ENDPOINTS</dd></div>
 <div><dt>Module</dt><dd>javascript</dd></div>
 <div><dt>Category</dt><dd>javascript-enumeration</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>Client-side JavaScript references hosts outside the configured scope. They were recorded but not requested.</p>
 <p><strong>Recommendation:</strong> Confirm whether those hosts belong to the engagement before scanning them.</p>
@@ -566,12 +727,12 @@ dd {
 <div><dt>ID</dt><dd>JS-SENSITIVE-PARAMETER-NAMES</dd></div>
 <div><dt>Module</dt><dd>javascript</dd></div>
 <div><dt>Category</dt><dd>javascript-enumeration</dd></div>
-<div><dt>Target</dt><dd>http://127.0.0.1:64808/members/</dd></div>
+<div><dt>Target</dt><dd>http://127.0.0.1:54920/members/</dd></div>
 </dl>
 <p>Some JavaScript-discovered URLs contain parameter names commonly associated with authentication, sessions or secrets. Values are redacted.</p>
 <p><strong>Recommendation:</strong> Review how these parameters are generated, logged and exposed. Do not include raw secrets in reports.</p>
 <h4>Evidence</h4>
-<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>parameter_name</td><td>csrf_token</td><td>http://127.0.0.1:64808/api/member-profile?csrf_token=[redacted]</td></tr><tr><td>parameter_name</td><td>session_id</td><td>http://127.0.0.1:64808/api/profile?session_id=[redacted]</td></tr><tr><td>parameter_name</td><td>token</td><td>http://127.0.0.1:64808/reset-password?token=[redacted]</td></tr></tbody></table>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>parameter_name</td><td>csrf_token</td><td>http://127.0.0.1:54920/api/member-profile?csrf_token=[redacted]</td></tr><tr><td>parameter_name</td><td>session_id</td><td>http://127.0.0.1:54920/api/profile?session_id=[redacted]</td></tr><tr><td>parameter_name</td><td>token</td><td>http://127.0.0.1:54920/reset-password?token=[redacted]</td></tr></tbody></table>
 </article>
 <article class="finding-card">
 <span class="badge info">INFO</span>
@@ -585,50 +746,50 @@ dd {
 <p>The limited TCP connectivity check found open ports on the target host. This is inventory evidence, not exploitation.</p>
 <p><strong>Recommendation:</strong> Review whether each exposed service is expected, patched and covered by the authorized audit scope.</p>
 <h4>Evidence</h4>
-<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>open_port</td><td>64808</td><td>unknown</td></tr></tbody></table>
+<table><thead><tr><th>Label</th><th>Value</th><th>Location</th></tr></thead><tbody><tr><td>open_port</td><td>54920</td><td>unknown</td></tr></tbody></table>
 </article>
 </div>
 </section>
 <section class="section">
 <h2>Technology Fingerprinting</h2>
-<table><thead><tr><th>Technology</th><th>Category</th><th>Confidence</th><th>Signals</th></tr></thead><tbody><tr><td>AIWebAuditorLab/0.23</td><td>server</td><td>low</td><td>header:server</td></tr><tr><td>Django</td><td>framework</td><td>medium</td><td>cookie:sessionid</td></tr><tr><td>PHP 5.6.40</td><td>language</td><td>high</td><td>header:x-powered-by</td></tr><tr><td>WordPress 4.7.0</td><td>cms</td><td>high</td><td>html:meta-generator</td></tr></tbody></table>
+<table><thead><tr><th>Technology</th><th>Category</th><th>Confidence</th><th>Signals</th></tr></thead><tbody><tr><td>AIWebAuditorLab/0.24</td><td>server</td><td>low</td><td>header:server</td></tr><tr><td>Django</td><td>framework</td><td>medium</td><td>cookie:sessionid</td></tr><tr><td>PHP 5.6.40</td><td>language</td><td>high</td><td>header:x-powered-by</td></tr><tr><td>WordPress 4.7.0</td><td>cms</td><td>high</td><td>html:meta-generator</td></tr></tbody></table>
 <h3>Public Metadata Files</h3>
 <table><thead><tr><th>Path</th><th>Status</th><th>Present</th></tr></thead><tbody><tr><td>/robots.txt</td><td>200</td><td>True</td></tr><tr><td>/.well-known/security.txt</td><td>200</td><td>True</td></tr><tr><td>/security.txt</td><td>404</td><td>False</td></tr><tr><td>/sitemap.xml</td><td>200</td><td>True</td></tr></tbody></table>
 </section>
 <section class="section">
 <h2>Crawler</h2>
-<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Seed URL</td><td>http://127.0.0.1:64808/members/</td></tr><tr><td>Max depth</td><td>1</td></tr><tr><td>Max pages</td><td>20</td></tr><tr><td>Fetched URLs</td><td>6</td></tr><tr><td>Discovered in-scope URLs</td><td>10</td></tr><tr><td>Metadata-discovered URLs</td><td>10</td></tr><tr><td>Classified interesting routes</td><td>7</td></tr><tr><td>robots.txt</td><td>present (200)</td></tr><tr><td>Sitemaps checked</td><td>1 (1 present)</td></tr><tr><td>.well-known endpoints checked</td><td>8 (2 present)</td></tr><tr><td>Out-of-scope URLs recorded but not visited</td><td>1</td></tr><tr><td>Excluded URLs recorded but not visited</td><td>3</td></tr></tbody></table>
+<table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Seed URL</td><td>http://127.0.0.1:54920/members/</td></tr><tr><td>Max depth</td><td>1</td></tr><tr><td>Max pages</td><td>20</td></tr><tr><td>Fetched URLs</td><td>6</td></tr><tr><td>Discovered in-scope URLs</td><td>10</td></tr><tr><td>Metadata-discovered URLs</td><td>10</td></tr><tr><td>Classified interesting routes</td><td>7</td></tr><tr><td>robots.txt</td><td>present (200)</td></tr><tr><td>Sitemaps checked</td><td>1 (1 present)</td></tr><tr><td>.well-known endpoints checked</td><td>8 (2 present)</td></tr><tr><td>Out-of-scope URLs recorded but not visited</td><td>1</td></tr><tr><td>Excluded URLs recorded but not visited</td><td>3</td></tr></tbody></table>
 <h3>Interesting Routes</h3>
-<table><thead><tr><th>URL</th><th>Types</th><th>Sources</th></tr></thead><tbody><tr><td>http://127.0.0.1:64808/account</td><td>account</td><td>crawler_fetched, sitemap</td></tr><tr><td>http://127.0.0.1:64808/api/users</td><td>api</td><td>crawler_fetched, sitemap</td></tr><tr><td>http://127.0.0.1:64808/login</td><td>form, login</td><td>crawler_fetched, sitemap</td></tr><tr><td>http://127.0.0.1:64808/members/</td><td>account, form, login</td><td>crawler_fetched, html_link, robots_allow, seed, sitemap</td></tr><tr><td>http://127.0.0.1:64808/oauth/authorize</td><td>callback, login</td><td>well_known_endpoint</td></tr><tr><td>http://127.0.0.1:64808/oauth/token</td><td>callback</td><td>well_known_endpoint</td></tr><tr><td>http://127.0.0.1:64808/reset-password</td><td>password_reset</td><td>crawler_fetched, sitemap</td></tr></tbody></table>
+<table><thead><tr><th>URL</th><th>Types</th><th>Sources</th></tr></thead><tbody><tr><td>http://127.0.0.1:54920/account</td><td>account</td><td>crawler_fetched, sitemap</td></tr><tr><td>http://127.0.0.1:54920/api/users</td><td>api</td><td>crawler_fetched, sitemap</td></tr><tr><td>http://127.0.0.1:54920/login</td><td>form, login</td><td>crawler_fetched, sitemap</td></tr><tr><td>http://127.0.0.1:54920/members/</td><td>account, form, login</td><td>crawler_fetched, html_link, robots_allow, seed, sitemap</td></tr><tr><td>http://127.0.0.1:54920/oauth/authorize</td><td>callback, login</td><td>well_known_endpoint</td></tr><tr><td>http://127.0.0.1:54920/oauth/token</td><td>callback</td><td>well_known_endpoint</td></tr><tr><td>http://127.0.0.1:54920/reset-password</td><td>password_reset</td><td>crawler_fetched, sitemap</td></tr></tbody></table>
 <h3>Present .well-known Endpoints</h3>
 <table><thead><tr><th>Path</th><th>Status</th><th>Highlights</th></tr></thead><tbody><tr><td>/.well-known/security.txt</td><td>200</td><td>contact: mailto:security@example.test; policy: http://127.0.0.1/security-policy</td></tr><tr><td>/.well-known/openid-configuration</td><td>200</td><td>endpoints: 2</td></tr></tbody></table>
 <h3>Discovered URLs</h3>
-<ul><li>http://127.0.0.1:64808/</li><li>http://127.0.0.1:64808/.well-known/openid-configuration</li><li>http://127.0.0.1:64808/.well-known/security.txt</li><li>http://127.0.0.1:64808/account</li><li>http://127.0.0.1:64808/api/users</li><li>http://127.0.0.1:64808/login</li><li>http://127.0.0.1:64808/members/</li><li>http://127.0.0.1:64808/oauth/authorize</li><li>http://127.0.0.1:64808/oauth/token</li><li>http://127.0.0.1:64808/reset-password</li></ul>
+<ul><li>http://127.0.0.1:54920/</li><li>http://127.0.0.1:54920/.well-known/openid-configuration</li><li>http://127.0.0.1:54920/.well-known/security.txt</li><li>http://127.0.0.1:54920/account</li><li>http://127.0.0.1:54920/api/users</li><li>http://127.0.0.1:54920/login</li><li>http://127.0.0.1:54920/members/</li><li>http://127.0.0.1:54920/oauth/authorize</li><li>http://127.0.0.1:54920/oauth/token</li><li>http://127.0.0.1:54920/reset-password</li></ul>
 <h3>Out-of-Scope URLs</h3>
 <ul><li>https://example.org/external</li></ul>
 <h3>Excluded URLs</h3>
-<ul><li>http://127.0.0.1:64808/admin/</li><li>http://127.0.0.1:64808/private/</li><li>http://127.0.0.1:64808/private/report</li></ul>
+<ul><li>http://127.0.0.1:54920/admin/</li><li>http://127.0.0.1:54920/private/</li><li>http://127.0.0.1:54920/private/report</li></ul>
 </section>
 <section class="section">
 <h2>JavaScript Analysis</h2>
 <table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Pages checked</td><td>6</td></tr><tr><td>Script blocks analyzed</td><td>3</td></tr><tr><td>In-scope endpoint references</td><td>9</td></tr><tr><td>Sensitive-looking parameter names</td><td>3</td></tr><tr><td>Out-of-scope endpoint references recorded but not requested</td><td>1</td></tr><tr><td>Excluded endpoint references recorded but not requested</td><td>1</td></tr></tbody></table>
 <p>Only HTML and JavaScript resources inside the configured scope were requested. Discovered endpoints were not executed.</p>
 <h3>JavaScript Endpoint References</h3>
-<table><thead><tr><th>URL</th><th>Method</th><th>Parameters</th><th>Route types</th><th>Sources</th></tr></thead><tbody><tr><td>http://127.0.0.1:64808/api</td><td>unknown</td><td>unknown</td><td>api</td><td>external_script</td></tr><tr><td>http://127.0.0.1:64808/api/member-profile?csrf_token=%5Bredacted%5D</td><td>POST</td><td>csrf_token</td><td>account, api, state_changing_candidate</td><td>inline_script</td></tr><tr><td>http://127.0.0.1:64808/api/profile?session_id=%5Bredacted%5D</td><td>POST</td><td>session_id</td><td>account, api, state_changing_candidate</td><td>external_script, inline_script</td></tr><tr><td>http://127.0.0.1:64808/api/upload</td><td>POST</td><td>unknown</td><td>api, state_changing_candidate, upload</td><td>external_script</td></tr><tr><td>http://127.0.0.1:64808/api/users?role=member</td><td>GET</td><td>role</td><td>api</td><td>external_script</td></tr><tr><td>http://127.0.0.1:64808/callback/oauth</td><td>unknown</td><td>unknown</td><td>callback</td><td>external_script</td></tr><tr><td>http://127.0.0.1:64808/health</td><td>unknown</td><td>unknown</td><td>health</td><td>inline_script</td></tr><tr><td>http://127.0.0.1:64808/oauth/authorize?client_id=demo</td><td>unknown</td><td>client_id</td><td>callback, login</td><td>external_script</td></tr><tr><td>http://127.0.0.1:64808/reset-password?token=%5Bredacted%5D</td><td>unknown</td><td>token</td><td>password_reset</td><td>inline_script</td></tr></tbody></table>
+<table><thead><tr><th>URL</th><th>Method</th><th>Parameters</th><th>Route types</th><th>Sources</th></tr></thead><tbody><tr><td>http://127.0.0.1:54920/api</td><td>unknown</td><td>unknown</td><td>api</td><td>external_script</td></tr><tr><td>http://127.0.0.1:54920/api/member-profile?csrf_token=%5Bredacted%5D</td><td>POST</td><td>csrf_token</td><td>account, api, state_changing_candidate</td><td>inline_script</td></tr><tr><td>http://127.0.0.1:54920/api/profile?session_id=%5Bredacted%5D</td><td>POST</td><td>session_id</td><td>account, api, state_changing_candidate</td><td>external_script, inline_script</td></tr><tr><td>http://127.0.0.1:54920/api/upload</td><td>POST</td><td>unknown</td><td>api, state_changing_candidate, upload</td><td>external_script</td></tr><tr><td>http://127.0.0.1:54920/api/users?role=member</td><td>GET</td><td>role</td><td>api</td><td>external_script</td></tr><tr><td>http://127.0.0.1:54920/callback/oauth</td><td>unknown</td><td>unknown</td><td>callback</td><td>external_script</td></tr><tr><td>http://127.0.0.1:54920/health</td><td>unknown</td><td>unknown</td><td>health</td><td>inline_script</td></tr><tr><td>http://127.0.0.1:54920/oauth/authorize?client_id=demo</td><td>unknown</td><td>client_id</td><td>callback, login</td><td>external_script</td></tr><tr><td>http://127.0.0.1:54920/reset-password?token=%5Bredacted%5D</td><td>unknown</td><td>token</td><td>password_reset</td><td>inline_script</td></tr></tbody></table>
 <h3>Scripts Analyzed</h3>
-<table><thead><tr><th>Kind</th><th>URL/Page</th><th>Status</th><th>Type</th><th>Endpoints</th></tr></thead><tbody><tr><td>external</td><td>http://127.0.0.1:64808/static/app.js</td><td>200</td><td>application/javascript; charset=utf-8</td><td>6</td></tr><tr><td>inline</td><td>http://127.0.0.1:64808/members/</td><td>unknown</td><td>unknown</td><td>2</td></tr><tr><td>inline</td><td>http://127.0.0.1:64808/</td><td>unknown</td><td>unknown</td><td>1</td></tr></tbody></table>
+<table><thead><tr><th>Kind</th><th>URL/Page</th><th>Status</th><th>Type</th><th>Endpoints</th></tr></thead><tbody><tr><td>external</td><td>http://127.0.0.1:54920/static/app.js</td><td>200</td><td>application/javascript; charset=utf-8</td><td>6</td></tr><tr><td>inline</td><td>http://127.0.0.1:54920/members/</td><td>unknown</td><td>unknown</td><td>2</td></tr><tr><td>inline</td><td>http://127.0.0.1:54920/</td><td>unknown</td><td>unknown</td><td>1</td></tr></tbody></table>
 <h3>Out-of-Scope JavaScript References</h3>
 <ul><li>https://example.org/collect</li></ul>
 <h3>Excluded JavaScript References</h3>
-<ul><li>http://127.0.0.1:64808/admin/export?token=%5Bredacted%5D</li></ul>
+<ul><li>http://127.0.0.1:54920/admin/export?token=%5Bredacted%5D</li></ul>
 </section>
 <section class="section">
 <h2>Web Inventory</h2>
 <table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Total URLs</td><td>36</td></tr><tr><td>Fetched URLs</td><td>17</td></tr><tr><td>Interesting URLs</td><td>24</td></tr><tr><td>Forms detected</td><td>2</td></tr><tr><td>Out-of-scope URLs recorded but not visited</td><td>2</td></tr><tr><td>Excluded URLs recorded but not visited</td><td>4</td></tr></tbody></table>
 <h3>URL Inventory</h3>
-<table><thead><tr><th>URL</th><th>Status</th><th>Type</th><th>Forms</th><th>Interest</th></tr></thead><tbody><tr><td>http://127.0.0.1:64808/.well-known/change-password</td><td>404</td><td>unknown</td><td>0</td><td>password_reset, password_reset_path</td></tr><tr><td>http://127.0.0.1:64808/.well-known/oauth-authorization-server</td><td>404</td><td>unknown</td><td>0</td><td>callback, callback_path</td></tr><tr><td>http://127.0.0.1:64808/account</td><td>403</td><td>text/html; charset=utf-8</td><td>0</td><td>account, account_area</td></tr><tr><td>http://127.0.0.1:64808/admin/</td><td>unknown</td><td>unknown</td><td>0</td><td>admin, admin_path</td></tr><tr><td>http://127.0.0.1:64808/admin/export?token=%5Bredacted%5D</td><td>unknown</td><td>unknown</td><td>0</td><td>admin, admin_path</td></tr><tr><td>http://127.0.0.1:64808/api</td><td>unknown</td><td>unknown</td><td>0</td><td>api, api_path</td></tr><tr><td>http://127.0.0.1:64808/api/member-profile?csrf_token=%5Bredacted%5D</td><td>unknown</td><td>unknown</td><td>0</td><td>account, api, state_changing_candidate, account_area, api_path, post_method</td></tr><tr><td>http://127.0.0.1:64808/api/profile?session_id=%5Bredacted%5D</td><td>unknown</td><td>unknown</td><td>0</td><td>account, api, state_changing_candidate, account_area, api_path, post_method</td></tr><tr><td>http://127.0.0.1:64808/api/upload</td><td>unknown</td><td>unknown</td><td>0</td><td>api, state_changing_candidate, upload, api_path, upload_path, post_method</td></tr><tr><td>http://127.0.0.1:64808/api/users</td><td>200</td><td>application/json; charset=utf-8</td><td>0</td><td>api, api_path</td></tr><tr><td>http://127.0.0.1:64808/api/users?role=member</td><td>unknown</td><td>unknown</td><td>0</td><td>api, api_path</td></tr><tr><td>http://127.0.0.1:64808/callback/oauth</td><td>unknown</td><td>unknown</td><td>0</td><td>callback, callback_path</td></tr><tr><td>http://127.0.0.1:64808/health</td><td>unknown</td><td>unknown</td><td>0</td><td>health, health_status_path</td></tr><tr><td>http://127.0.0.1:64808/login</td><td>200</td><td>text/html; charset=utf-8</td><td>1</td><td>form, login, login_path, form_detected</td></tr><tr><td>http://127.0.0.1:64808/login/</td><td>unknown</td><td>unknown</td><td>0</td><td>login, state_changing_candidate, login_path, post_method</td></tr><tr><td>http://127.0.0.1:64808/members/</td><td>401</td><td>text/html; charset=utf-8</td><td>1</td><td>account, form, login, login_path, account_area, form_detected</td></tr><tr><td>http://127.0.0.1:64808/oauth/authorize</td><td>unknown</td><td>unknown</td><td>0</td><td>callback, login, login_path, callback_path</td></tr><tr><td>http://127.0.0.1:64808/oauth/authorize?client_id=demo</td><td>unknown</td><td>unknown</td><td>0</td><td>callback, login, login_path, callback_path</td></tr><tr><td>http://127.0.0.1:64808/oauth/token</td><td>unknown</td><td>unknown</td><td>0</td><td>callback, callback_path</td></tr><tr><td>http://127.0.0.1:64808/private/</td><td>unknown</td><td>unknown</td><td>0</td><td>account, account_area</td></tr><tr><td>http://127.0.0.1:64808/private/report</td><td>unknown</td><td>unknown</td><td>0</td><td>account, account_area</td></tr><tr><td>http://127.0.0.1:64808/reset-password</td><td>200</td><td>text/html; charset=utf-8</td><td>0</td><td>password_reset, password_reset_path</td></tr><tr><td>http://127.0.0.1:64808/reset-password?token=%5Bredacted%5D</td><td>unknown</td><td>unknown</td><td>0</td><td>password_reset, password_reset_path</td></tr><tr><td>http://127.0.0.1:64808/session</td><td>unknown</td><td>unknown</td><td>0</td><td>login, state_changing_candidate, login_path, post_method</td></tr><tr><td>http://127.0.0.1:64808/</td><td>200</td><td>text/html; charset=utf-8</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/.well-known/openid-configuration</td><td>200</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/.well-known/security.txt</td><td>200</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>https://example.org/collect</td><td>unknown</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>https://example.org/external</td><td>unknown</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/.well-known/apple-app-site-association</td><td>404</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/.well-known/assetlinks.json</td><td>404</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/.well-known/webfinger</td><td>404</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/robots.txt</td><td>200</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/security.txt</td><td>404</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/sitemap.xml</td><td>200</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/static/app.js</td><td>200</td><td>application/javascript; charset=utf-8</td><td>0</td><td>static_asset</td></tr></tbody></table>
+<table><thead><tr><th>URL</th><th>Status</th><th>Type</th><th>Forms</th><th>Interest</th></tr></thead><tbody><tr><td>http://127.0.0.1:54920/.well-known/change-password</td><td>404</td><td>unknown</td><td>0</td><td>password_reset, password_reset_path</td></tr><tr><td>http://127.0.0.1:54920/.well-known/oauth-authorization-server</td><td>404</td><td>unknown</td><td>0</td><td>callback, callback_path</td></tr><tr><td>http://127.0.0.1:54920/account</td><td>403</td><td>text/html; charset=utf-8</td><td>0</td><td>account, account_area</td></tr><tr><td>http://127.0.0.1:54920/admin/</td><td>unknown</td><td>unknown</td><td>0</td><td>admin, admin_path</td></tr><tr><td>http://127.0.0.1:54920/admin/export?token=%5Bredacted%5D</td><td>unknown</td><td>unknown</td><td>0</td><td>admin, admin_path</td></tr><tr><td>http://127.0.0.1:54920/api</td><td>unknown</td><td>unknown</td><td>0</td><td>api, api_path</td></tr><tr><td>http://127.0.0.1:54920/api/member-profile?csrf_token=%5Bredacted%5D</td><td>unknown</td><td>unknown</td><td>0</td><td>account, api, state_changing_candidate, account_area, api_path, post_method</td></tr><tr><td>http://127.0.0.1:54920/api/profile?session_id=%5Bredacted%5D</td><td>unknown</td><td>unknown</td><td>0</td><td>account, api, state_changing_candidate, account_area, api_path, post_method</td></tr><tr><td>http://127.0.0.1:54920/api/upload</td><td>unknown</td><td>unknown</td><td>0</td><td>api, state_changing_candidate, upload, api_path, upload_path, post_method</td></tr><tr><td>http://127.0.0.1:54920/api/users</td><td>200</td><td>application/json; charset=utf-8</td><td>0</td><td>api, api_path</td></tr><tr><td>http://127.0.0.1:54920/api/users?role=member</td><td>unknown</td><td>unknown</td><td>0</td><td>api, api_path</td></tr><tr><td>http://127.0.0.1:54920/callback/oauth</td><td>unknown</td><td>unknown</td><td>0</td><td>callback, callback_path</td></tr><tr><td>http://127.0.0.1:54920/health</td><td>unknown</td><td>unknown</td><td>0</td><td>health, health_status_path</td></tr><tr><td>http://127.0.0.1:54920/login</td><td>200</td><td>text/html; charset=utf-8</td><td>1</td><td>form, login, login_path, form_detected</td></tr><tr><td>http://127.0.0.1:54920/login/</td><td>unknown</td><td>unknown</td><td>0</td><td>login, state_changing_candidate, login_path, post_method</td></tr><tr><td>http://127.0.0.1:54920/members/</td><td>401</td><td>text/html; charset=utf-8</td><td>1</td><td>account, form, login, login_path, account_area, form_detected</td></tr><tr><td>http://127.0.0.1:54920/oauth/authorize</td><td>unknown</td><td>unknown</td><td>0</td><td>callback, login, login_path, callback_path</td></tr><tr><td>http://127.0.0.1:54920/oauth/authorize?client_id=demo</td><td>unknown</td><td>unknown</td><td>0</td><td>callback, login, login_path, callback_path</td></tr><tr><td>http://127.0.0.1:54920/oauth/token</td><td>unknown</td><td>unknown</td><td>0</td><td>callback, callback_path</td></tr><tr><td>http://127.0.0.1:54920/private/</td><td>unknown</td><td>unknown</td><td>0</td><td>account, account_area</td></tr><tr><td>http://127.0.0.1:54920/private/report</td><td>unknown</td><td>unknown</td><td>0</td><td>account, account_area</td></tr><tr><td>http://127.0.0.1:54920/reset-password</td><td>200</td><td>text/html; charset=utf-8</td><td>0</td><td>password_reset, password_reset_path</td></tr><tr><td>http://127.0.0.1:54920/reset-password?token=%5Bredacted%5D</td><td>unknown</td><td>unknown</td><td>0</td><td>password_reset, password_reset_path</td></tr><tr><td>http://127.0.0.1:54920/session</td><td>unknown</td><td>unknown</td><td>0</td><td>login, state_changing_candidate, login_path, post_method</td></tr><tr><td>http://127.0.0.1:54920/</td><td>200</td><td>text/html; charset=utf-8</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/.well-known/openid-configuration</td><td>200</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/.well-known/security.txt</td><td>200</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>https://example.org/collect</td><td>unknown</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>https://example.org/external</td><td>unknown</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/.well-known/apple-app-site-association</td><td>404</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/.well-known/assetlinks.json</td><td>404</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/.well-known/webfinger</td><td>404</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/robots.txt</td><td>200</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/security.txt</td><td>404</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/sitemap.xml</td><td>200</td><td>unknown</td><td>0</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/static/app.js</td><td>200</td><td>application/javascript; charset=utf-8</td><td>0</td><td>static_asset</td></tr></tbody></table>
 <h3>Forms</h3>
-<table><thead><tr><th>Page</th><th>Action</th><th>Method</th><th>Inputs</th><th>Password Fields</th></tr></thead><tbody><tr><td>http://127.0.0.1:64808/login</td><td>http://127.0.0.1:64808/session</td><td>POST</td><td>2</td><td>1</td></tr><tr><td>http://127.0.0.1:64808/members/</td><td>http://127.0.0.1:64808/login/</td><td>POST</td><td>3</td><td>1</td></tr></tbody></table>
+<table><thead><tr><th>Page</th><th>Action</th><th>Method</th><th>Inputs</th><th>Password Fields</th></tr></thead><tbody><tr><td>http://127.0.0.1:54920/login</td><td>http://127.0.0.1:54920/session</td><td>POST</td><td>2</td><td>1</td></tr><tr><td>http://127.0.0.1:54920/members/</td><td>http://127.0.0.1:54920/login/</td><td>POST</td><td>3</td><td>1</td></tr></tbody></table>
 </section>
 <section class="section">
 <h2>Entry Points</h2>
@@ -637,9 +798,9 @@ dd {
 <h3>HTTP Methods Observed</h3>
 <table><thead><tr><th>Method</th><th>Endpoints</th><th>State-changing</th></tr></thead><tbody><tr><td>DELETE</td><td>1</td><td>True</td></tr><tr><td>GET</td><td>18</td><td>False</td></tr><tr><td>OPTIONS</td><td>1</td><td>False</td></tr><tr><td>POST</td><td>6</td><td>True</td></tr><tr><td>PUT</td><td>1</td><td>True</td></tr><tr><td>TRACE</td><td>1</td><td>False</td></tr></tbody></table>
 <h3>Endpoint Review List</h3>
-<table><thead><tr><th>URL</th><th>State</th><th>Methods</th><th>Parameters</th><th>Forms</th><th>Route types</th><th>Notes</th></tr></thead><tbody><tr><td>http://127.0.0.1:64808/login/</td><td>form_action</td><td>POST</td><td>csrf_token, password, username</td><td>1</td><td>login, state_changing_candidate</td><td>form_action, login_route, parameters_observed, sensitive_parameter_name, state_changing_method</td></tr><tr><td>http://127.0.0.1:64808/session</td><td>form_action</td><td>POST</td><td>password, user</td><td>1</td><td>login, state_changing_candidate</td><td>form_action, login_route, parameters_observed, sensitive_parameter_name, state_changing_method</td></tr><tr><td>http://127.0.0.1:64808/api/member-profile?csrf_token=%5Bredacted%5D</td><td>discovered</td><td>POST</td><td>csrf_token</td><td>0</td><td>account, api, state_changing_candidate</td><td>api_route, parameters_observed, sensitive_parameter_name, state_changing_method</td></tr><tr><td>http://127.0.0.1:64808/api/profile?session_id=%5Bredacted%5D</td><td>discovered</td><td>POST</td><td>session_id</td><td>0</td><td>account, api, state_changing_candidate</td><td>api_route, parameters_observed, sensitive_parameter_name, state_changing_method</td></tr><tr><td>http://127.0.0.1:64808/api/upload</td><td>discovered</td><td>POST</td><td>unknown</td><td>0</td><td>api, state_changing_candidate, upload</td><td>api_route, state_changing_method, upload_route</td></tr><tr><td>http://127.0.0.1:64808/members/</td><td>fetched</td><td>DELETE, GET, OPTIONS, POST, PUT, TRACE</td><td>unknown</td><td>0</td><td>account, form, login</td><td>login_route, state_changing_method</td></tr><tr><td>http://127.0.0.1:64808/api/users?role=member</td><td>discovered</td><td>GET</td><td>role</td><td>0</td><td>api</td><td>api_route, parameters_observed</td></tr><tr><td>http://127.0.0.1:64808/oauth/authorize?client_id=demo</td><td>discovered</td><td>unknown</td><td>client_id</td><td>0</td><td>callback, login</td><td>callback_route, login_route, parameters_observed</td></tr><tr><td>http://127.0.0.1:64808/reset-password?token=%5Bredacted%5D</td><td>discovered</td><td>unknown</td><td>token</td><td>0</td><td>password_reset</td><td>parameters_observed, password_reset_route, sensitive_parameter_name</td></tr><tr><td>http://127.0.0.1:64808/</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/.well-known/apple-app-site-association</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/.well-known/assetlinks.json</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/.well-known/change-password</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>password_reset</td><td>password_reset_route</td></tr><tr><td>http://127.0.0.1:64808/.well-known/oauth-authorization-server</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>callback</td><td>callback_route</td></tr><tr><td>http://127.0.0.1:64808/.well-known/openid-configuration</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/.well-known/security.txt</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/.well-known/webfinger</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/account</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>account</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/api</td><td>discovered</td><td>unknown</td><td>unknown</td><td>0</td><td>api</td><td>api_route</td></tr><tr><td>http://127.0.0.1:64808/api/users</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>api</td><td>api_route</td></tr><tr><td>http://127.0.0.1:64808/callback/oauth</td><td>discovered</td><td>unknown</td><td>unknown</td><td>0</td><td>callback</td><td>callback_route</td></tr><tr><td>http://127.0.0.1:64808/health</td><td>discovered</td><td>unknown</td><td>unknown</td><td>0</td><td>health</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/login</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>form, login</td><td>login_route</td></tr><tr><td>http://127.0.0.1:64808/oauth/authorize</td><td>metadata</td><td>unknown</td><td>unknown</td><td>0</td><td>callback, login</td><td>callback_route, login_route</td></tr><tr><td>http://127.0.0.1:64808/oauth/token</td><td>metadata</td><td>unknown</td><td>unknown</td><td>0</td><td>callback</td><td>callback_route</td></tr><tr><td>http://127.0.0.1:64808/reset-password</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>password_reset</td><td>password_reset_route</td></tr><tr><td>http://127.0.0.1:64808/robots.txt</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/security.txt</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/sitemap.xml</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/admin/export?token=%5Bredacted%5D</td><td>excluded</td><td>unknown</td><td>token</td><td>0</td><td>admin</td><td>admin_route, parameters_observed, sensitive_parameter_name</td></tr><tr><td>http://127.0.0.1:64808/admin/</td><td>excluded</td><td>unknown</td><td>unknown</td><td>0</td><td>admin</td><td>admin_route</td></tr><tr><td>http://127.0.0.1:64808/private/</td><td>excluded</td><td>unknown</td><td>unknown</td><td>0</td><td>account</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/private/report</td><td>excluded</td><td>unknown</td><td>unknown</td><td>0</td><td>account</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/static/app.js</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>static_asset</td><td>unknown</td></tr><tr><td>https://example.org/collect</td><td>out_of_scope</td><td>unknown</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr><tr><td>https://example.org/external</td><td>out_of_scope</td><td>unknown</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr></tbody></table>
+<table><thead><tr><th>URL</th><th>State</th><th>Methods</th><th>Parameters</th><th>Forms</th><th>Route types</th><th>Notes</th></tr></thead><tbody><tr><td>http://127.0.0.1:54920/login/</td><td>form_action</td><td>POST</td><td>csrf_token, password, username</td><td>1</td><td>login, state_changing_candidate</td><td>form_action, login_route, parameters_observed, sensitive_parameter_name, state_changing_method</td></tr><tr><td>http://127.0.0.1:54920/session</td><td>form_action</td><td>POST</td><td>password, user</td><td>1</td><td>login, state_changing_candidate</td><td>form_action, login_route, parameters_observed, sensitive_parameter_name, state_changing_method</td></tr><tr><td>http://127.0.0.1:54920/api/member-profile?csrf_token=%5Bredacted%5D</td><td>discovered</td><td>POST</td><td>csrf_token</td><td>0</td><td>account, api, state_changing_candidate</td><td>api_route, parameters_observed, sensitive_parameter_name, state_changing_method</td></tr><tr><td>http://127.0.0.1:54920/api/profile?session_id=%5Bredacted%5D</td><td>discovered</td><td>POST</td><td>session_id</td><td>0</td><td>account, api, state_changing_candidate</td><td>api_route, parameters_observed, sensitive_parameter_name, state_changing_method</td></tr><tr><td>http://127.0.0.1:54920/api/upload</td><td>discovered</td><td>POST</td><td>unknown</td><td>0</td><td>api, state_changing_candidate, upload</td><td>api_route, state_changing_method, upload_route</td></tr><tr><td>http://127.0.0.1:54920/members/</td><td>fetched</td><td>DELETE, GET, OPTIONS, POST, PUT, TRACE</td><td>unknown</td><td>0</td><td>account, form, login</td><td>login_route, state_changing_method</td></tr><tr><td>http://127.0.0.1:54920/api/users?role=member</td><td>discovered</td><td>GET</td><td>role</td><td>0</td><td>api</td><td>api_route, parameters_observed</td></tr><tr><td>http://127.0.0.1:54920/oauth/authorize?client_id=demo</td><td>discovered</td><td>unknown</td><td>client_id</td><td>0</td><td>callback, login</td><td>callback_route, login_route, parameters_observed</td></tr><tr><td>http://127.0.0.1:54920/reset-password?token=%5Bredacted%5D</td><td>discovered</td><td>unknown</td><td>token</td><td>0</td><td>password_reset</td><td>parameters_observed, password_reset_route, sensitive_parameter_name</td></tr><tr><td>http://127.0.0.1:54920/</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/.well-known/apple-app-site-association</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/.well-known/assetlinks.json</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/.well-known/change-password</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>password_reset</td><td>password_reset_route</td></tr><tr><td>http://127.0.0.1:54920/.well-known/oauth-authorization-server</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>callback</td><td>callback_route</td></tr><tr><td>http://127.0.0.1:54920/.well-known/openid-configuration</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/.well-known/security.txt</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/.well-known/webfinger</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/account</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>account</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/api</td><td>discovered</td><td>unknown</td><td>unknown</td><td>0</td><td>api</td><td>api_route</td></tr><tr><td>http://127.0.0.1:54920/api/users</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>api</td><td>api_route</td></tr><tr><td>http://127.0.0.1:54920/callback/oauth</td><td>discovered</td><td>unknown</td><td>unknown</td><td>0</td><td>callback</td><td>callback_route</td></tr><tr><td>http://127.0.0.1:54920/health</td><td>discovered</td><td>unknown</td><td>unknown</td><td>0</td><td>health</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/login</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>form, login</td><td>login_route</td></tr><tr><td>http://127.0.0.1:54920/oauth/authorize</td><td>metadata</td><td>unknown</td><td>unknown</td><td>0</td><td>callback, login</td><td>callback_route, login_route</td></tr><tr><td>http://127.0.0.1:54920/oauth/token</td><td>metadata</td><td>unknown</td><td>unknown</td><td>0</td><td>callback</td><td>callback_route</td></tr><tr><td>http://127.0.0.1:54920/reset-password</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>password_reset</td><td>password_reset_route</td></tr><tr><td>http://127.0.0.1:54920/robots.txt</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/security.txt</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/sitemap.xml</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/admin/export?token=%5Bredacted%5D</td><td>excluded</td><td>unknown</td><td>token</td><td>0</td><td>admin</td><td>admin_route, parameters_observed, sensitive_parameter_name</td></tr><tr><td>http://127.0.0.1:54920/admin/</td><td>excluded</td><td>unknown</td><td>unknown</td><td>0</td><td>admin</td><td>admin_route</td></tr><tr><td>http://127.0.0.1:54920/private/</td><td>excluded</td><td>unknown</td><td>unknown</td><td>0</td><td>account</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/private/report</td><td>excluded</td><td>unknown</td><td>unknown</td><td>0</td><td>account</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/static/app.js</td><td>fetched</td><td>GET</td><td>unknown</td><td>0</td><td>static_asset</td><td>unknown</td></tr><tr><td>https://example.org/collect</td><td>out_of_scope</td><td>unknown</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr><tr><td>https://example.org/external</td><td>out_of_scope</td><td>unknown</td><td>unknown</td><td>0</td><td>unknown</td><td>unknown</td></tr></tbody></table>
 <h3>Form Entry Points</h3>
-<table><thead><tr><th>Page</th><th>Action</th><th>Method</th><th>Inputs</th><th>Password fields</th><th>CSRF candidates</th></tr></thead><tbody><tr><td>http://127.0.0.1:64808/login</td><td>http://127.0.0.1:64808/session</td><td>POST</td><td>2</td><td>1</td><td>unknown</td></tr><tr><td>http://127.0.0.1:64808/members/</td><td>http://127.0.0.1:64808/login/</td><td>POST</td><td>3</td><td>1</td><td>csrf_token</td></tr></tbody></table>
+<table><thead><tr><th>Page</th><th>Action</th><th>Method</th><th>Inputs</th><th>Password fields</th><th>CSRF candidates</th></tr></thead><tbody><tr><td>http://127.0.0.1:54920/login</td><td>http://127.0.0.1:54920/session</td><td>POST</td><td>2</td><td>1</td><td>unknown</td></tr><tr><td>http://127.0.0.1:54920/members/</td><td>http://127.0.0.1:54920/login/</td><td>POST</td><td>3</td><td>1</td><td>csrf_token</td></tr></tbody></table>
 <h3>Sensitive-Looking Parameters</h3>
 <table><thead><tr><th>Parameter</th><th>Locations</th><th>Occurrences</th><th>Methods</th></tr></thead><tbody><tr><td>csrf_token</td><td>form, query</td><td>2</td><td>POST</td></tr><tr><td>password</td><td>form</td><td>2</td><td>POST</td></tr><tr><td>session_id</td><td>query</td><td>1</td><td>unknown</td></tr><tr><td>token</td><td>query</td><td>2</td><td>unknown</td></tr></tbody></table>
 </section>
@@ -648,7 +809,7 @@ dd {
 <h2>TCP Port Check</h2>
 <table><thead><tr><th>Field</th><th>Value</th></tr></thead><tbody><tr><td>Host</td><td>127.0.0.1</td></tr><tr><td>Ports checked</td><td>3</td></tr><tr><td>Open ports</td><td>1</td></tr><tr><td>Closed ports</td><td>0</td></tr><tr><td>Filtered ports</td><td>2</td></tr></tbody></table>
 <p>Only TCP connect checks were performed; no payloads or banners were requested.</p>
-<table><thead><tr><th>Port</th><th>Service</th><th>Status</th><th>Elapsed</th></tr></thead><tbody><tr><td>64808</td><td>unknown</td><td>open</td><td>0 ms</td></tr><tr><td>80</td><td>http</td><td>filtered</td><td>514 ms</td></tr><tr><td>443</td><td>https</td><td>filtered</td><td>500 ms</td></tr></tbody></table>
+<table><thead><tr><th>Port</th><th>Service</th><th>Status</th><th>Elapsed</th></tr></thead><tbody><tr><td>54920</td><td>unknown</td><td>open</td><td>0 ms</td></tr><tr><td>80</td><td>http</td><td>filtered</td><td>514 ms</td></tr><tr><td>443</td><td>https</td><td>filtered</td><td>516 ms</td></tr></tbody></table>
 </section>
 
 <section class="section">

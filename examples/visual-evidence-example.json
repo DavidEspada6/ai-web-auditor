@@ -1,0 +1,216 @@
+{
+  "version": "1.0",
+  "generated_at": "2026-09-12T02:26:12Z",
+  "summary": {
+    "screenshot_count": 3,
+    "technology_count": 4,
+    "module_group_count": 4,
+    "risk_level": "high",
+    "risk_score": 89
+  },
+  "fingerprint": {
+    "target": {
+      "url": "http://127.0.0.1:54920/members/",
+      "host": "127.0.0.1",
+      "scheme": "http",
+      "port": 54920
+    },
+    "auth_profile": {
+      "id": "public",
+      "name": "Publico",
+      "authenticated": false
+    },
+    "risk": {
+      "level": "high",
+      "score": 89,
+      "findings": 22,
+      "severity_counts": {
+        "critical": 0,
+        "high": 3,
+        "medium": 4,
+        "low": 6,
+        "info": 9
+      }
+    },
+    "surface": {
+      "urls": 36,
+      "visited_urls": 17,
+      "interesting_urls": 24,
+      "forms": 2,
+      "entry_points": 36,
+      "parameters": 8,
+      "javascript_endpoints": 9,
+      "metadata_urls": 10,
+      "resolved_subdomains": 0,
+      "open_ports": 1,
+      "rules_matched": 13,
+      "framework_controls": 34,
+      "modules_run": 10
+    },
+    "technologies": [
+      {
+        "name": "AIWebAuditorLab/0.24",
+        "version": "",
+        "label": "AIWebAuditorLab/0.24",
+        "category": "server",
+        "confidence": "low",
+        "signals": [
+          "header:server"
+        ]
+      },
+      {
+        "name": "Django",
+        "version": "",
+        "label": "Django",
+        "category": "framework",
+        "confidence": "medium",
+        "signals": [
+          "cookie:sessionid"
+        ]
+      },
+      {
+        "name": "PHP",
+        "version": "5.6.40",
+        "label": "PHP 5.6.40",
+        "category": "language",
+        "confidence": "high",
+        "signals": [
+          "header:x-powered-by"
+        ]
+      },
+      {
+        "name": "WordPress",
+        "version": "4.7.0",
+        "label": "WordPress 4.7.0",
+        "category": "cms",
+        "confidence": "high",
+        "signals": [
+          "html:meta-generator"
+        ]
+      }
+    ],
+    "public_files": [
+      {
+        "path": "/robots.txt",
+        "status_code": 200,
+        "present": true
+      },
+      {
+        "path": "/.well-known/security.txt",
+        "status_code": 200,
+        "present": true
+      },
+      {
+        "path": "/sitemap.xml",
+        "status_code": 200,
+        "present": true
+      }
+    ]
+  },
+  "ui_groups": [
+    {
+      "id": "scope",
+      "label": "Alcance",
+      "modules": [
+        {
+          "name": "scope",
+          "status": "passed",
+          "summary": "Target URL validated and inside configured scope."
+        }
+      ]
+    },
+    {
+      "id": "transport",
+      "label": "Transporte y plataforma",
+      "modules": [
+        {
+          "name": "http",
+          "status": "warning",
+          "summary": "HTTP/HTTPS reachability and redirects checked."
+        },
+        {
+          "name": "security_headers",
+          "status": "warning",
+          "summary": "Security headers checked."
+        },
+        {
+          "name": "cookies",
+          "status": "warning",
+          "summary": "Checked 2 cookie(s)."
+        },
+        {
+          "name": "basic_auth",
+          "status": "warning",
+          "summary": "HTTP authentication challenge checked."
+        },
+        {
+          "name": "http_methods",
+          "status": "warning",
+          "summary": "HTTP methods advertised by OPTIONS checked."
+        }
+      ]
+    },
+    {
+      "id": "surface",
+      "label": "Superficie web",
+      "modules": [
+        {
+          "name": "fingerprinting",
+          "status": "warning",
+          "summary": "Identified 4 technology signal(s) and checked 4 public metadata path(s)."
+        },
+        {
+          "name": "crawler",
+          "status": "warning",
+          "summary": "Crawled 6 page(s), discovered 10 in-scope URL(s), 10 from metadata."
+        },
+        {
+          "name": "javascript",
+          "status": "passed",
+          "summary": "Analyzed 6 page(s) and 3 script block(s), discovered 9 in-scope endpoint reference(s)."
+        },
+        {
+          "name": "ports",
+          "status": "warning",
+          "summary": "Checked 3 TCP port(s), found 1 open port(s)."
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "label": "Evidencias y trazabilidad",
+      "modules": []
+    }
+  ],
+  "screenshots": [
+    {
+      "id": "audit-overview",
+      "title": "Audit overview",
+      "kind": "svg",
+      "filename": "visuals/audit-overview.svg",
+      "description": "Resumen visual del objetivo, severidades, riesgo y cobertura principal de la auditoria.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"960\" height=\"540\" viewBox=\"0 0 960 540\" role=\"img\" aria-label=\"Audit overview\">\n<rect width=\"960\" height=\"540\" fill=\"#020617\"/>\n<rect x=\"20\" y=\"20\" width=\"920\" height=\"500\" rx=\"18\" fill=\"#0b1220\" stroke=\"#1f3d34\"/>\n<text x=\"44\" y=\"72\" fill=\"#22c55e\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"16\" font-weight=\"800\">AI Web Auditor</text>\n<text x=\"44\" y=\"108\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"28\" font-weight=\"800\">http://127.0.0.1:54920/members/</text>\n<text x=\"44\" y=\"140\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"15\" font-weight=\"600\">http | 127.0.0.1:54920</text>\n<rect x=\"720\" y=\"56\" width=\"178\" height=\"44\" rx=\"14\" fill=\"#9a3412\"/><text x=\"734\" y=\"84\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"800\">HIGH 89/100</text>\n<rect x=\"44\" y=\"182\" width=\"156\" height=\"108\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"62\" y=\"216\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"700\">Critical</text>\n<text x=\"62\" y=\"264\" fill=\"#ef4444\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"34\" font-weight=\"900\">0</text>\n<rect x=\"220\" y=\"182\" width=\"156\" height=\"108\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"238\" y=\"216\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"700\">High</text>\n<text x=\"238\" y=\"264\" fill=\"#f97316\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"34\" font-weight=\"900\">3</text>\n<rect x=\"396\" y=\"182\" width=\"156\" height=\"108\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"414\" y=\"216\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"700\">Medium</text>\n<text x=\"414\" y=\"264\" fill=\"#f59e0b\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"34\" font-weight=\"900\">4</text>\n<rect x=\"572\" y=\"182\" width=\"156\" height=\"108\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"590\" y=\"216\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"700\">Low</text>\n<text x=\"590\" y=\"264\" fill=\"#3b82f6\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"34\" font-weight=\"900\">6</text>\n<rect x=\"748\" y=\"182\" width=\"156\" height=\"108\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"766\" y=\"216\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"700\">Info</text>\n<text x=\"766\" y=\"264\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"34\" font-weight=\"900\">9</text>\n<rect x=\"44\" y=\"330\" width=\"260\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"58\" y=\"353\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">URLs</text>\n<text x=\"58\" y=\"376\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">36</text>\n<rect x=\"336\" y=\"330\" width=\"260\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"350\" y=\"353\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Forms</text>\n<text x=\"350\" y=\"376\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">2</text>\n<rect x=\"628\" y=\"330\" width=\"260\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"642\" y=\"353\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Entradas</text>\n<text x=\"642\" y=\"376\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">36</text>\n<rect x=\"44\" y=\"412\" width=\"260\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"58\" y=\"435\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Parametros</text>\n<text x=\"58\" y=\"458\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">8</text>\n<rect x=\"336\" y=\"412\" width=\"260\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"350\" y=\"435\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">JS endpoints</text>\n<text x=\"350\" y=\"458\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">9</text>\n<rect x=\"628\" y=\"412\" width=\"260\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"642\" y=\"435\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Reglas</text>\n<text x=\"642\" y=\"458\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">13</text>\n</svg>"
+    },
+    {
+      "id": "fingerprint-map",
+      "title": "Fingerprint map",
+      "kind": "svg",
+      "filename": "visuals/fingerprint-map.svg",
+      "description": "Mapa visual de tecnologias, metadatos publicos y superficie descubierta de forma pasiva.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"960\" height=\"540\" viewBox=\"0 0 960 540\" role=\"img\" aria-label=\"Fingerprint map\">\n<rect width=\"960\" height=\"540\" fill=\"#020617\"/>\n<rect x=\"20\" y=\"20\" width=\"920\" height=\"500\" rx=\"18\" fill=\"#0b1220\" stroke=\"#1f3d34\"/>\n<text x=\"44\" y=\"72\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"26\" font-weight=\"800\">Fingerprint visual</text>\n<text x=\"44\" y=\"104\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"15\" font-weight=\"600\">Tecnologias, metadatos publicos y superficie observada</text>\n<text x=\"44\" y=\"154\" fill=\"#bbf7d0\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">Tecnologias</text>\n<rect x=\"44\" y=\"176\" width=\"250\" height=\"30\" rx=\"14\" fill=\"#134e4a\"/><text x=\"58\" y=\"204\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"800\">AIWebAuditorLab/0.24 | low</text>\n<rect x=\"330\" y=\"176\" width=\"250\" height=\"30\" rx=\"14\" fill=\"#134e4a\"/><text x=\"344\" y=\"204\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"800\">Django | medium</text>\n<rect x=\"616\" y=\"176\" width=\"250\" height=\"30\" rx=\"14\" fill=\"#134e4a\"/><text x=\"630\" y=\"204\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"800\">PHP 5.6.40 | high</text>\n<rect x=\"44\" y=\"218\" width=\"250\" height=\"30\" rx=\"14\" fill=\"#134e4a\"/><text x=\"58\" y=\"246\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"800\">WordPress 4.7.0 | high</text>\n<text x=\"44\" y=\"360\" fill=\"#bbf7d0\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">Superficie</text>\n<rect x=\"44\" y=\"384\" width=\"200\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"58\" y=\"407\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">URLs</text>\n<text x=\"58\" y=\"430\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">36</text>\n<rect x=\"260\" y=\"384\" width=\"200\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"274\" y=\"407\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Entradas</text>\n<text x=\"274\" y=\"430\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">36</text>\n<rect x=\"476\" y=\"384\" width=\"200\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"490\" y=\"407\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Subdominios</text>\n<text x=\"490\" y=\"430\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">0</text>\n<rect x=\"692\" y=\"384\" width=\"200\" height=\"56\" rx=\"12\" fill=\"#111827\" stroke=\"#263244\"/>\n<text x=\"706\" y=\"407\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"700\">Puertos abiertos</text>\n<text x=\"706\" y=\"430\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">1</text>\n<text x=\"44\" y=\"474\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"15\" font-weight=\"700\">Metadatos publicos</text>\n<text x=\"44\" y=\"500\" fill=\"#e2e8f0\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"600\">/robots.txt, /.well-known/security.txt, /sitemap.xml</text>\n</svg>"
+    },
+    {
+      "id": "coverage-matrix",
+      "title": "Coverage matrix",
+      "kind": "svg",
+      "filename": "visuals/coverage-matrix.svg",
+      "description": "Matriz visual de modulos agrupados por fase para comprobar cobertura y estados.",
+      "svg": "<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"960\" height=\"540\" viewBox=\"0 0 960 540\" role=\"img\" aria-label=\"Coverage matrix\">\n<rect width=\"960\" height=\"540\" fill=\"#020617\"/>\n<rect x=\"20\" y=\"20\" width=\"920\" height=\"500\" rx=\"18\" fill=\"#0b1220\" stroke=\"#1f3d34\"/>\n<text x=\"44\" y=\"72\" fill=\"#f8fafc\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"26\" font-weight=\"800\">Cobertura de enumeracion</text>\n<text x=\"44\" y=\"104\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"15\" font-weight=\"600\">Modulos agrupados por flujo de trabajo y estado observado</text>\n<rect x=\"44\" y=\"146\" width=\"394\" height=\"138\" rx=\"12\" fill=\"#111827\" stroke=\"#274236\"/>\n<text x=\"62\" y=\"178\" fill=\"#bbf7d0\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">Alcance</text>\n<circle cx=\"66\" cy=\"200\" r=\"5\" fill=\"#22c55e\"/>\n<text x=\"80\" y=\"204\" fill=\"#e5edf5\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"13\" font-weight=\"700\">scope</text>\n<text x=\"294\" y=\"204\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"13\" font-weight=\"600\">passed</text>\n<rect x=\"482\" y=\"146\" width=\"394\" height=\"138\" rx=\"12\" fill=\"#111827\" stroke=\"#274236\"/>\n<text x=\"500\" y=\"178\" fill=\"#bbf7d0\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">Transporte y plataforma</text>\n<circle cx=\"504\" cy=\"200\" r=\"5\" fill=\"#f59e0b\"/>\n<text x=\"518\" y=\"204\" fill=\"#e5edf5\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"13\" font-weight=\"700\">http</text>\n<text x=\"732\" y=\"204\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"13\" font-weight=\"600\">warning</text>\n<circle cx=\"504\" cy=\"220\" r=\"5\" fill=\"#f59e0b\"/>\n<text x=\"518\" y=\"224\" fill=\"#e5edf5\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"13\" font-weight=\"700\">security_headers</text>\n<text x=\"732\" y=\"224\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"13\" font-weight=\"600\">warning</text>\n<circle cx=\"504\" cy=\"240\" r=\"5\" fill=\"#f59e0b\"/>\n<text x=\"518\" y=\"244\" fill=\"#e5edf5\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"13\" font-weight=\"700\">cookies</text>\n<text x=\"732\" y=\"244\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"13\" font-weight=\"600\">warning</text>\n<circle cx=\"504\" cy=\"260\" r=\"5\" fill=\"#f59e0b\"/>\n<text x=\"518\" y=\"264\" fill=\"#e5edf5\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"13\" font-weight=\"700\">basic_auth</text>\n<text x=\"732\" y=\"264\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"13\" font-weight=\"600\">warning</text>\n<text x=\"518\" y=\"286\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"12\" font-weight=\"600\">+1 mas</text>\n<rect x=\"44\" y=\"322\" width=\"394\" height=\"138\" rx=\"12\" fill=\"#111827\" stroke=\"#274236\"/>\n<text x=\"62\" y=\"354\" fill=\"#bbf7d0\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">Superficie web</text>\n<circle cx=\"66\" cy=\"376\" r=\"5\" fill=\"#f59e0b\"/>\n<text x=\"80\" y=\"380\" fill=\"#e5edf5\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"13\" font-weight=\"700\">fingerprinting</text>\n<text x=\"294\" y=\"380\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"13\" font-weight=\"600\">warning</text>\n<circle cx=\"66\" cy=\"396\" r=\"5\" fill=\"#f59e0b\"/>\n<text x=\"80\" y=\"400\" fill=\"#e5edf5\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"13\" font-weight=\"700\">crawler</text>\n<text x=\"294\" y=\"400\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"13\" font-weight=\"600\">warning</text>\n<circle cx=\"66\" cy=\"416\" r=\"5\" fill=\"#22c55e\"/>\n<text x=\"80\" y=\"420\" fill=\"#e5edf5\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"13\" font-weight=\"700\">javascript</text>\n<text x=\"294\" y=\"420\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"13\" font-weight=\"600\">passed</text>\n<circle cx=\"66\" cy=\"436\" r=\"5\" fill=\"#f59e0b\"/>\n<text x=\"80\" y=\"440\" fill=\"#e5edf5\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"13\" font-weight=\"700\">ports</text>\n<text x=\"294\" y=\"440\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"13\" font-weight=\"600\">warning</text>\n<rect x=\"482\" y=\"322\" width=\"394\" height=\"138\" rx=\"12\" fill=\"#111827\" stroke=\"#274236\"/>\n<text x=\"500\" y=\"354\" fill=\"#bbf7d0\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"18\" font-weight=\"800\">Evidencias y trazabilidad</text>\n<text x=\"44\" y=\"500\" fill=\"#94a3b8\" font-family=\"Inter, Segoe UI, Arial, sans-serif\" font-size=\"14\" font-weight=\"700\">Modulos ejecutados: 10 | Reglas OWASP: 13 | Controles: 34</text>\n</svg>"
+    }
+  ],
+  "safety_notes": [
+    "Visual snapshots are generated locally from passive scan evidence.",
+    "No browser rendering, exploitation, brute force, fuzzing or form submission is performed to create these visuals.",
+    "Sensitive values already redacted in the scan JSON remain redacted in visual evidence."
+  ]
+}

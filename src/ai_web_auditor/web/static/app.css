@@ -622,6 +622,56 @@ label[data-help]:focus-within::after {
   margin: 14px 0;
 }
 
+.visual-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.visual-card {
+  display: grid;
+  gap: 10px;
+  padding: 14px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: #fafbfc;
+}
+
+.visual-card h3 {
+  margin: 0 0 6px;
+  color: var(--ink);
+  font-size: 16px;
+  letter-spacing: 0;
+}
+
+.visual-card p {
+  margin: 0;
+  color: #334155;
+}
+
+.visual-frame {
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid #1f3d34;
+  border-radius: 8px;
+  background: #020617;
+  color: #e5edf5;
+}
+
+.visual-frame svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.visual-file {
+  font-family: "Cascadia Mono", Consolas, monospace;
+  font-size: 12px;
+  overflow-wrap: anywhere;
+}
+
 .wide {
   grid-column: 1 / -1;
 }
@@ -1045,6 +1095,7 @@ body.is-resizing-column {
 
   .summary-grid,
   .compact-summary,
+  .visual-gallery,
   .metadata-grid,
   .import-controls,
   .ai-controls,
@@ -1081,6 +1132,7 @@ body.is-resizing-column {
   .grid-two,
   .toggles,
   .module-grid,
+  .visual-gallery,
   .summary-grid,
   .compact-summary,
   .metadata-grid,

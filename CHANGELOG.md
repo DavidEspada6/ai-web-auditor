@@ -2,6 +2,30 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.24.0] - 2026-09-12
+
+### Anade
+
+- Bloque `visual_evidence` en el JSON de auditoria con fingerprint visual, grupos de UI y capturas SVG generadas localmente.
+- Tres capturas SVG reproducibles: `audit-overview.svg`, `fingerprint-map.svg` y `coverage-matrix.svg`.
+- Comando `visuals` para regenerar evidencias visuales desde cualquier JSON de auditoria y exportar los SVG a una carpeta.
+- Pestana `Visual` en la interfaz grafica con resumen de riesgo, tecnologias, superficie y galeria de capturas.
+- Inclusion de `visuals/visual-evidence.json` y los SVG dentro del paquete ZIP de evidencias.
+- Seccion `Visual Evidence` en informes Markdown, HTML y PDF.
+- Tests de generacion visual, exportacion CLI, paquete ZIP, informes y UI.
+
+### Cambia
+
+- La salida de consola indica cuantas capturas visuales SVG se generaron.
+- Los informes HTML embeben visuales reconstruidos desde el JSON de auditoria para evitar confiar en SVGs importados desde fuentes externas.
+- La navegacion agrupada incorpora la vista `Visual` dentro de la superficie de auditoria.
+
+### Seguridad
+
+- Las capturas visuales se generan solo desde evidencias pasivas ya recogidas.
+- No se renderiza el objetivo en navegador, no se hace crawling extra, no se envian formularios y no se ejecutan endpoints descubiertos.
+- La UI descarta SVGs con scripts, `foreignObject`, manejadores de eventos o URLs `javascript:` antes de pintarlos.
+
 ## [0.23.0] - 2026-09-02
 
 ### Anade

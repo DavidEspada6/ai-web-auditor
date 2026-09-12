@@ -92,6 +92,7 @@ class ScanResult:
         from .evidence import sanitize_scan_data, sanitize_url
         from .inventory import build_inventory_from_scan
         from .rules import build_rule_evaluation
+        from .visuals import build_visual_evidence
 
         data = asdict(self)
         target = data.get("target") if isinstance(data.get("target"), dict) else {}
@@ -103,6 +104,7 @@ class ScanResult:
         data["entry_points"] = build_entry_points_from_scan(data)
         data["rule_evaluation"] = build_rule_evaluation(data)
         data["assessment"] = build_assessment(data)
+        data["visual_evidence"] = build_visual_evidence(data)
         return sanitize_scan_data(data)
 
     def to_json(self, indent: int = 2) -> str:

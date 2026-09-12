@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="540" viewBox="0 0 960 540" role="img" aria-label="Audit overview">
+<rect width="960" height="540" fill="#020617"/>
+<rect x="20" y="20" width="920" height="500" rx="18" fill="#0b1220" stroke="#1f3d34"/>
+<text x="44" y="72" fill="#22c55e" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="16" font-weight="800">AI Web Auditor</text>
+<text x="44" y="108" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="28" font-weight="800">http://127.0.0.1:54920/members/</text>
+<text x="44" y="140" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="15" font-weight="600">http | 127.0.0.1:54920</text>
+<rect x="720" y="56" width="178" height="44" rx="14" fill="#9a3412"/><text x="734" y="84" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="800">HIGH 89/100</text>
+<rect x="44" y="182" width="156" height="108" rx="12" fill="#111827" stroke="#263244"/>
+<text x="62" y="216" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">Critical</text>
+<text x="62" y="264" fill="#ef4444" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="34" font-weight="900">0</text>
+<rect x="220" y="182" width="156" height="108" rx="12" fill="#111827" stroke="#263244"/>
+<text x="238" y="216" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">High</text>
+<text x="238" y="264" fill="#f97316" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="34" font-weight="900">3</text>
+<rect x="396" y="182" width="156" height="108" rx="12" fill="#111827" stroke="#263244"/>
+<text x="414" y="216" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">Medium</text>
+<text x="414" y="264" fill="#f59e0b" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="34" font-weight="900">4</text>
+<rect x="572" y="182" width="156" height="108" rx="12" fill="#111827" stroke="#263244"/>
+<text x="590" y="216" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">Low</text>
+<text x="590" y="264" fill="#3b82f6" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="34" font-weight="900">6</text>
+<rect x="748" y="182" width="156" height="108" rx="12" fill="#111827" stroke="#263244"/>
+<text x="766" y="216" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="14" font-weight="700">Info</text>
+<text x="766" y="264" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="34" font-weight="900">9</text>
+<rect x="44" y="330" width="260" height="56" rx="12" fill="#111827" stroke="#263244"/>
+<text x="58" y="353" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">URLs</text>
+<text x="58" y="376" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">36</text>
+<rect x="336" y="330" width="260" height="56" rx="12" fill="#111827" stroke="#263244"/>
+<text x="350" y="353" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">Forms</text>
+<text x="350" y="376" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">2</text>
+<rect x="628" y="330" width="260" height="56" rx="12" fill="#111827" stroke="#263244"/>
+<text x="642" y="353" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">Entradas</text>
+<text x="642" y="376" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">36</text>
+<rect x="44" y="412" width="260" height="56" rx="12" fill="#111827" stroke="#263244"/>
+<text x="58" y="435" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">Parametros</text>
+<text x="58" y="458" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">8</text>
+<rect x="336" y="412" width="260" height="56" rx="12" fill="#111827" stroke="#263244"/>
+<text x="350" y="435" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">JS endpoints</text>
+<text x="350" y="458" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">9</text>
+<rect x="628" y="412" width="260" height="56" rx="12" fill="#111827" stroke="#263244"/>
+<text x="642" y="435" fill="#94a3b8" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="12" font-weight="700">Reglas</text>
+<text x="642" y="458" fill="#f8fafc" font-family="Inter, Segoe UI, Arial, sans-serif" font-size="18" font-weight="800">13</text>
+</svg>

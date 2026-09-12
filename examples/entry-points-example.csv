@@ -1,37 +1,37 @@
 id,url,state,review_candidate,methods,route_types,parameters,forms,sources,status_code,content_type,notes
-ep_b5032eea61f8,http://127.0.0.1:64808/login/,form_action,true,POST,login; state_changing_candidate,csrf_token; password; username,form_d96382382b98,form_action,,,form_action; login_route; parameters_observed; sensitive_parameter_name; state_changing_method
-ep_44626dd5a313,http://127.0.0.1:64808/session,form_action,true,POST,login; state_changing_candidate,password; user,form_9e7bda87a2a0,form_action,,,form_action; login_route; parameters_observed; sensitive_parameter_name; state_changing_method
-ep_415cc91d57e0,http://127.0.0.1:64808/api/member-profile?csrf_token=%5Bredacted%5D,discovered,true,POST,account; api; state_changing_candidate,csrf_token,,javascript_endpoint,,,api_route; parameters_observed; sensitive_parameter_name; state_changing_method
-ep_cd320aa819e6,http://127.0.0.1:64808/api/profile?session_id=%5Bredacted%5D,discovered,true,POST,account; api; state_changing_candidate,session_id,,javascript_endpoint,,,api_route; parameters_observed; sensitive_parameter_name; state_changing_method
-ep_fc003f15b5f0,http://127.0.0.1:64808/api/upload,discovered,true,POST,api; state_changing_candidate; upload,,,javascript_endpoint,,,api_route; state_changing_method; upload_route
-ep_f34f99092b2d,http://127.0.0.1:64808/members/,fetched,true,DELETE; GET; OPTIONS; POST; PUT; TRACE,account; form; login,,,crawler_discovered; crawler_fetched; crawler_page; html_link; http_methods_options; metadata_discovered; request; robots_allow; seed; sitemap; target,401,text/html; charset=utf-8,login_route; state_changing_method
-ep_031edc5dfb12,http://127.0.0.1:64808/api/users?role=member,discovered,true,GET,api,role,,javascript_endpoint,,,api_route; parameters_observed
-ep_96a2ec26d0ce,http://127.0.0.1:64808/oauth/authorize?client_id=demo,discovered,true,,callback; login,client_id,,javascript_endpoint,,,callback_route; login_route; parameters_observed
-ep_3a3e2d41c606,http://127.0.0.1:64808/reset-password?token=%5Bredacted%5D,discovered,true,,password_reset,token,,javascript_endpoint,,,parameters_observed; password_reset_route; sensitive_parameter_name
-ep_1eb1ac2d46f0,http://127.0.0.1:64808/,fetched,true,GET,,,,crawler_discovered; crawler_fetched; crawler_page; html_link; metadata_discovered; request; sitemap,200,text/html; charset=utf-8,
-ep_cde615d7bdb8,http://127.0.0.1:64808/.well-known/apple-app-site-association,fetched,true,GET,,,,request; well_known,404,,
-ep_ac0e104a06e6,http://127.0.0.1:64808/.well-known/assetlinks.json,fetched,true,GET,,,,request; well_known,404,,
-ep_2c3ce82fbfe0,http://127.0.0.1:64808/.well-known/change-password,fetched,true,GET,password_reset,,,request; well_known,404,,password_reset_route
-ep_2f8001debe8c,http://127.0.0.1:64808/.well-known/oauth-authorization-server,fetched,true,GET,callback,,,request; well_known,404,,callback_route
-ep_4b12f689d637,http://127.0.0.1:64808/.well-known/openid-configuration,fetched,true,GET,,,,crawler_discovered; metadata_discovered; request; well_known,200,,
-ep_5e1a6651bb64,http://127.0.0.1:64808/.well-known/security.txt,fetched,true,GET,,,,crawler_discovered; metadata_discovered; request; well_known,200,,
-ep_f105e0a76872,http://127.0.0.1:64808/.well-known/webfinger,fetched,true,GET,,,,request; well_known,404,,
-ep_a78686585ceb,http://127.0.0.1:64808/account,fetched,true,GET,account,,,crawler_discovered; crawler_fetched; crawler_page; metadata_discovered; request; sitemap,403,text/html; charset=utf-8,
-ep_d69825f3d03d,http://127.0.0.1:64808/api,discovered,true,,api,,,javascript_endpoint,,,api_route
-ep_7a0b7445a702,http://127.0.0.1:64808/api/users,fetched,true,GET,api,,,crawler_discovered; crawler_fetched; crawler_page; metadata_discovered; request; sitemap,200,application/json; charset=utf-8,api_route
-ep_4283fd4cfce2,http://127.0.0.1:64808/callback/oauth,discovered,true,,callback,,,javascript_endpoint,,,callback_route
-ep_acc9438e69d2,http://127.0.0.1:64808/health,discovered,true,,health,,,javascript_endpoint,,,
-ep_ee85f77cad7b,http://127.0.0.1:64808/login,fetched,true,GET,form; login,,,crawler_discovered; crawler_fetched; crawler_page; metadata_discovered; request; sitemap,200,text/html; charset=utf-8,login_route
-ep_4215a14f0b50,http://127.0.0.1:64808/oauth/authorize,metadata,true,,callback; login,,,crawler_discovered; metadata_discovered; well_known_endpoint,,,callback_route; login_route
-ep_7002ba78bca4,http://127.0.0.1:64808/oauth/token,metadata,true,,callback,,,crawler_discovered; metadata_discovered; well_known_endpoint,,,callback_route
-ep_fc75025a82d2,http://127.0.0.1:64808/reset-password,fetched,true,GET,password_reset,,,crawler_discovered; crawler_fetched; crawler_page; metadata_discovered; request; sitemap,200,text/html; charset=utf-8,password_reset_route
-ep_8f6655ba3215,http://127.0.0.1:64808/robots.txt,fetched,true,GET,,,,request,200,,
-ep_f4cc6a91d79b,http://127.0.0.1:64808/security.txt,fetched,true,GET,,,,request; well_known,404,,
-ep_83b1e5cc9f9b,http://127.0.0.1:64808/sitemap.xml,fetched,true,GET,,,,request,200,,
-ep_366982802d1b,http://127.0.0.1:64808/admin/export?token=%5Bredacted%5D,excluded,false,,admin,token,,excluded,,,admin_route; parameters_observed; sensitive_parameter_name
-ep_97e19ff3fb10,http://127.0.0.1:64808/admin/,excluded,false,,admin,,,excluded,,,admin_route
-ep_6ae5c4e81ba7,http://127.0.0.1:64808/private/,excluded,false,,account,,,excluded,,,
-ep_29b587c143a2,http://127.0.0.1:64808/private/report,excluded,false,,account,,,excluded,,,
-ep_f66aa6f67fb9,http://127.0.0.1:64808/static/app.js,fetched,false,GET,static_asset,,,javascript_script; request,200,application/javascript; charset=utf-8,
+ep_62d8ca3c905a,http://127.0.0.1:54920/login/,form_action,true,POST,login; state_changing_candidate,csrf_token; password; username,form_c1fdb6698074,form_action,,,form_action; login_route; parameters_observed; sensitive_parameter_name; state_changing_method
+ep_e1533658b23a,http://127.0.0.1:54920/session,form_action,true,POST,login; state_changing_candidate,password; user,form_eed8f5da746b,form_action,,,form_action; login_route; parameters_observed; sensitive_parameter_name; state_changing_method
+ep_508da7988d6a,http://127.0.0.1:54920/api/member-profile?csrf_token=%5Bredacted%5D,discovered,true,POST,account; api; state_changing_candidate,csrf_token,,javascript_endpoint,,,api_route; parameters_observed; sensitive_parameter_name; state_changing_method
+ep_26d186c3560c,http://127.0.0.1:54920/api/profile?session_id=%5Bredacted%5D,discovered,true,POST,account; api; state_changing_candidate,session_id,,javascript_endpoint,,,api_route; parameters_observed; sensitive_parameter_name; state_changing_method
+ep_a3803f14deb1,http://127.0.0.1:54920/api/upload,discovered,true,POST,api; state_changing_candidate; upload,,,javascript_endpoint,,,api_route; state_changing_method; upload_route
+ep_1cba6244909b,http://127.0.0.1:54920/members/,fetched,true,DELETE; GET; OPTIONS; POST; PUT; TRACE,account; form; login,,,crawler_discovered; crawler_fetched; crawler_page; html_link; http_methods_options; metadata_discovered; request; robots_allow; seed; sitemap; target,401,text/html; charset=utf-8,login_route; state_changing_method
+ep_b6a8c5a97e8f,http://127.0.0.1:54920/api/users?role=member,discovered,true,GET,api,role,,javascript_endpoint,,,api_route; parameters_observed
+ep_5f30b56902cc,http://127.0.0.1:54920/oauth/authorize?client_id=demo,discovered,true,,callback; login,client_id,,javascript_endpoint,,,callback_route; login_route; parameters_observed
+ep_54e793405cc6,http://127.0.0.1:54920/reset-password?token=%5Bredacted%5D,discovered,true,,password_reset,token,,javascript_endpoint,,,parameters_observed; password_reset_route; sensitive_parameter_name
+ep_299d08500b8a,http://127.0.0.1:54920/,fetched,true,GET,,,,crawler_discovered; crawler_fetched; crawler_page; html_link; metadata_discovered; request; sitemap,200,text/html; charset=utf-8,
+ep_31dce8591fcc,http://127.0.0.1:54920/.well-known/apple-app-site-association,fetched,true,GET,,,,request; well_known,404,,
+ep_5a526766f207,http://127.0.0.1:54920/.well-known/assetlinks.json,fetched,true,GET,,,,request; well_known,404,,
+ep_771e0e05573f,http://127.0.0.1:54920/.well-known/change-password,fetched,true,GET,password_reset,,,request; well_known,404,,password_reset_route
+ep_6c89aef82c8a,http://127.0.0.1:54920/.well-known/oauth-authorization-server,fetched,true,GET,callback,,,request; well_known,404,,callback_route
+ep_85c7d59d603e,http://127.0.0.1:54920/.well-known/openid-configuration,fetched,true,GET,,,,crawler_discovered; metadata_discovered; request; well_known,200,,
+ep_c0b5f3232fe3,http://127.0.0.1:54920/.well-known/security.txt,fetched,true,GET,,,,crawler_discovered; metadata_discovered; request; well_known,200,,
+ep_dabc13133c4a,http://127.0.0.1:54920/.well-known/webfinger,fetched,true,GET,,,,request; well_known,404,,
+ep_f6ff71efcae0,http://127.0.0.1:54920/account,fetched,true,GET,account,,,crawler_discovered; crawler_fetched; crawler_page; metadata_discovered; request; sitemap,403,text/html; charset=utf-8,
+ep_179ba8884336,http://127.0.0.1:54920/api,discovered,true,,api,,,javascript_endpoint,,,api_route
+ep_0e93ec316ce7,http://127.0.0.1:54920/api/users,fetched,true,GET,api,,,crawler_discovered; crawler_fetched; crawler_page; metadata_discovered; request; sitemap,200,application/json; charset=utf-8,api_route
+ep_c8e71b785d79,http://127.0.0.1:54920/callback/oauth,discovered,true,,callback,,,javascript_endpoint,,,callback_route
+ep_d9a3234581a8,http://127.0.0.1:54920/health,discovered,true,,health,,,javascript_endpoint,,,
+ep_a612c93f1e76,http://127.0.0.1:54920/login,fetched,true,GET,form; login,,,crawler_discovered; crawler_fetched; crawler_page; metadata_discovered; request; sitemap,200,text/html; charset=utf-8,login_route
+ep_c76eb239eb2d,http://127.0.0.1:54920/oauth/authorize,metadata,true,,callback; login,,,crawler_discovered; metadata_discovered; well_known_endpoint,,,callback_route; login_route
+ep_ef4b75c6aff6,http://127.0.0.1:54920/oauth/token,metadata,true,,callback,,,crawler_discovered; metadata_discovered; well_known_endpoint,,,callback_route
+ep_f75dc0d90e0a,http://127.0.0.1:54920/reset-password,fetched,true,GET,password_reset,,,crawler_discovered; crawler_fetched; crawler_page; metadata_discovered; request; sitemap,200,text/html; charset=utf-8,password_reset_route
+ep_b110a9ce290d,http://127.0.0.1:54920/robots.txt,fetched,true,GET,,,,request,200,,
+ep_b5cb7fab2789,http://127.0.0.1:54920/security.txt,fetched,true,GET,,,,request; well_known,404,,
+ep_252bce895d1f,http://127.0.0.1:54920/sitemap.xml,fetched,true,GET,,,,request,200,,
+ep_19f16dab3015,http://127.0.0.1:54920/admin/export?token=%5Bredacted%5D,excluded,false,,admin,token,,excluded,,,admin_route; parameters_observed; sensitive_parameter_name
+ep_97e54309b6a9,http://127.0.0.1:54920/admin/,excluded,false,,admin,,,excluded,,,admin_route
+ep_9506da05ff82,http://127.0.0.1:54920/private/,excluded,false,,account,,,excluded,,,
+ep_1104f5316fbe,http://127.0.0.1:54920/private/report,excluded,false,,account,,,excluded,,,
+ep_27fbc3b401e7,http://127.0.0.1:54920/static/app.js,fetched,false,GET,static_asset,,,javascript_script; request,200,application/javascript; charset=utf-8,
 ep_a54de55f51b9,https://example.org/collect,out_of_scope,false,,,,,out_of_scope,,,
 ep_4d22b3ee9661,https://example.org/external,out_of_scope,false,,,,,out_of_scope,,,

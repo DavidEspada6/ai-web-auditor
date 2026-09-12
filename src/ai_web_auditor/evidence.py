@@ -12,6 +12,7 @@ from zipfile import ZIP_DEFLATED, ZipFile
 from .config import EvidenceCaptureConfig
 from .models import utc_now
 from .rules import build_rule_evaluation
+from .visuals import build_visual_evidence
 
 
 REDACTED = "[redacted]"
@@ -120,6 +121,8 @@ def write_evidence_package(scan_data: dict[str, Any], output: Path) -> Path:
 
 def build_evidence_package(scan_data: dict[str, Any]) -> bytes:
     safe_scan_data = sanitize_scan_data(scan_data)
+    visual_evidence = build_visual_evidence(safe_scan_data)
+    safe_scan_data["visual_evidence"] = visual_evidence
     manifest = build_evidence_manifest(safe_scan_data)
     buffer = BytesIO()
     with ZipFile(buffer, "w", compression=ZIP_DEFLATED) as archive:
@@ -129,6 +132,14 @@ def build_evidence_package(scan_data: dict[str, Any]) -> bytes:
         _write_json(archive, "findings/findings.json", _list_value(safe_scan_data.get("findings")))
         _write_json(archive, "modules/modules.json", _list_value(safe_scan_data.get("modules")))
         _write_json(archive, "http/requests.json", _list_value(safe_scan_data.get("requests")))
+        _write_json(archive, "visuals/visual-evidence.json", visual_evidence)
+        for screenshot in _list_value(visual_evidence.get("screenshots")):
+            if not isinstance(screenshot, dict):
+                continue
+            filename = str(screenshot.get("filename") or "").strip()
+            svg = str(screenshot.get("svg") or "")
+            if filename.startswith("visuals/") and filename.endswith(".svg") and svg:
+                archive.writestr(filename, svg)
 
         for request in _list_value(safe_scan_data.get("requests")):
             if not isinstance(request, dict):
@@ -183,6 +194,8 @@ def build_evidence_manifest(scan_data: dict[str, Any]) -> dict[str, Any]:
     rule_summary = rule_evaluation.get("summary") if isinstance(rule_evaluation.get("summary"), dict) else {}
     external_sources = scan_data.get("external_sources") if isinstance(scan_data.get("external_sources"), dict) else {}
     external_summary = external_sources.get("summary") if isinstance(external_sources.get("summary"), dict) else {}
+    visual_evidence = build_visual_evidence(scan_data)
+    visual_screenshots = _list_value(visual_evidence.get("screenshots"))
     captured_bodies = [
         item
         for item in requests
@@ -211,6 +224,7 @@ def build_evidence_manifest(scan_data: dict[str, Any]) -> dict[str, Any]:
             "external_sources": _int(external_summary.get("source_count"), 0),
             "external_findings": _int(external_summary.get("finding_count"), 0),
             "captured_body_samples": len(captured_bodies),
+            "visual_snapshots": len([item for item in visual_screenshots if isinstance(item, dict)]),
         },
         "safety": {
             "sanitized": True,
@@ -227,6 +241,10 @@ def build_evidence_manifest(scan_data: dict[str, Any]) -> dict[str, Any]:
             "modules/modules.json",
             "http/requests.json",
             "http/<request-id>.json",
+            "visuals/visual-evidence.json",
+            "visuals/audit-overview.svg",
+            "visuals/fingerprint-map.svg",
+            "visuals/coverage-matrix.svg",
             "inventory/inventory.json",
             "entry-points/entry-points.json",
             "javascript/javascript.json",
@@ -285,7 +303,8 @@ def _package_readme(manifest: dict[str, Any]) -> str:
         f"- Findings: {counts.get('findings', 0)}\n"
         f"- Passive rule matches: {counts.get('rules_matched', 0)}\n"
         f"- External sources: {counts.get('external_sources', 0)}\n"
-        f"- Captured body samples: {counts.get('captured_body_samples', 0)}\n\n"
+        f"- Captured body samples: {counts.get('captured_body_samples', 0)}\n"
+        f"- Visual snapshots: {counts.get('visual_snapshots', 0)}\n\n"
         "This package contains sanitized audit evidence. Sensitive headers, cookie values and sensitive query parameters are redacted. "
         "Response bodies are truncated text samples when available; full raw request bodies are not included.\n"
     )

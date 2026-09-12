@@ -1,20 +1,20 @@
 {
   "tool": "ai-web-auditor",
-  "version": "0.23.0",
-  "generated_at": "2026-09-01T22:08:34Z",
+  "version": "0.24.0",
+  "generated_at": "2026-09-12T02:26:12Z",
   "baseline": {
-    "generated_at": "2026-09-01T22:08:31Z",
+    "generated_at": "2026-09-12T02:26:10Z",
     "status": "completed",
-    "version": "0.23.0",
-    "target": "http://127.0.0.1:64808/members/",
+    "version": "0.24.0",
+    "target": "http://127.0.0.1:54920/members/",
     "host": "127.0.0.1",
     "finding_count": 22
   },
   "current": {
-    "generated_at": "2026-09-01T22:08:32Z",
+    "generated_at": "2026-09-12T02:26:11Z",
     "status": "completed",
-    "version": "0.23.0",
-    "target": "http://127.0.0.1:64808/members/",
+    "version": "0.24.0",
+    "target": "http://127.0.0.1:54920/members/",
     "host": "127.0.0.1",
     "finding_count": 19
   },
@@ -34,7 +34,7 @@
       "description": "The server requests Basic Authentication over unencrypted HTTP.",
       "recommendation": "Force HTTPS before authentication and enable HSTS after validation.",
       "module": "basic_auth",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "evidence": [
         {
           "label": "status_code",
@@ -56,7 +56,7 @@
       "description": "SameSite=None cookies should also use Secure.",
       "recommendation": "Set Secure or avoid SameSite=None if cross-site usage is not required.",
       "module": "cookies",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "evidence": [
         {
           "label": "cookie",
@@ -75,7 +75,7 @@
       "description": "A cookie is accessible to client-side scripts when HttpOnly is absent.",
       "recommendation": "Set HttpOnly for session or sensitive cookies.",
       "module": "cookies",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "evidence": [
         {
           "label": "cookie",
@@ -92,7 +92,7 @@
       "description": "A cookie does not declare a SameSite policy.",
       "recommendation": "Set SameSite=Lax or SameSite=Strict unless cross-site usage is required.",
       "module": "cookies",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "evidence": [
         {
           "label": "cookie",
@@ -109,7 +109,7 @@
       "description": "The crawler discovered links outside the configured scope. They were recorded but not requested.",
       "recommendation": "Review whether any external host should be added to the authorized scope before scanning it.",
       "module": "crawler",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "evidence": [
         {
           "label": "sample_url",
@@ -126,7 +126,7 @@
       "description": "The HTML generator metadata can disclose CMS or framework details.",
       "recommendation": "Remove generator metadata if it is not required.",
       "module": "fingerprinting",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "evidence": [
         {
           "label": "generator",
@@ -143,7 +143,7 @@
       "description": "The X-Powered-By header can reveal backend technology details to attackers.",
       "recommendation": "Remove or reduce technology-identifying response headers where practical.",
       "module": "fingerprinting",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "evidence": [
         {
           "label": "x-powered-by",
@@ -160,11 +160,11 @@
       "description": "The Server header appears to include product version information.",
       "recommendation": "Avoid exposing precise server versions unless there is an operational reason.",
       "module": "fingerprinting",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "evidence": [
         {
           "label": "server",
-          "value": "AIWebAuditorLab/0.23 ",
+          "value": "AIWebAuditorLab/0.24 ",
           "location": null
         }
       ]
@@ -177,7 +177,7 @@
       "description": "The response does not include X-Frame-Options or a CSP frame-ancestors directive.",
       "recommendation": "Set frame-ancestors in Content-Security-Policy or use X-Frame-Options where appropriate.",
       "module": "security_headers",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "evidence": []
     },
     {
@@ -188,7 +188,7 @@
       "description": "The response does not include the Content-Security-Policy header.",
       "recommendation": "Define an appropriate Content-Security-Policy header for this application.",
       "module": "security_headers",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "evidence": []
     },
     {
@@ -199,7 +199,7 @@
       "description": "The browser may try to infer content types when nosniff is absent.",
       "recommendation": "Set X-Content-Type-Options: nosniff.",
       "module": "security_headers",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "evidence": [
         {
           "label": "x-content-type-options",
@@ -216,7 +216,7 @@
       "description": "The response does not include the Permissions-Policy header.",
       "recommendation": "Define an appropriate Permissions-Policy header for this application.",
       "module": "security_headers",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "evidence": []
     },
     {
@@ -227,7 +227,7 @@
       "description": "The response does not include the Referrer-Policy header.",
       "recommendation": "Define an appropriate Referrer-Policy header for this application.",
       "module": "security_headers",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "evidence": []
     },
     {
@@ -238,16 +238,16 @@
       "description": "The requested HTTP URL remains available without being upgraded to HTTPS.",
       "recommendation": "Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification.",
       "module": "http",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "evidence": [
         {
           "label": "initial_url",
-          "value": "http://127.0.0.1:64808/members/",
+          "value": "http://127.0.0.1:54920/members/",
           "location": null
         },
         {
           "label": "final_url",
-          "value": "http://127.0.0.1:64808/members/",
+          "value": "http://127.0.0.1:54920/members/",
           "location": null
         },
         {
@@ -265,31 +265,31 @@
       "description": "Client-side JavaScript contains URL references that expand the passive review surface.",
       "recommendation": "Review these endpoints against the authorized scope before deciding whether later validation is needed.",
       "module": "javascript",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "evidence": [
         {
           "label": "endpoint",
-          "value": "http://127.0.0.1:64808/api",
+          "value": "http://127.0.0.1:54920/api",
           "location": null
         },
         {
           "label": "endpoint",
-          "value": "POST http://127.0.0.1:64808/api/member-profile?csrf_token=[redacted]",
+          "value": "POST http://127.0.0.1:54920/api/member-profile?csrf_token=[redacted]",
           "location": null
         },
         {
           "label": "endpoint",
-          "value": "POST http://127.0.0.1:64808/api/profile?session_id=[redacted]",
+          "value": "POST http://127.0.0.1:54920/api/profile?session_id=[redacted]",
           "location": null
         },
         {
           "label": "endpoint",
-          "value": "POST http://127.0.0.1:64808/api/upload",
+          "value": "POST http://127.0.0.1:54920/api/upload",
           "location": null
         },
         {
           "label": "endpoint",
-          "value": "GET http://127.0.0.1:64808/api/users?role=member",
+          "value": "GET http://127.0.0.1:54920/api/users?role=member",
           "location": null
         }
       ]
@@ -302,7 +302,7 @@
       "description": "Client-side JavaScript references hosts outside the configured scope. They were recorded but not requested.",
       "recommendation": "Confirm whether those hosts belong to the engagement before scanning them.",
       "module": "javascript",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "evidence": [
         {
           "label": "endpoint",
@@ -319,22 +319,22 @@
       "description": "Some JavaScript-discovered URLs contain parameter names commonly associated with authentication, sessions or secrets. Values are redacted.",
       "recommendation": "Review how these parameters are generated, logged and exposed. Do not include raw secrets in reports.",
       "module": "javascript",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "evidence": [
         {
           "label": "parameter_name",
           "value": "csrf_token",
-          "location": "http://127.0.0.1:64808/api/member-profile?csrf_token=[redacted]"
+          "location": "http://127.0.0.1:54920/api/member-profile?csrf_token=[redacted]"
         },
         {
           "label": "parameter_name",
           "value": "session_id",
-          "location": "http://127.0.0.1:64808/api/profile?session_id=[redacted]"
+          "location": "http://127.0.0.1:54920/api/profile?session_id=[redacted]"
         },
         {
           "label": "parameter_name",
           "value": "token",
-          "location": "http://127.0.0.1:64808/reset-password?token=[redacted]"
+          "location": "http://127.0.0.1:54920/reset-password?token=[redacted]"
         }
       ]
     },
@@ -346,7 +346,7 @@
       "description": "DELETE may allow destructive actions if authorization is weak.",
       "recommendation": "Disable unnecessary HTTP methods or enforce strict authorization before use.",
       "module": "http_methods",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "evidence": [
         {
           "label": "allow",
@@ -368,7 +368,7 @@
       "description": "PUT may allow content upload if authorization is weak.",
       "recommendation": "Disable unnecessary HTTP methods or enforce strict authorization before use.",
       "module": "http_methods",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "evidence": [
         {
           "label": "allow",
@@ -390,7 +390,7 @@
       "description": "TRACE can expose request data and is rarely needed.",
       "recommendation": "Disable unnecessary HTTP methods or enforce strict authorization before use.",
       "module": "http_methods",
-      "target": "http://127.0.0.1:64808/members/",
+      "target": "http://127.0.0.1:54920/members/",
       "evidence": [
         {
           "label": "allow",
@@ -416,7 +416,7 @@
       "evidence": [
         {
           "label": "open_port",
-          "value": "64808",
+          "value": "54920",
           "location": ""
         }
       ]

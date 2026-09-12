@@ -71,6 +71,10 @@ def render_console(result: ScanResult) -> None:
             f"Ports: {ports_module.artifacts.get('open_count', 0)} open | "
             f"{len(ports_module.artifacts.get('results', []))} checked"
         )
+    visual_evidence = result_data.get("visual_evidence") if isinstance(result_data.get("visual_evidence"), dict) else {}
+    visual_summary = visual_evidence.get("summary") if isinstance(visual_evidence.get("summary"), dict) else {}
+    if visual_summary:
+        print(f"Visual evidence: {visual_summary.get('screenshot_count', 0)} SVG snapshot(s)")
 
     assessment = result_data.get("assessment") if isinstance(result_data.get("assessment"), dict) else {}
     print()
