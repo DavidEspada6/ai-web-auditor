@@ -51,10 +51,18 @@ class SimpleResponse:
 
 
 class HttpProbe:
-    def __init__(self, config: HTTPConfig, records: list[HTTPRequestRecord], evidence_config: EvidenceCaptureConfig) -> None:
+    def __init__(
+        self,
+        config: HTTPConfig,
+        records: list[HTTPRequestRecord],
+        evidence_config: EvidenceCaptureConfig,
+        *,
+        default_headers: Mapping[str, str] | None = None,
+    ) -> None:
         self._config = config
         self._records = records
         self._evidence_config = evidence_config
+        self._default_headers = dict(default_headers or {})
 
     def request(
         self,
@@ -117,6 +125,7 @@ class HttpProbe:
             request_headers = {
                 "User-Agent": self._config.user_agent,
                 "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+                **self._default_headers,
                 **headers,
             }
             if self._evidence_config.enabled and self._evidence_config.capture_request_headers:

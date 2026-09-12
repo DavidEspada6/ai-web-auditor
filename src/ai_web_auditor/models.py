@@ -76,6 +76,7 @@ class ScanResult:
     status: Status
     target: Target
     modules: list[ModuleResult]
+    auth_profile: dict[str, Any] = field(default_factory=dict)
     requests: list[HTTPRequestRecord] = field(default_factory=list)
 
     @property

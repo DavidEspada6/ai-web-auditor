@@ -94,12 +94,13 @@ class LabManager:
 
 
 class VulnerableLabHandler(BaseHTTPRequestHandler):
-    server_version = "AIWebAuditorLab/0.22"
+    server_version = "AIWebAuditorLab/0.23"
     sys_version = ""
 
     def do_GET(self) -> None:  # noqa: N802 - http.server uses this naming.
         parsed = urlparse(self.path)
         path = parsed.path
+        role = self._request_role()
         if path == "/health":
             self._send_json({"status": "ok", "lab": "ai-web-auditor"})
             return
@@ -119,6 +120,7 @@ class VulnerableLabHandler(BaseHTTPRequestHandler):
                 f"  <url><loc>{base_url}login</loc></url>\n"
                 f"  <url><loc>{base_url}reset-password</loc></url>\n"
                 f"  <url><loc>{base_url}api/users</loc></url>\n"
+                f"  <url><loc>{base_url}account</loc></url>\n"
                 "</urlset>\n"
             )
             self._send_text(body, "application/xml; charset=utf-8")
@@ -143,7 +145,26 @@ class VulnerableLabHandler(BaseHTTPRequestHandler):
             self._send_text(_lab_javascript(), "application/javascript; charset=utf-8")
             return
         if path == "/members/":
-            self._send_members_challenge()
+            if role == "public":
+                self._send_members_challenge()
+            else:
+                self._send_html("Miembros", _members_page(role))
+            return
+        if path in {"/account", "/orders", "/api/profile"}:
+            if role == "public":
+                self._send_forbidden(role)
+            elif path == "/api/profile":
+                self._send_json({"role": role, "profile": {"id": "demo-user", "name": "Demo User"}})
+            else:
+                self._send_html(_role_title(path), _account_page(path, role))
+            return
+        if path in {"/admin/dashboard", "/api/admin/users"}:
+            if role != "admin":
+                self._send_forbidden(role)
+            elif path == "/api/admin/users":
+                self._send_json({"role": role, "users": [{"id": 1, "role": "member"}, {"id": 2, "role": "admin"}]})
+            else:
+                self._send_html("Panel admin", _account_page(path, role))
             return
         if path == "/login":
             self._send_html(
@@ -164,7 +185,7 @@ class VulnerableLabHandler(BaseHTTPRequestHandler):
             self._send_html("Panel interno de laboratorio", _page("Panel interno", "Ruta sensible de ejemplo para probar el scope."))
             return
         if path == "/":
-            self._send_html("Portal de laboratorio", _home_page())
+            self._send_html("Portal de laboratorio", _home_page(role))
             return
         self._send_html("No encontrado", _page("No encontrado", "Recurso inexistente."), status=404)
 
@@ -184,7 +205,7 @@ class VulnerableLabHandler(BaseHTTPRequestHandler):
         return
 
     def _send_members_challenge(self) -> None:
-        body = _members_page()
+        body = _members_page("public")
         raw = body.encode("utf-8")
         self.send_response(401)
         self.send_header("Content-Type", "text/html; charset=utf-8")
@@ -196,12 +217,15 @@ class VulnerableLabHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(raw)
 
+    def _send_forbidden(self, role: str) -> None:
+        self._send_html("Acceso limitado", _page("Acceso limitado", f"Ruta no disponible para el perfil {role}."), status=403)
+
     def _send_html(self, title: str, body: str, *, status: int = 200) -> None:
         self._send_text(body, "text/html; charset=utf-8", status=status, title=title)
 
-    def _send_json(self, payload: dict[str, Any]) -> None:
+    def _send_json(self, payload: dict[str, Any], *, status: int = 200) -> None:
         body = json.dumps(payload, ensure_ascii=True).encode("utf-8")
-        self._send_headers(200, "application/json; charset=utf-8", len(body))
+        self._send_headers(status, "application/json; charset=utf-8", len(body))
         self.wfile.write(body)
 
     def _send_text(self, text: str, content_type: str, *, status: int = 200, title: str = "") -> None:
@@ -218,6 +242,17 @@ class VulnerableLabHandler(BaseHTTPRequestHandler):
         if title:
             self.send_header("X-Lab-Page", title)
         self.end_headers()
+
+    def _request_role(self) -> str:
+        role = (self.headers.get("X-Lab-Role") or "").strip().lower()
+        if role in {"member", "admin"}:
+            return role
+        cookie = self.headers.get("Cookie", "")
+        for part in cookie.split(";"):
+            name, _, value = part.strip().partition("=")
+            if name == "lab_role" and value.strip().lower() in {"member", "admin"}:
+                return value.strip().lower()
+        return "public"
 
 
 def start_lab_server(host: str = DEFAULT_LAB_HOST, port: int = DEFAULT_LAB_PORT) -> RunningLab:
@@ -269,6 +304,18 @@ def lab_scan_defaults(status: LabStatus) -> dict[str, Any]:
         "allow_private_networks": True,
         "save_history": True,
         "history_label": "lab-demo-inicial",
+        "auth": {
+            "active_profile": "public",
+            "profiles": [
+                {
+                    "id": "public",
+                    "name": "Publico",
+                    "headers": {},
+                    "cookies": {},
+                    "notes": "Perfil anonimo del laboratorio.",
+                }
+            ],
+        },
         "modules": {
             "scope": True,
             "http": True,
@@ -342,8 +389,13 @@ def _lab_url(host: str, port: int, path: str) -> str:
     return f"http://{display_host}:{port}{path}"
 
 
-def _home_page() -> str:
-    return """<!doctype html>
+def _home_page(role: str = "public") -> str:
+    role_links = ""
+    if role in {"member", "admin"}:
+        role_links += '<a href="/account">Cuenta</a><a href="/orders">Pedidos</a><a href="/api/profile">Perfil API</a>'
+    if role == "admin":
+        role_links += '<a href="/admin/dashboard">Admin dashboard</a><a href="/api/admin/users">Usuarios API</a>'
+    return f"""<!doctype html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -354,15 +406,17 @@ def _home_page() -> str:
   <body>
     <h1>AI Web Auditor Lab</h1>
     <p>Laboratorio local para generar hallazgos controlados.</p>
+    <p>Perfil actual: {role}</p>
     <nav>
       <a href="/members/">Miembros</a>
       <a href="/admin/">Admin</a>
       <a href="/private/report">Informe privado</a>
+      {role_links}
       <a href="https://example.org/external">Externo</a>
     </nav>
     <script>
       window.labInlineRoutes = ["/api/profile?session_id=demo", "/health"];
-      fetch("/api/profile?session_id=demo", { method: "POST" });
+      fetch("/api/profile?session_id=demo", {{ method: "POST" }});
     </script>
   </body>
 </html>
@@ -387,8 +441,26 @@ def _page(title: str, text: str) -> str:
 """
 
 
-def _members_page() -> str:
-    return """<!doctype html>
+def _members_page(role: str = "public") -> str:
+    authenticated_links = ""
+    if role in {"member", "admin"}:
+        authenticated_links = """
+    <section>
+      <h2>Zona autenticada</h2>
+      <a href="/account">Cuenta</a>
+      <a href="/orders">Pedidos</a>
+      <a href="/api/profile">Perfil API</a>
+    </section>
+"""
+    if role == "admin":
+        authenticated_links += """
+    <section>
+      <h2>Administracion</h2>
+      <a href="/admin/dashboard">Panel admin</a>
+      <a href="/api/admin/users">Usuarios API</a>
+    </section>
+"""
+    return f"""<!doctype html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -399,20 +471,41 @@ def _members_page() -> str:
   <body>
     <h1>Miembros</h1>
     <p>Esta ruta de laboratorio fuerza HTTP Basic Auth sobre HTTP para generar evidencia controlada.</p>
+    <p>Perfil actual: {role}</p>
     <form action="/login/" method="post">
       <input type="hidden" name="csrf_token">
       <input type="text" name="username">
       <input type="password" name="password">
       <button type="submit">Entrar</button>
     </form>
+    {authenticated_links}
     <script>
       const passwordReset = "/reset-password?token=demo-token";
-      fetch("/api/member-profile?csrf_token=demo-token", { method: "POST" });
+      fetch("/api/member-profile?csrf_token=demo-token", {{ method: "POST" }});
     </script>
     <a href="/">Inicio</a>
   </body>
 </html>
 """
+
+
+def _account_page(path: str, role: str) -> str:
+    return _page(
+        _role_title(path),
+        (
+            f"Ruta visible para el perfil {role}. "
+            "Sirve para comparar superficie anonima, usuario autenticado y administrador en la demo."
+        ),
+    )
+
+
+def _role_title(path: str) -> str:
+    labels = {
+        "/account": "Cuenta demo",
+        "/orders": "Pedidos demo",
+        "/admin/dashboard": "Panel admin",
+    }
+    return labels.get(path, "Ruta demo")
 
 
 def _lab_javascript() -> str:

@@ -20,7 +20,9 @@ mapea las evidencias observadas contra controles OWASP WSTG y OWASP ASVS para
 mejorar la trazabilidad de la auditoria. Desde v0.22 puede importar resultados
 externos ya generados por herramientas como OWASP ZAP, Burp Suite, Nmap, CSV o
 listas de URLs para centralizarlos en el mismo inventario, mapeo de reglas,
-valoracion, evidencias e informes.
+valoracion, evidencias e informes. Desde v0.23 permite ejecutar enumeraciones
+con perfiles anonimos o autenticados y comparar la superficie visible entre
+roles sin guardar secretos en los resultados.
 
 No implementa explotacion, fuerza bruta, fuzzing agresivo, crawling masivo,
 escaneo de puertos amplio, fuerza bruta DNS agresiva ni pruebas intrusivas. La
@@ -41,7 +43,7 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.22 no necesita librerias externas en tiempo de ejecucion.
+La v0.23 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
 
@@ -68,6 +70,7 @@ lanzador incluido:
 .\ai-web-auditor.cmd report outputs/result.json --output outputs/report.pdf
 .\ai-web-auditor.cmd history
 .\ai-web-auditor.cmd compare baseline.json current.json
+.\ai-web-auditor.cmd role-compare public.json member.json
 .\ai-web-auditor.cmd project init "Cliente Demo" --target https://example.com
 .\ai-web-auditor.cmd scan --project cliente-demo
 .\ai-web-auditor.cmd lab
@@ -114,6 +117,12 @@ Ejecutar usando la configuracion creada:
 
 ```powershell
 ai-web-auditor scan --config audit.json
+```
+
+Ejecutar con un perfil autenticado temporal desde CLI:
+
+```powershell
+ai-web-auditor scan https://example.com --auth-profile analyst --auth-header "Authorization: Bearer <token>" --auth-cookie "sessionid=<valor>"
 ```
 
 Guardar JSON:
@@ -278,7 +287,7 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.22",
+    "user_agent": "AI-Web-Auditor/0.23",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -331,6 +340,18 @@ Ejemplo en `examples/audit.json`:
     "ports": [80, 443, 8080, 8443, 8000],
     "max_ports": 20,
     "timeout_seconds": 1.0
+  },
+  "auth": {
+    "active_profile": "public",
+    "profiles": [
+      {
+        "id": "public",
+        "name": "Publico",
+        "headers": {},
+        "cookies": {},
+        "notes": "Enumeracion anonima."
+      }
+    ]
   },
   "evidence": {
     "enabled": true,
@@ -788,7 +809,43 @@ La comparacion muestra:
 - hallazgos persistentes;
 - hallazgos cuya severidad ha cambiado.
 
-Hay un ejemplo de salida en `examples/comparison-example.json`.
+Hay ejemplos de salida en `examples/comparison-example.json` y
+`examples/role-comparison-example.json`.
+
+## Perfiles autenticados
+
+La v0.23 permite repetir la misma enumeracion con distintos perfiles. Esto es
+util en auditorias reales porque la superficie publica, la de un usuario normal
+y la de un administrador no suele ser igual.
+
+Desde CLI puedes pasar credenciales temporales para una unica ejecucion:
+
+```powershell
+ai-web-auditor scan https://example.com --auth-profile member --auth-name "Usuario normal" --auth-header "Authorization: Bearer <token>" --auth-cookie "sessionid=<valor>" --save-history --history-label member
+```
+
+La herramienta envia esas cabeceras/cookies durante la ejecucion, pero en JSON,
+evidencias e informes solo guarda los nombres usados, por ejemplo
+`Authorization` o `sessionid`. Los valores se redactan.
+
+Evita guardar tokens reales en archivos versionados. Para auditorias reales es
+preferible pasar credenciales temporales con `--auth-header`/`--auth-cookie` o
+configurarlas desde la UI justo antes de ejecutar.
+
+Para comparar dos ejecuciones guardadas por perfil:
+
+```powershell
+ai-web-auditor role-compare public.json member.json
+ai-web-auditor role-compare id-publico id-usuario --project cliente-demo
+```
+
+La comparacion por rol destaca:
+
+- URLs visibles solo en el perfil actual;
+- entry points nuevos;
+- cambios de codigo HTTP entre perfiles;
+- cambios de metodos observados;
+- diferencia de puntuacion de riesgo.
 
 ## Proyectos
 
@@ -844,6 +901,7 @@ Desde la interfaz se puede:
 - crear y seleccionar proyectos;
 - iniciar, detener y usar el laboratorio local de demo;
 - configurar objetivo, hosts, rutas y limites principales;
+- seleccionar perfil publico, usuario demo, admin demo o perfil personalizado;
 - activar o desactivar modulos;
 - ver ayuda contextual dejando el raton sobre opciones, modulos y limites;
 - ejecutar una auditoria no intrusiva;
@@ -855,7 +913,7 @@ Desde la interfaz se puede:
 - analizar la auditoria con IA en modo dry-run o con API;
 - guardar el analisis IA en el historial local;
 - guardar y abrir auditorias del historial local o del proyecto activo;
-- comparar dos auditorias guardadas;
+- comparar dos auditorias guardadas, incluyendo diferencias de superficie por perfil;
 - generar informes Markdown, HTML y PDF;
 - descargar JSON, Evidencias ZIP, Inventario CSV, Entradas CSV, AI JSON, Markdown, HTML y PDF;
 - anadir metadatos de auditoria al informe.
@@ -945,7 +1003,11 @@ priorizaran funcionalidades fuera de estos bloques:
 - v0.22: importadores/adaptadores para herramientas externas;
 - v0.23: perfiles autenticados y comparacion por roles;
 - v0.24: screenshots, fingerprint visual y agrupacion de pantallas;
-- v0.25: dashboard de auditoria real con cobertura, cambios, riesgos, pendientes y checklist.
+- v0.25: dashboard de auditoria real con cobertura, cambios, riesgos, pendientes y checklist;
+- v0.26: estabilizacion de primera version completa, presets, UX y regresion;
+- v0.27: preparacion de release funcional con empaquetado y guia operativa;
+- v0.28: rediseno visual completo de la UI con tema oscuro negro/verde, navegacion lateral y menus por flujo;
+- v0.29: documentacion Word completa de uso, botones, modulos, ejemplos, informes y flujo de entrega.
 
 ## Futuras pruebas controladas
 
@@ -970,7 +1032,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.22.0
+git tag v0.23.0
 git push
 git push --tags
 ```
@@ -983,7 +1045,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.22.0",
+  "version": "0.23.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",
@@ -993,6 +1055,14 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
     "port": 443,
     "base_url": "https://example.com/",
     "ip_addresses": []
+  },
+  "auth_profile": {
+    "id": "public",
+    "name": "Publico",
+    "authenticated": false,
+    "request_header_names": [],
+    "cookie_names": [],
+    "sensitive_values_redacted": true
   },
   "findings": [],
   "inventory": {

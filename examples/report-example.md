@@ -1,19 +1,30 @@
 # AI Web Auditor Lab Report
 
-- Generated: 2026-09-01T11:39:56Z
-- Report generator: ai-web-auditor 0.22.0
-- Scan version: 0.22.0
+- Generated: 2026-09-01T22:08:34Z
+- Report generator: ai-web-auditor 0.23.0
+- Scan version: 0.23.0
 - Scan status: completed
 
 ## Target
 
 | Field | Value |
 | --- | --- |
-| Original URL | http://127.0.0.1:62011/members/ |
-| Normalized URL | http://127.0.0.1:62011/members/ |
+| Original URL | http://127.0.0.1:64808/members/ |
+| Normalized URL | http://127.0.0.1:64808/members/ |
 | Host | 127.0.0.1 |
 | Scheme | http |
-| Port | 62011 |
+| Port | 64808 |
+
+## Audit Profile
+
+| Field | Value |
+| --- | --- |
+| Profile | Publico |
+| Mode | Public / anonymous |
+| Request header names | none |
+| Cookie names | none |
+| Sensitive values | redacted from outputs |
+| Notes | Perfil anonimo del laboratorio. |
 
 ## Engagement
 
@@ -21,8 +32,8 @@
 | --- | --- |
 | Client | Practica Evolve |
 | Auditor | David |
-| Engagement | Demo v0.22.0 |
-| Scope summary | http://127.0.0.1:62011/members/ |
+| Engagement | Demo v0.23.0 |
+| Scope summary | http://127.0.0.1:64808/members/ |
 | Notes | Laboratorio local controlado en localhost. |
 
 ## Executive Summary
@@ -53,9 +64,9 @@ The scan generated 22 finding(s): 0 critical, 3 high, 4 medium, 6 low and 9 info
 | Modules run | 10 |
 | Module warnings | 8 |
 | Module errors | 0 |
-| URLs | 35 |
+| URLs | 36 |
 | Forms | 2 |
-| Entry points | 35 |
+| Entry points | 36 |
 | Entry point parameters | 8 |
 | State-changing entry points | 6 |
 | JavaScript endpoints | 9 |
@@ -134,7 +145,7 @@ Improve evidence quality and follow-up coverage.
 - http_methods: warning - HTTP methods advertised by OPTIONS checked.
 - ports: warning - Checked 3 TCP port(s), found 1 open port(s).
 - fingerprinting: warning - Identified 4 technology signal(s) and checked 4 public metadata path(s).
-- crawler: warning - Crawled 5 page(s), discovered 9 in-scope URL(s), 9 from metadata.
+- crawler: warning - Crawled 6 page(s), discovered 10 in-scope URL(s), 10 from metadata.
 - HTML forms were identified passively; no form submission was performed.
 - Entry points were derived from passive evidence: URLs, query strings, forms and advertised HTTP methods.
 - State-changing entry points were inferred from methods or form actions; no request bodies were sent.
@@ -234,8 +245,8 @@ Improve evidence quality and follow-up coverage.
 | http_methods | warning | HTTP methods advertised by OPTIONS checked. |
 | ports | warning | Checked 3 TCP port(s), found 1 open port(s). |
 | fingerprinting | warning | Identified 4 technology signal(s) and checked 4 public metadata path(s). |
-| crawler | warning | Crawled 5 page(s), discovered 9 in-scope URL(s), 9 from metadata. |
-| javascript | passed | Analyzed 5 page(s) and 3 script block(s), discovered 9 in-scope endpoint reference(s). |
+| crawler | warning | Crawled 6 page(s), discovered 10 in-scope URL(s), 10 from metadata. |
+| javascript | passed | Analyzed 6 page(s) and 3 script block(s), discovered 9 in-scope endpoint reference(s). |
 
 ## Findings
 
@@ -244,7 +255,7 @@ Improve evidence quality and follow-up coverage.
 - ID: `AUTH-BASIC-OVER-HTTP`
 - Category: authentication
 - Module: `basic_auth`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -264,7 +275,7 @@ Force HTTPS before authentication and enable HSTS after validation.
 - ID: `HTTP-NO-HTTPS-REDIRECT`
 - Category: transport-security
 - Module: `http`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -276,8 +287,8 @@ Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification
 
 **Evidence**
 
-- initial_url: `http://127.0.0.1:62011/members/`
-- final_url: `http://127.0.0.1:62011/members/`
+- initial_url: `http://127.0.0.1:64808/members/`
+- final_url: `http://127.0.0.1:64808/members/`
 - status_code: `401`
 
 ### HIGH - HTTP method TRACE is advertised
@@ -285,7 +296,7 @@ Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification
 - ID: `METHOD-TRACE-ADVERTISED`
 - Category: http-methods
 - Module: `http_methods`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -305,7 +316,7 @@ Disable unnecessary HTTP methods or enforce strict authorization before use.
 - ID: `COOKIE-SAMESITE-NONE-WITHOUT-SECURE`
 - Category: cookies
 - Module: `cookies`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -324,7 +335,7 @@ Set Secure or avoid SameSite=None if cross-site usage is not required.
 - ID: `HEADER-CONTENT_SECURITY_POLICY-MISSING`
 - Category: security-headers
 - Module: `security_headers`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -339,7 +350,7 @@ Define an appropriate Content-Security-Policy header for this application.
 - ID: `METHOD-DELETE-ADVERTISED`
 - Category: http-methods
 - Module: `http_methods`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -359,7 +370,7 @@ Disable unnecessary HTTP methods or enforce strict authorization before use.
 - ID: `METHOD-PUT-ADVERTISED`
 - Category: http-methods
 - Module: `http_methods`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -379,7 +390,7 @@ Disable unnecessary HTTP methods or enforce strict authorization before use.
 - ID: `COOKIE-HTTPONLY-MISSING`
 - Category: cookies
 - Module: `cookies`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -398,7 +409,7 @@ Set HttpOnly for session or sensitive cookies.
 - ID: `COOKIE-HTTPONLY-MISSING`
 - Category: cookies
 - Module: `cookies`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -417,7 +428,7 @@ Set HttpOnly for session or sensitive cookies.
 - ID: `COOKIE-SAMESITE-MISSING`
 - Category: cookies
 - Module: `cookies`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -436,7 +447,7 @@ Set SameSite=Lax or SameSite=Strict unless cross-site usage is required.
 - ID: `HEADER-CLICKJACKING-MISSING`
 - Category: security-headers
 - Module: `security_headers`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -451,7 +462,7 @@ Set frame-ancestors in Content-Security-Policy or use X-Frame-Options where appr
 - ID: `HEADER-NOSNIFF-MISSING`
 - Category: security-headers
 - Module: `security_headers`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -470,7 +481,7 @@ Set X-Content-Type-Options: nosniff.
 - ID: `HEADER-REFERRER_POLICY-MISSING`
 - Category: security-headers
 - Module: `security_headers`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -485,7 +496,7 @@ Define an appropriate Referrer-Policy header for this application.
 - ID: `CRAWLER-OUT-OF-SCOPE-LINKS`
 - Category: crawler
 - Module: `crawler`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -504,7 +515,7 @@ Review whether any external host should be added to the authorized scope before 
 - ID: `FINGERPRINT-GENERATOR-DISCLOSED`
 - Category: fingerprinting
 - Module: `fingerprinting`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -523,7 +534,7 @@ Remove generator metadata if it is not required.
 - ID: `FINGERPRINT-POWERED-BY-DISCLOSED`
 - Category: fingerprinting
 - Module: `fingerprinting`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -542,7 +553,7 @@ Remove or reduce technology-identifying response headers where practical.
 - ID: `FINGERPRINT-SERVER-VERSION-DISCLOSED`
 - Category: fingerprinting
 - Module: `fingerprinting`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -554,14 +565,14 @@ Avoid exposing precise server versions unless there is an operational reason.
 
 **Evidence**
 
-- server: `AIWebAuditorLab/0.22`
+- server: `AIWebAuditorLab/0.23`
 
 ### INFO - Permissions-Policy header is missing
 
 - ID: `HEADER-PERMISSIONS_POLICY-MISSING`
 - Category: security-headers
 - Module: `security_headers`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -576,7 +587,7 @@ Define an appropriate Permissions-Policy header for this application.
 - ID: `JS-ENDPOINTS-DISCOVERED`
 - Category: javascript-enumeration
 - Module: `javascript`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -588,18 +599,18 @@ Review these endpoints against the authorized scope before deciding whether late
 
 **Evidence**
 
-- endpoint: `http://127.0.0.1:62011/api`
-- endpoint: `POST http://127.0.0.1:62011/api/member-profile?csrf_token=[redacted]`
-- endpoint: `POST http://127.0.0.1:62011/api/profile?session_id=[redacted]`
-- endpoint: `POST http://127.0.0.1:62011/api/upload`
-- endpoint: `GET http://127.0.0.1:62011/api/users?role=member`
+- endpoint: `http://127.0.0.1:64808/api`
+- endpoint: `POST http://127.0.0.1:64808/api/member-profile?csrf_token=[redacted]`
+- endpoint: `POST http://127.0.0.1:64808/api/profile?session_id=[redacted]`
+- endpoint: `POST http://127.0.0.1:64808/api/upload`
+- endpoint: `GET http://127.0.0.1:64808/api/users?role=member`
 
 ### INFO - JavaScript references endpoints outside scope
 
 - ID: `JS-OUT-OF-SCOPE-ENDPOINTS`
 - Category: javascript-enumeration
 - Module: `javascript`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -618,7 +629,7 @@ Confirm whether those hosts belong to the engagement before scanning them.
 - ID: `JS-SENSITIVE-PARAMETER-NAMES`
 - Category: javascript-enumeration
 - Module: `javascript`
-- Target: `http://127.0.0.1:62011/members/`
+- Target: `http://127.0.0.1:64808/members/`
 
 **Description**
 
@@ -630,9 +641,9 @@ Review how these parameters are generated, logged and exposed. Do not include ra
 
 **Evidence**
 
-- parameter_name (http://127.0.0.1:62011/api/member-profile?csrf_token=[redacted]): `csrf_token`
-- parameter_name (http://127.0.0.1:62011/api/profile?session_id=[redacted]): `session_id`
-- parameter_name (http://127.0.0.1:62011/reset-password?token=[redacted]): `token`
+- parameter_name (http://127.0.0.1:64808/api/member-profile?csrf_token=[redacted]): `csrf_token`
+- parameter_name (http://127.0.0.1:64808/api/profile?session_id=[redacted]): `session_id`
+- parameter_name (http://127.0.0.1:64808/reset-password?token=[redacted]): `token`
 
 ### INFO - Open TCP ports detected
 
@@ -651,13 +662,13 @@ Review whether each exposed service is expected, patched and covered by the auth
 
 **Evidence**
 
-- open_port: `62011`
+- open_port: `64808`
 
 ## Technology Fingerprinting
 
 | Technology | Category | Confidence | Signals |
 | --- | --- | --- | --- |
-| AIWebAuditorLab/0.22 | server | low | header:server |
+| AIWebAuditorLab/0.23 | server | low | header:server |
 | Django | framework | medium | cookie:sessionid |
 | PHP 5.6.40 | language | high | header:x-powered-by |
 | WordPress 4.7.0 | cms | high | html:meta-generator |
@@ -673,13 +684,13 @@ Review whether each exposed service is expected, patched and covered by the auth
 
 ## Crawler
 
-- Seed URL: `http://127.0.0.1:62011/members/`
+- Seed URL: `http://127.0.0.1:64808/members/`
 - Max depth: 1
 - Max pages: 20
-- Fetched URLs: 5
-- Discovered in-scope URLs: 9
-- Metadata-discovered URLs: 9
-- Classified interesting routes: 6
+- Fetched URLs: 6
+- Discovered in-scope URLs: 10
+- Metadata-discovered URLs: 10
+- Classified interesting routes: 7
 - robots.txt: present (200)
 - Sitemaps checked: 1 (1 present)
 - .well-known endpoints checked: 8 (2 present)
@@ -690,12 +701,13 @@ Review whether each exposed service is expected, patched and covered by the auth
 
 | URL | Types | Sources |
 | --- | --- | --- |
-| http://127.0.0.1:62011/api/users | api | crawler_fetched, sitemap |
-| http://127.0.0.1:62011/login | form, login | crawler_fetched, sitemap |
-| http://127.0.0.1:62011/members/ | account, form, login | crawler_fetched, html_link, robots_allow, seed, sitemap |
-| http://127.0.0.1:62011/oauth/authorize | callback, login | well_known_endpoint |
-| http://127.0.0.1:62011/oauth/token | callback | well_known_endpoint |
-| http://127.0.0.1:62011/reset-password | password_reset | crawler_fetched, sitemap |
+| http://127.0.0.1:64808/account | account | crawler_fetched, sitemap |
+| http://127.0.0.1:64808/api/users | api | crawler_fetched, sitemap |
+| http://127.0.0.1:64808/login | form, login | crawler_fetched, sitemap |
+| http://127.0.0.1:64808/members/ | account, form, login | crawler_fetched, html_link, robots_allow, seed, sitemap |
+| http://127.0.0.1:64808/oauth/authorize | callback, login | well_known_endpoint |
+| http://127.0.0.1:64808/oauth/token | callback | well_known_endpoint |
+| http://127.0.0.1:64808/reset-password | password_reset | crawler_fetched, sitemap |
 
 ### Present .well-known Endpoints
 
@@ -706,15 +718,16 @@ Review whether each exposed service is expected, patched and covered by the auth
 
 ### Discovered URLs
 
-- `http://127.0.0.1:62011/`
-- `http://127.0.0.1:62011/.well-known/openid-configuration`
-- `http://127.0.0.1:62011/.well-known/security.txt`
-- `http://127.0.0.1:62011/api/users`
-- `http://127.0.0.1:62011/login`
-- `http://127.0.0.1:62011/members/`
-- `http://127.0.0.1:62011/oauth/authorize`
-- `http://127.0.0.1:62011/oauth/token`
-- `http://127.0.0.1:62011/reset-password`
+- `http://127.0.0.1:64808/`
+- `http://127.0.0.1:64808/.well-known/openid-configuration`
+- `http://127.0.0.1:64808/.well-known/security.txt`
+- `http://127.0.0.1:64808/account`
+- `http://127.0.0.1:64808/api/users`
+- `http://127.0.0.1:64808/login`
+- `http://127.0.0.1:64808/members/`
+- `http://127.0.0.1:64808/oauth/authorize`
+- `http://127.0.0.1:64808/oauth/token`
+- `http://127.0.0.1:64808/reset-password`
 
 ### Out-of-Scope URLs
 
@@ -722,13 +735,13 @@ Review whether each exposed service is expected, patched and covered by the auth
 
 ### Excluded URLs
 
-- `http://127.0.0.1:62011/admin/`
-- `http://127.0.0.1:62011/private/`
-- `http://127.0.0.1:62011/private/report`
+- `http://127.0.0.1:64808/admin/`
+- `http://127.0.0.1:64808/private/`
+- `http://127.0.0.1:64808/private/report`
 
 ## JavaScript Analysis
 
-- Pages checked: 5
+- Pages checked: 6
 - Script blocks analyzed: 3
 - In-scope endpoint references: 9
 - Sensitive-looking parameter names: 3
@@ -741,23 +754,23 @@ Only HTML and JavaScript resources inside the configured scope were requested. D
 
 | URL | Method | Parameters | Route types | Sources |
 | --- | --- | --- | --- | --- |
-| http://127.0.0.1:62011/api | unknown | unknown | api | external_script |
-| http://127.0.0.1:62011/api/member-profile?csrf_token=%5Bredacted%5D | POST | csrf_token | account, api, state_changing_candidate | inline_script |
-| http://127.0.0.1:62011/api/profile?session_id=%5Bredacted%5D | POST | session_id | account, api, state_changing_candidate | external_script, inline_script |
-| http://127.0.0.1:62011/api/upload | POST | unknown | api, state_changing_candidate, upload | external_script |
-| http://127.0.0.1:62011/api/users?role=member | GET | role | api | external_script |
-| http://127.0.0.1:62011/callback/oauth | unknown | unknown | callback | external_script |
-| http://127.0.0.1:62011/health | unknown | unknown | health | inline_script |
-| http://127.0.0.1:62011/oauth/authorize?client_id=demo | unknown | client_id | callback, login | external_script |
-| http://127.0.0.1:62011/reset-password?token=%5Bredacted%5D | unknown | token | password_reset | inline_script |
+| http://127.0.0.1:64808/api | unknown | unknown | api | external_script |
+| http://127.0.0.1:64808/api/member-profile?csrf_token=%5Bredacted%5D | POST | csrf_token | account, api, state_changing_candidate | inline_script |
+| http://127.0.0.1:64808/api/profile?session_id=%5Bredacted%5D | POST | session_id | account, api, state_changing_candidate | external_script, inline_script |
+| http://127.0.0.1:64808/api/upload | POST | unknown | api, state_changing_candidate, upload | external_script |
+| http://127.0.0.1:64808/api/users?role=member | GET | role | api | external_script |
+| http://127.0.0.1:64808/callback/oauth | unknown | unknown | callback | external_script |
+| http://127.0.0.1:64808/health | unknown | unknown | health | inline_script |
+| http://127.0.0.1:64808/oauth/authorize?client_id=demo | unknown | client_id | callback, login | external_script |
+| http://127.0.0.1:64808/reset-password?token=%5Bredacted%5D | unknown | token | password_reset | inline_script |
 
 ### Scripts Analyzed
 
 | Kind | URL/Page | Status | Type | Endpoints |
 | --- | --- | --- | --- | ---: |
-| external | http://127.0.0.1:62011/static/app.js | 200 | application/javascript; charset=utf-8 | 6 |
-| inline | http://127.0.0.1:62011/members/ | unknown | unknown | 2 |
-| inline | http://127.0.0.1:62011/ | unknown | unknown | 1 |
+| external | http://127.0.0.1:64808/static/app.js | 200 | application/javascript; charset=utf-8 | 6 |
+| inline | http://127.0.0.1:64808/members/ | unknown | unknown | 2 |
+| inline | http://127.0.0.1:64808/ | unknown | unknown | 1 |
 
 ### Out-of-Scope JavaScript References
 
@@ -765,13 +778,13 @@ Only HTML and JavaScript resources inside the configured scope were requested. D
 
 ### Excluded JavaScript References
 
-- `http://127.0.0.1:62011/admin/export?token=%5Bredacted%5D`
+- `http://127.0.0.1:64808/admin/export?token=%5Bredacted%5D`
 
 ## Web Inventory
 
-- Total URLs: 35
-- Fetched URLs: 16
-- Interesting URLs: 23
+- Total URLs: 36
+- Fetched URLs: 17
+- Interesting URLs: 24
 - Forms detected: 2
 - Out-of-scope URLs recorded but not visited: 2
 - Excluded URLs recorded but not visited: 4
@@ -780,53 +793,54 @@ Only HTML and JavaScript resources inside the configured scope were requested. D
 
 | URL | Status | Type | Forms | Interest |
 | --- | ---: | --- | ---: | --- |
-| http://127.0.0.1:62011/.well-known/change-password | 404 | unknown | 0 | password_reset, password_reset_path |
-| http://127.0.0.1:62011/.well-known/oauth-authorization-server | 404 | unknown | 0 | callback, callback_path |
-| http://127.0.0.1:62011/admin/ | unknown | unknown | 0 | admin, admin_path |
-| http://127.0.0.1:62011/admin/export?token=%5Bredacted%5D | unknown | unknown | 0 | admin, admin_path |
-| http://127.0.0.1:62011/api | unknown | unknown | 0 | api, api_path |
-| http://127.0.0.1:62011/api/member-profile?csrf_token=%5Bredacted%5D | unknown | unknown | 0 | account, api, state_changing_candidate, account_area, api_path, post_method |
-| http://127.0.0.1:62011/api/profile?session_id=%5Bredacted%5D | unknown | unknown | 0 | account, api, state_changing_candidate, account_area, api_path, post_method |
-| http://127.0.0.1:62011/api/upload | unknown | unknown | 0 | api, state_changing_candidate, upload, api_path, upload_path, post_method |
-| http://127.0.0.1:62011/api/users | 200 | application/json; charset=utf-8 | 0 | api, api_path |
-| http://127.0.0.1:62011/api/users?role=member | unknown | unknown | 0 | api, api_path |
-| http://127.0.0.1:62011/callback/oauth | unknown | unknown | 0 | callback, callback_path |
-| http://127.0.0.1:62011/health | unknown | unknown | 0 | health, health_status_path |
-| http://127.0.0.1:62011/login | 200 | text/html; charset=utf-8 | 1 | form, login, login_path, form_detected |
-| http://127.0.0.1:62011/login/ | unknown | unknown | 0 | login, state_changing_candidate, login_path, post_method |
-| http://127.0.0.1:62011/members/ | 401 | text/html; charset=utf-8 | 1 | account, form, login, login_path, account_area, form_detected |
-| http://127.0.0.1:62011/oauth/authorize | unknown | unknown | 0 | callback, login, login_path, callback_path |
-| http://127.0.0.1:62011/oauth/authorize?client_id=demo | unknown | unknown | 0 | callback, login, login_path, callback_path |
-| http://127.0.0.1:62011/oauth/token | unknown | unknown | 0 | callback, callback_path |
-| http://127.0.0.1:62011/private/ | unknown | unknown | 0 | account, account_area |
-| http://127.0.0.1:62011/private/report | unknown | unknown | 0 | account, account_area |
-| http://127.0.0.1:62011/reset-password | 200 | text/html; charset=utf-8 | 0 | password_reset, password_reset_path |
-| http://127.0.0.1:62011/reset-password?token=%5Bredacted%5D | unknown | unknown | 0 | password_reset, password_reset_path |
-| http://127.0.0.1:62011/session | unknown | unknown | 0 | login, state_changing_candidate, login_path, post_method |
-| http://127.0.0.1:62011/ | 200 | text/html; charset=utf-8 | 0 | unknown |
-| http://127.0.0.1:62011/.well-known/openid-configuration | 200 | unknown | 0 | unknown |
-| http://127.0.0.1:62011/.well-known/security.txt | 200 | unknown | 0 | unknown |
+| http://127.0.0.1:64808/.well-known/change-password | 404 | unknown | 0 | password_reset, password_reset_path |
+| http://127.0.0.1:64808/.well-known/oauth-authorization-server | 404 | unknown | 0 | callback, callback_path |
+| http://127.0.0.1:64808/account | 403 | text/html; charset=utf-8 | 0 | account, account_area |
+| http://127.0.0.1:64808/admin/ | unknown | unknown | 0 | admin, admin_path |
+| http://127.0.0.1:64808/admin/export?token=%5Bredacted%5D | unknown | unknown | 0 | admin, admin_path |
+| http://127.0.0.1:64808/api | unknown | unknown | 0 | api, api_path |
+| http://127.0.0.1:64808/api/member-profile?csrf_token=%5Bredacted%5D | unknown | unknown | 0 | account, api, state_changing_candidate, account_area, api_path, post_method |
+| http://127.0.0.1:64808/api/profile?session_id=%5Bredacted%5D | unknown | unknown | 0 | account, api, state_changing_candidate, account_area, api_path, post_method |
+| http://127.0.0.1:64808/api/upload | unknown | unknown | 0 | api, state_changing_candidate, upload, api_path, upload_path, post_method |
+| http://127.0.0.1:64808/api/users | 200 | application/json; charset=utf-8 | 0 | api, api_path |
+| http://127.0.0.1:64808/api/users?role=member | unknown | unknown | 0 | api, api_path |
+| http://127.0.0.1:64808/callback/oauth | unknown | unknown | 0 | callback, callback_path |
+| http://127.0.0.1:64808/health | unknown | unknown | 0 | health, health_status_path |
+| http://127.0.0.1:64808/login | 200 | text/html; charset=utf-8 | 1 | form, login, login_path, form_detected |
+| http://127.0.0.1:64808/login/ | unknown | unknown | 0 | login, state_changing_candidate, login_path, post_method |
+| http://127.0.0.1:64808/members/ | 401 | text/html; charset=utf-8 | 1 | account, form, login, login_path, account_area, form_detected |
+| http://127.0.0.1:64808/oauth/authorize | unknown | unknown | 0 | callback, login, login_path, callback_path |
+| http://127.0.0.1:64808/oauth/authorize?client_id=demo | unknown | unknown | 0 | callback, login, login_path, callback_path |
+| http://127.0.0.1:64808/oauth/token | unknown | unknown | 0 | callback, callback_path |
+| http://127.0.0.1:64808/private/ | unknown | unknown | 0 | account, account_area |
+| http://127.0.0.1:64808/private/report | unknown | unknown | 0 | account, account_area |
+| http://127.0.0.1:64808/reset-password | 200 | text/html; charset=utf-8 | 0 | password_reset, password_reset_path |
+| http://127.0.0.1:64808/reset-password?token=%5Bredacted%5D | unknown | unknown | 0 | password_reset, password_reset_path |
+| http://127.0.0.1:64808/session | unknown | unknown | 0 | login, state_changing_candidate, login_path, post_method |
+| http://127.0.0.1:64808/ | 200 | text/html; charset=utf-8 | 0 | unknown |
+| http://127.0.0.1:64808/.well-known/openid-configuration | 200 | unknown | 0 | unknown |
+| http://127.0.0.1:64808/.well-known/security.txt | 200 | unknown | 0 | unknown |
 | https://example.org/collect | unknown | unknown | 0 | unknown |
 | https://example.org/external | unknown | unknown | 0 | unknown |
-| http://127.0.0.1:62011/.well-known/apple-app-site-association | 404 | unknown | 0 | unknown |
-| http://127.0.0.1:62011/.well-known/assetlinks.json | 404 | unknown | 0 | unknown |
-| http://127.0.0.1:62011/.well-known/webfinger | 404 | unknown | 0 | unknown |
-| http://127.0.0.1:62011/robots.txt | 200 | unknown | 0 | unknown |
-| http://127.0.0.1:62011/security.txt | 404 | unknown | 0 | unknown |
-| http://127.0.0.1:62011/sitemap.xml | 200 | unknown | 0 | unknown |
-| http://127.0.0.1:62011/static/app.js | 200 | application/javascript; charset=utf-8 | 0 | static_asset |
+| http://127.0.0.1:64808/.well-known/apple-app-site-association | 404 | unknown | 0 | unknown |
+| http://127.0.0.1:64808/.well-known/assetlinks.json | 404 | unknown | 0 | unknown |
+| http://127.0.0.1:64808/.well-known/webfinger | 404 | unknown | 0 | unknown |
+| http://127.0.0.1:64808/robots.txt | 200 | unknown | 0 | unknown |
+| http://127.0.0.1:64808/security.txt | 404 | unknown | 0 | unknown |
+| http://127.0.0.1:64808/sitemap.xml | 200 | unknown | 0 | unknown |
+| http://127.0.0.1:64808/static/app.js | 200 | application/javascript; charset=utf-8 | 0 | static_asset |
 
 ### Forms
 
 | Page | Action | Method | Inputs | Password Fields |
 | --- | --- | --- | ---: | ---: |
-| http://127.0.0.1:62011/login | http://127.0.0.1:62011/session | POST | 2 | 1 |
-| http://127.0.0.1:62011/members/ | http://127.0.0.1:62011/login/ | POST | 3 | 1 |
+| http://127.0.0.1:64808/login | http://127.0.0.1:64808/session | POST | 2 | 1 |
+| http://127.0.0.1:64808/members/ | http://127.0.0.1:64808/login/ | POST | 3 | 1 |
 
 ## Entry Points
 
-- Endpoints: 35
-- Review candidates: 28
+- Endpoints: 36
+- Review candidates: 29
 - Forms: 2
 - Parameters: 8
 - State-changing endpoints: 6
@@ -838,7 +852,7 @@ Only passive evidence was used: URLs, query strings, forms and advertised HTTP m
 | Method | Endpoints | State-changing |
 | --- | ---: | --- |
 | DELETE | 1 | True |
-| GET | 17 | False |
+| GET | 18 | False |
 | OPTIONS | 1 | False |
 | POST | 6 | True |
 | PUT | 1 | True |
@@ -848,39 +862,40 @@ Only passive evidence was used: URLs, query strings, forms and advertised HTTP m
 
 | URL | State | Methods | Parameters | Forms | Route types | Notes |
 | --- | --- | --- | --- | ---: | --- | --- |
-| http://127.0.0.1:62011/login/ | form_action | POST | csrf_token, password, username | 1 | login, state_changing_candidate | form_action, login_route, parameters_observed, sensitive_parameter_name, state_changing_method |
-| http://127.0.0.1:62011/session | form_action | POST | password, user | 1 | login, state_changing_candidate | form_action, login_route, parameters_observed, sensitive_parameter_name, state_changing_method |
-| http://127.0.0.1:62011/api/member-profile?csrf_token=%5Bredacted%5D | discovered | POST | csrf_token | 0 | account, api, state_changing_candidate | api_route, parameters_observed, sensitive_parameter_name, state_changing_method |
-| http://127.0.0.1:62011/api/profile?session_id=%5Bredacted%5D | discovered | POST | session_id | 0 | account, api, state_changing_candidate | api_route, parameters_observed, sensitive_parameter_name, state_changing_method |
-| http://127.0.0.1:62011/api/upload | discovered | POST | unknown | 0 | api, state_changing_candidate, upload | api_route, state_changing_method, upload_route |
-| http://127.0.0.1:62011/members/ | fetched | DELETE, GET, OPTIONS, POST, PUT, TRACE | unknown | 0 | account, form, login | login_route, state_changing_method |
-| http://127.0.0.1:62011/api/users?role=member | discovered | GET | role | 0 | api | api_route, parameters_observed |
-| http://127.0.0.1:62011/oauth/authorize?client_id=demo | discovered | unknown | client_id | 0 | callback, login | callback_route, login_route, parameters_observed |
-| http://127.0.0.1:62011/reset-password?token=%5Bredacted%5D | discovered | unknown | token | 0 | password_reset | parameters_observed, password_reset_route, sensitive_parameter_name |
-| http://127.0.0.1:62011/ | fetched | GET | unknown | 0 | unknown | unknown |
-| http://127.0.0.1:62011/.well-known/apple-app-site-association | fetched | GET | unknown | 0 | unknown | unknown |
-| http://127.0.0.1:62011/.well-known/assetlinks.json | fetched | GET | unknown | 0 | unknown | unknown |
-| http://127.0.0.1:62011/.well-known/change-password | fetched | GET | unknown | 0 | password_reset | password_reset_route |
-| http://127.0.0.1:62011/.well-known/oauth-authorization-server | fetched | GET | unknown | 0 | callback | callback_route |
-| http://127.0.0.1:62011/.well-known/openid-configuration | fetched | GET | unknown | 0 | unknown | unknown |
-| http://127.0.0.1:62011/.well-known/security.txt | fetched | GET | unknown | 0 | unknown | unknown |
-| http://127.0.0.1:62011/.well-known/webfinger | fetched | GET | unknown | 0 | unknown | unknown |
-| http://127.0.0.1:62011/api | discovered | unknown | unknown | 0 | api | api_route |
-| http://127.0.0.1:62011/api/users | fetched | GET | unknown | 0 | api | api_route |
-| http://127.0.0.1:62011/callback/oauth | discovered | unknown | unknown | 0 | callback | callback_route |
-| http://127.0.0.1:62011/health | discovered | unknown | unknown | 0 | health | unknown |
-| http://127.0.0.1:62011/login | fetched | GET | unknown | 0 | form, login | login_route |
-| http://127.0.0.1:62011/oauth/authorize | metadata | unknown | unknown | 0 | callback, login | callback_route, login_route |
-| http://127.0.0.1:62011/oauth/token | metadata | unknown | unknown | 0 | callback | callback_route |
-| http://127.0.0.1:62011/reset-password | fetched | GET | unknown | 0 | password_reset | password_reset_route |
-| http://127.0.0.1:62011/robots.txt | fetched | GET | unknown | 0 | unknown | unknown |
-| http://127.0.0.1:62011/security.txt | fetched | GET | unknown | 0 | unknown | unknown |
-| http://127.0.0.1:62011/sitemap.xml | fetched | GET | unknown | 0 | unknown | unknown |
-| http://127.0.0.1:62011/admin/export?token=%5Bredacted%5D | excluded | unknown | token | 0 | admin | admin_route, parameters_observed, sensitive_parameter_name |
-| http://127.0.0.1:62011/admin/ | excluded | unknown | unknown | 0 | admin | admin_route |
-| http://127.0.0.1:62011/private/ | excluded | unknown | unknown | 0 | account | unknown |
-| http://127.0.0.1:62011/private/report | excluded | unknown | unknown | 0 | account | unknown |
-| http://127.0.0.1:62011/static/app.js | fetched | GET | unknown | 0 | static_asset | unknown |
+| http://127.0.0.1:64808/login/ | form_action | POST | csrf_token, password, username | 1 | login, state_changing_candidate | form_action, login_route, parameters_observed, sensitive_parameter_name, state_changing_method |
+| http://127.0.0.1:64808/session | form_action | POST | password, user | 1 | login, state_changing_candidate | form_action, login_route, parameters_observed, sensitive_parameter_name, state_changing_method |
+| http://127.0.0.1:64808/api/member-profile?csrf_token=%5Bredacted%5D | discovered | POST | csrf_token | 0 | account, api, state_changing_candidate | api_route, parameters_observed, sensitive_parameter_name, state_changing_method |
+| http://127.0.0.1:64808/api/profile?session_id=%5Bredacted%5D | discovered | POST | session_id | 0 | account, api, state_changing_candidate | api_route, parameters_observed, sensitive_parameter_name, state_changing_method |
+| http://127.0.0.1:64808/api/upload | discovered | POST | unknown | 0 | api, state_changing_candidate, upload | api_route, state_changing_method, upload_route |
+| http://127.0.0.1:64808/members/ | fetched | DELETE, GET, OPTIONS, POST, PUT, TRACE | unknown | 0 | account, form, login | login_route, state_changing_method |
+| http://127.0.0.1:64808/api/users?role=member | discovered | GET | role | 0 | api | api_route, parameters_observed |
+| http://127.0.0.1:64808/oauth/authorize?client_id=demo | discovered | unknown | client_id | 0 | callback, login | callback_route, login_route, parameters_observed |
+| http://127.0.0.1:64808/reset-password?token=%5Bredacted%5D | discovered | unknown | token | 0 | password_reset | parameters_observed, password_reset_route, sensitive_parameter_name |
+| http://127.0.0.1:64808/ | fetched | GET | unknown | 0 | unknown | unknown |
+| http://127.0.0.1:64808/.well-known/apple-app-site-association | fetched | GET | unknown | 0 | unknown | unknown |
+| http://127.0.0.1:64808/.well-known/assetlinks.json | fetched | GET | unknown | 0 | unknown | unknown |
+| http://127.0.0.1:64808/.well-known/change-password | fetched | GET | unknown | 0 | password_reset | password_reset_route |
+| http://127.0.0.1:64808/.well-known/oauth-authorization-server | fetched | GET | unknown | 0 | callback | callback_route |
+| http://127.0.0.1:64808/.well-known/openid-configuration | fetched | GET | unknown | 0 | unknown | unknown |
+| http://127.0.0.1:64808/.well-known/security.txt | fetched | GET | unknown | 0 | unknown | unknown |
+| http://127.0.0.1:64808/.well-known/webfinger | fetched | GET | unknown | 0 | unknown | unknown |
+| http://127.0.0.1:64808/account | fetched | GET | unknown | 0 | account | unknown |
+| http://127.0.0.1:64808/api | discovered | unknown | unknown | 0 | api | api_route |
+| http://127.0.0.1:64808/api/users | fetched | GET | unknown | 0 | api | api_route |
+| http://127.0.0.1:64808/callback/oauth | discovered | unknown | unknown | 0 | callback | callback_route |
+| http://127.0.0.1:64808/health | discovered | unknown | unknown | 0 | health | unknown |
+| http://127.0.0.1:64808/login | fetched | GET | unknown | 0 | form, login | login_route |
+| http://127.0.0.1:64808/oauth/authorize | metadata | unknown | unknown | 0 | callback, login | callback_route, login_route |
+| http://127.0.0.1:64808/oauth/token | metadata | unknown | unknown | 0 | callback | callback_route |
+| http://127.0.0.1:64808/reset-password | fetched | GET | unknown | 0 | password_reset | password_reset_route |
+| http://127.0.0.1:64808/robots.txt | fetched | GET | unknown | 0 | unknown | unknown |
+| http://127.0.0.1:64808/security.txt | fetched | GET | unknown | 0 | unknown | unknown |
+| http://127.0.0.1:64808/sitemap.xml | fetched | GET | unknown | 0 | unknown | unknown |
+| http://127.0.0.1:64808/admin/export?token=%5Bredacted%5D | excluded | unknown | token | 0 | admin | admin_route, parameters_observed, sensitive_parameter_name |
+| http://127.0.0.1:64808/admin/ | excluded | unknown | unknown | 0 | admin | admin_route |
+| http://127.0.0.1:64808/private/ | excluded | unknown | unknown | 0 | account | unknown |
+| http://127.0.0.1:64808/private/report | excluded | unknown | unknown | 0 | account | unknown |
+| http://127.0.0.1:64808/static/app.js | fetched | GET | unknown | 0 | static_asset | unknown |
 | https://example.org/collect | out_of_scope | unknown | unknown | 0 | unknown | unknown |
 | https://example.org/external | out_of_scope | unknown | unknown | 0 | unknown | unknown |
 
@@ -888,8 +903,8 @@ Only passive evidence was used: URLs, query strings, forms and advertised HTTP m
 
 | Page | Action | Method | Inputs | Password fields | CSRF candidates |
 | --- | --- | --- | ---: | ---: | --- |
-| http://127.0.0.1:62011/login | http://127.0.0.1:62011/session | POST | 2 | 1 | unknown |
-| http://127.0.0.1:62011/members/ | http://127.0.0.1:62011/login/ | POST | 3 | 1 | csrf_token |
+| http://127.0.0.1:64808/login | http://127.0.0.1:64808/session | POST | 2 | 1 | unknown |
+| http://127.0.0.1:64808/members/ | http://127.0.0.1:64808/login/ | POST | 3 | 1 | csrf_token |
 
 ### Sensitive-Looking Parameters
 
@@ -911,8 +926,8 @@ Only passive evidence was used: URLs, query strings, forms and advertised HTTP m
 
 | Port | Service | Status | Elapsed |
 | ---: | --- | --- | ---: |
-| 62011 | unknown | open | 0 ms |
-| 80 | http | filtered | 516 ms |
+| 64808 | unknown | open | 0 ms |
+| 80 | http | filtered | 514 ms |
 | 443 | https | filtered | 500 ms |
 
 ## Limitations

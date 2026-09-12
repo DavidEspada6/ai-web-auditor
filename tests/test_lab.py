@@ -27,6 +27,19 @@ class LabTests(unittest.TestCase):
             self.assertEqual(raised.exception.code, 401)
             self.assertIn("Basic", raised.exception.headers.get("WWW-Authenticate", ""))
 
+            member_request = urllib.request.Request(lab.target_url, headers={"X-Lab-Role": "member"}, method="GET")
+            with urllib.request.urlopen(member_request, timeout=5) as response:
+                body = response.read().decode("utf-8")
+                self.assertEqual(response.status, 200)
+                self.assertIn("/account", body)
+                self.assertNotIn("/api/admin/users", body)
+
+            admin_request = urllib.request.Request(lab.target_url, headers={"X-Lab-Role": "admin"}, method="GET")
+            with urllib.request.urlopen(admin_request, timeout=5) as response:
+                body = response.read().decode("utf-8")
+                self.assertEqual(response.status, 200)
+                self.assertIn("/api/admin/users", body)
+
             options = urllib.request.Request(lab.target_url, method="OPTIONS")
             with urllib.request.urlopen(options, timeout=5) as response:
                 self.assertIn("TRACE", response.headers.get("Allow", ""))

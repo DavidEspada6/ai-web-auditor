@@ -333,6 +333,23 @@ label[data-help]:focus-within::after {
   gap: 8px;
 }
 
+.auth-section {
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+}
+
+.safe-note {
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid #b8d7d0;
+  border-radius: 6px;
+  background: #eefaf7;
+  color: #115e59;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
 .full-width {
   width: 100%;
 }
@@ -937,6 +954,29 @@ body.is-resizing-column {
 
 .compare-group h3 {
   margin: 0 0 10px;
+}
+
+.role-compare {
+  padding: 14px;
+  border: 1px solid #b8d7d0;
+  border-radius: 8px;
+  background: #f6fbfa;
+}
+
+.nested-section {
+  margin-top: 14px;
+}
+
+.nested-section h4 {
+  margin: 0 0 8px;
+  color: var(--ink);
+  font-size: 14px;
+}
+
+.muted {
+  margin: 0 0 12px;
+  color: var(--muted);
+  font-weight: 700;
 }
 
 .empty-inline {

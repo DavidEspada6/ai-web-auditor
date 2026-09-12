@@ -1,75 +1,426 @@
 {
   "tool": "ai-web-auditor",
-  "version": "0.18.0",
-  "generated_at": "2026-08-16T00:00:00Z",
+  "version": "0.23.0",
+  "generated_at": "2026-09-01T22:08:34Z",
   "baseline": {
-    "generated_at": "2026-08-16T00:00:00Z",
+    "generated_at": "2026-09-01T22:08:31Z",
     "status": "completed",
-    "version": "0.18.0",
-    "target": "https://example.com/",
-    "host": "example.com",
-    "finding_count": 2
+    "version": "0.23.0",
+    "target": "http://127.0.0.1:64808/members/",
+    "host": "127.0.0.1",
+    "finding_count": 22
   },
   "current": {
-    "generated_at": "2026-08-16T01:00:00Z",
+    "generated_at": "2026-09-01T22:08:32Z",
     "status": "completed",
-    "version": "0.18.0",
-    "target": "https://example.com/",
-    "host": "example.com",
-    "finding_count": 2
+    "version": "0.23.0",
+    "target": "http://127.0.0.1:64808/members/",
+    "host": "127.0.0.1",
+    "finding_count": 19
   },
   "summary": {
-    "new": 1,
-    "resolved": 1,
-    "persistent": 1,
-    "severity_changed": 1
+    "new": 0,
+    "resolved": 2,
+    "persistent": 19,
+    "severity_changed": 0
   },
-  "new_findings": [
-    {
-      "id": "HEADER-HSTS-MISSING",
-      "title": "HSTS missing",
-      "severity": "medium",
-      "module": "security_headers",
-      "target": "https://example.com/"
-    }
-  ],
+  "new_findings": [],
   "resolved_findings": [
     {
-      "id": "COOKIE-HTTPONLY-MISSING",
-      "title": "HttpOnly missing",
-      "severity": "low",
+      "id": "AUTH-BASIC-OVER-HTTP",
+      "title": "HTTP Basic Authentication over HTTP",
+      "severity": "high",
+      "category": "authentication",
+      "description": "The server requests Basic Authentication over unencrypted HTTP.",
+      "recommendation": "Force HTTPS before authentication and enable HSTS after validation.",
+      "module": "basic_auth",
+      "target": "http://127.0.0.1:64808/members/",
+      "evidence": [
+        {
+          "label": "status_code",
+          "value": "401",
+          "location": null
+        },
+        {
+          "label": "www-authenticate",
+          "value": "Basic realm=\"AI Web Auditor Lab\"",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "COOKIE-SAMESITE-NONE-WITHOUT-SECURE",
+      "title": "Cookie uses SameSite=None without Secure",
+      "severity": "medium",
+      "category": "cookies",
+      "description": "SameSite=None cookies should also use Secure.",
+      "recommendation": "Set Secure or avoid SameSite=None if cross-site usage is not required.",
       "module": "cookies",
-      "target": "https://example.com/"
+      "target": "http://127.0.0.1:64808/members/",
+      "evidence": [
+        {
+          "label": "cookie",
+          "value": "tracking_id",
+          "location": null
+        }
+      ]
     }
   ],
   "persistent_findings": [
     {
-      "id": "HEADER-CSP-MISSING",
-      "title": "CSP missing",
-      "severity": "high",
+      "id": "COOKIE-HTTPONLY-MISSING",
+      "title": "Cookie missing HttpOnly flag",
+      "severity": "low",
+      "category": "cookies",
+      "description": "A cookie is accessible to client-side scripts when HttpOnly is absent.",
+      "recommendation": "Set HttpOnly for session or sensitive cookies.",
+      "module": "cookies",
+      "target": "http://127.0.0.1:64808/members/",
+      "evidence": [
+        {
+          "label": "cookie",
+          "value": "sessionid",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "COOKIE-SAMESITE-MISSING",
+      "title": "Cookie missing SameSite attribute",
+      "severity": "low",
+      "category": "cookies",
+      "description": "A cookie does not declare a SameSite policy.",
+      "recommendation": "Set SameSite=Lax or SameSite=Strict unless cross-site usage is required.",
+      "module": "cookies",
+      "target": "http://127.0.0.1:64808/members/",
+      "evidence": [
+        {
+          "label": "cookie",
+          "value": "sessionid",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "CRAWLER-OUT-OF-SCOPE-LINKS",
+      "title": "Crawler found links outside scope",
+      "severity": "info",
+      "category": "crawler",
+      "description": "The crawler discovered links outside the configured scope. They were recorded but not requested.",
+      "recommendation": "Review whether any external host should be added to the authorized scope before scanning it.",
+      "module": "crawler",
+      "target": "http://127.0.0.1:64808/members/",
+      "evidence": [
+        {
+          "label": "sample_url",
+          "value": "https://example.org/external",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "FINGERPRINT-GENERATOR-DISCLOSED",
+      "title": "HTML generator metadata is exposed",
+      "severity": "info",
+      "category": "fingerprinting",
+      "description": "The HTML generator metadata can disclose CMS or framework details.",
+      "recommendation": "Remove generator metadata if it is not required.",
+      "module": "fingerprinting",
+      "target": "http://127.0.0.1:64808/members/",
+      "evidence": [
+        {
+          "label": "generator",
+          "value": "WordPress 4.7.0",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "FINGERPRINT-POWERED-BY-DISCLOSED",
+      "title": "X-Powered-By header discloses technology information",
+      "severity": "info",
+      "category": "fingerprinting",
+      "description": "The X-Powered-By header can reveal backend technology details to attackers.",
+      "recommendation": "Remove or reduce technology-identifying response headers where practical.",
+      "module": "fingerprinting",
+      "target": "http://127.0.0.1:64808/members/",
+      "evidence": [
+        {
+          "label": "x-powered-by",
+          "value": "PHP/5.6.40",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "FINGERPRINT-SERVER-VERSION-DISCLOSED",
+      "title": "Server header discloses version information",
+      "severity": "info",
+      "category": "fingerprinting",
+      "description": "The Server header appears to include product version information.",
+      "recommendation": "Avoid exposing precise server versions unless there is an operational reason.",
+      "module": "fingerprinting",
+      "target": "http://127.0.0.1:64808/members/",
+      "evidence": [
+        {
+          "label": "server",
+          "value": "AIWebAuditorLab/0.23 ",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "HEADER-CLICKJACKING-MISSING",
+      "title": "Clickjacking protection header is missing",
+      "severity": "low",
+      "category": "security-headers",
+      "description": "The response does not include X-Frame-Options or a CSP frame-ancestors directive.",
+      "recommendation": "Set frame-ancestors in Content-Security-Policy or use X-Frame-Options where appropriate.",
       "module": "security_headers",
-      "target": "https://example.com/"
+      "target": "http://127.0.0.1:64808/members/",
+      "evidence": []
+    },
+    {
+      "id": "HEADER-CONTENT_SECURITY_POLICY-MISSING",
+      "title": "Content-Security-Policy header is missing",
+      "severity": "medium",
+      "category": "security-headers",
+      "description": "The response does not include the Content-Security-Policy header.",
+      "recommendation": "Define an appropriate Content-Security-Policy header for this application.",
+      "module": "security_headers",
+      "target": "http://127.0.0.1:64808/members/",
+      "evidence": []
+    },
+    {
+      "id": "HEADER-NOSNIFF-MISSING",
+      "title": "X-Content-Type-Options nosniff is missing",
+      "severity": "low",
+      "category": "security-headers",
+      "description": "The browser may try to infer content types when nosniff is absent.",
+      "recommendation": "Set X-Content-Type-Options: nosniff.",
+      "module": "security_headers",
+      "target": "http://127.0.0.1:64808/members/",
+      "evidence": [
+        {
+          "label": "x-content-type-options",
+          "value": "missing",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "HEADER-PERMISSIONS_POLICY-MISSING",
+      "title": "Permissions-Policy header is missing",
+      "severity": "info",
+      "category": "security-headers",
+      "description": "The response does not include the Permissions-Policy header.",
+      "recommendation": "Define an appropriate Permissions-Policy header for this application.",
+      "module": "security_headers",
+      "target": "http://127.0.0.1:64808/members/",
+      "evidence": []
+    },
+    {
+      "id": "HEADER-REFERRER_POLICY-MISSING",
+      "title": "Referrer-Policy header is missing",
+      "severity": "low",
+      "category": "security-headers",
+      "description": "The response does not include the Referrer-Policy header.",
+      "recommendation": "Define an appropriate Referrer-Policy header for this application.",
+      "module": "security_headers",
+      "target": "http://127.0.0.1:64808/members/",
+      "evidence": []
+    },
+    {
+      "id": "HTTP-NO-HTTPS-REDIRECT",
+      "title": "HTTP is not redirected to HTTPS",
+      "severity": "high",
+      "category": "transport-security",
+      "description": "The requested HTTP URL remains available without being upgraded to HTTPS.",
+      "recommendation": "Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification.",
+      "module": "http",
+      "target": "http://127.0.0.1:64808/members/",
+      "evidence": [
+        {
+          "label": "initial_url",
+          "value": "http://127.0.0.1:64808/members/",
+          "location": null
+        },
+        {
+          "label": "final_url",
+          "value": "http://127.0.0.1:64808/members/",
+          "location": null
+        },
+        {
+          "label": "status_code",
+          "value": "200",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "JS-ENDPOINTS-DISCOVERED",
+      "title": "JavaScript endpoint references discovered",
+      "severity": "info",
+      "category": "javascript-enumeration",
+      "description": "Client-side JavaScript contains URL references that expand the passive review surface.",
+      "recommendation": "Review these endpoints against the authorized scope before deciding whether later validation is needed.",
+      "module": "javascript",
+      "target": "http://127.0.0.1:64808/members/",
+      "evidence": [
+        {
+          "label": "endpoint",
+          "value": "http://127.0.0.1:64808/api",
+          "location": null
+        },
+        {
+          "label": "endpoint",
+          "value": "POST http://127.0.0.1:64808/api/member-profile?csrf_token=[redacted]",
+          "location": null
+        },
+        {
+          "label": "endpoint",
+          "value": "POST http://127.0.0.1:64808/api/profile?session_id=[redacted]",
+          "location": null
+        },
+        {
+          "label": "endpoint",
+          "value": "POST http://127.0.0.1:64808/api/upload",
+          "location": null
+        },
+        {
+          "label": "endpoint",
+          "value": "GET http://127.0.0.1:64808/api/users?role=member",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "JS-OUT-OF-SCOPE-ENDPOINTS",
+      "title": "JavaScript references endpoints outside scope",
+      "severity": "info",
+      "category": "javascript-enumeration",
+      "description": "Client-side JavaScript references hosts outside the configured scope. They were recorded but not requested.",
+      "recommendation": "Confirm whether those hosts belong to the engagement before scanning them.",
+      "module": "javascript",
+      "target": "http://127.0.0.1:64808/members/",
+      "evidence": [
+        {
+          "label": "endpoint",
+          "value": "https://example.org/collect",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "JS-SENSITIVE-PARAMETER-NAMES",
+      "title": "JavaScript references sensitive-looking parameter names",
+      "severity": "info",
+      "category": "javascript-enumeration",
+      "description": "Some JavaScript-discovered URLs contain parameter names commonly associated with authentication, sessions or secrets. Values are redacted.",
+      "recommendation": "Review how these parameters are generated, logged and exposed. Do not include raw secrets in reports.",
+      "module": "javascript",
+      "target": "http://127.0.0.1:64808/members/",
+      "evidence": [
+        {
+          "label": "parameter_name",
+          "value": "csrf_token",
+          "location": "http://127.0.0.1:64808/api/member-profile?csrf_token=[redacted]"
+        },
+        {
+          "label": "parameter_name",
+          "value": "session_id",
+          "location": "http://127.0.0.1:64808/api/profile?session_id=[redacted]"
+        },
+        {
+          "label": "parameter_name",
+          "value": "token",
+          "location": "http://127.0.0.1:64808/reset-password?token=[redacted]"
+        }
+      ]
+    },
+    {
+      "id": "METHOD-DELETE-ADVERTISED",
+      "title": "HTTP method DELETE is advertised",
+      "severity": "medium",
+      "category": "http-methods",
+      "description": "DELETE may allow destructive actions if authorization is weak.",
+      "recommendation": "Disable unnecessary HTTP methods or enforce strict authorization before use.",
+      "module": "http_methods",
+      "target": "http://127.0.0.1:64808/members/",
+      "evidence": [
+        {
+          "label": "allow",
+          "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+          "location": null
+        },
+        {
+          "label": "access-control-allow-methods",
+          "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "METHOD-PUT-ADVERTISED",
+      "title": "HTTP method PUT is advertised",
+      "severity": "medium",
+      "category": "http-methods",
+      "description": "PUT may allow content upload if authorization is weak.",
+      "recommendation": "Disable unnecessary HTTP methods or enforce strict authorization before use.",
+      "module": "http_methods",
+      "target": "http://127.0.0.1:64808/members/",
+      "evidence": [
+        {
+          "label": "allow",
+          "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+          "location": null
+        },
+        {
+          "label": "access-control-allow-methods",
+          "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "METHOD-TRACE-ADVERTISED",
+      "title": "HTTP method TRACE is advertised",
+      "severity": "high",
+      "category": "http-methods",
+      "description": "TRACE can expose request data and is rarely needed.",
+      "recommendation": "Disable unnecessary HTTP methods or enforce strict authorization before use.",
+      "module": "http_methods",
+      "target": "http://127.0.0.1:64808/members/",
+      "evidence": [
+        {
+          "label": "allow",
+          "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+          "location": null
+        },
+        {
+          "label": "access-control-allow-methods",
+          "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
+          "location": null
+        }
+      ]
+    },
+    {
+      "id": "PORTS-OPEN-TCP-PORTS",
+      "title": "Open TCP ports detected",
+      "severity": "info",
+      "category": "network-exposure",
+      "description": "The limited TCP connectivity check found open ports on the target host. This is inventory evidence, not exploitation.",
+      "recommendation": "Review whether each exposed service is expected, patched and covered by the authorized audit scope.",
+      "module": "ports",
+      "target": "127.0.0.1",
+      "evidence": [
+        {
+          "label": "open_port",
+          "value": "64808",
+          "location": ""
+        }
+      ]
     }
   ],
-  "severity_changed": [
-    {
-      "key": "header-csp-missing|security_headers|https://example.com/",
-      "baseline": {
-        "id": "HEADER-CSP-MISSING",
-        "title": "CSP missing",
-        "severity": "medium",
-        "module": "security_headers",
-        "target": "https://example.com/"
-      },
-      "current": {
-        "id": "HEADER-CSP-MISSING",
-        "title": "CSP missing",
-        "severity": "high",
-        "module": "security_headers",
-        "target": "https://example.com/"
-      },
-      "baseline_severity": "medium",
-      "current_severity": "high"
-    }
-  ]
+  "severity_changed": []
 }

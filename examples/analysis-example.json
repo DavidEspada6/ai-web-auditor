@@ -1,38 +1,265 @@
 {
-  "tool": "ai-web-auditor",
-  "version": "0.18.0",
-  "generated_at": "2026-08-16T00:00:00Z",
-  "provider": "openai",
-  "model": "gpt-5.6",
-  "source_file": "outputs/result.json",
-  "status": "completed",
-  "analysis": {
-    "executive_summary": "La auditoria no intrusiva no muestra hallazgos criticos en la muestra, pero conviene revisar las cabeceras y metadatos expuestos.",
-    "risk_level": "low",
-    "risk_rationale": "Los hallazgos son principalmente informativos o de endurecimiento defensivo.",
-    "priority_findings": [
-      {
-        "rank": 1,
-        "severity": "low",
-        "title": "Cabeceras de seguridad incompletas",
-        "why_it_matters": "Las cabeceras defensivas reducen la exposicion ante ataques comunes del navegador.",
-        "evidence": [
-          "HEADER-CONTENT_SECURITY_POLICY-MISSING"
-        ],
-        "recommended_action": "Definir una politica CSP adaptada a la aplicacion."
-      }
-    ],
-    "safe_next_steps": [
-      "Revisar manualmente las cabeceras recomendadas antes de aplicarlas en produccion.",
-      "Ejecutar de nuevo el escaneo tras corregir la configuracion."
-    ],
-    "report_notes": [
-      "El analisis esta basado solo en evidencias del JSON generado por la herramienta."
-    ],
-    "limitations": [
-      "No se han realizado pruebas autenticadas ni intrusivas."
-    ]
+  "summary": {
+    "risk_score": 89,
+    "risk_level": "high",
+    "finding_count": 22,
+    "critical": 0,
+    "high": 3,
+    "medium": 4,
+    "low": 6,
+    "info": 9,
+    "priority_count": 10,
+    "quick_win_count": 8,
+    "coverage": {
+      "modules_run": 10,
+      "modules_passed": 2,
+      "modules_warning": 8,
+      "modules_skipped": 0,
+      "modules_error": 0,
+      "urls": 36,
+      "fetched_urls": 17,
+      "forms": 2,
+      "interesting_urls": 24,
+      "entry_points": 36,
+      "entry_point_review_candidates": 29,
+      "entry_point_parameters": 8,
+      "state_changing_entry_points": 6,
+      "javascript_endpoints": 9,
+      "javascript_scripts": 3,
+      "subdomains": 0,
+      "open_ports": 1,
+      "rules_total": 15,
+      "rules_matched": 13,
+      "framework_controls_matched": 34,
+      "findings_unmapped": 0
+    }
   },
-  "raw_text": "",
-  "redacted": true
+  "priorities": [
+    {
+      "rank": 1,
+      "finding_id": "AUTH-BASIC-OVER-HTTP",
+      "title": "HTTP Basic Authentication over HTTP",
+      "severity": "high",
+      "module": "basic_auth",
+      "target": "http://127.0.0.1:64808/members/",
+      "score": 96,
+      "reason": "credentials may be exposed before transport security is enforced",
+      "recommended_action": "Force HTTPS before authentication and enable HSTS after validation."
+    },
+    {
+      "rank": 2,
+      "finding_id": "HTTP-NO-HTTPS-REDIRECT",
+      "title": "HTTP is not redirected to HTTPS",
+      "severity": "high",
+      "module": "http",
+      "target": "http://127.0.0.1:64808/members/",
+      "score": 95,
+      "reason": "unencrypted HTTP remains reachable for the same service",
+      "recommended_action": "Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification."
+    },
+    {
+      "rank": 3,
+      "finding_id": "METHOD-TRACE-ADVERTISED",
+      "title": "HTTP method TRACE is advertised",
+      "severity": "high",
+      "module": "http_methods",
+      "target": "http://127.0.0.1:64808/members/",
+      "score": 91,
+      "reason": "an unnecessary HTTP method is advertised by the server",
+      "recommended_action": "Disable unnecessary HTTP methods or enforce strict authorization before use."
+    },
+    {
+      "rank": 4,
+      "finding_id": "METHOD-DELETE-ADVERTISED",
+      "title": "HTTP method DELETE is advertised",
+      "severity": "medium",
+      "module": "http_methods",
+      "target": "http://127.0.0.1:64808/members/",
+      "score": 57,
+      "reason": "medium finding reported by the http_methods module",
+      "recommended_action": "Disable unnecessary HTTP methods or enforce strict authorization before use."
+    },
+    {
+      "rank": 5,
+      "finding_id": "METHOD-PUT-ADVERTISED",
+      "title": "HTTP method PUT is advertised",
+      "severity": "medium",
+      "module": "http_methods",
+      "target": "http://127.0.0.1:64808/members/",
+      "score": 57,
+      "reason": "medium finding reported by the http_methods module",
+      "recommended_action": "Disable unnecessary HTTP methods or enforce strict authorization before use."
+    },
+    {
+      "rank": 6,
+      "finding_id": "COOKIE-SAMESITE-NONE-WITHOUT-SECURE",
+      "title": "Cookie uses SameSite=None without Secure",
+      "severity": "medium",
+      "module": "cookies",
+      "target": "http://127.0.0.1:64808/members/",
+      "score": 56,
+      "reason": "medium finding reported by the cookies module",
+      "recommended_action": "Set Secure or avoid SameSite=None if cross-site usage is not required."
+    },
+    {
+      "rank": 7,
+      "finding_id": "HEADER-CONTENT_SECURITY_POLICY-MISSING",
+      "title": "Content-Security-Policy header is missing",
+      "severity": "medium",
+      "module": "security_headers",
+      "target": "http://127.0.0.1:64808/members/",
+      "score": 55,
+      "reason": "medium finding reported by the security_headers module",
+      "recommended_action": "Define an appropriate Content-Security-Policy header for this application."
+    },
+    {
+      "rank": 8,
+      "finding_id": "COOKIE-HTTPONLY-MISSING",
+      "title": "Cookie missing HttpOnly flag",
+      "severity": "low",
+      "module": "cookies",
+      "target": "http://127.0.0.1:64808/members/",
+      "score": 37,
+      "reason": "client-side scripts may access cookies without HttpOnly",
+      "recommended_action": "Set HttpOnly for session or sensitive cookies."
+    },
+    {
+      "rank": 9,
+      "finding_id": "COOKIE-HTTPONLY-MISSING",
+      "title": "Cookie missing HttpOnly flag",
+      "severity": "low",
+      "module": "cookies",
+      "target": "http://127.0.0.1:64808/members/",
+      "score": 37,
+      "reason": "client-side scripts may access cookies without HttpOnly",
+      "recommended_action": "Set HttpOnly for session or sensitive cookies."
+    },
+    {
+      "rank": 10,
+      "finding_id": "COOKIE-SAMESITE-MISSING",
+      "title": "Cookie missing SameSite attribute",
+      "severity": "low",
+      "module": "cookies",
+      "target": "http://127.0.0.1:64808/members/",
+      "score": 31,
+      "reason": "low finding reported by the cookies module",
+      "recommended_action": "Set SameSite=Lax or SameSite=Strict unless cross-site usage is required."
+    }
+  ],
+  "quick_wins": [
+    {
+      "finding_id": "HTTP-NO-HTTPS-REDIRECT",
+      "title": "HTTP is not redirected to HTTPS",
+      "severity": "high",
+      "effort": "low",
+      "recommended_action": "Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification."
+    },
+    {
+      "finding_id": "HEADER-CONTENT_SECURITY_POLICY-MISSING",
+      "title": "Content-Security-Policy header is missing",
+      "severity": "medium",
+      "effort": "low",
+      "recommended_action": "Define an appropriate Content-Security-Policy header for this application."
+    },
+    {
+      "finding_id": "HEADER-CLICKJACKING-MISSING",
+      "title": "Clickjacking protection header is missing",
+      "severity": "low",
+      "effort": "low",
+      "recommended_action": "Set frame-ancestors in Content-Security-Policy or use X-Frame-Options where appropriate."
+    },
+    {
+      "finding_id": "HEADER-NOSNIFF-MISSING",
+      "title": "X-Content-Type-Options nosniff is missing",
+      "severity": "low",
+      "effort": "low",
+      "recommended_action": "Set X-Content-Type-Options: nosniff."
+    },
+    {
+      "finding_id": "HEADER-REFERRER_POLICY-MISSING",
+      "title": "Referrer-Policy header is missing",
+      "severity": "low",
+      "effort": "low",
+      "recommended_action": "Define an appropriate Referrer-Policy header for this application."
+    },
+    {
+      "finding_id": "COOKIE-HTTPONLY-MISSING",
+      "title": "Cookie missing HttpOnly flag",
+      "severity": "low",
+      "effort": "low",
+      "recommended_action": "Set HttpOnly for session or sensitive cookies."
+    },
+    {
+      "finding_id": "COOKIE-SAMESITE-MISSING",
+      "title": "Cookie missing SameSite attribute",
+      "severity": "low",
+      "effort": "low",
+      "recommended_action": "Set SameSite=Lax or SameSite=Strict unless cross-site usage is required."
+    },
+    {
+      "finding_id": "COOKIE-HTTPONLY-MISSING",
+      "title": "Cookie missing HttpOnly flag",
+      "severity": "low",
+      "effort": "low",
+      "recommended_action": "Set HttpOnly for session or sensitive cookies."
+    }
+  ],
+  "remediation_plan": [
+    {
+      "phase": "Immediate",
+      "objective": "Reduce the highest observable risk first.",
+      "items": [
+        "HTTP Basic Authentication over HTTP: Force HTTPS before authentication and enable HSTS after validation.",
+        "HTTP is not redirected to HTTPS: Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification.",
+        "HTTP method TRACE is advertised: Disable unnecessary HTTP methods or enforce strict authorization before use.",
+        "Cookie missing HttpOnly flag: Set HttpOnly for session or sensitive cookies.",
+        "Review every open TCP port and confirm it is required for the approved scope."
+      ]
+    },
+    {
+      "phase": "Short term",
+      "objective": "Apply low-effort hardening and validation.",
+      "items": [
+        "HTTP method DELETE is advertised: Disable unnecessary HTTP methods or enforce strict authorization before use.",
+        "HTTP method PUT is advertised: Disable unnecessary HTTP methods or enforce strict authorization before use.",
+        "Cookie uses SameSite=None without Secure: Set Secure or avoid SameSite=None if cross-site usage is not required.",
+        "Content-Security-Policy header is missing: Define an appropriate Content-Security-Policy header for this application.",
+        "HTTP is not redirected to HTTPS: Redirect all HTTP traffic to HTTPS and consider enabling HSTS after verification.",
+        "Clickjacking protection header is missing: Set frame-ancestors in Content-Security-Policy or use X-Frame-Options where appropriate.",
+        "X-Content-Type-Options nosniff is missing: Set X-Content-Type-Options: nosniff.",
+        "Referrer-Policy header is missing: Define an appropriate Referrer-Policy header for this application."
+      ]
+    },
+    {
+      "phase": "Planned",
+      "objective": "Improve evidence quality and follow-up coverage.",
+      "items": [
+        "Cookie missing SameSite attribute: Set SameSite=Lax or SameSite=Strict unless cross-site usage is required.",
+        "Review JavaScript-discovered endpoints before selecting later validation tests.",
+        "Review OWASP WSTG/ASVS rule mappings before finalizing audit scope and report traceability."
+      ]
+    }
+  ],
+  "coverage_notes": [
+    "http: warning - HTTP/HTTPS reachability and redirects checked.",
+    "security_headers: warning - Security headers checked.",
+    "cookies: warning - Checked 2 cookie(s).",
+    "basic_auth: warning - HTTP authentication challenge checked.",
+    "http_methods: warning - HTTP methods advertised by OPTIONS checked.",
+    "ports: warning - Checked 3 TCP port(s), found 1 open port(s).",
+    "fingerprinting: warning - Identified 4 technology signal(s) and checked 4 public metadata path(s).",
+    "crawler: warning - Crawled 6 page(s), discovered 10 in-scope URL(s), 10 from metadata.",
+    "HTML forms were identified passively; no form submission was performed.",
+    "Entry points were derived from passive evidence: URLs, query strings, forms and advertised HTTP methods.",
+    "State-changing entry points were inferred from methods or form actions; no request bodies were sent.",
+    "Some entry point parameters have sensitive-looking names and should be reviewed without exposing their values.",
+    "JavaScript endpoint references were extracted passively; discovered endpoints were not requested by this module.",
+    "Passive rules mapped scan evidence to OWASP WSTG/ASVS references for audit traceability.",
+    "Open TCP ports were detected using TCP connect checks only; no payloads or banners were requested."
+  ],
+  "safety_notes": [
+    "This assessment is generated from existing non-intrusive scan evidence only.",
+    "No exploitation, brute force, fuzzing or destructive validation was performed.",
+    "Risk should be reviewed against the authorized scope and business context."
+  ]
 }

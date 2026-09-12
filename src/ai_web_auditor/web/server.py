@@ -11,6 +11,7 @@ from urllib.parse import parse_qs, urlparse
 
 from ..assessment import build_assessment
 from ..ai.analyzer import analyze_scan_data
+from ..auth import upsert_auth_profile
 from ..compare import compare_scans
 from ..config import AuditConfig
 from ..engine import run_scan
@@ -22,6 +23,7 @@ from ..inventory import build_inventory_from_scan
 from ..lab import DEFAULT_LAB_HOST, DEFAULT_LAB_PORT, LabManager
 from ..projects import create_project, list_projects, load_project, load_project_config, project_report_metadata
 from ..reporting import generate_html_report, generate_markdown_report, generate_pdf_report
+from ..role_compare import compare_role_scans
 
 
 WEB_ROOT = Path(__file__).resolve().parent
@@ -30,7 +32,7 @@ LAB_MANAGER = LabManager()
 
 
 class LocalAuditHandler(BaseHTTPRequestHandler):
-    server_version = "AIWebAuditorGUI/0.22"
+    server_version = "AIWebAuditorGUI/0.23"
 
     def do_GET(self) -> None:  # noqa: N802 - http.server uses this naming.
         parsed = urlparse(self.path)
@@ -274,7 +276,9 @@ class LocalAuditHandler(BaseHTTPRequestHandler):
         history_dir = _history_dir_from_payload(payload)
         baseline = load_scan_reference(baseline_id, history_dir=history_dir)
         current = load_scan_reference(current_id, history_dir=history_dir)
-        self._send_json({"ok": True, "comparison": compare_scans(baseline, current)})
+        comparison = compare_scans(baseline, current)
+        comparison["role_comparison"] = compare_role_scans(baseline, current)
+        self._send_json({"ok": True, "comparison": comparison})
 
     def _send_static(self, relative: str) -> None:
         if not relative or ".." in relative.replace("\\", "/").split("/"):
@@ -339,6 +343,7 @@ def build_config_from_gui_payload(payload: dict[str, Any]) -> AuditConfig:
     config.http.timeout_seconds = _float_value(payload.get("timeout_seconds"), 10.0, minimum=1.0, maximum=60.0)
     config.http.max_redirects = _int_value(payload.get("max_redirects"), 10, minimum=0, maximum=20)
     config.http.check_http_counterpart = _bool_value(payload.get("check_http_counterpart"), True)
+    _apply_auth_payload(config, payload.get("auth") if isinstance(payload.get("auth"), dict) else {})
 
     crawler = payload.get("crawler") if isinstance(payload.get("crawler"), dict) else {}
     config.crawler.max_depth = _int_value(crawler.get("max_depth"), 1, minimum=0, maximum=3)
@@ -373,6 +378,28 @@ def build_config_from_gui_payload(payload: dict[str, Any]) -> AuditConfig:
             setattr(config.modules, module_field.name, _bool_value(modules[module_field.name], True))
 
     return config
+
+
+def _apply_auth_payload(config: AuditConfig, auth_payload: dict[str, Any]) -> None:
+    active_profile = _clean_text(auth_payload.get("active_profile")) or "public"
+    profiles = auth_payload.get("profiles") if isinstance(auth_payload.get("profiles"), list) else []
+    config.auth.profiles = []
+    if not profiles:
+        config.auth.active_profile = active_profile
+        return
+
+    for profile in profiles:
+        if not isinstance(profile, dict):
+            continue
+        upsert_auth_profile(
+            config,
+            profile_id=_clean_text(profile.get("id")) or active_profile,
+            name=_clean_text(profile.get("name")),
+            headers=_text_mapping(profile.get("headers")),
+            cookies=_text_mapping(profile.get("cookies")),
+            notes=_clean_text(profile.get("notes")),
+        )
+    config.auth.active_profile = active_profile
 
 
 def _report_metadata_from_payload(payload: dict[str, Any], *, project: object | None = None) -> dict[str, str]:
@@ -428,6 +455,18 @@ def _split_items(value: Any) -> list[str]:
     if value is None:
         return []
     return [item.strip() for item in str(value).split(",") if item.strip()]
+
+
+def _text_mapping(value: Any) -> dict[str, str]:
+    if not isinstance(value, dict):
+        return {}
+    output: dict[str, str] = {}
+    for key, item in value.items():
+        clean_key = _clean_text(key)
+        clean_value = _clean_text(item)
+        if clean_key and clean_value:
+            output[clean_key] = clean_value
+    return output
 
 
 def _clean_text(value: Any) -> str:

@@ -15,6 +15,11 @@ def render_console(result: ScanResult) -> None:
     print(f"AI Web Auditor {result.version}")
     print(f"Target: {result.target.normalized_url}")
     print(f"Status: {result.status} | Generated: {result.generated_at}")
+    auth_profile = result_data.get("auth_profile") if isinstance(result_data.get("auth_profile"), dict) else {}
+    if auth_profile:
+        auth_label = auth_profile.get("name") or auth_profile.get("id") or "public"
+        auth_state = "authenticated" if auth_profile.get("authenticated") else "public"
+        print(f"Profile: {auth_label} ({auth_state})")
     print()
 
     print("Modules")

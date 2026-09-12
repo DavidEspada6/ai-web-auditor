@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 
+from .auth import auth_request_headers
 from .config import AuditConfig
 from .http_probe import HttpProbe, SimpleResponse
 from .models import HTTPRequestRecord, ModuleResult, Target
@@ -18,4 +19,9 @@ class ScanContext:
 
     @property
     def probe(self) -> HttpProbe:
-        return HttpProbe(self.config.http, self.requests, self.config.evidence)
+        return HttpProbe(
+            self.config.http,
+            self.requests,
+            self.config.evidence,
+            default_headers=auth_request_headers(self.config),
+        )

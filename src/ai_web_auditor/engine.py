@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from . import __version__
+from .auth import auth_profile_metadata
 from .config import AuditConfig
 from .context import ScanContext
 from .models import Evidence, Finding, HTTPRequestRecord, ModuleResult, ScanResult, utc_now
@@ -64,6 +65,7 @@ def run_scan(raw_target: str, config: AuditConfig) -> ScanResult:
         status=status,
         target=target,
         modules=results,
+        auth_profile=auth_profile_metadata(config),
         requests=requests,
     )
 

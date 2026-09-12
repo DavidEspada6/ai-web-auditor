@@ -17,6 +17,14 @@ SCAN_DATA = {
     "version": "0.19.0",
     "generated_at": "2026-08-16T00:00:00Z",
     "status": "completed",
+    "auth_profile": {
+        "id": "member",
+        "name": "Usuario demo",
+        "authenticated": True,
+        "request_header_names": ["Authorization"],
+        "cookie_names": ["sessionid"],
+        "sensitive_values_redacted": True,
+    },
     "target": {
         "original_url": "https://example.com",
         "normalized_url": "https://example.com/",
@@ -194,6 +202,11 @@ class ReportingTests(unittest.TestCase):
         )
 
         self.assertIn("# Demo Report", markdown)
+        self.assertIn("## Audit Profile", markdown)
+        self.assertIn("Usuario demo", markdown)
+        self.assertIn("Authorization", markdown)
+        self.assertIn("sessionid", markdown)
+        self.assertNotIn("secret-session", markdown)
         self.assertIn("## Engagement", markdown)
         self.assertIn("Client A", markdown)
         self.assertIn("## Executive Summary", markdown)

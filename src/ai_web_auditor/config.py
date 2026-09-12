@@ -30,9 +30,24 @@ class ScopeConfig:
 class HTTPConfig:
     timeout_seconds: float = 10.0
     max_redirects: int = 10
-    user_agent: str = "AI-Web-Auditor/0.22"
+    user_agent: str = "AI-Web-Auditor/0.23"
     verify_tls: bool = True
     check_http_counterpart: bool = True
+
+
+@dataclass
+class AuthProfileConfig:
+    id: str = "public"
+    name: str = "Public"
+    headers: dict[str, str] = field(default_factory=dict)
+    cookies: dict[str, str] = field(default_factory=dict)
+    notes: str = ""
+
+
+@dataclass
+class AuthConfig:
+    active_profile: str = "public"
+    profiles: list[AuthProfileConfig] = field(default_factory=lambda: [AuthProfileConfig()])
 
 
 @dataclass
@@ -204,6 +219,7 @@ class AuditConfig:
     javascript: JavaScriptAnalysisConfig = field(default_factory=JavaScriptAnalysisConfig)
     subdomains: SubdomainConfig = field(default_factory=SubdomainConfig)
     ports: PortScanConfig = field(default_factory=PortScanConfig)
+    auth: AuthConfig = field(default_factory=AuthConfig)
     evidence: EvidenceCaptureConfig = field(default_factory=EvidenceCaptureConfig)
     modules: ModuleConfig = field(default_factory=ModuleConfig)
 

@@ -2,6 +2,32 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.23.0] - 2026-09-02
+
+### Anade
+
+- Configuracion `auth` con perfiles anonimos o autenticados para ejecutar enumeraciones con cabeceras y cookies autorizadas.
+- Soporte CLI para `--auth-profile`, `--auth-name`, `--auth-header` y `--auth-cookie` en el comando `scan`.
+- Metadatos `auth_profile` en el JSON de auditoria, historial, consola e informes Markdown/HTML/PDF.
+- Comando `role-compare` para comparar superficie visible entre dos perfiles o roles a partir de JSON/historial.
+- Comparacion por perfil integrada en la vista `Comparar` de la UI.
+- Controles de perfil en la UI: publico, usuario demo, admin demo y perfil personalizado.
+- Laboratorio local ampliado con rutas visibles solo para perfil demo de usuario o administrador.
+- Tests de perfiles autenticados, redaccion de secretos, laboratorio por rol, UI y comparacion por rol.
+
+### Cambia
+
+- El cliente HTTP aplica cabeceras/cookies de perfil desde un punto comun para que todos los modulos las hereden.
+- El historial muestra el perfil usado en cada auditoria para evitar comparar ejecuciones equivocadas.
+- Los informes incluyen una seccion `Audit Profile` con modo anonimo/autenticado y nombres de cabeceras/cookies usadas.
+
+### Seguridad
+
+- Los valores de `Authorization`, `Cookie` y cookies de sesion se redactan en evidencias, JSON e informes.
+- Si un perfil solicitado no existe, no se usa otro perfil por defecto.
+- No se anaden explotacion, fuerza bruta, fuzzing, envio de formularios ni validaciones intrusivas.
+- Los perfiles autenticados estan pensados solo para sistemas propios, laboratorios u objetivos con autorizacion explicita.
+
 ## [0.22.0] - 2026-09-01
 
 ### Anade

@@ -48,6 +48,18 @@ class WebConfigTests(unittest.TestCase):
                     "max_ports": "3",
                     "timeout_seconds": "0.5",
                 },
+                "auth": {
+                    "active_profile": "member",
+                    "profiles": [
+                        {
+                            "id": "member",
+                            "name": "Usuario demo",
+                            "headers": {"X-Lab-Role": "member"},
+                            "cookies": {"sessionid": "demo"},
+                            "notes": "Demo",
+                        }
+                    ],
+                },
                 "modules": {
                     "crawler": False,
                     "subdomains": True,
@@ -87,6 +99,10 @@ class WebConfigTests(unittest.TestCase):
         self.assertEqual(config.ports.ports, [80, 443, 8080])
         self.assertEqual(config.ports.max_ports, 3)
         self.assertEqual(config.ports.timeout_seconds, 0.5)
+        self.assertEqual(config.auth.active_profile, "member")
+        self.assertEqual(config.auth.profiles[0].id, "member")
+        self.assertEqual(config.auth.profiles[0].headers, {"X-Lab-Role": "member"})
+        self.assertEqual(config.auth.profiles[0].cookies, {"sessionid": "demo"})
         self.assertFalse(config.modules.crawler)
         self.assertTrue(config.modules.subdomains)
         self.assertTrue(config.modules.ports)
@@ -254,6 +270,20 @@ class WebConfigTests(unittest.TestCase):
             self.assertIn(f'id="{element_id}"', html)
         self.assertIn('postJson("/api/import"', javascript)
         self.assertIn("renderImports(scan.external_sources", javascript)
+
+    def test_gui_exposes_auth_profiles_and_role_comparison(self):
+        root = Path(__file__).resolve().parents[1]
+        html = (root / "src" / "ai_web_auditor" / "web" / "templates" / "index.html").read_text(encoding="utf-8")
+        javascript = (root / "src" / "ai_web_auditor" / "web" / "static" / "app.js").read_text(encoding="utf-8")
+        css = (root / "src" / "ai_web_auditor" / "web" / "static" / "app.css").read_text(encoding="utf-8")
+
+        for element_id in ["auth-profile", "auth-profile-name", "auth-authorization", "auth-cookie", "auth-extra-headers"]:
+            self.assertIn(f'id="{element_id}"', html)
+        self.assertIn("collectAuthPayload", javascript)
+        self.assertIn("applyAuthPreset", javascript)
+        self.assertIn("renderRoleComparison", javascript)
+        self.assertIn("role_comparison", javascript)
+        self.assertIn(".role-compare", css)
 
 
 if __name__ == "__main__":

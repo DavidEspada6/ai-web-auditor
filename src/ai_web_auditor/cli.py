@@ -8,6 +8,7 @@ from pathlib import Path
 from .assessment import build_assessment, render_assessment_console
 from .ai.analyzer import analyze_scan_file
 from .ai.output import render_analysis_console, write_analysis_json, write_analysis_markdown
+from .auth import parse_cookie_lines, parse_header_lines, upsert_auth_profile
 from .compare import compare_scans, render_compare_console
 from .config import AuditConfig
 from .engine import run_scan
@@ -36,6 +37,7 @@ from .reporting import (
     write_markdown_report,
     write_pdf_report,
 )
+from .role_compare import compare_role_scans, render_role_compare_console
 from .rules import build_rule_evaluation, render_rules_console
 from .scope import normalize_target
 from .web.server import serve_gui
@@ -64,6 +66,7 @@ def scan_command(args: argparse.Namespace) -> int:
     audit_config = load_project_config(project) if project and args.config is None else AuditConfig.load(args.config)
     if args.allow_private:
         audit_config.scope.allow_private_networks = True
+    _apply_auth_args(audit_config, args)
 
     target = args.target or audit_config.target.url
     if not target:
@@ -368,6 +371,24 @@ def compare_command(args: argparse.Namespace) -> int:
     return 0
 
 
+def role_compare_command(args: argparse.Namespace) -> int:
+    project = load_project(args.project, projects_dir=args.projects_dir) if args.project else None
+    history_dir = project.audit_history_dir if project else args.history_dir
+    baseline = load_scan_reference(args.baseline, history_dir=history_dir)
+    current = load_scan_reference(args.current, history_dir=history_dir)
+    comparison = compare_role_scans(baseline, current)
+    if args.json_output:
+        args.json_output.parent.mkdir(parents=True, exist_ok=True)
+        args.json_output.write_text(json.dumps(comparison, indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
+    if args.json_console:
+        print(json.dumps(comparison, indent=2, ensure_ascii=True))
+    else:
+        render_role_compare_console(comparison)
+        if args.json_output:
+            print(f"\nRole comparison JSON written to {args.json_output}")
+    return 0
+
+
 def project_init_command(args: argparse.Namespace) -> int:
     project = create_project(
         args.name,
@@ -428,6 +449,23 @@ def _build_parser() -> argparse.ArgumentParser:
     scan_parser.add_argument("--history-label", help="Optional label for the saved history item.")
     scan_parser.add_argument("--project", help="Project id/name. Uses the project scope config and audit history.")
     scan_parser.add_argument("--projects-dir", type=Path, default=DEFAULT_PROJECTS_DIR, help="Local projects directory.")
+    scan_parser.add_argument("--auth-profile", help="Active auth profile id from config, or id for CLI auth headers/cookies.")
+    scan_parser.add_argument(
+        "--auth-name",
+        help="Display name for the temporary CLI auth profile.",
+    )
+    scan_parser.add_argument(
+        "--auth-header",
+        action="append",
+        default=[],
+        help="Temporary auth header for this run, for example 'Authorization: Bearer ...'. Can be repeated.",
+    )
+    scan_parser.add_argument(
+        "--auth-cookie",
+        action="append",
+        default=[],
+        help="Temporary auth cookie for this run, for example 'sessionid=...; csrftoken=...'. Can be repeated.",
+    )
     scan_parser.add_argument(
         "--allow-private",
         action="store_true",
@@ -545,6 +583,16 @@ def _build_parser() -> argparse.ArgumentParser:
     compare_parser.add_argument("--json", dest="json_console", action="store_true", help="Print JSON to console.")
     compare_parser.set_defaults(handler=compare_command)
 
+    role_compare_parser = subparsers.add_parser("role-compare", help="Compare passive surface between two role/profile scans.")
+    role_compare_parser.add_argument("baseline", help="Baseline scan JSON path or history id, usually public/anonymous.")
+    role_compare_parser.add_argument("current", help="Current scan JSON path or history id, usually authenticated.")
+    role_compare_parser.add_argument("--history-dir", type=Path, default=DEFAULT_HISTORY_DIR, help="Local audit history directory.")
+    role_compare_parser.add_argument("--project", help="Project id/name. Resolves history ids inside that project.")
+    role_compare_parser.add_argument("--projects-dir", type=Path, default=DEFAULT_PROJECTS_DIR, help="Local projects directory.")
+    role_compare_parser.add_argument("--json-output", type=Path, help="Write role comparison result to this JSON file.")
+    role_compare_parser.add_argument("--json", dest="json_console", action="store_true", help="Print JSON to console.")
+    role_compare_parser.set_defaults(handler=role_compare_command)
+
     project_parser = subparsers.add_parser("project", help="Create and inspect local audit projects.")
     project_subparsers = project_parser.add_subparsers(dest="project_command")
 
@@ -650,6 +698,23 @@ def _resolve_inventory_format(requested: str | None, output: Path | None) -> str
     if output and output.suffix.lower() == ".csv":
         return "csv"
     return "json"
+
+
+def _apply_auth_args(config: AuditConfig, args: argparse.Namespace) -> None:
+    profile_id = str(getattr(args, "auth_profile", "") or "").strip()
+    headers = parse_header_lines(getattr(args, "auth_header", []) or [])
+    cookies = parse_cookie_lines(getattr(args, "auth_cookie", []) or [])
+    if headers or cookies:
+        upsert_auth_profile(
+            config,
+            profile_id=profile_id or "cli",
+            name=str(getattr(args, "auth_name", "") or "").strip() or profile_id or "CLI profile",
+            headers=headers,
+            cookies=cookies,
+            notes="Temporary profile configured from CLI arguments.",
+        )
+    elif profile_id:
+        config.auth.active_profile = profile_id
 
 
 def _report_metadata_from_args(args: argparse.Namespace, *, project: object | None = None) -> dict[str, str]:

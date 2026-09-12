@@ -84,6 +84,11 @@ const labUrl = document.querySelector("#lab-url");
 const startLabButton = document.querySelector("#start-lab");
 const stopLabButton = document.querySelector("#stop-lab");
 const useLabButton = document.querySelector("#use-lab");
+const authProfileSelect = document.querySelector("#auth-profile");
+const authProfileName = document.querySelector("#auth-profile-name");
+const authAuthorization = document.querySelector("#auth-authorization");
+const authCookie = document.querySelector("#auth-cookie");
+const authExtraHeaders = document.querySelector("#auth-extra-headers");
 const historyTable = document.querySelector("#history-table");
 const historyCount = document.querySelector("#history-count");
 const refreshHistoryButton = document.querySelector("#refresh-history");
@@ -116,6 +121,7 @@ async function initialize() {
   await loadLabStatus();
   await loadProjects();
   await loadHistory();
+  applyAuthPreset(authProfileSelect.value);
 }
 
 window.setInterval(loadLabStatus, 5000);
@@ -185,6 +191,10 @@ useLabButton.addEventListener("click", () => {
   if (state.lab) {
     applyLabDefaults(state.lab);
   }
+});
+
+authProfileSelect.addEventListener("change", () => {
+  applyAuthPreset(authProfileSelect.value);
 });
 
 runImportButton.addEventListener("click", async () => {
@@ -479,6 +489,7 @@ function collectPayload() {
     allow_private_networks: document.querySelector("#allow-private").checked,
     save_history: document.querySelector("#save-history").checked,
     history_label: document.querySelector("#history-label").value.trim(),
+    auth: collectAuthPayload(),
     timeout_seconds: document.querySelector("#timeout").value,
     max_redirects: document.querySelector("#max-redirects").value,
     modules,
@@ -510,6 +521,68 @@ function collectPayload() {
       timeout_seconds: document.querySelector("#port-timeout").value,
     },
   };
+}
+
+function collectAuthPayload() {
+  const profileId = authProfileSelect.value || "public";
+  const headers = parseHeaderBlock(authExtraHeaders.value);
+  const authorization = authAuthorization.value.trim();
+  if (authorization) {
+    headers.Authorization = authorization;
+  }
+  const cookies = parseCookieBlock(authCookie.value);
+  return {
+    active_profile: profileId,
+    profiles: [
+      {
+        id: profileId,
+        name: authProfileName.value.trim() || defaultAuthProfileName(profileId),
+        headers,
+        cookies,
+        notes: profileId === "custom" ? "Perfil personalizado configurado desde la UI." : "Perfil seleccionado desde la UI.",
+      },
+    ],
+  };
+}
+
+function parseHeaderBlock(value) {
+  const headers = {};
+  value
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter(Boolean)
+    .forEach((line) => {
+      const separator = line.indexOf(":");
+      if (separator <= 0) {
+        throw new Error("Las cabeceras extra deben usar el formato Nombre: valor.");
+      }
+      const name = line.slice(0, separator).trim();
+      const headerValue = line.slice(separator + 1).trim();
+      if (name && headerValue) {
+        headers[name] = headerValue;
+      }
+    });
+  return headers;
+}
+
+function parseCookieBlock(value) {
+  const cookies = {};
+  value
+    .split(";")
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .forEach((part) => {
+      const separator = part.indexOf("=");
+      if (separator <= 0) {
+        throw new Error("Las cookies deben usar el formato nombre=valor.");
+      }
+      const name = part.slice(0, separator).trim();
+      const cookieValue = part.slice(separator + 1).trim();
+      if (name && cookieValue) {
+        cookies[name] = cookieValue;
+      }
+    });
+  return cookies;
 }
 
 function collectReportMetadata() {
@@ -638,7 +711,7 @@ function applyLabDefaults(lab) {
     projectAuditorInput.value = "David";
   }
   if (!projectEngagementInput.value.trim()) {
-    projectEngagementInput.value = "Simulacion v0.22.0";
+    projectEngagementInput.value = "Simulacion v0.23.0";
   }
 
   document.querySelector("#target").value = defaults.target;
@@ -686,11 +759,60 @@ function applyLabDefaults(lab) {
       }
     });
   }
+  applyAuthPreset(defaults.auth?.active_profile || "public");
 
   document.querySelector("#report-client").value = projectClientInput.value;
   document.querySelector("#report-auditor").value = projectAuditorInput.value;
   document.querySelector("#report-engagement").value = projectEngagementInput.value;
   document.querySelector("#report-scope").value = defaults.target;
+}
+
+function applyAuthPreset(profileId) {
+  authProfileSelect.value = ["public", "member", "admin", "custom"].includes(profileId) ? profileId : "custom";
+  const selected = authProfileSelect.value;
+  authProfileName.value = defaultAuthProfileName(selected);
+  if (selected === "member") {
+    authAuthorization.value = "";
+    authCookie.value = "";
+    authExtraHeaders.value = "X-Lab-Role: member";
+  } else if (selected === "admin") {
+    authAuthorization.value = "";
+    authCookie.value = "";
+    authExtraHeaders.value = "X-Lab-Role: admin";
+  } else if (selected === "public") {
+    authAuthorization.value = "";
+    authCookie.value = "";
+    authExtraHeaders.value = "";
+  } else if (!authProfileName.value.trim()) {
+    authProfileName.value = "Personalizado";
+  }
+}
+
+function applyAuthMetadata(authProfile) {
+  if (!authProfile || typeof authProfile !== "object") {
+    applyAuthPreset("public");
+    return;
+  }
+  const profileId = authProfile.id || "custom";
+  if (["public", "member", "admin"].includes(profileId)) {
+    applyAuthPreset(profileId);
+    return;
+  }
+  authProfileSelect.value = ["public", "member", "admin", "custom"].includes(profileId) ? profileId : "custom";
+  authProfileName.value = authProfile.name || defaultAuthProfileName(authProfileSelect.value);
+  authAuthorization.value = "";
+  authCookie.value = "";
+  authExtraHeaders.value = "";
+}
+
+function defaultAuthProfileName(profileId) {
+  const names = {
+    public: "Publico",
+    member: "Usuario demo",
+    admin: "Admin demo",
+    custom: "Personalizado",
+  };
+  return names[profileId] || "Personalizado";
 }
 
 function renderProjects(projects, selectedId) {
@@ -774,6 +896,11 @@ function applyProject(project) {
     document.querySelector("#port-limit").value = config.ports.max_ports ?? 20;
     document.querySelector("#port-timeout").value = config.ports.timeout_seconds ?? 1;
   }
+  if (config.auth) {
+    const profiles = Array.isArray(config.auth.profiles) ? config.auth.profiles : [];
+    const activeProfile = profiles.find((profile) => profile.id === config.auth.active_profile) || { id: config.auth.active_profile || "public" };
+    applyAuthMetadata(activeProfile);
+  }
   if (config.modules) {
     document.querySelectorAll("[data-module]").forEach((input) => {
       if (Object.prototype.hasOwnProperty.call(config.modules, input.dataset.module)) {
@@ -814,6 +941,7 @@ function renderSummary(scan, findings, modules, requests, subdomains, ports, jav
   const openPorts = ports.open_count ?? 0;
   const assessmentSummaryData = assessment?.summary || {};
   const externalSummaryData = scan.external_sources?.summary || {};
+  const authProfile = scan.auth_profile || {};
   const capturedSamples = requests.filter((request) => request?.response_body?.captured === true).length;
   const crawler = modules.find((item) => item.name === "crawler");
   const crawlerArtifacts = crawler?.artifacts && typeof crawler.artifacts === "object" ? crawler.artifacts : {};
@@ -826,6 +954,8 @@ function renderSummary(scan, findings, modules, requests, subdomains, ports, jav
     ["Objetivo", scan.target?.normalized_url || "unknown"],
     ["Host", scan.target?.host || "unknown"],
     ["Estado", scan.status || "unknown"],
+    ["Perfil", authProfile.name || authProfile.id || "Publico"],
+    ["Autenticado", authProfile.authenticated ? "si" : "no"],
     ["Riesgo", assessmentSummaryData.risk_level || "informational"],
     ["Puntuacion", `${assessmentSummaryData.risk_score ?? 0}/100`],
     ["Modulos", modules.length],
@@ -1583,7 +1713,7 @@ function renderHistory(items) {
   historyCount.textContent = `${items.length} auditoria${items.length === 1 ? "" : "s"}`;
   if (!items.length) {
     const row = document.createElement("tr");
-    row.innerHTML = '<td colspan="7">Sin auditorias guardadas.</td>';
+    row.innerHTML = '<td colspan="8">Sin auditorias guardadas.</td>';
     historyTable.appendChild(row);
     return;
   }
@@ -1593,6 +1723,7 @@ function renderHistory(items) {
       <td><code>${escapeHtml(item.id)}</code></td>
       <td>${escapeHtml(item.generated_at || "unknown")}</td>
       <td>${escapeHtml(item.host || "unknown")}</td>
+      <td>${escapeHtml(item.auth_profile || "Public")}</td>
       <td>${escapeHtml(String(item.finding_count || 0))}</td>
       <td>${item.has_ai_analysis ? "Si" : "No"}</td>
       <td>${escapeHtml(item.status || "unknown")}</td>
@@ -1604,7 +1735,7 @@ function renderHistory(items) {
 
 function populateCompareSelectors(items) {
   const options = items
-    .map((item) => `<option value="${escapeHtml(item.id)}">${escapeHtml(item.generated_at || "unknown")} | ${escapeHtml(item.host || "unknown")} | ${escapeHtml(item.id)}</option>`)
+    .map((item) => `<option value="${escapeHtml(item.id)}">${escapeHtml(item.generated_at || "unknown")} | ${escapeHtml(item.host || "unknown")} | ${escapeHtml(item.auth_profile || "Public")} | ${escapeHtml(item.id)}</option>`)
     .join("");
   compareBaseline.innerHTML = options;
   compareCurrent.innerHTML = options;
@@ -1624,6 +1755,7 @@ function renderComparison(comparison) {
       <div class="metric"><span>Persistentes</span><strong>${escapeHtml(String(summary.persistent || 0))}</strong></div>
       <div class="metric"><span>Cambio severidad</span><strong>${escapeHtml(String(summary.severity_changed || 0))}</strong></div>
     </div>
+    ${renderRoleComparison(comparison.role_comparison)}
     ${renderCompareFindingGroup("Hallazgos nuevos", comparison.new_findings)}
     ${renderCompareFindingGroup("Hallazgos resueltos", comparison.resolved_findings)}
     ${renderCompareFindingGroup("Hallazgos persistentes", comparison.persistent_findings)}
@@ -1643,6 +1775,73 @@ function renderCompareFindingGroup(title, findings) {
     })
     .join("");
   return `<section class="compare-group"><h3>${escapeHtml(title)}</h3><div class="list">${items}</div></section>`;
+}
+
+function renderRoleComparison(roleComparison) {
+  if (!roleComparison || typeof roleComparison !== "object") {
+    return "";
+  }
+  const summary = roleComparison.summary || {};
+  const baselineProfile = roleComparison.baseline?.auth_profile || {};
+  const currentProfile = roleComparison.current?.auth_profile || {};
+  const notes = Array.isArray(roleComparison.review_notes) ? roleComparison.review_notes : [];
+  return `
+    <section class="compare-group role-compare">
+      <h3>Comparacion por perfil</h3>
+      <p class="muted">
+        Base: ${escapeHtml(baselineProfile.name || "Publico")} · Actual: ${escapeHtml(currentProfile.name || "Actual")}
+      </p>
+      <div class="compare-grid">
+        <div class="metric"><span>URLs nuevas</span><strong>${escapeHtml(String(summary.new_urls || 0))}</strong></div>
+        <div class="metric"><span>Entradas nuevas</span><strong>${escapeHtml(String(summary.new_entry_points || 0))}</strong></div>
+        <div class="metric"><span>Cambios estado</span><strong>${escapeHtml(String(summary.status_code_changes || 0))}</strong></div>
+        <div class="metric"><span>Delta riesgo</span><strong>${escapeHtml(String(summary.risk_delta || 0))}</strong></div>
+      </div>
+      ${renderRoleUrlList("URLs visibles solo en actual", roleComparison.new_urls)}
+      ${renderRoleEntryList("Entradas visibles solo en actual", roleComparison.new_entry_points)}
+      ${renderRoleStatusChanges(roleComparison.status_code_changes)}
+      <div class="list">${notes.map((note) => `<article class="finding-item"><p>${escapeHtml(note)}</p></article>`).join("")}</div>
+    </section>
+  `;
+}
+
+function renderRoleUrlList(title, items) {
+  const list = Array.isArray(items) ? items : [];
+  if (!list.length) {
+    return `<section class="nested-section"><h4>${escapeHtml(title)}</h4><p class="empty-inline">Sin elementos.</p></section>`;
+  }
+  const rows = list
+    .slice(0, 20)
+    .map((item) => {
+      const status = item.status_code === null || item.status_code === undefined ? "" : ` · ${escapeHtml(String(item.status_code))}`;
+      return `<article class="finding-item"><h3>${escapeHtml(item.url || "unknown")}</h3><p>${escapeHtml((item.route_types || []).join(", "))}${status}</p></article>`;
+    })
+    .join("");
+  return `<section class="nested-section"><h4>${escapeHtml(title)}</h4><div class="list">${rows}</div></section>`;
+}
+
+function renderRoleEntryList(title, items) {
+  const list = Array.isArray(items) ? items : [];
+  if (!list.length) {
+    return `<section class="nested-section"><h4>${escapeHtml(title)}</h4><p class="empty-inline">Sin elementos.</p></section>`;
+  }
+  const rows = list
+    .slice(0, 20)
+    .map((item) => `<article class="finding-item"><h3>${escapeHtml(item.url || "unknown")}</h3><p>${escapeHtml((item.methods || []).join(", ") || "sin metodo")}</p></article>`)
+    .join("");
+  return `<section class="nested-section"><h4>${escapeHtml(title)}</h4><div class="list">${rows}</div></section>`;
+}
+
+function renderRoleStatusChanges(items) {
+  const list = Array.isArray(items) ? items : [];
+  if (!list.length) {
+    return "";
+  }
+  const rows = list
+    .slice(0, 20)
+    .map((item) => `<article class="finding-item"><h3>${escapeHtml(item.url || "unknown")}</h3><p>${escapeHtml(String(item.baseline_status))} &rarr; ${escapeHtml(String(item.current_status))}</p></article>`)
+    .join("");
+  return `<section class="nested-section"><h4>Cambios de estado HTTP</h4><div class="list">${rows}</div></section>`;
 }
 
 function activateTab(name) {

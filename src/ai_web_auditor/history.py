@@ -26,6 +26,7 @@ class HistoryEntry:
     finding_count: int
     severity_counts: dict[str, int]
     label: str = ""
+    auth_profile: str = "Public"
     has_ai_analysis: bool = False
 
     def to_dict(self) -> dict[str, Any]:
@@ -120,6 +121,7 @@ def history_entry_from_data(path: Path, scan_data: dict[str, Any]) -> HistoryEnt
     target = scan_data.get("target") if isinstance(scan_data.get("target"), dict) else {}
     findings = scan_data.get("findings") if isinstance(scan_data.get("findings"), list) else []
     history = scan_data.get("_history") if isinstance(scan_data.get("_history"), dict) else {}
+    auth_profile = scan_data.get("auth_profile") if isinstance(scan_data.get("auth_profile"), dict) else {}
     severity_counts = _severity_counts(findings)
     return HistoryEntry(
         id=_text(history.get("id"), path.stem),
@@ -133,6 +135,7 @@ def history_entry_from_data(path: Path, scan_data: dict[str, Any]) -> HistoryEnt
         finding_count=len([item for item in findings if isinstance(item, dict)]),
         severity_counts=severity_counts,
         label=_text(history.get("label"), ""),
+        auth_profile=_text(auth_profile.get("name", auth_profile.get("id")), "Public"),
         has_ai_analysis=isinstance(scan_data.get("ai_analysis"), dict),
     )
 

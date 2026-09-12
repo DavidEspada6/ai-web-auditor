@@ -17,7 +17,7 @@
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.22",
+    "user_agent": "AI-Web-Auditor/0.23",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -120,6 +120,18 @@
     ],
     "max_ports": 20,
     "timeout_seconds": 1.0
+  },
+  "auth": {
+    "active_profile": "public",
+    "profiles": [
+      {
+        "id": "public",
+        "name": "Publico",
+        "headers": {},
+        "cookies": {},
+        "notes": "Enumeracion anonima."
+      }
+    ]
   },
   "evidence": {
     "enabled": true,

@@ -1,0 +1,167 @@
+{
+  "tool": "ai-web-auditor",
+  "version": "0.23.0",
+  "generated_at": "2026-09-01T22:08:34Z",
+  "baseline": {
+    "generated_at": "2026-09-01T22:08:31Z",
+    "status": "completed",
+    "version": "0.23.0",
+    "target": "http://127.0.0.1:64808/members/",
+    "host": "127.0.0.1",
+    "auth_profile": {
+      "id": "public",
+      "name": "Publico",
+      "authenticated": false
+    },
+    "risk_score": 89
+  },
+  "current": {
+    "generated_at": "2026-09-01T22:08:32Z",
+    "status": "completed",
+    "version": "0.23.0",
+    "target": "http://127.0.0.1:64808/members/",
+    "host": "127.0.0.1",
+    "auth_profile": {
+      "id": "member",
+      "name": "Usuario demo",
+      "authenticated": true
+    },
+    "risk_score": 89
+  },
+  "summary": {
+    "new_urls": 2,
+    "baseline_only_urls": 0,
+    "new_entry_points": 2,
+    "baseline_only_entry_points": 0,
+    "status_code_changes": 2,
+    "method_changes": 0,
+    "risk_delta": 0
+  },
+  "new_urls": [
+    {
+      "url": "http://127.0.0.1:64808/api/profile",
+      "status_code": 200,
+      "content_type": "application/json; charset=utf-8",
+      "forms_found": 0,
+      "interesting": true,
+      "route_types": [
+        "account",
+        "api"
+      ],
+      "sources": [
+        "crawler_discovered",
+        "crawler_fetched",
+        "crawler_page",
+        "html_link",
+        "request"
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:64808/orders",
+      "status_code": 200,
+      "content_type": "text/html; charset=utf-8",
+      "forms_found": 0,
+      "interesting": false,
+      "route_types": [],
+      "sources": [
+        "crawler_discovered",
+        "crawler_fetched",
+        "crawler_page",
+        "html_link",
+        "request"
+      ]
+    }
+  ],
+  "baseline_only_urls": [],
+  "new_entry_points": [
+    {
+      "id": "ep_e1b61750e73c",
+      "url": "http://127.0.0.1:64808/api/profile",
+      "state": "fetched",
+      "status_code": 200,
+      "methods": [
+        "GET"
+      ],
+      "parameters": [],
+      "forms": [],
+      "route_types": [
+        "account",
+        "api"
+      ],
+      "review_candidate": true
+    },
+    {
+      "id": "ep_1cd5ac75f922",
+      "url": "http://127.0.0.1:64808/orders",
+      "state": "fetched",
+      "status_code": 200,
+      "methods": [
+        "GET"
+      ],
+      "parameters": [],
+      "forms": [],
+      "route_types": [],
+      "review_candidate": true
+    }
+  ],
+  "baseline_only_entry_points": [],
+  "status_code_changes": [
+    {
+      "url": "http://127.0.0.1:64808/account",
+      "baseline_status": 403,
+      "current_status": 200,
+      "baseline_sources": [
+        "crawler_discovered",
+        "crawler_fetched",
+        "crawler_page",
+        "metadata_discovered",
+        "request",
+        "sitemap"
+      ],
+      "current_sources": [
+        "crawler_discovered",
+        "crawler_fetched",
+        "crawler_page",
+        "html_link",
+        "metadata_discovered",
+        "request",
+        "sitemap"
+      ]
+    },
+    {
+      "url": "http://127.0.0.1:64808/members/",
+      "baseline_status": 401,
+      "current_status": 200,
+      "baseline_sources": [
+        "crawler_discovered",
+        "crawler_fetched",
+        "crawler_page",
+        "html_link",
+        "metadata_discovered",
+        "request",
+        "robots_allow",
+        "seed",
+        "sitemap",
+        "target"
+      ],
+      "current_sources": [
+        "crawler_discovered",
+        "crawler_fetched",
+        "crawler_page",
+        "html_link",
+        "metadata_discovered",
+        "request",
+        "robots_allow",
+        "seed",
+        "sitemap",
+        "target"
+      ]
+    }
+  ],
+  "method_changes": [],
+  "review_notes": [
+    "The current role exposes URLs that were not visible in the baseline scan.",
+    "The current role exposes additional entry points that should be mapped to intended permissions.",
+    "Some shared URLs return different status codes across roles; review intended access boundaries."
+  ]
+}

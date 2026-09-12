@@ -103,6 +103,36 @@
             <input id="history-label" type="text" placeholder="Cliente, entorno o version">
           </label>
 
+          <section class="module-section auth-section">
+            <h2>Perfil</h2>
+            <label class="field" data-help="Perfil con el que se enviaran las peticiones de enumeracion. Publico no envia credenciales; los perfiles demo usan una cabecera del laboratorio local.">
+              <span>Perfil activo</span>
+              <select id="auth-profile">
+                <option value="public">Publico</option>
+                <option value="member">Usuario demo</option>
+                <option value="admin">Admin demo</option>
+                <option value="custom">Personalizado</option>
+              </select>
+            </label>
+            <label class="field" data-help="Nombre visible del perfil en el resultado, historial, comparacion e informe. No tiene efecto tecnico.">
+              <span>Nombre perfil</span>
+              <input id="auth-profile-name" type="text" placeholder="Publico">
+            </label>
+            <label class="field" data-help="Cabecera Authorization para una auditoria autenticada autorizada. Se usa solo en memoria durante la ejecucion y se redacta en evidencias.">
+              <span>Authorization</span>
+              <input id="auth-authorization" type="password" autocomplete="off" placeholder="Bearer ...">
+            </label>
+            <label class="field" data-help="Cookies de sesion para una auditoria autenticada autorizada, por ejemplo sessionid=valor; csrftoken=valor. Se redactan en evidencias.">
+              <span>Cookie</span>
+              <input id="auth-cookie" type="password" autocomplete="off" placeholder="sessionid=...">
+            </label>
+            <label class="field" data-help="Cabeceras extra en formato Nombre: valor, una por linea. Para la demo puedes usar X-Lab-Role: member o X-Lab-Role: admin.">
+              <span>Cabeceras extra</span>
+              <textarea id="auth-extra-headers" rows="3" placeholder="X-Lab-Role: member"></textarea>
+            </label>
+            <p class="safe-note">Las credenciales no se muestran en JSON, evidencias ni informes; solo se guardan los nombres de cabeceras/cookies usadas.</p>
+          </section>
+
           <section class="module-section">
             <h2>Modulos</h2>
             <div class="module-grid">
@@ -597,6 +627,7 @@
                   <th>ID</th>
                   <th>Fecha</th>
                   <th>Host</th>
+                  <th>Perfil</th>
                   <th>Hallazgos</th>
                   <th>IA</th>
                   <th>Estado</th>

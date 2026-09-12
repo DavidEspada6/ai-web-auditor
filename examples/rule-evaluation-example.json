@@ -51,50 +51,50 @@
       ],
       "matched_signals": [],
       "targets": [
-        "http://127.0.0.1:62011/members/"
+        "http://127.0.0.1:64808/members/"
       ],
       "evidence": [
         {
           "type": "finding",
           "label": "HTTP-NO-HTTPS-REDIRECT",
           "value": "HTTP is not redirected to HTTPS",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "initial_url",
-          "value": "http://127.0.0.1:62011/members/",
-          "location": "http://127.0.0.1:62011/members/"
+          "value": "http://127.0.0.1:64808/members/",
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "final_url",
-          "value": "http://127.0.0.1:62011/members/",
-          "location": "http://127.0.0.1:62011/members/"
+          "value": "http://127.0.0.1:64808/members/",
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "status_code",
           "value": "401",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding",
           "label": "AUTH-BASIC-OVER-HTTP",
           "value": "HTTP Basic Authentication over HTTP",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "status_code",
           "value": "401",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "www-authenticate",
           "value": "Basic realm=\"AI Web Auditor Lab\"",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         }
       ],
       "why_it_matters": "Credentials, cookies and session tokens must not be exposed through clear-text HTTP or downgrade paths.",
@@ -139,56 +139,56 @@
       ],
       "matched_signals": [],
       "targets": [
-        "http://127.0.0.1:62011/members/"
+        "http://127.0.0.1:64808/members/"
       ],
       "evidence": [
         {
           "type": "finding",
           "label": "COOKIE-HTTPONLY-MISSING",
           "value": "Cookie missing HttpOnly flag",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "cookie",
           "value": "sessionid",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding",
           "label": "COOKIE-SAMESITE-MISSING",
           "value": "Cookie missing SameSite attribute",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "cookie",
           "value": "sessionid",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding",
           "label": "COOKIE-HTTPONLY-MISSING",
           "value": "Cookie missing HttpOnly flag",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "cookie",
           "value": "tracking_id",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding",
           "label": "COOKIE-SAMESITE-NONE-WITHOUT-SECURE",
           "value": "Cookie uses SameSite=None without Secure",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "cookie",
           "value": "tracking_id",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         }
       ],
       "why_it_matters": "Cookie flags constrain session token exposure across insecure transport, browser scripts and cross-site requests.",
@@ -235,44 +235,44 @@
       ],
       "matched_signals": [],
       "targets": [
-        "http://127.0.0.1:62011/members/"
+        "http://127.0.0.1:64808/members/"
       ],
       "evidence": [
         {
           "type": "finding",
           "label": "HEADER-CONTENT_SECURITY_POLICY-MISSING",
           "value": "Content-Security-Policy header is missing",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding",
           "label": "HEADER-CLICKJACKING-MISSING",
           "value": "Clickjacking protection header is missing",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding",
           "label": "HEADER-NOSNIFF-MISSING",
           "value": "X-Content-Type-Options nosniff is missing",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "x-content-type-options",
           "value": "missing",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding",
           "label": "HEADER-REFERRER_POLICY-MISSING",
           "value": "Referrer-Policy header is missing",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding",
           "label": "HEADER-PERMISSIONS_POLICY-MISSING",
           "value": "Permissions-Policy header is missing",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         }
       ],
       "why_it_matters": "Security headers provide browser-enforced defense in depth against content injection, clickjacking and data leakage.",
@@ -317,62 +317,62 @@
       ],
       "matched_signals": [],
       "targets": [
-        "http://127.0.0.1:62011/members/"
+        "http://127.0.0.1:64808/members/"
       ],
       "evidence": [
         {
           "type": "finding",
           "label": "METHOD-DELETE-ADVERTISED",
           "value": "HTTP method DELETE is advertised",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "allow",
           "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "access-control-allow-methods",
           "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding",
           "label": "METHOD-PUT-ADVERTISED",
           "value": "HTTP method PUT is advertised",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "allow",
           "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "access-control-allow-methods",
           "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding",
           "label": "METHOD-TRACE-ADVERTISED",
           "value": "HTTP method TRACE is advertised",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "allow",
           "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "access-control-allow-methods",
           "value": "GET, POST, OPTIONS, PUT, DELETE, TRACE",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         }
       ],
       "why_it_matters": "Unnecessary HTTP methods can expand the attack surface or expose method tampering paths.",
@@ -413,49 +413,49 @@
         "technologies_identified"
       ],
       "targets": [
-        "http://127.0.0.1:62011/members/"
+        "http://127.0.0.1:64808/members/"
       ],
       "evidence": [
         {
           "type": "finding",
           "label": "FINGERPRINT-SERVER-VERSION-DISCLOSED",
           "value": "Server header discloses version information",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "server",
-          "value": "AIWebAuditorLab/0.22",
-          "location": "http://127.0.0.1:62011/members/"
+          "value": "AIWebAuditorLab/0.23",
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding",
           "label": "FINGERPRINT-POWERED-BY-DISCLOSED",
           "value": "X-Powered-By header discloses technology information",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "x-powered-by",
           "value": "PHP/5.6.40",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding",
           "label": "FINGERPRINT-GENERATOR-DISCLOSED",
           "value": "HTML generator metadata is exposed",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "generator",
           "value": "WordPress 4.7.0",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "technology",
           "label": "server",
-          "value": "AIWebAuditorLab/0.22",
+          "value": "AIWebAuditorLab/0.23",
           "location": "low"
         },
         {
@@ -517,52 +517,52 @@
         "public_metadata"
       ],
       "targets": [
-        "http://127.0.0.1:62011/.well-known/openid-configuration",
-        "http://127.0.0.1:62011/.well-known/security.txt",
-        "http://127.0.0.1:62011/robots.txt",
-        "http://127.0.0.1:62011/sitemap.xml"
+        "http://127.0.0.1:64808/.well-known/openid-configuration",
+        "http://127.0.0.1:64808/.well-known/security.txt",
+        "http://127.0.0.1:64808/robots.txt",
+        "http://127.0.0.1:64808/sitemap.xml"
       ],
       "evidence": [
         {
           "type": "metadata",
           "label": "robots.txt",
-          "value": "http://127.0.0.1:62011/robots.txt",
+          "value": "http://127.0.0.1:64808/robots.txt",
           "location": "200"
         },
         {
           "type": "metadata",
           "label": "sitemap",
-          "value": "http://127.0.0.1:62011/sitemap.xml",
-          "location": "5"
+          "value": "http://127.0.0.1:64808/sitemap.xml",
+          "location": "6"
         },
         {
           "type": "metadata",
           "label": "/.well-known/security.txt",
-          "value": "http://127.0.0.1:62011/.well-known/security.txt",
+          "value": "http://127.0.0.1:64808/.well-known/security.txt",
           "location": "200"
         },
         {
           "type": "metadata",
           "label": "/.well-known/openid-configuration",
-          "value": "http://127.0.0.1:62011/.well-known/openid-configuration",
+          "value": "http://127.0.0.1:64808/.well-known/openid-configuration",
           "location": "200"
         },
         {
           "type": "metadata",
           "label": "/robots.txt",
-          "value": "http://127.0.0.1:62011/robots.txt",
+          "value": "http://127.0.0.1:64808/robots.txt",
           "location": "200"
         },
         {
           "type": "metadata",
           "label": "/.well-known/security.txt",
-          "value": "http://127.0.0.1:62011/.well-known/security.txt",
+          "value": "http://127.0.0.1:64808/.well-known/security.txt",
           "location": "200"
         },
         {
           "type": "metadata",
           "label": "/sitemap.xml",
-          "value": "http://127.0.0.1:62011/sitemap.xml",
+          "value": "http://127.0.0.1:64808/sitemap.xml",
           "location": "200"
         }
       ],
@@ -602,98 +602,98 @@
         "state_changing_entry_points"
       ],
       "targets": [
-        "http://127.0.0.1:62011/api/member-profile?csrf_token=%5Bredacted%5D",
-        "http://127.0.0.1:62011/api/profile?session_id=%5Bredacted%5D",
-        "http://127.0.0.1:62011/api/upload",
-        "http://127.0.0.1:62011/api/users?role=member",
-        "http://127.0.0.1:62011/login/",
-        "http://127.0.0.1:62011/members/",
-        "http://127.0.0.1:62011/oauth/authorize?client_id=demo",
-        "http://127.0.0.1:62011/session"
+        "http://127.0.0.1:64808/api/member-profile?csrf_token=%5Bredacted%5D",
+        "http://127.0.0.1:64808/api/profile?session_id=%5Bredacted%5D",
+        "http://127.0.0.1:64808/api/upload",
+        "http://127.0.0.1:64808/api/users?role=member",
+        "http://127.0.0.1:64808/login/",
+        "http://127.0.0.1:64808/members/",
+        "http://127.0.0.1:64808/oauth/authorize?client_id=demo",
+        "http://127.0.0.1:64808/session"
       ],
       "evidence": [
         {
           "type": "entry_point",
           "label": "endpoint",
-          "value": "http://127.0.0.1:62011/login/",
+          "value": "http://127.0.0.1:64808/login/",
           "location": "form_action"
         },
         {
           "type": "entry_point",
           "label": "endpoint",
-          "value": "http://127.0.0.1:62011/session",
+          "value": "http://127.0.0.1:64808/session",
           "location": "form_action"
         },
         {
           "type": "entry_point",
           "label": "endpoint",
-          "value": "http://127.0.0.1:62011/api/member-profile?csrf_token=%5Bredacted%5D",
+          "value": "http://127.0.0.1:64808/api/member-profile?csrf_token=%5Bredacted%5D",
           "location": "discovered"
         },
         {
           "type": "entry_point",
           "label": "endpoint",
-          "value": "http://127.0.0.1:62011/api/profile?session_id=%5Bredacted%5D",
+          "value": "http://127.0.0.1:64808/api/profile?session_id=%5Bredacted%5D",
           "location": "discovered"
         },
         {
           "type": "entry_point",
           "label": "endpoint",
-          "value": "http://127.0.0.1:62011/api/upload",
+          "value": "http://127.0.0.1:64808/api/upload",
           "location": "discovered"
         },
         {
           "type": "entry_point",
           "label": "endpoint",
-          "value": "http://127.0.0.1:62011/members/",
+          "value": "http://127.0.0.1:64808/members/",
           "location": "fetched"
         },
         {
           "type": "entry_point",
           "label": "endpoint",
-          "value": "http://127.0.0.1:62011/api/users?role=member",
+          "value": "http://127.0.0.1:64808/api/users?role=member",
           "location": "discovered"
         },
         {
           "type": "entry_point",
           "label": "endpoint",
-          "value": "http://127.0.0.1:62011/oauth/authorize?client_id=demo",
+          "value": "http://127.0.0.1:64808/oauth/authorize?client_id=demo",
           "location": "discovered"
         },
         {
           "type": "entry_point",
           "label": "state_changing",
-          "value": "http://127.0.0.1:62011/login/",
+          "value": "http://127.0.0.1:64808/login/",
           "location": "POST"
         },
         {
           "type": "entry_point",
           "label": "state_changing",
-          "value": "http://127.0.0.1:62011/session",
+          "value": "http://127.0.0.1:64808/session",
           "location": "POST"
         },
         {
           "type": "entry_point",
           "label": "state_changing",
-          "value": "http://127.0.0.1:62011/api/member-profile?csrf_token=%5Bredacted%5D",
+          "value": "http://127.0.0.1:64808/api/member-profile?csrf_token=%5Bredacted%5D",
           "location": "POST"
         },
         {
           "type": "entry_point",
           "label": "state_changing",
-          "value": "http://127.0.0.1:62011/api/profile?session_id=%5Bredacted%5D",
+          "value": "http://127.0.0.1:64808/api/profile?session_id=%5Bredacted%5D",
           "location": "POST"
         },
         {
           "type": "entry_point",
           "label": "state_changing",
-          "value": "http://127.0.0.1:62011/api/upload",
+          "value": "http://127.0.0.1:64808/api/upload",
           "location": "POST"
         },
         {
           "type": "entry_point",
           "label": "state_changing",
-          "value": "http://127.0.0.1:62011/members/",
+          "value": "http://127.0.0.1:64808/members/",
           "location": "DELETE, GET, OPTIONS, POST, PUT, TRACE"
         },
         {
@@ -759,123 +759,123 @@
         "javascript_endpoints"
       ],
       "targets": [
-        "http://127.0.0.1:62011/api",
-        "http://127.0.0.1:62011/api/member-profile?csrf_token=%5Bredacted%5D",
-        "http://127.0.0.1:62011/api/profile?session_id=%5Bredacted%5D",
-        "http://127.0.0.1:62011/api/upload",
-        "http://127.0.0.1:62011/api/users?role=member",
-        "http://127.0.0.1:62011/callback/oauth",
-        "http://127.0.0.1:62011/health",
-        "http://127.0.0.1:62011/members/",
-        "http://127.0.0.1:62011/oauth/authorize?client_id=demo"
+        "http://127.0.0.1:64808/api",
+        "http://127.0.0.1:64808/api/member-profile?csrf_token=%5Bredacted%5D",
+        "http://127.0.0.1:64808/api/profile?session_id=%5Bredacted%5D",
+        "http://127.0.0.1:64808/api/upload",
+        "http://127.0.0.1:64808/api/users?role=member",
+        "http://127.0.0.1:64808/callback/oauth",
+        "http://127.0.0.1:64808/health",
+        "http://127.0.0.1:64808/members/",
+        "http://127.0.0.1:64808/oauth/authorize?client_id=demo"
       ],
       "evidence": [
         {
           "type": "finding",
           "label": "JS-ENDPOINTS-DISCOVERED",
           "value": "JavaScript endpoint references discovered",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "endpoint",
-          "value": "http://127.0.0.1:62011/api",
-          "location": "http://127.0.0.1:62011/members/"
+          "value": "http://127.0.0.1:64808/api",
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "endpoint",
-          "value": "POST http://127.0.0.1:62011/api/member-profile?csrf_token=[redacted]",
-          "location": "http://127.0.0.1:62011/members/"
+          "value": "POST http://127.0.0.1:64808/api/member-profile?csrf_token=[redacted]",
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "endpoint",
-          "value": "POST http://127.0.0.1:62011/api/profile?session_id=[redacted]",
-          "location": "http://127.0.0.1:62011/members/"
+          "value": "POST http://127.0.0.1:64808/api/profile?session_id=[redacted]",
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding",
           "label": "JS-SENSITIVE-PARAMETER-NAMES",
           "value": "JavaScript references sensitive-looking parameter names",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "parameter_name",
           "value": "csrf_token",
-          "location": "http://127.0.0.1:62011/api/member-profile?csrf_token=[redacted]"
+          "location": "http://127.0.0.1:64808/api/member-profile?csrf_token=[redacted]"
         },
         {
           "type": "finding_evidence",
           "label": "parameter_name",
           "value": "session_id",
-          "location": "http://127.0.0.1:62011/api/profile?session_id=[redacted]"
+          "location": "http://127.0.0.1:64808/api/profile?session_id=[redacted]"
         },
         {
           "type": "finding_evidence",
           "label": "parameter_name",
           "value": "token",
-          "location": "http://127.0.0.1:62011/reset-password?token=[redacted]"
+          "location": "http://127.0.0.1:64808/reset-password?token=[redacted]"
         },
         {
           "type": "finding",
           "label": "JS-OUT-OF-SCOPE-ENDPOINTS",
           "value": "JavaScript references endpoints outside scope",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "endpoint",
           "value": "https://example.org/collect",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "javascript_endpoint",
           "label": "endpoint",
-          "value": "http://127.0.0.1:62011/api",
+          "value": "http://127.0.0.1:64808/api",
           "location": ""
         },
         {
           "type": "javascript_endpoint",
           "label": "endpoint",
-          "value": "http://127.0.0.1:62011/api/member-profile?csrf_token=%5Bredacted%5D",
+          "value": "http://127.0.0.1:64808/api/member-profile?csrf_token=%5Bredacted%5D",
           "location": "POST"
         },
         {
           "type": "javascript_endpoint",
           "label": "endpoint",
-          "value": "http://127.0.0.1:62011/api/profile?session_id=%5Bredacted%5D",
+          "value": "http://127.0.0.1:64808/api/profile?session_id=%5Bredacted%5D",
           "location": "POST"
         },
         {
           "type": "javascript_endpoint",
           "label": "endpoint",
-          "value": "http://127.0.0.1:62011/api/upload",
+          "value": "http://127.0.0.1:64808/api/upload",
           "location": "POST"
         },
         {
           "type": "javascript_endpoint",
           "label": "endpoint",
-          "value": "http://127.0.0.1:62011/api/users?role=member",
+          "value": "http://127.0.0.1:64808/api/users?role=member",
           "location": "GET"
         },
         {
           "type": "javascript_endpoint",
           "label": "endpoint",
-          "value": "http://127.0.0.1:62011/callback/oauth",
+          "value": "http://127.0.0.1:64808/callback/oauth",
           "location": ""
         },
         {
           "type": "javascript_endpoint",
           "label": "endpoint",
-          "value": "http://127.0.0.1:62011/health",
+          "value": "http://127.0.0.1:64808/health",
           "location": ""
         },
         {
           "type": "javascript_endpoint",
           "label": "endpoint",
-          "value": "http://127.0.0.1:62011/oauth/authorize?client_id=demo",
+          "value": "http://127.0.0.1:64808/oauth/authorize?client_id=demo",
           "location": ""
         }
       ],
@@ -913,64 +913,64 @@
         "auth_routes"
       ],
       "targets": [
-        "http://127.0.0.1:62011/.well-known/change-password",
-        "http://127.0.0.1:62011/.well-known/oauth-authorization-server",
-        "http://127.0.0.1:62011/api/member-profile?csrf_token=%5Bredacted%5D",
-        "http://127.0.0.1:62011/api/profile?session_id=%5Bredacted%5D",
-        "http://127.0.0.1:62011/callback/oauth",
-        "http://127.0.0.1:62011/login/",
-        "http://127.0.0.1:62011/members/",
-        "http://127.0.0.1:62011/oauth/authorize?client_id=demo",
-        "http://127.0.0.1:62011/reset-password?token=%5Bredacted%5D",
-        "http://127.0.0.1:62011/session"
+        "http://127.0.0.1:64808/.well-known/change-password",
+        "http://127.0.0.1:64808/.well-known/oauth-authorization-server",
+        "http://127.0.0.1:64808/account",
+        "http://127.0.0.1:64808/api/member-profile?csrf_token=%5Bredacted%5D",
+        "http://127.0.0.1:64808/api/profile?session_id=%5Bredacted%5D",
+        "http://127.0.0.1:64808/login/",
+        "http://127.0.0.1:64808/members/",
+        "http://127.0.0.1:64808/oauth/authorize?client_id=demo",
+        "http://127.0.0.1:64808/reset-password?token=%5Bredacted%5D",
+        "http://127.0.0.1:64808/session"
       ],
       "evidence": [
         {
           "type": "entry_point",
           "label": "account,callback,login,password_reset",
-          "value": "http://127.0.0.1:62011/login/",
+          "value": "http://127.0.0.1:64808/login/",
           "location": "login, state_changing_candidate"
         },
         {
           "type": "entry_point",
           "label": "account,callback,login,password_reset",
-          "value": "http://127.0.0.1:62011/session",
+          "value": "http://127.0.0.1:64808/session",
           "location": "login, state_changing_candidate"
         },
         {
           "type": "entry_point",
           "label": "account,callback,login,password_reset",
-          "value": "http://127.0.0.1:62011/api/member-profile?csrf_token=%5Bredacted%5D",
+          "value": "http://127.0.0.1:64808/api/member-profile?csrf_token=%5Bredacted%5D",
           "location": "account, api, state_changing_candidate"
         },
         {
           "type": "entry_point",
           "label": "account,callback,login,password_reset",
-          "value": "http://127.0.0.1:62011/api/profile?session_id=%5Bredacted%5D",
+          "value": "http://127.0.0.1:64808/api/profile?session_id=%5Bredacted%5D",
           "location": "account, api, state_changing_candidate"
         },
         {
           "type": "entry_point",
           "label": "account,callback,login,password_reset",
-          "value": "http://127.0.0.1:62011/members/",
+          "value": "http://127.0.0.1:64808/members/",
           "location": "account, form, login"
         },
         {
           "type": "entry_point",
           "label": "account,callback,login,password_reset",
-          "value": "http://127.0.0.1:62011/oauth/authorize?client_id=demo",
+          "value": "http://127.0.0.1:64808/oauth/authorize?client_id=demo",
           "location": "callback, login"
         },
         {
           "type": "entry_point",
           "label": "account,callback,login,password_reset",
-          "value": "http://127.0.0.1:62011/reset-password?token=%5Bredacted%5D",
+          "value": "http://127.0.0.1:64808/reset-password?token=%5Bredacted%5D",
           "location": "password_reset"
         },
         {
           "type": "entry_point",
           "label": "account,callback,login,password_reset",
-          "value": "http://127.0.0.1:62011/.well-known/change-password",
+          "value": "http://127.0.0.1:64808/.well-known/change-password",
           "location": "password_reset"
         }
       ],
@@ -1014,32 +1014,32 @@
         "admin_routes"
       ],
       "targets": [
-        "http://127.0.0.1:62011/admin/",
-        "http://127.0.0.1:62011/admin/export?token=%5Bredacted%5D"
+        "http://127.0.0.1:64808/admin/",
+        "http://127.0.0.1:64808/admin/export?token=%5Bredacted%5D"
       ],
       "evidence": [
         {
           "type": "entry_point",
           "label": "admin",
-          "value": "http://127.0.0.1:62011/admin/export?token=%5Bredacted%5D",
+          "value": "http://127.0.0.1:64808/admin/export?token=%5Bredacted%5D",
           "location": "admin"
         },
         {
           "type": "entry_point",
           "label": "admin",
-          "value": "http://127.0.0.1:62011/admin/",
+          "value": "http://127.0.0.1:64808/admin/",
           "location": "admin"
         },
         {
           "type": "inventory_url",
           "label": "admin",
-          "value": "http://127.0.0.1:62011/admin/",
+          "value": "http://127.0.0.1:64808/admin/",
           "location": "admin"
         },
         {
           "type": "inventory_url",
           "label": "admin",
-          "value": "http://127.0.0.1:62011/admin/export?token=%5Bredacted%5D",
+          "value": "http://127.0.0.1:64808/admin/export?token=%5Bredacted%5D",
           "location": "admin"
         }
       ],
@@ -1071,19 +1071,19 @@
         "upload_routes"
       ],
       "targets": [
-        "http://127.0.0.1:62011/api/upload"
+        "http://127.0.0.1:64808/api/upload"
       ],
       "evidence": [
         {
           "type": "entry_point",
           "label": "upload",
-          "value": "http://127.0.0.1:62011/api/upload",
+          "value": "http://127.0.0.1:64808/api/upload",
           "location": "api, state_changing_candidate, upload"
         },
         {
           "type": "inventory_url",
           "label": "upload",
-          "value": "http://127.0.0.1:62011/api/upload",
+          "value": "http://127.0.0.1:64808/api/upload",
           "location": "api, state_changing_candidate, upload"
         }
       ],
@@ -1129,13 +1129,13 @@
         {
           "type": "finding_evidence",
           "label": "open_port",
-          "value": "62011",
+          "value": "64808",
           "location": "127.0.0.1"
         },
         {
           "type": "tcp_port",
           "label": "open",
-          "value": "127.0.0.1:62011",
+          "value": "127.0.0.1:64808",
           "location": ""
         }
       ],
@@ -1176,7 +1176,7 @@
         "external_references"
       ],
       "targets": [
-        "http://127.0.0.1:62011/members/",
+        "http://127.0.0.1:64808/members/",
         "https://example.org/collect",
         "https://example.org/external"
       ],
@@ -1185,25 +1185,25 @@
           "type": "finding",
           "label": "CRAWLER-OUT-OF-SCOPE-LINKS",
           "value": "Crawler found links outside scope",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "sample_url",
           "value": "https://example.org/external",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding",
           "label": "JS-OUT-OF-SCOPE-ENDPOINTS",
           "value": "JavaScript references endpoints outside scope",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "finding_evidence",
           "label": "endpoint",
           "value": "https://example.org/collect",
-          "location": "http://127.0.0.1:62011/members/"
+          "location": "http://127.0.0.1:64808/members/"
         },
         {
           "type": "scope",

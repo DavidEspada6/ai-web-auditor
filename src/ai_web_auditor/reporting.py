@@ -83,6 +83,7 @@ def generate_markdown_report(
         "",
     ]
 
+    lines.extend(_auth_profile_markdown_section(scan_data))
     lines.extend(_metadata_markdown_section(report_metadata))
     lines.extend(_executive_summary_section(findings, ai_body))
     lines.extend(_severity_summary_section(findings))
@@ -182,6 +183,7 @@ def generate_html_report(
             _meta_tile("Overall risk", _assessment_risk_label(assessment, fallback=risk_level or "not assessed")),
             _meta_tile("Risk score", _assessment_score_label(assessment)),
             _meta_tile("Target", target.get("normalized_url") or target.get("host") or "unknown"),
+            _meta_tile("Audit profile", _auth_profile_label(scan_data)),
             "</div>",
             "</section>",
             _metadata_html_section(report_metadata),
@@ -198,6 +200,7 @@ def generate_html_report(
                 ],
             ),
             "</section>",
+            _auth_profile_html_section(scan_data),
             '<section class="section">',
             "<h2>Executive Summary</h2>",
             f"<p>{_html(summary)}</p>",
@@ -249,6 +252,14 @@ def _metadata_markdown_section(metadata: ReportMetadata) -> list[str]:
     if not rows:
         return []
     lines = ["## Engagement", "", "| Field | Value |", "| --- | --- |"]
+    lines.extend(f"| {_cell(label)} | {_cell(value)} |" for label, value in rows)
+    lines.append("")
+    return lines
+
+
+def _auth_profile_markdown_section(scan_data: dict[str, Any]) -> list[str]:
+    rows = _auth_profile_rows(scan_data)
+    lines = ["## Audit Profile", "", "| Field | Value |", "| --- | --- |"]
     lines.extend(f"| {_cell(label)} | {_cell(value)} |" for label, value in rows)
     lines.append("")
     return lines
@@ -1018,6 +1029,17 @@ def _metadata_html_section(metadata: ReportMetadata) -> str:
     )
 
 
+def _auth_profile_html_section(scan_data: dict[str, Any]) -> str:
+    return "\n".join(
+        [
+            '<section class="section">',
+            "<h2>Audit Profile</h2>",
+            _html_table(["Field", "Value"], _auth_profile_rows(scan_data)),
+            "</section>",
+        ]
+    )
+
+
 def _severity_html_section(counts: dict[str, int]) -> str:
     cards = []
     for severity in ["critical", "high", "medium", "low", "info"]:
@@ -1715,6 +1737,28 @@ def _metadata_rows(metadata: ReportMetadata) -> list[tuple[str, str]]:
         ("Notes", metadata.notes),
     ]
     return [(label, value) for label, value in rows if value]
+
+
+def _auth_profile_label(scan_data: dict[str, Any]) -> str:
+    profile = scan_data.get("auth_profile") if isinstance(scan_data.get("auth_profile"), dict) else {}
+    return _clean_metadata_value(profile.get("name") or profile.get("id")) or "Public"
+
+
+def _auth_profile_rows(scan_data: dict[str, Any]) -> list[tuple[str, str]]:
+    profile = scan_data.get("auth_profile") if isinstance(scan_data.get("auth_profile"), dict) else {}
+    headers = ", ".join(_string_list(profile.get("request_header_names"))) or "none"
+    cookies = ", ".join(_string_list(profile.get("cookie_names"))) or "none"
+    rows = [
+        ("Profile", _auth_profile_label(scan_data)),
+        ("Mode", "Authenticated" if profile.get("authenticated") else "Public / anonymous"),
+        ("Request header names", headers),
+        ("Cookie names", cookies),
+        ("Sensitive values", "redacted from outputs"),
+    ]
+    notes = _clean_metadata_value(profile.get("notes"))
+    if notes:
+        rows.append(("Notes", notes))
+    return rows
 
 
 def _metadata_presence_label(item: dict[str, Any]) -> str:

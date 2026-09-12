@@ -118,6 +118,47 @@ class HistoryCompareTests(unittest.TestCase):
         self.assertEqual(exit_code, 0)
         self.assertEqual(comparison["summary"]["new"], 1)
 
+    def test_cli_role_compare_outputs_json(self):
+        public_scan = {
+            "target": {"normalized_url": "http://127.0.0.1:8080/members/", "host": "127.0.0.1"},
+            "auth_profile": {"id": "public", "name": "Publico", "authenticated": False},
+            "inventory": {"urls": [{"url": "http://127.0.0.1:8080/members/", "status_code": 401}]},
+            "entry_points": {"endpoints": [{"url": "http://127.0.0.1:8080/members/", "methods": ["GET"]}]},
+            "assessment": {"summary": {"risk_score": 70}},
+        }
+        member_scan = {
+            "target": {"normalized_url": "http://127.0.0.1:8080/members/", "host": "127.0.0.1"},
+            "auth_profile": {"id": "member", "name": "Usuario demo", "authenticated": True},
+            "inventory": {
+                "urls": [
+                    {"url": "http://127.0.0.1:8080/members/", "status_code": 200},
+                    {"url": "http://127.0.0.1:8080/account", "status_code": 200},
+                ]
+            },
+            "entry_points": {
+                "endpoints": [
+                    {"url": "http://127.0.0.1:8080/members/", "methods": ["GET"]},
+                    {"url": "http://127.0.0.1:8080/account", "methods": ["GET"]},
+                ]
+            },
+            "assessment": {"summary": {"risk_score": 76}},
+        }
+        with tempfile.TemporaryDirectory() as tmpdir:
+            baseline = Path(tmpdir) / "public.json"
+            current = Path(tmpdir) / "member.json"
+            output = Path(tmpdir) / "role-comparison.json"
+            baseline.write_text(json.dumps(public_scan), encoding="utf-8")
+            current.write_text(json.dumps(member_scan), encoding="utf-8")
+
+            with redirect_stdout(StringIO()):
+                exit_code = main(["role-compare", str(baseline), str(current), "--json-output", str(output)])
+
+            comparison = json.loads(output.read_text(encoding="utf-8"))
+
+        self.assertEqual(exit_code, 0)
+        self.assertEqual(comparison["summary"]["new_urls"], 1)
+        self.assertEqual(comparison["summary"]["new_entry_points"], 1)
+
 
 if __name__ == "__main__":
     unittest.main()
