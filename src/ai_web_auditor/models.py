@@ -78,6 +78,7 @@ class ScanResult:
     modules: list[ModuleResult]
     auth_profile: dict[str, Any] = field(default_factory=dict)
     requests: list[HTTPRequestRecord] = field(default_factory=list)
+    execution: dict[str, Any] = field(default_factory=dict)
 
     @property
     def findings(self) -> list[Finding]:

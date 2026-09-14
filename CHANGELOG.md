@@ -2,6 +2,33 @@
 
 Todas las versiones relevantes del proyecto se documentaran aqui.
 
+## [0.26.0] - 2026-09-14
+
+### Anade
+
+- Preajustes `quick`, `standard` y `extended`, compartidos por CLI y GUI.
+- Comando `presets` y opcion `--preset` en `scan` e `init-scope`.
+- `scan --dry-run` y API `/api/config/preview` para validar sin DNS ni conexiones al objetivo.
+- Selector de preajuste y resumen `Proxima ejecucion` con alcance, perfil, modulos y limites.
+- Bloque `execution` en los resultados nuevos, conservado en JSON, historial y ZIP de evidencias.
+- Guia operativa, configuracion reproducible para laboratorio y pruebas de regresion en navegador.
+
+### Corrige
+
+- Configuraciones con tipos incorrectos, numeros no finitos, limites negativos, puertos invalidos y perfiles inexistentes fallan antes de conectar.
+- El servidor acepta `0,5` como timeout decimal y rechaza NaN, infinito y enteros fraccionarios.
+- Se conserva el alcance y la autenticacion al aplicar un preajuste; DNS de subdominios y TCP quedan desactivados.
+- Importar adapta sus controles al espacio disponible sin ensanchar la pagina.
+- Ayudas contextuales y etiquetas del dashboard quedan dentro de sus contenedores.
+- Cabecera movil compacta, sin cubrir el formulario al desplazarse.
+- La comparacion anterior se limpia al ejecutar, cargar o importar otra auditoria.
+
+### Verificacion
+
+- 102 pruebas Python: configuracion, scope, HTTP/TLS, modulos, IA simulada, importadores, perfiles, historial, informes y evidencias.
+- Recorrido automatizado de 18 vistas con laboratorio local, 3 preajustes, redimensionado de columnas, historial y descarga PDF.
+- El rediseno visual completo y el manual Word siguen reservados para v0.28 y v0.29.
+
 ## [0.25.0] - 2026-09-12
 
 ### Anade

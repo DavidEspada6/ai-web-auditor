@@ -21,9 +21,11 @@ from .modules import (
 )
 from .modules.base import AuditModule
 from .scope import validate_target
+from .planning import build_scan_plan
 
 
 def run_scan(raw_target: str, config: AuditConfig) -> ScanResult:
+    execution = build_scan_plan(raw_target, config)
     target = validate_target(raw_target, config.scope)
     if not config.scope.allowed_hosts:
         config.scope.allowed_hosts = [target.host]
@@ -67,6 +69,7 @@ def run_scan(raw_target: str, config: AuditConfig) -> ScanResult:
         modules=results,
         auth_profile=auth_profile_metadata(config),
         requests=requests,
+        execution=execution,
     )
 
 

@@ -135,6 +135,12 @@
 
           <section class="module-section">
             <h2>Modulos</h2>
+            <label class="field" data-help="Aplica una combinacion de modulos y limites. Conserva objetivo, alcance, perfil y lista de puertos. DNS de subdominios y puertos quedan desactivados; puedes activarlos despues.">
+              <span>Preajuste de auditoria</span>
+              <select id="audit-preset" disabled>
+                <option value="">Personalizada</option>
+              </select>
+            </label>
             <div class="module-grid">
               <label data-help="Valida que la URL sea http/https, no incluya credenciales y este dentro de los hosts y rutas autorizadas."><input data-module="scope" type="checkbox" checked><span>Scope</span></label>
               <label data-help="Comprueba disponibilidad, estado HTTP, redirecciones y si HTTP fuerza correctamente HTTPS cuando aplica."><input data-module="http" type="checkbox" checked><span>HTTP</span></label>
@@ -234,6 +240,11 @@
             </div>
           </section>
 
+          <section class="module-section configuration-preview" aria-labelledby="configuration-heading">
+            <h2 id="configuration-heading">Proxima ejecucion</h2>
+            <p id="configuration-status" role="status">Sin objetivo</p>
+            <dl id="configuration-summary"></dl>
+          </section>
           <button id="run-scan" class="primary" type="submit">Ejecutar auditoria</button>
         </form>
       </aside>

@@ -21,6 +21,8 @@ from .importers import SUPPORTED_IMPORT_FORMATS, import_external_file, render_im
 from .inventory import build_inventory_from_scan, inventory_to_csv
 from .lab import DEFAULT_LAB_HOST, DEFAULT_LAB_PORT, serve_lab
 from .output import render_console, write_json
+from .planning import build_scan_plan
+from .presets import PRESET_NAMES, apply_preset, list_presets
 from .projects import (
     DEFAULT_PROJECTS_DIR,
     create_project,
@@ -66,6 +68,8 @@ def main(argv: list[str] | None = None) -> int:
 def scan_command(args: argparse.Namespace) -> int:
     project = load_project(args.project, projects_dir=args.projects_dir) if args.project else None
     audit_config = load_project_config(project) if project and args.config is None else AuditConfig.load(args.config)
+    if args.preset:
+        audit_config = apply_preset(audit_config, args.preset)
     if args.allow_private:
         audit_config.scope.allow_private_networks = True
     _apply_auth_args(audit_config, args)
@@ -73,6 +77,10 @@ def scan_command(args: argparse.Namespace) -> int:
     target = args.target or audit_config.target.url
     if not target:
         raise ValueError("Target URL is required unless it is set in the config file")
+
+    if args.dry_run:
+        print(json.dumps(build_scan_plan(target, audit_config), indent=2, ensure_ascii=True))
+        return 0
 
     result = run_scan(target, audit_config)
     result_data = result.to_dict()
@@ -112,7 +120,7 @@ def init_scope_command(args: argparse.Namespace) -> int:
     raw_target = args.target or _prompt("Target URL", "")
     target = normalize_target(raw_target)
 
-    config = AuditConfig()
+    config = apply_preset(AuditConfig(), args.preset) if args.preset else AuditConfig()
     config.target.url = target.normalized_url
     config.scope.allowed_hosts = _prompt_list("Allowed hosts", target.host)
     config.scope.allow_subdomains = _prompt_bool("Allow subdomains", True)
@@ -123,9 +131,9 @@ def init_scope_command(args: argparse.Namespace) -> int:
     config.http.timeout_seconds = _prompt_float("HTTP timeout seconds", config.http.timeout_seconds, minimum=1.0)
     config.http.max_redirects = _prompt_int("Maximum redirects", config.http.max_redirects, minimum=0)
     config.http.check_http_counterpart = _prompt_bool("Check HTTP counterpart for HTTPS targets", True)
-    config.modules.fingerprinting = _prompt_bool("Enable web fingerprinting", True)
-    config.modules.crawler = _prompt_bool("Enable safe crawler", True)
-    config.modules.javascript = _prompt_bool("Enable passive JavaScript endpoint analysis", True)
+    config.modules.fingerprinting = _prompt_bool("Enable web fingerprinting", config.modules.fingerprinting)
+    config.modules.crawler = _prompt_bool("Enable safe crawler", config.modules.crawler)
+    config.modules.javascript = _prompt_bool("Enable passive JavaScript endpoint analysis", config.modules.javascript)
     config.modules.subdomains = _prompt_bool("Enable DNS subdomain discovery", False)
     config.modules.ports = _prompt_bool("Enable limited TCP port check", False)
     config.crawler.max_depth = _prompt_int("Crawler max depth", config.crawler.max_depth, minimum=0)
@@ -148,9 +156,20 @@ def init_scope_command(args: argparse.Namespace) -> int:
     config.ports.max_ports = _prompt_int("TCP port limit", config.ports.max_ports, minimum=1)
     config.ports.timeout_seconds = _prompt_float("TCP port timeout seconds", config.ports.timeout_seconds, minimum=0.2)
 
+    build_scan_plan(config.target.url, config)
     config.write_json(output)
     print(f"Config written to {output}")
     print(f"Run: ai-web-auditor scan --config {output}")
+    return 0
+
+
+def presets_command(args: argparse.Namespace) -> int:
+    items = list_presets()
+    if args.json_console:
+        print(json.dumps(items, indent=2, ensure_ascii=True))
+    else:
+        for item in items:
+            print(f"{item['id']} ({item['name']}): {item['description']}")
     return 0
 
 
@@ -473,6 +492,8 @@ def _build_parser() -> argparse.ArgumentParser:
     scan_parser = subparsers.add_parser("scan", help="Run a non-intrusive web audit against one target URL.")
     scan_parser.add_argument("target", nargs="?", help="Target URL, for example https://example.com")
     scan_parser.add_argument("--config", "-c", type=Path, help="JSON or TOML config file.")
+    scan_parser.add_argument("--preset", choices=PRESET_NAMES, help="Apply module/limit settings over config; preserves scope and auth.")
+    scan_parser.add_argument("--dry-run", action="store_true", help="Print the validated plan without DNS or network requests.")
     scan_parser.add_argument("--json-output", "-o", type=Path, help="Write full scan result to this JSON file.")
     scan_parser.add_argument("--evidence-output", type=Path, help="Write a sanitized evidence ZIP for this scan.")
     scan_parser.add_argument("--json", dest="json_console", action="store_true", help="Print JSON to console.")
@@ -509,7 +530,12 @@ def _build_parser() -> argparse.ArgumentParser:
     scope_parser.add_argument("target", nargs="?", help="Target URL, for example https://example.com")
     scope_parser.add_argument("--output", "-o", type=Path, default=Path("audit.json"), help="Config file to write.")
     scope_parser.add_argument("--force", action="store_true", help="Overwrite the config file if it already exists.")
+    scope_parser.add_argument("--preset", choices=PRESET_NAMES, help="Initial defaults for the interactive questionnaire.")
     scope_parser.set_defaults(handler=init_scope_command)
+
+    presets_parser = subparsers.add_parser("presets", help="List built-in audit presets without making requests.")
+    presets_parser.add_argument("--json", dest="json_console", action="store_true")
+    presets_parser.set_defaults(handler=presets_command)
 
     analyze_parser = subparsers.add_parser("analyze", help="Analyze a scan JSON with an AI provider.")
     analyze_parser.add_argument("scan_json", type=Path, help="Scan JSON generated by the scan command.")

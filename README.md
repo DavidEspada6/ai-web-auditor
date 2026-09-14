@@ -28,6 +28,11 @@ cobertura de modulos sin ejecutar acciones adicionales contra el objetivo. Desde
 v0.25 incorpora un dashboard operativo con cobertura, cambios, riesgos,
 pendientes y checklist para decidir si una enumeracion esta lista para informe.
 
+La v0.26.0 incorpora preajustes de auditoria, una vista previa de configuracion
+sin conexiones al objetivo y validacion antes de ejecutar. El resultado incluye
+`execution` con los modulos, alcance y limites utilizados. Consulta la
+[guia operativa de v0.26](docs/OPERATIONS.md) para probar el flujo completo.
+
 No implementa explotacion, fuerza bruta, fuzzing agresivo, crawling masivo,
 escaneo de puertos amplio, fuerza bruta DNS agresiva ni pruebas intrusivas. La
 importacion de archivos externos solo lee resultados existentes y no ejecuta
@@ -47,9 +52,30 @@ Tambien puedes instalar dependencias directamente:
 pip install -r requirements.txt
 ```
 
-La v0.25 no necesita librerias externas en tiempo de ejecucion.
+La v0.26 no necesita librerias externas en tiempo de ejecucion.
 
 ## Uso rapido
+
+Preajustes disponibles: `quick` (revision inicial), `standard` (25 paginas y 25
+scripts) y `extended` (100 paginas y 100 scripts). Aplican modulos y limites sobre
+la configuracion; conservan el objetivo, alcance y perfil de autenticacion.
+Desactivan los modulos de subdominios DNS y puertos TCP. Los limites de crawler y
+JavaScript son independientes y no representan un limite global de peticiones.
+
+```powershell
+.\ai-web-auditor.cmd presets
+.\ai-web-auditor.cmd init-scope https://example.test --preset standard --output audit.json
+.\ai-web-auditor.cmd scan --config audit.json --preset standard --dry-run
+```
+
+`scan --dry-run` imprime el plan en JSON y no hace DNS, HTTP, TLS, TCP, llamadas
+IA ni escrituras de historial. Usa un objetivo autorizado para una ejecucion
+real. En la UI, el selector **Preajuste de auditoria** aplica los mismos valores;
+**Proxima ejecucion** resume y valida los campos antes de ejecutar.
+
+El laboratorio conserva sus botones **Iniciar** y **Usar demo**. La opcion
+**Personalizada** indica que se han modificado los valores del preajuste; no
+restaura automaticamente la configuracion anterior.
 
 ```powershell
 ai-web-auditor scan https://example.com
@@ -306,7 +332,7 @@ Ejemplo en `examples/audit.json`:
   "http": {
     "timeout_seconds": 10,
     "max_redirects": 10,
-    "user_agent": "AI-Web-Auditor/0.25",
+    "user_agent": "AI-Web-Auditor/0.26",
     "verify_tls": true,
     "check_http_counterpart": true
   },
@@ -1083,7 +1109,7 @@ priorizaran funcionalidades fuera de estos bloques:
 - v0.23: perfiles autenticados y comparacion por roles;
 - v0.24: screenshots, fingerprint visual y agrupacion de pantallas;
 - v0.25: dashboard de auditoria real con cobertura, cambios, riesgos, pendientes y checklist. Completada;
-- v0.26: estabilizacion de primera version completa, presets, UX y regresion;
+- v0.26: estabilizacion de primera version completa, presets, UX y regresion. Completada;
 - v0.27: preparacion de release funcional con empaquetado y guia operativa;
 - v0.28: rediseno visual completo de la UI con tema oscuro negro/verde, navegacion lateral y menus por flujo;
 - v0.29: documentacion Word completa de uso, botones, modulos, ejemplos, informes y flujo de entrega.
@@ -1111,7 +1137,7 @@ El proyecto usa Git. Flujo recomendado para cada version:
 git status
 git add .
 git commit -m "Describe el cambio"
-git tag v0.25.0
+git tag v0.26.0
 git push
 git push --tags
 ```
@@ -1124,7 +1150,7 @@ Antes de crear una nueva etiqueta conviene actualizar `pyproject.toml`,
 ```json
 {
   "tool": "ai-web-auditor",
-  "version": "0.25.0",
+  "version": "0.26.0",
   "status": "completed",
   "target": {
     "original_url": "https://example.com",

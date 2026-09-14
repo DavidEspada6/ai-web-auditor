@@ -122,6 +122,15 @@ button:disabled {
   gap: 14px;
 }
 
+.configuration-preview { min-width: 0; }
+.configuration-preview p { font-size: 13px; margin: 8px 0; }
+.configuration-preview [data-state="valid"] { color: var(--ok); }
+.configuration-preview [data-state="error"] { color: var(--critical); }
+.configuration-preview dl { display: grid; gap: 6px; margin: 0; font-size: 12px; }
+.configuration-preview dl div { display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 8px; }
+.configuration-preview dt { color: var(--muted); }
+.configuration-preview dd { margin: 0; overflow-wrap: anywhere; }
+
 .workspace-body {
   min-width: 0;
   display: grid;
@@ -138,6 +147,7 @@ button:disabled {
 
 .field {
   display: grid;
+  min-width: 0;
   gap: 7px;
   margin-bottom: 14px;
 }
@@ -153,6 +163,7 @@ input,
 select,
 textarea {
   width: 100%;
+  min-width: 0;
   border: 1px solid #cbd5df;
   border-radius: 6px;
   background: #ffffff;
@@ -252,6 +263,10 @@ label[data-help]:hover::after {
   transform: translateY(0);
   visibility: visible;
   transition-delay: 2s, 2s, 2s;
+}
+
+.view label[data-help]::after {
+  max-width: 100%;
 }
 
 label[data-help]:focus-within::after {
@@ -581,7 +596,7 @@ label[data-help]:focus-within::after {
 
 .import-controls {
   display: grid;
-  grid-template-columns: minmax(150px, 0.8fr) minmax(220px, 1.2fr) minmax(260px, 1.4fr) minmax(190px, 1fr) auto;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
   gap: 12px;
   align-items: end;
   margin-bottom: 16px;
@@ -678,7 +693,7 @@ label[data-help]:focus-within::after {
 
 .dashboard-change-grid {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 112px), 1fr));
   gap: 8px;
 }
 
@@ -933,6 +948,7 @@ label[data-help]:focus-within::after {
 
 .metric span,
 .finding-item span {
+  overflow-wrap: anywhere;
   display: block;
   color: var(--muted);
   font-size: 12px;
@@ -1320,6 +1336,11 @@ body.is-resizing-column {
 
   .topbar-actions {
     display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .topbar {
+    position: static;
   }
 
   .layout {

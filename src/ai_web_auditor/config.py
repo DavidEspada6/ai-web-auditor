@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import json
-from dataclasses import asdict, dataclass, field, is_dataclass
+import math
+from dataclasses import asdict, dataclass, field, fields, is_dataclass
 from pathlib import Path
 from typing import Any
 
@@ -30,7 +31,7 @@ class ScopeConfig:
 class HTTPConfig:
     timeout_seconds: float = 10.0
     max_redirects: int = 10
-    user_agent: str = "AI-Web-Auditor/0.25"
+    user_agent: str = "AI-Web-Auditor/0.26"
     verify_tls: bool = True
     check_http_counterpart: bool = True
 
@@ -240,6 +241,28 @@ class AuditConfig:
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(json.dumps(self.to_dict(), indent=2, ensure_ascii=True) + "\n", encoding="utf-8")
 
+    def validate(self) -> None:
+        _validate_types(self, AuditConfig())
+        for section, names in {
+            "scope": ("allowed_hosts", "include_paths", "exclude_paths"),
+            "crawler": ("well_known_paths", "ignored_extensions"),
+            "fingerprinting": ("public_paths",),
+            "subdomains": ("candidates",),
+            "evidence": ("text_content_types",),
+        }.items():
+            for name in names:
+                values = getattr(getattr(self, section), name)
+                if any(not isinstance(item, str) or not item.strip() for item in values):
+                    raise ValueError(f"{section}.{name}: expected a list of non-empty strings")
+        if any(type(port) is not int or not 1 <= port <= 65535 for port in self.ports.ports):
+            raise ValueError("ports.ports: expected TCP port numbers between 1 and 65535")
+        if self.modules.ports and not self.ports.ports:
+            raise ValueError("ports.ports: at least one TCP port is required")
+        if self.ports.timeout_seconds < 0.2:
+            raise ValueError("ports.timeout_seconds: must be at least 0.2 seconds")
+        if not any(asdict(self.modules).values()):
+            raise ValueError("modules: select at least one audit module")
+
 
 def _load_mapping(path: Path) -> dict[str, Any]:
     if not path.exists():
@@ -268,11 +291,33 @@ def _load_mapping(path: Path) -> dict[str, Any]:
 
 def _merge_dataclass(instance: object, values: dict[str, Any]) -> None:
     for key, value in values.items():
-        if not hasattr(instance, key):
+        if key not in {item.name for item in fields(instance)}:
             raise ValueError(f"Unknown config key: {key}")
 
         current = getattr(instance, key)
-        if is_dataclass(current) and isinstance(value, dict):
+        if is_dataclass(current):
+            if not isinstance(value, dict):
+                raise ValueError(f"{key}: expected a configuration object")
             _merge_dataclass(current, value)
         else:
             setattr(instance, key, value)
+
+
+def _validate_types(instance: object, defaults: object, prefix: str = "") -> None:
+    zero_allowed = {"max_redirects", "max_depth", "delay_seconds", "max_body_chars"}
+    for item in fields(defaults):
+        value = getattr(instance, item.name)
+        expected = getattr(defaults, item.name)
+        path = f"{prefix}{item.name}"
+        if is_dataclass(expected):
+            if not isinstance(value, type(expected)):
+                raise ValueError(f"{path}: expected a configuration object")
+            _validate_types(value, expected, path + ".")
+        elif type(expected) in (int, float):
+            valid_type = type(value) is int if type(expected) is int else type(value) in (int, float)
+            if not valid_type or not math.isfinite(value):
+                raise ValueError(f"{path}: expected a finite {'integer' if type(expected) is int else 'number'}")
+            if value < 0 or (value == 0 and item.name not in zero_allowed):
+                raise ValueError(f"{path}: must be {'zero or positive' if item.name in zero_allowed else 'positive'}")
+        elif not isinstance(value, type(expected)):
+            raise ValueError(f"{path}: expected {type(expected).__name__}")

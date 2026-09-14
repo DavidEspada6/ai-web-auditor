@@ -9,12 +9,16 @@ const state = {
   lab: null,
   history: [],
   comparison: null,
+  presets: [],
 };
 
 const severityOrder = ["critical", "high", "medium", "low", "info"];
 const minColumnWidth = 56;
 
 const form = document.querySelector("#scan-form");
+const auditPreset = document.querySelector("#audit-preset");
+let previewTimer;
+let previewRevision = 0;
 const message = document.querySelector("#message");
 const statusText = document.querySelector("#status-text");
 const targetPill = document.querySelector("#target-pill");
@@ -132,6 +136,90 @@ async function initialize() {
   await loadProjects();
   await loadHistory();
   applyAuthPreset(authProfileSelect.value);
+  try {
+    const response = await getJson("/api/presets");
+    state.presets = response.items;
+    state.presets.forEach((preset) => {
+      const option = new Option(preset.name, preset.id);
+      option.title = preset.description;
+      auditPreset.add(option);
+    });
+    auditPreset.disabled = false;
+  } catch (error) {
+    showMessage(error.message);
+  }
+  scheduleConfigurationPreview();
+}
+
+auditPreset.addEventListener("change", () => {
+  const preset = state.presets.find((item) => item.id === auditPreset.value);
+  if (preset) applyConfiguration(preset.settings);
+  scheduleConfigurationPreview();
+});
+
+form.querySelectorAll('input[type="number"]').forEach((input) => { input.required = true; });
+form.addEventListener("input", (event) => {
+  if (event.target !== auditPreset && event.target.closest(".module-section") &&
+      !event.target.closest(".auth-section, .project-section, .lab-section")) {
+    auditPreset.value = "";
+  }
+  scheduleConfigurationPreview();
+});
+form.addEventListener("change", scheduleConfigurationPreview);
+
+function scheduleConfigurationPreview() {
+  clearTimeout(previewTimer);
+  const revision = ++previewRevision;
+  const status = document.querySelector("#configuration-status");
+  status.textContent = "Actualizando configuracion...";
+  status.dataset.state = "pending";
+  document.querySelector("#configuration-summary").replaceChildren();
+  previewTimer = setTimeout(() => refreshConfigurationPreview(revision), 350);
+}
+
+async function refreshConfigurationPreview(revision) {
+  const status = document.querySelector("#configuration-status");
+  if (!document.querySelector("#target").value.trim()) {
+    status.textContent = "Sin objetivo";
+    return;
+  }
+  try {
+    const invalid = form.querySelector(":invalid");
+    if (invalid) {
+      const label = invalid.closest("label")?.querySelector("span")?.textContent || "Campo";
+      throw new Error(`${label}: ${invalid.validationMessage}`);
+    }
+    const response = await postJson("/api/config/preview", collectPayload());
+    if (revision !== previewRevision) return;
+    renderConfigurationPlan(response.plan);
+  } catch (error) {
+    if (revision !== previewRevision) return;
+    status.textContent = error.message;
+    status.dataset.state = "error";
+  }
+}
+
+function renderConfigurationPlan(plan) {
+  const status = document.querySelector("#configuration-status");
+  status.textContent = "Configuracion valida (sin conexion al objetivo)";
+  status.dataset.state = "valid";
+  const moduleNames = plan.modules.map((name) =>
+    document.querySelector(`[data-module="${name}"]`)?.closest("label")?.querySelector("span")?.textContent || name);
+  const rows = [
+    ["Objetivo", plan.target],
+    ["Hosts", plan.allowed_hosts.join(", ")],
+    ["Incluidas", plan.include_paths.join(", ")],
+    ["Excluidas", plan.exclude_paths.join(", ") || "Ninguna"],
+    ["Subdominios", plan.allow_subdomains ? "Incluidos en alcance" : "Fuera de alcance"],
+    ["Red privada", plan.allow_private_networks ? "Permitida" : "Bloqueada"],
+    ["Perfil", plan.auth_profile.name],
+    ["Modulos", `${plan.modules.length}: ${moduleNames.join(", ")}`],
+    ["Crawler", plan.crawler.enabled ? `Hasta ${plan.crawler.max_pages} paginas; profundidad ${plan.crawler.max_depth}; pausa ${plan.crawler.delay_seconds} s` : "Desactivado"],
+    ["JavaScript", plan.javascript.enabled ? `Hasta ${plan.javascript.max_scripts} scripts en ${plan.javascript.max_pages} paginas` : "Desactivado"],
+    ["TCP", plan.ports.enabled ? plan.ports.ports.join(", ") : "Desactivado"],
+  ];
+  document.querySelector("#configuration-summary").innerHTML = rows.map(([label, value]) =>
+    `<div><dt>${escapeHtml(label)}</dt><dd>${escapeHtml(value)}</dd></div>`).join("");
 }
 
 window.setInterval(loadLabStatus, 5000);
@@ -228,6 +316,7 @@ runImportButton.addEventListener("click", async () => {
       merge_scan: importMerge.checked ? state.scan : null,
     });
     state.scan = response.scan;
+    clearComparison();
     state.markdown = "";
     state.html = "";
     state.pdfBase64 = "";
@@ -261,8 +350,12 @@ form.addEventListener("submit", async (event) => {
   clearMessage();
   setBusy(true);
   try {
-    const response = await postJson("/api/scan", collectPayload());
+    const payload = collectPayload();
+    const preview = await postJson("/api/config/preview", payload);
+    renderConfigurationPlan(preview.plan);
+    const response = await postJson("/api/scan", payload);
     state.scan = response.result;
+    clearComparison();
     state.markdown = "";
     state.html = "";
     state.pdfBase64 = "";
@@ -284,6 +377,7 @@ form.addEventListener("submit", async (event) => {
     downloadPdfButton.disabled = true;
     activateTab("summary");
   } catch (error) {
+    statusText.textContent = "Error en la ejecucion";
     showMessage(error.message);
   } finally {
     setBusy(false);
@@ -343,6 +437,7 @@ historyTable.addEventListener("click", async (event) => {
       id: button.dataset.loadHistory,
     });
     state.scan = response.scan;
+    clearComparison();
     state.markdown = "";
     state.html = "";
     state.pdfBase64 = "";
@@ -780,6 +875,8 @@ function applyLabDefaults(lab) {
   document.querySelector("#report-auditor").value = projectAuditorInput.value;
   document.querySelector("#report-engagement").value = projectEngagementInput.value;
   document.querySelector("#report-scope").value = defaults.target;
+  auditPreset.value = "";
+  scheduleConfigurationPreview();
 }
 
 function applyAuthPreset(profileId) {
@@ -867,7 +964,12 @@ function applyProject(project) {
   document.querySelector("#report-engagement").value = project.engagement || "";
   document.querySelector("#report-scope").value = project.scope_summary || project.target_url || "";
 
-  const config = project.config || {};
+  auditPreset.value = "";
+  applyConfiguration(project.config || {});
+  scheduleConfigurationPreview();
+}
+
+function applyConfiguration(config) {
   if (config.target?.url) {
     document.querySelector("#target").value = config.target.url;
   }
@@ -1998,6 +2100,11 @@ function populateCompareSelectors(items) {
   runCompareButton.disabled = items.length < 2;
 }
 
+function clearComparison() {
+  state.comparison = null;
+  compareOutput.replaceChildren();
+}
+
 function renderComparison(comparison) {
   const summary = comparison.summary || {};
   compareOutput.innerHTML = `
@@ -2181,6 +2288,7 @@ function setBusy(isBusy) {
   const button = document.querySelector("#run-scan");
   button.disabled = isBusy;
   button.textContent = isBusy ? "Auditando..." : "Ejecutar auditoria";
+  if (isBusy) statusText.textContent = "Auditando...";
 }
 
 function showMessage(text) {

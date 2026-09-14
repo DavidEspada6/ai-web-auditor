@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import math
 import webbrowser
 from base64 import b64encode
 from dataclasses import fields
@@ -22,6 +23,8 @@ from ..importers import import_external_text
 from ..inventory import build_inventory_from_scan
 from ..lab import DEFAULT_LAB_HOST, DEFAULT_LAB_PORT, LabManager
 from ..projects import create_project, list_projects, load_project, load_project_config, project_report_metadata
+from ..planning import build_scan_plan
+from ..presets import list_presets
 from ..reporting import generate_html_report, generate_markdown_report, generate_pdf_report
 from ..role_compare import compare_role_scans
 
@@ -32,7 +35,7 @@ LAB_MANAGER = LabManager()
 
 
 class LocalAuditHandler(BaseHTTPRequestHandler):
-    server_version = "AIWebAuditorGUI/0.25"
+    server_version = "AIWebAuditorGUI/0.26"
 
     def do_GET(self) -> None:  # noqa: N802 - http.server uses this naming.
         parsed = urlparse(self.path)
@@ -42,6 +45,9 @@ class LocalAuditHandler(BaseHTTPRequestHandler):
             return
         if path == "/api/health":
             self._send_json({"ok": True})
+            return
+        if path == "/api/presets":
+            self._send_json({"ok": True, "items": list_presets()})
             return
         if path == "/api/projects":
             self._send_json({"ok": True, "items": [_project_to_gui_dict(project) for project in list_projects()]})
@@ -63,6 +69,10 @@ class LocalAuditHandler(BaseHTTPRequestHandler):
         path = urlparse(self.path).path
         try:
             payload = self._read_json_payload()
+            if path == "/api/config/preview":
+                config = build_config_from_gui_payload(payload)
+                self._send_json({"ok": True, "plan": build_scan_plan(config.target.url, config)})
+                return
             if path == "/api/scan":
                 self._handle_scan(payload)
                 return
@@ -377,6 +387,7 @@ def build_config_from_gui_payload(payload: dict[str, Any]) -> AuditConfig:
         if module_field.name in modules:
             setattr(config.modules, module_field.name, _bool_value(modules[module_field.name], True))
 
+    config.validate()
     return config
 
 
@@ -540,7 +551,13 @@ def _bool_value(value: Any, default: bool) -> bool:
 def _int_value(value: Any, default: int, *, minimum: int, maximum: int) -> int:
     if value is None or value == "":
         return default
+    if isinstance(value, bool):
+        raise ValueError("Expected an integer, not a boolean")
+    if isinstance(value, float) and not math.isfinite(value):
+        raise ValueError("Expected a finite integer")
     number = int(value)
+    if isinstance(value, float) and number != value:
+        raise ValueError("Expected an integer")
     if number < minimum or number > maximum:
         raise ValueError(f"Value must be between {minimum} and {maximum}")
     return number
@@ -549,7 +566,9 @@ def _int_value(value: Any, default: int, *, minimum: int, maximum: int) -> int:
 def _float_value(value: Any, default: float, *, minimum: float, maximum: float) -> float:
     if value is None or value == "":
         return default
-    number = float(value)
-    if number < minimum or number > maximum:
+    if isinstance(value, bool):
+        raise ValueError("Expected a number, not a boolean")
+    number = float(str(value).strip().replace(",", "."))
+    if not math.isfinite(number) or number < minimum or number > maximum:
         raise ValueError(f"Value must be between {minimum:g} and {maximum:g}")
     return number

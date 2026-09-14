@@ -1,0 +1,15 @@
+{
+  "target": {"url": "http://127.0.0.1:8080/members/"},
+  "scope": {
+    "allowed_hosts": ["127.0.0.1"],
+    "allow_subdomains": false,
+    "allow_private_networks": true,
+    "resolve_dns": false,
+    "include_paths": ["/"],
+    "exclude_paths": ["/admin", "/private", "/logout", "/delete", "/reset"]
+  },
+  "http": {"check_http_counterpart": false},
+  "crawler": {"max_depth": 1, "max_pages": 25, "delay_seconds": 0.2},
+  "javascript": {"max_pages": 10, "max_scripts": 25},
+  "modules": {"ports": false, "subdomains": false}
+}
